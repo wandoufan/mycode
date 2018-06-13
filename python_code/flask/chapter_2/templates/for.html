@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    {%if user_info%}
+        {% for key,value in user_info.items()%}
+            <p>{{key}},{{value}}</p>
+        {% endfor %}
+    {%endif%}
+    
+    {%if color_list%}
+        {% for i in color_list %}
+            <p>颜色是：{{i}}</p>
+        {% endfor %}
+    {%endif%}
+
+</body>
+</html>

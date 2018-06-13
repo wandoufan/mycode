@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        这是登陆界面!
+        {% if user_name %}
+            <p>用户 {{user_name}} 登陆成功</p>
+        {% else %}
+            <p>没有登陆</p>
+        {% endif %}
+    </body>
+</html>
