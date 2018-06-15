@@ -179,6 +179,8 @@
 
 
 # 文件传输相关的命令：
+# wget命令可以通过URL地址下载数据，详见linux_wget文档
+# ftp命令可以实现本地和ftp服务器之间的文件传输，详见linux_ftp文档
 # 在xshell等客户端软件界面中可以通过直接拖动来传输文件
 # 注意：使用rz/sz等传输命令前可能要先安装
 # 注意：需要使用SecureCRT或者Xshell等客户端工具连接Linux,在客户端上运行rz/sz命令
@@ -187,6 +189,18 @@
 # -b:以二进制方式传输
 # -e:对控制字符进行转义，可以保证文件传输正确
 # 'sz filename'从Linux中下载文件到windows中
+# 'scp [参数] [原路径] [目标路径]'scp是secure copy的缩写, scp是linux系统下基于ssh登陆进行安全的远程文件拷贝命令
+# -r:递归的复制整个目录
+# -v:详细方式显示输出
+# -B:使用批处理模式，传输过程中不询问
+# -P:指定传输数据用到的端口号，注意是大写
+# 1.从本地拷贝文件到远程
+# 'scp local_file/local_dir username@remote_ip:remote_file/remote_dir'后边只需要输入密码
+# 'scp local_file/local_dir remote_ip:remote_file/remote_dir'后边需要输入用户名和密码
+# 2.从远程拷贝文件到本地
+# 'scp username@remote_ip:remote_file/remote_dir local_file/local_dir'后边只需要输入密码
+# 'scp remote_ip:remote_file/remote_dir local_file/local_dir'后边需要输入用户名和密码
+# 示例：'scp -r -P 8080 /root/ftptest/abc user@192.168.109.133:/home/user/ftptest'
 
 
 # 与解压缩相关的命令：

@@ -13,6 +13,7 @@ print(os.getcwd())
 os.chdir('C:/Users/xyf/Documents/python 代码/test_9')
 print(os.getcwd())
 os.chdir('C:/Users/xyf/Documents/python 代码/test_10')
+# 特别地，os.chdir(..)返回上一层目录
 
 # listdir(path='.')函数列举当前目录下的文件和子目录
 # path参数可以指定列举目录，默认值为'.'，代表当前目录，也可以用'..'代表上一层目录

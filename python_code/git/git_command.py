@@ -19,7 +19,9 @@
 
 # git相关的使用命令
 # 'git init'初始化一个仓库，把当前所在的目录变成git可以管理的仓库，并且会在目录下创建一个.git隐藏目录用来管理
-# 'git add filename'把指定文件添加到仓库(把修改的文件添加到暂存区),注意文件一定要放在刚才指定的仓库目录下，与下面的命令一起配合使用
+# 'git add filename/dirname'把指定文件或目录添加到仓库(把修改的文件添加到暂存区),注意文件一定要放在刚才指定的仓库目录下，与commit命令一起配合使用
+# 'git add file1 file2 file3'一次添加多个文件，中间用空格隔开
+# 'git add '
 # 'git commit -m"message"'把文件提交到仓库(把暂存区的所有文件提交到当前分支)，添加文件可以多次，添加完之后提交一次就行
 # 'git status'显示仓库当前的状态
 # 'git diff filname'查看文件被修改的内容，比较当前目录的文件与之前提交到仓库的版本的不同之处
@@ -36,15 +38,17 @@
 # 'git rm filename'删除资源库里的文件，执行完后还要用'git commit'提交
 
 
-# 拷贝本地库到远程库：
+# 提交本地代码到远程库：
 # 除了本地仓库还可以把本地的代码提交到远程仓库，例如github上
+# 首次提交远程库需要设置用户名邮箱
 # 'git config --global user.name myname'设置用户名
 # 'git config --global user.name'查看用户名
 # 'git config --global user.email myemail'设置邮箱
 # 'git config --global user.email'查看邮箱
 # --global参数表示本设备上的所有仓库都连接这个远程仓库
 # 'git config --list'查看所有的配置列表
-# 'git remote add origin git@github.com:wandoufan/git_test.git'ssh方式连接github添加远程库，远程库的默认名字origin(起源)
+# 'git remote add origin git@github.com:wandoufan/git_test.git'ssh方式连接github添加远程库
+# 备注：远程库/远程主机的默认名字origin(起源)
 # 'git remote add origin https://github.com/wandoufan/git_test.git'https方式连接远程库
 # 备注：https方式需要每次输入账户密码且速度较慢，推荐使用ssh方式
 # 'git remote rm origin'删除远程库
@@ -72,9 +76,12 @@
 
 # 从远程库更新库到本地：
 # 适用于本地有库时，从远程库抓取更新版本的分支并与本地的分支合并
+# 注意：使用git pull时远程库的版本要比本地库更新，远程库才可以覆盖本地，否则不会修改任何文件
 # git pull = git fetch + git merge
-# 'git pull'从远程抓取分支并与当前工作目录中的分支合并
-# 远程的代码可能和本地的代码会修改同一个地方，此时就会产生冲突，git客户端会提示冲突的文件，需要进入文件手动选择
+# 'git pull <远程主机名> <远程分支名>:<本地分支名>'从远程抓取分支并与当前工作目录中的分支合并
+# 'git pull origin master'把远程master分支与当前分支合并，本地分支名可以省略
+# 'git pull origin master --allow-unrelated-histories'合并两个不同的项目(否则可能会报错：refusing to merge unrelated histories)
+# 远程的代码可能和本地的代码会修改同一个地方，此时就会产生冲突，git客户端会提示冲突的文件，需要进入文件手动选择修改
 
 
 # 本地1             远程              本地2
@@ -83,6 +90,7 @@
 #  C                  C                 C
 #--------------------------------------------
 #  本地2修改后先向远程commit
+#  实际测试远程上的A文件还在？？？
 #  A                             
 #  B1                 B2                B2
 #  C                  C     <--push     C
@@ -96,12 +104,16 @@
 
 
 # 分支相关的命令：
+# 分支的功能是在一个节点把代码一分为二，例如需要对一个正在使用的代码A开发新功能，就可以创建一个属于自己的新分支
+# 其他人还可以继续使用旧分支正常工作，在新分支上开发新功能，等功能开发完毕就合并回原来旧分支上
 # 'git branch branch_name'创建新的分支，即HEAD改为指向新的分支，新的分支再指向当前的最新提交
 # 'git checkout branch_name'切换分支
 # 'git checkout -b branch_name'创建+切换分支
 # 'git merge branch_name'合并某分支到当前分支
+# 本地库测试合并两个分支没反应？？？或者是合并速度太慢了？？？
 # 'git branch -d branch_name'删除分支
-# 'git branch'查看当前分支，-r参数查看远程分支，-a参数查看所有分支
+# 'git branch -r'查看远程分支
+# 'git branch -a'查看所有分支
 
 
 # 创建git标签：

@@ -1,4 +1,7 @@
 # 主要记录在Linux下ftp的搭建和使用
+# 注意：ftp命令只能每次只能上传简单的单个文件，不能传输目录！
+# 如果想要在ftp上传输复杂目录，要么用代码自己逐层遍历然后在ftp上建立对应目录然后再上传文件
+# 要么就打包后用压缩包传输，要么就使用scp命令直接复制。
 
 
 # ftp的搭建过程(以ubuntu操作系统为例)：
@@ -39,6 +42,7 @@
 
 # ftp的登录上传下载相关：
 # 'ftp hostip/hostname'或'ftp username@hostip/hostname' 登录ftp
+# 注意：大部分地方登陆都是'ftp ip:port',但也碰到过'ftp ip port',即中间是空格的情况！
 # 之后需要输入登陆账户的用户名和密码，登陆成功后会返回‘230 Login successful.’
 # 登入ftp后，就会进入以'ftp>'开头的ftp命令行界面
 # 在ftp命令行内部也可以直接使用'ls'/'mkdir'等linux命令
@@ -46,10 +50,13 @@
 # 'open hostip在ftp命令行内部再次连接指定远程服务器，需要输入用户名密码
 # 'lcd dirpath'在从ftp上下载文件之前要先用lcd命令指定本地接收文件的目录位置
 # 'get filename'从ftp上下载指定的文件
+# 注意：使用get命令下载时，当前的工作目录要是文件所在的目录，即不能用get path1/path2/file这种方式，否则会报错找不到文件
 # 'mget *.txt'下载多个文件，可以配合通配符使用
 # 'put filename'向ftp中上传文件，文件不在当前目录下时要使用绝对路径
 # 'mput *.txt'上传多个文件，可以配合通配符使用
+# 'delete filename'删除ftp上的文件
 # 'quit'或'exit'或'bye'或'!'退出ftp命令行
+# 备注：使用mput/mget可以传输当前目录中的所有文件(不包含目录)，但每个文件都会提示确认，使用'prompt off'可以关掉确认交互
 
 
 # 最后搭建完成后'ftp 192.168.109.133'，但是以ftpuser账户一直无法登录
