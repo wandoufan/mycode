@@ -40,7 +40,7 @@
 # userlist_deny=YES         # userlist列表成为黑名单（反之是白名单）
 
 
-# ftp的登录上传下载相关：
+# ftp的登录上传下载相关命令：
 # 'ftp hostip/hostname'或'ftp username@hostip/hostname' 登录ftp
 # 注意：大部分地方登陆都是'ftp ip:port',但也碰到过'ftp ip port',即中间是空格的情况！
 # 之后需要输入登陆账户的用户名和密码，登陆成功后会返回‘230 Login successful.’

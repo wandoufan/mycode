@@ -2,7 +2,7 @@ import ftplib
 import os
 
 # 1.传递之前要检查目标目录是否是空的
-# 2.传递结束之后要检查传输是否成功(检查文件个数？？)
+# 2.传递结束之后要检查传输是否成功(检查文件个数？/*resp* '226 Transfer complete.'？)
 # 3.考虑目录内容列表为空，即空目录的情况-->建一个空目录，然后回退到上一级
 
 class MyFtp(object):
@@ -28,6 +28,13 @@ class MyFtp(object):
 	def check_is_empty(self,dir):
 		'''
 		上传下载之前检查目标目录是否为空，不为空就报错
+		'''
+		pass
+
+	def check_file_number(self,dir):
+		'''
+		上传之后检查ftp的每个目录下文件数量与本地文件数量是否一致，
+		不一致就报错
 		'''
 		pass
 
@@ -59,6 +66,12 @@ class MyFtp(object):
 		# 在ftp上创建对应的目录并设置为工作目录
 		self.ftp.cwd(remotepath)
 		dirname = os.path.basename(localdir)
+		# 先检查要创建的目录是否已经存在
+		# print('dirname!!!',dirname)
+		# print('self.ftp.nlst!!!',self.ftp.nlst())
+		if dirname in self.ftp.nlst():
+			# print('directory already exist!!!!')
+			return -1, 'directory already exist!'
 		self.ftp.mkd(dirname)
 		remotepath = os.path.join(remotepath,dirname)
 		self.ftp.cwd(remotepath)

@@ -1,17 +1,44 @@
 # 主要记录wget命令相关的参数：
 
-# wget是Linux系统中的一个下载文件的命令工具，可以从指定的URL路径上下载数据
+# wget是Linux系统中的一个下载文件的命令工具，从指定的URL路径上下载数据
+# 两个主要应用方面：抓取http网络站点的数据；从ftp站点上下载数据；
 # wget支持HTTP，HTTPS和FTP协议，可以使用HTTP代理，可以自动下载、支持断点续传，还很稳定
 # wget可以在用户退出系统的之后在后台执行。即可以登录系统，启动一个wget下载任务，然后退出系统，wget将在后台执行直到任务完成
 
 # 'wget [参数] [URL地址]'
-# 示例：'wget -r -nH --level=0 --cut-dirs=7 user@192.168.109.133:/home/user/wgettest'
+# 示例：
+# http方式下载单个文件到当前工作目录
+# 'wget http://www.linuxde.net/testfile.zip' 
+# ftp方式下载目录到当前工作目录，注意ftp上的路径不是从根路径上开始算起的，进入ftp的默认路径就是/home/user了
+# 'wget -nH -m --ftp-user=user --ftp-password=123456 ftp://192.168.109.133/ftptest/abc'
+# ftp方式下载目录到指定的/root/wgettest路径 
+# 'wget -nH -m -P /root/wgettest --ftp-user=user --ftp-password=123456 ftp://192.168.109.133/ftptest/abc' 
+# ftp方式下载目录到指定的/root/wgettest路径,去除下载目录中隐藏的.listing文件
+# 'wget -nH -r -l inf -P /root/wgettest --ftp-user=user --ftp-password=123456 ftp://192.168.109.133/ftptest/abc'
+# 注意存在问题：想要单独下载/home/user/ftptest/abc，其中abc是目录，但总是会把上一层的ftptest目录也一块下载下来
+# 目前测试指定abc目录再下层的具体目录都可以下载下来，包括ftptest下除了abc目录的其他文件也不会随之下载，但总是会多出上层目录来
+# 目前解决方法:把abc从ftptest中移出来，再把ftptest删除掉；
+
+
+# 常用参数：
+# -x:会强制在本地建立和服务器一样的目录
+# -r:会下载整个网络站点，但如果是网站，会继续下载网站的其他网站的链接，因此谨慎使用，或限制下载深度
+# -nH:不创建以主机名命名的第一层目录,直接从当前目录开始
+# -m:下载所有子目录并保留目录结构,相当于'-r -N -l inf -nr'的合集,注意加上-nr参数会在下载目录下自动创建一个listing的隐藏文件
+# -P target_path:指定下载目录的保存路径，注意参数为大写，只能针对目录，对文件无效
+# -O new_name:下载的文件重命名保存，注意参数为大写，指定下载路径用/root/ftptest/new_name的方式，-P参数无效
+# -o wget.log:把下载过程中的日志写入到名为wget.log的文件中，指定下载路径用/root/ftptest/wget.log的方式，不指定则为当前工作路径
+# --ftp-user=username:指定ftp登录的用户名
+# --ftp-password=password:指定ftp登录的密码
+# –-cut-dirs=number:忽略主机上的目录的层数，从根目录开始计算。如果想完全保留FTP原有的目录结构，则不要加该参数
+
 
 # 启动参数：
 # -V, –version 显示wget的版本后退出
 # -h, –help 打印语法帮助
 # -b, –background 启动后转入后台执行
 # -e, –execute=COMMAND 执行`.wgetrc’格式的命令，wgetrc格式参见/etc/wgetrc或~/.wgetrc
+
 # 记录和输入文件参数：
 # -o, –output-file=FILE 把记录写到FILE文件中
 # -a, –append-output=FILE 把记录追加到FILE文件中
@@ -25,6 +52,7 @@
 # –sslcertfile=FILE 可选客户端证书
 # –sslcertkey=KEYFILE 可选客户端证书的KEYFILE
 # –egd-file=FILE 指定EGD socket的文件名
+
 # 下载参数：
 # –bind-address=ADDRESS 指定本地使用地址(主机名或IP，当本地有多个IP或名字时使用)
 # -t, –tries=NUMBER 设定最大尝试链接次数(0 表示无限制).
@@ -42,12 +70,14 @@
 # -Y, –proxy=on/off 打开或关闭代理
 # -Q, –quota=NUMBER 设置下载的容量限制
 # –limit-rate=RATE 限定下载输率
+
 # 目录参数：
 # -nd –no-directories 不创建目录
 # -x, –force-directories 强制创建目录
 # -nH, –no-host-directories 不创建主机目录
 # -P, –directory-prefix=PREFIX 将文件保存到目录 PREFIX/…
 # –cut-dirs=NUMBER 忽略 NUMBER层远程目录
+
 # HTTP 选项参数：
 # –http-user=USER 设定HTTP用户名为 USER.
 # –http-passwd=PASS 设定http密码为 PASS
@@ -64,12 +94,14 @@
 # –cookies=off 不使用 cookies
 # –load-cookies=FILE 在开始会话前从文件 FILE中加载cookie
 # –save-cookies=FILE 在会话结束后将 cookies保存到 FILE文件中
+
 # FTP 选项参数：
 # -nr, –dont-remove-listing 不移走 `.listing’文件
 # -g, –glob=on/off 打开或关闭文件名的 globbing机制
 # –passive-ftp 使用被动传输模式 (缺省值).
 # –active-ftp 使用主动传输模式
 # –retr-symlinks 在递归的时候，将链接指向文件(而不是目录)
+
 # 递归下载参数：
 # -r, –recursive 递归下载－－慎用!
 # -l, –level=NUMBER 最大递归深度 (inf 或 0 代表无穷)

@@ -15,7 +15,7 @@ print(os.getcwd())
 os.chdir('C:/Users/xyf/Documents/python 代码/test_10')
 # 特别地，os.chdir(..)返回上一层目录
 
-# listdir(path='.')函数列举当前目录下的文件和子目录
+# listdir(path='.')函数返回包含指定目录中所有文件和子目录的列表
 # path参数可以指定列举目录，默认值为'.'，代表当前目录，也可以用'..'代表上一层目录
 print(os.listdir())
 print(os.listdir('C:/Users/xyf/Documents/python 代码'))
@@ -42,7 +42,7 @@ os.removedirs('C:/Users/xyf/Documents/python 代码/test_10/a/b/c')
 os.rename('file_old','file_new')
 
 #system()函数用于执行脚本，以及调用操作系统自带的各种小工具,如计算器
-os.system(cmd)
+os.system(shell_cmd)
 os.system('calc')
 
 
