@@ -15,6 +15,7 @@
 # 'wget -nH -m -P /root/wgettest --ftp-user=user --ftp-password=123456 ftp://192.168.109.133/ftptest/abc' 
 # ftp方式下载目录到指定的/root/wgettest路径,去除下载目录中隐藏的.listing文件
 # 'wget -nH -r -l inf -P /root/wgettest --ftp-user=user --ftp-password=123456 ftp://192.168.109.133/ftptest/abc'
+# 注意：对应-P参数指定的目录如果不存在，系统会自动帮助建立起下载路径
 # 注意存在问题：想要单独下载/home/user/ftptest/abc，其中abc是目录，但总是会把上一层的ftptest目录也一块下载下来
 # 目前测试指定abc目录再下层的具体目录都可以下载下来，包括ftptest下除了abc目录的其他文件也不会随之下载，但总是会多出上层目录来
 # 目前解决方法:把abc从ftptest中移出来，再把ftptest删除掉；

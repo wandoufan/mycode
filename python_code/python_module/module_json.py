@@ -1,6 +1,6 @@
 # coding:utf-8
 
-# JSON（javascript object notationJAVA对象标记）是一种轻量级的数据交换格式
+# JSON（javascript object notation-JAVA对象标记）是一种轻量级的数据交换格式
 # json模块就是提供这个数据格式转化功能的模块。
 
 # json模块序列化出来的是通用格式的字符串，其他编程语言都认识；

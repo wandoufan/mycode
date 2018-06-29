@@ -35,6 +35,9 @@ print(str1.endswith('e',0,20))
 print(str1.find('c'))
 print(str1.find('fg'))
 
+#判断字符串中是否包含指定字符段，最好直接用in来判断
+print('a' in 'abcde')
+
 #类似string.find函数，若有返回索引值，若没有会报错
 print(str1.index('c'))
 #print(str1.index('f'))

@@ -16,3 +16,5 @@
 #<del></del>和<ins></ins>标签配合使用，来描述文档中的更新和修正。
 
 # http://study.163.com/course/courseLearn.htm?courseId=171001#/learn/video?lessonId=242007&courseId=171001
+# 所有标签查询地址：
+# http://www.w3school.com.cn/tags/tag_p.asp

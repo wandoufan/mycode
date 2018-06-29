@@ -1,7 +1,8 @@
 # coding:utf-8
 
-# request模块是基于urllib3的http库，提供了http协议中对指定url资源的各种操作功能。
-#一般HTTP请求提交数据，需要编码成URL编码格式，然后作为url的一部分，或者作为参数传到Request对象中。
+# request模块是基于urllib3的第三方库，提供了http协议中对指定url资源的各种操作功能。
+# urllib模块和request模块二者功能非常接近，但urllib是官方自带的模块。
+# 一般HTTP请求提交数据，需要编码成URL编码格式，然后作为url的一部分，或者作为参数传到Request对象中。
 
 # Requests 完全满足今日 web 的需求，提供的功能包括：Keep-Alive & 连接池；国际化域名和 URL；
 # 带持久 Cookie 的会话；浏览器式的 SSL 认证；自动内容解码；基本/摘要式的身份认证；
@@ -45,27 +46,29 @@ print(r7.url)
 
 
 # 响应内容：
+# r是返回的请求的状态码
 r8 = requests.get('https://movie.douban.com/chart')
-#通过r.text读取服务器响应的内容
-#print(r8.text)
-#通过r.encoding获得/修改编码格式
+# 通过r.text读取服务器响应的内容
+# 响应内容是str格式的，相当于网页源码的内容，可以进一步进行分割处理
+print(r8.text)
+# 通过r.encoding获得/修改编码格式
 print(r8.encoding)
-#r8.encoding='ISO-8859-1'
-#对于非文本内容，r.content可以以字节形式获取二进制的响应内容
-#print(r8.content)
-#requests内置了json解码器，r.json处理json数据
-#print(r8.json())
+r8.encoding = 'ISO-8859-1'
+# 对于非文本内容，r.content可以以字节形式获取二进制的响应内容
+print(r8.content)
+# requests内置了json解码器，r.json处理json数据
+print(r8.json())
 
 
-#原始响应内容：
-#如果想获取来自服务器的原始套接字响应，可以访问r.raw,需要在请求中把关键字stream置为True
-r9 = requests.get('https://movie.douban.com/chart',stream=True)
+# 原始响应内容：
+# 如果想获取来自服务器的原始套接字响应，可以访问r.raw,需要在请求中把关键字stream置为True
+r9 = requests.get('https://movie.douban.com/chart', stream=True)
 print(r9.raw)
 print(r9.raw.read(10))
 
 
-#定制请求头：
-#如果想为请求添加HTTP头部，传递一个字典给headers参数即可
-dict2={'user-agent': 'my-app/0.0.1'}
-r1=requests.get('https://api.github.com/some/endpoint',headers=dict2)
+# 定制请求头：
+# 如果想为请求添加HTTP头部，传递一个字典给headers参数即可
+dict2 = {'user-agent': 'my-app/0.0.1'}
+r1 = requests.get('https://api.github.com/some/endpoint', headers=dict2)
 print(r1.url)

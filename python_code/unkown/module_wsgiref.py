@@ -15,7 +15,7 @@ import wsgiref.simple_server
 
 # make_server(host_ip,port,application)
 httpd = wsgiref.simple_server.make_server()
-
+# 可以实现一直监听的服务
 httpd.serve_forever()
 
 
