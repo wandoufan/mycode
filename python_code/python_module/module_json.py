@@ -1,12 +1,12 @@
 # coding:utf-8
 
 # JSON（javascript object notation-JAVA对象标记）是一种轻量级的数据交换格式
-# json模块就是提供这个数据格式转化功能的模块。
+# json模块就是提供这个数据格式转化功能的模块,类似的还有pickle模块。
 
 # json模块序列化出来的是通用格式的字符串，其他编程语言都认识；
-# picle模块序列化出来的是二进制形式，只有python可以识别，但可以序列化函数；
+# pickle模块序列化出来的是二进制形式，只有python可以识别，但可以序列化函数；
 # json模块提供了四个方法：dumps、dump、loads、load
-# picle模块提供了四个方法：dumps、dump、loads、load
+# pickle模块提供了四个方法：dumps、dump、loads、load
 # dump和dumps都是序列化的方法，dumps只完成了序列化为str，dump必须传文件描述符 ，序列化+写文件
 # load和loads都是反序列化方法，loads只完成了反序列化，load接收文件描述符，读文件+反序列化
 

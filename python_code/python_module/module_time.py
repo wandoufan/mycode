@@ -24,3 +24,4 @@ print(time.asctime(t))
 
 #推迟调用线程的运行，参数代表推迟的秒数
 time.sleep(5)
+time.sleep(0.01)

@@ -1,5 +1,8 @@
 # 主要记录一些Linux的命令：
 
+# Linux命令大全：
+# http://www.runoob.com/linux/linux-command-manual.html
+
 
 # 系统运行等级相关命令：
 # 'ctrl+Alt+F1~F6':切换文字界面登陆tt1~tt6终端(level 3)
@@ -181,7 +184,7 @@
 # 文件传输相关的命令：
 # wget命令可以通过URL地址下载数据，详见linux_wget文档
 # ftp命令可以实现本地和ftp服务器之间的文件传输，详见linux_ftp文档
-# 在xshell等客户端软件界面中可以通过直接拖动来传输文件
+# 在xshell中安装Xftp软件后可以通过直接拖动来传输文件
 # 注意：使用rz/sz等传输命令前可能要先安装
 # 注意：需要使用SecureCRT或者Xshell等客户端工具连接Linux,在客户端上运行rz/sz命令
 # 'rz -be'弹出文件选择窗口从Windows上向linux中上传文件，常用-be参数
@@ -348,20 +351,33 @@
 
 
 # 待整理命令：
+
+# 软件安装卸载相关的命令？？？：
+# 'apt-get update'ubuntu下更新软件源，一般在下载新软件之前可能需要更新一下
+# 'apt-get install software_name'安装软件
+# 'apt-get purge software_name'卸载软件
+
+
+# source命令？？？：
+# source命令也称为点命令，也就是一个点符号. ,是bash的内部命令
+# 可以使使Shell读入指定的Shell程序文件并依次执行文件中的所有语句
+# source命令通常用于重新执行刚修改的初始化文件，使之立即生效，而不必注销并重新登录
+# 'source filename'或'. filename' 执行filename文件
+# 'source ~/.bashrc'使刚修改过的.bashrc文件立即生效
+# 'source /etc/profile'使刚修改过的配置文件立即生效
+# 'source file'和'sh file' 执行脚本时的区别：？？？
+# https://www.cnblogs.com/ThatsMyTiger/p/6865817.html
+
+
+# 服务相关的命令？？？：
 # '/etc/init.d/ssh restart'重启ssh服务
 # 'service vsftpd restart'重启vsftpd服务 
 # 'service vsftpd start'启动vsftpd服务 
 # 'service vsftpd stop'关闭vsftpd服务 
 # 上面几个操作执行完后都没有反应，没有任何返回信息？
 # 'service vsftpd status'查看vsftpd服务状态
-# 服务相关的命令？
 # 'netstat -apn | grep port'查看占用指定端口的进程以及进程的PID
 # 'kill -9 PID'杀掉指定PID对应的进程
-# 'nohup python a.test &'？？？守护进程，关掉xshell之后进程还会继续运行
+# 'nohup python a./test &'？？？守护进程，关掉xshell之后进程还会继续运行
 # 'open host_ip port'打开ftp命令,
-# 'apt-get update'ubuntu下更新软件源，一般在下载新软件之前可能需要更新一下
-# 'apt-get install software_name'安装软件
-# 'apt-get purge software_name'卸载软件
-# 'wget'从指定URL上下载数据？？
-# 'mget'从ftp上下载数据
 # 'rpm -qa | grep ftp'查看服务器上是否安装了ftp服务？？

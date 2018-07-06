@@ -1,7 +1,7 @@
 # coding:utf-8
 
-# request模块是基于urllib3的第三方库，提供了http协议中对指定url资源的各种操作功能。
-# urllib模块和request模块二者功能非常接近，但urllib是官方自带的模块。
+# requests模块是基于urllib3的第三方库，提供了http协议中对指定url资源的各种操作功能。
+# urllib模块和requests模块二者功能非常接近，但urllib是官方自带的模块。
 # 一般HTTP请求提交数据，需要编码成URL编码格式，然后作为url的一部分，或者作为参数传到Request对象中。
 
 # Requests 完全满足今日 web 的需求，提供的功能包括：Keep-Alive & 连接池；国际化域名和 URL；

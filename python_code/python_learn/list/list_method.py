@@ -41,3 +41,13 @@ clist=['d','a','A','c']
 blist.sort()
 clist.sort()
 print(blist,clist)
+
+#列表转化为字符串
+#用一个字符串当分隔符，将另外一个字符串的元素分隔开
+list1=['a','b','c']
+s1=''.join(list1)
+#把list中的元素按行输出
+s2='\n'.join(list1)
+print(s1,'\n',s2)
+print(','.join(str4))
+print(str4.join(str1))

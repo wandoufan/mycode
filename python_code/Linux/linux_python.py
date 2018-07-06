@@ -27,6 +27,6 @@
 # 'python --version'
 
 
-# 修改默认的python版本为3.5
-# 'sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.5 200'
+# 修改默认的python版本为3.6
+# 'sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 200'
 

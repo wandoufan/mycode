@@ -62,3 +62,11 @@ dict1 = {'port': 80, 'color': 'yellow', 'number': 3.14}
 当要取的键值在字典中不存在时，get(key)方法会返回None,而[key]会报错
 print(dict1.get('abc'))
 print(dict1['abc'])
+
+2018.7.4
+代码规范：
+"""
+执行分词接口的请求
+:param one_sentence: 待分词的句子
+:return:
+"""

@@ -31,6 +31,8 @@ print(response.url)
 print(response.geturl())
 # 返回网页基本信息
 # print(response.info())
+# 返回网页的内容，注意不加编码格式会产生乱码
+print(response.read().decode('utf-8'))
 
 
 # 2.error模块提供的常用函数：

@@ -1,5 +1,7 @@
 # 主要记录关于linux脚本的相关内容：
 # 注意：linux的/bin目录中有多个shell，其中默认shell是/bin/bash
+# 'sh a.sh'或'bash a.sh'执行脚本 
+# http://www.runoob.com/linux/linux-shell.html
 
 
 # 常见符号含义：
@@ -98,7 +100,7 @@
 
 
 
-# 'sh a.sh'/'bash a.sh'执行脚本 
+
 
 # 脚本示例：清空磁盘
 # str="/home/disk1"
