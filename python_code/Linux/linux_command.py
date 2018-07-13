@@ -51,7 +51,7 @@
 # 查看系统基本信息：
 # 'uname -a'显示机器名，操作系统和内核的详细信息
 # 'hostname'显示或者设置当前系统的主机名
-# 'cat /etc/issue'查看Linux是什么操作系统(redhat/centos/ubuntu/fedora)
+# 'cat /etc/issue'查看Linux是什么操作系统(redhat/centos/ubuntu/fedora...)
 # 'cat /proc/version'查看Linux的版本号
 # 'free'查看系统内存使用情况
 # 'stat'显示文件或文件系统的状态
@@ -119,6 +119,10 @@
 # 'head'只看头几行
 # 'tail'只看结尾几行
 # 'od'以二进制方式读取文件
+# 'wc'查看文件的行数,英文字符数,所有字符数
+# -l:仅列出行数
+# -w:仅列出英文单字数
+# -m:仅列出字符数
 
 
 # 时间相关的命令：
@@ -353,10 +357,12 @@
 # 待整理命令：
 
 # 软件安装卸载相关的命令？？？：
+# 'apt-get'只能用于ubuntu还是也需要安装才能使用
 # 'apt-get update'ubuntu下更新软件源，一般在下载新软件之前可能需要更新一下
 # 'apt-get install software_name'安装软件
 # 'apt-get purge software_name'卸载软件
-
+# 'make'命令？？
+# 经常会下载一些安装包到本地，解压后进入目录直接输入'make'命令就可以安装
 
 # source命令？？？：
 # source命令也称为点命令，也就是一个点符号. ,是bash的内部命令
@@ -368,7 +374,6 @@
 # 'source file'和'sh file' 执行脚本时的区别：？？？
 # https://www.cnblogs.com/ThatsMyTiger/p/6865817.html
 
-
 # 服务相关的命令？？？：
 # '/etc/init.d/ssh restart'重启ssh服务
 # 'service vsftpd restart'重启vsftpd服务 
@@ -379,5 +384,7 @@
 # 'netstat -apn | grep port'查看占用指定端口的进程以及进程的PID
 # 'kill -9 PID'杀掉指定PID对应的进程
 # 'nohup python a./test &'？？？守护进程，关掉xshell之后进程还会继续运行
+# nohup命令的用法？？？'nohup jupyter notebook &'
+# 在tmux中新建一个会话，在新会话中启动服务关闭窗口后服务也可以继续运行，类似于nohup
 # 'open host_ip port'打开ftp命令,
 # 'rpm -qa | grep ftp'查看服务器上是否安装了ftp服务？？

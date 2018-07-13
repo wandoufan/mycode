@@ -10,4 +10,9 @@ print(random.random())  # 返回0.0和1.0之间的随机浮点数
 a = 'hello'
 print(random.choice(a))  # 返回给定序列里的一个随机元素
 
-
+# random.seed()方法可以使多次生成的随机数相同
+count = 0
+while count<5:
+	random.seed(1)
+	print(random.random())
+	count+=1

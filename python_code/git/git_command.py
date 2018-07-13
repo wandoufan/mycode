@@ -17,6 +17,10 @@
 # 分支(branch)-分支就是每次提交组成的时间线，HEAD指向分支例如master,分支再指向当前最新一次的提交
 
 
+# git配置文件：
+# windows环境下配置文件在C:\Users\Administrator\.gitconfig文件中，可以设置git提交时的用户邮箱
+# 在git bash中可以直接用命令查看'vim ~/.gitconfig'
+
 # git相关的使用命令：
 # 'git init'初始化一个仓库，把当前所在的目录变成git可以管理的仓库，并且会在目录下创建一个.git隐藏目录用来管理
 # 'git add filename/dirname'把指定文件或目录添加到仓库(把修改的文件添加到暂存区),注意文件一定要放在刚才指定的仓库目录下，与commit命令一起配合使用
@@ -72,16 +76,18 @@
 # -u参数不但会把本地master分支推送到远程上新建的master分支，还会把本地和远程的master分支关联起来，方便后边再推送/拉取
 # 'git push origin master'建立连接后可以不加-u参数就直接推送
 # 'git push --set-upstream origin branch_new'对于新建立的分支推送之前要先在远程库上建立对应的分支
+# 注意：使用git push时如果远程库的版本比本地库更新，即远程节点比本地节点在时间线上更远
+# 那么就不能push到远程库，必须先把远程库上更新的版本pull到本地，然后合并完文件(可能需要手动处理冲突)后再push
 
 
 # 从远程库更新库到本地：
 # 适用于本地有库时，从远程库抓取更新版本的分支并与本地的分支合并
-# 注意：使用git pull时远程库的版本要比本地库更新(即远程节点比本地节点在时间线上更远)，远程库才可以覆盖本地，否则不会修改任何文件
-# git pull = git fetch + git merge
+# git pull = git fetch + git merge(拉取到本地 + 代码合并)
 # 'git pull <远程主机名> <远程分支名>:<本地分支名>'从远程抓取分支并与当前工作目录中的分支合并
 # 'git pull origin master'把远程master分支与当前分支合并，本地分支名可以省略
 # 'git pull origin master --allow-unrelated-histories'合并两个不同的项目(否则可能会报错：refusing to merge unrelated histories)
 # 注意：远程的代码可能和本地的代码会修改同一个地方，此时pull到本地就会产生冲突，git客户端会提示冲突的文件，需要进入文件手动选择修改
+# 注意：使用git pull时只有远程库的版本要比本地库更新，即远程节点比本地节点在时间线上更远，远程库才可以覆盖本地，否则不会修改任何文件
 
 
 # 从远程库克隆库到本地：

@@ -8,7 +8,7 @@
 # 'tmux new -s session_name' 新建一个会话
 # 'tmux ls' 查看现有的会话
 # 'tmux a' 进入最近的会话
-# 'tmux a -t session_name'或'tmux attach -t session_name' 进入指定会话
+# 'tmux {a|attach} -t session_name' 进入指定会话
 # 'tmux detach' 离开会话
 # 'tmux kill-session -t session_name' 关闭指定会话
 # 注意：一般不建议在新建会话中去嵌套新建/进入其他新建会话

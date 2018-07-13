@@ -1,7 +1,12 @@
 # 主要记录关于linux脚本的相关内容：
+
 # 注意：linux的/bin目录中有多个shell，其中默认shell是/bin/bash
 # 'sh a.sh'或'bash a.sh'执行脚本 
 # http://www.runoob.com/linux/linux-shell.html
+
+# 注意：linux的.sh脚本如果下载到windows环境打开查看后再上传到linux环境，
+# 执行会报错： $'\r': command not found 
+# https://blog.csdn.net/qq_33341037/article/details/79718588
 
 
 # 常见符号含义：

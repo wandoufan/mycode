@@ -1,17 +1,33 @@
-# 脚本用来检测指定文本文件的内容中间是否有空行
-# 如果有空行，将行号输出出来
+import pandas as pd# 惯例改名为pd
+import numpy as np
+from pandas import Series# 注意首字母是大写
+from pandas import DataFrame# 注意首字母是大写
 
-file = 'E:/nlp学习资料/分词测试数据/icwb2-data/testing/as_test_simple.utf8'
 
-with open(file, 'r', encoding='utf-8')as f:
-    count = 0
-    for each_line in f:
-        count += 1
-        # print(each_line)
-        each_line = each_line.strip()
-        if bool(each_line) == False:
-        	print('!!!!', count)
-        
-# 下面两种方法无法判断是否是空行
-# if len(each_line) == '0':
-# if each_line == '':
+frame = pd.read_csv('E:/nlp_project/fasttext/sp_channels.csv')
+
+# print(frame.head())
+
+classify_dict = {}
+
+for i in range(len(frame)):
+	key = frame.iloc[i]['id']
+	value = frame.iloc[i]['name']
+	classify_dict[key] = value
+
+# print(classify_dict)
+
+# str1 = str(classify_dict)
+# str1 = str1[1:-1]
+# # print(str1)
+
+# list1 = str1.split(',')
+# print(list1)
+
+
+# for key,value in classify_dict.items():
+# 	print(key,value)
+
+pred_prob = 3.1415926
+
+print(round(pred_prob,2))

@@ -9,7 +9,8 @@
 # 1.import 模块名
 import hello
 hello.sayhello()
-# 2.from 模块名 import 类名 （导入模块中的一个类，而不是导入整个模块，可以使代码更精简）
+# 2.from 模块名 import 类名 
+# 导入模块中的一个类，而不是导入整个模块，可以使代码速度更快，尤其适合于大型库
 from hello import Hi
 hi = Hi()
 hi.sayhi()

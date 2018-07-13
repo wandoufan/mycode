@@ -33,6 +33,9 @@ print(dict1.values())
 
 # 返回字典中所有的键值元组
 print(dict1.items())
+# 常用写法：
+for key ,value in dict1.items():
+	print(key, value)
 
 # 查询并返回指定键的对象，如果字典中不含给定键，则返回自定义的值,default返回参数为None
 print('查询的值为：', dict1.get('e', 'not exist this key'))

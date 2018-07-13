@@ -6,3 +6,6 @@
 # 正则表达式用来检索、替换符合某个模式的文本
 
 import re
+
+# 实际用到的项目
+# pred_label = re.sub(r'__label__', '', pred_labels[0][0])

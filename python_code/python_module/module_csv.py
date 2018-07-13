@@ -10,8 +10,8 @@
 
 import csv
 
-list1 = ['a', 'b', 'c', 'd']
-list2 = ['x', 'y', 'z']
+# list1 = ['a', 'b', 'c', 'd']
+# list2 = ['x', 'y', 'z']
 
 # 读文件
 #reader(csvfile, dialect='excel', **fmtparams)
@@ -29,10 +29,15 @@ with open('test.csv', 'rt') as csv_file:
 # 第一个参数是可迭代的文件对象，第二个参数是编码风格，默认excel
 # 第三个是格式化参数覆盖之前dialect对象指定的编码风格
 
-with open('test.csv', 'wt') as csv_file:
+list1 = ['one','bule',3,'2008']
+list2 = ['two','yellow',-7,'2011']
+list3 = ['three','red',6,'2015']
+
+with open('D:/test.csv', 'wt') as csv_file:
     csv_writer = csv.writer(csv_file, dialect='excel')
     csv_writer.writerow(list1)
     csv_writer.writerow(list2)
+    csv_writer.writerow(list3)
 
 # writerow方法是把数据一次写入一行(列表中每个元素占一列），writerows方法是把数据一次写入多行(列表中每个元素占一行)
 # 注意：如果文件't.csv'事先存在，调用writer函数会先清空原文件中的文本，再执行writerow/writerows方法。
