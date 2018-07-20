@@ -20,11 +20,13 @@
 
 # 查看安装的python程序路径：
 # 'which /usr/bin/python*'
-# 'ls-al /usr/bin/python*'
+# 'which python'
+# 'ls -al /usr/bin/python*'
 
 
-# 查看python的版本：
+# 查看当前使用的python的版本：
 # 'python --version'
+# 'python -V' 注意是大写V
 
 
 # 修改默认的python版本为3.6

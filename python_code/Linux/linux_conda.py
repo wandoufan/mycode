@@ -19,6 +19,10 @@
 # 'conda env list' 显示已创建所有环境，*标注的为当前所在环境
 # 'conda create --name myenv' 创建新的环境，myenv为环境名字
 # 'conda create --name python36 python=3.6' 创建python36环境，指定python版本为3.6
+# 'conda create --name python27 python=2.7' 创建python27环境，指定python版本为2.7
+# 注意：上面命令指定python版本不仅是往conda环境中添加python，而是直接利用conda安装Python程序
+# 直接用wget下载python安装包然后解压安装的方式会把python安装到本地系统环境中
+# 利用上面的conda命令可以直接把python安装到conda环境中
 # 'source activate python36' 进入python36环境
 # 'source deactivate python36' 退出python36环境
 # 'conda create -n myenv package' 用一个特殊的包创建新的环境

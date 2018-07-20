@@ -41,3 +41,33 @@ print(temp5)
 
 # 用lambda表达式简化上述函数为一行
 print(list(map(lambda x: 2 * x, range(10))))
+
+# --------------------------------------------------------
+
+# 关于排序函数sorted的具体用法：
+# https://www.cnblogs.com/sysu-blackbear/p/3283993.html
+# sorted(iterable, cmp=None, key=None, reverse=False) 返回经过排序的可迭代的类型
+# iterable：是可迭代类型;
+# cmp：用于比较的函数，比较什么由key决定;
+# key：用列表元素的某个属性或函数进行作为关键字，有默认值，迭代集合中的一项;
+# reverse：排序规则. reverse = True  降序 或者 reverse = False 升序，默认值False。
+list_1 = [('d',3),('b',4),('c',2),('a',1)]
+list_2 = sorted(list_1, key=lambda x:x[0])# 以每个元组的第一个元素为key进行排序
+# 其中'x'变量代表list_1中的每个元组元素
+print(list_2)
+list_2 = sorted(list_1, key=lambda x:x[1])# 以每个元组的第二个元素为key进行排序
+print(list_2)
+list_1 = [[1,2,3],[1,2],[2,3,4],[1,2,3,4]]
+def f(x):
+	return len(x)
+# 以每个列表元素的长度为key进行排序，其中key可以为函数，但函数只能有一个参数
+list_2 = sorted(list_1,key=f)
+print(list_2)
+
+# 另外，列表对象本身也带有排序方法,且方法的参数和sorted函数相同
+# L.sort(cmp=None, key=None, reverse=False) 不返回值
+list_1 = ['d','b','c','a']
+list_1.sort(reverse=True)
+print(list_1)
+
+

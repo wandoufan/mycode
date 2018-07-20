@@ -1,4 +1,5 @@
 # 常用字符串格式化符有%s,%d,%f;多个参数要用括号括起来
+# 注意：字符串和%变量中间用空格隔开，没有逗号','
 print('%s is a length of %d,circle is a number about %.2f' %('python', 5, 3.1415))
 
 # 所有字符串格式化符号

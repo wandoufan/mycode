@@ -11,8 +11,10 @@ file.write('80')
 file.close()
 
 # 内置函数open()打开函数并返回文件对象/文件句柄
-# open()第一个参数是文件名，如果不带路径会默认在当前文件夹寻找并打开
-# 第二个参数指定文件打开模式
+# open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True)
+# file参数是文件名，如果不带路径会默认在当前文件夹寻找并打开
+# mode参数指定文件打开模式
+# encoding参数指定编码格式，常用encoding='utf-8'或encoding='gbk'
 # F = open('test10.txt','r')#只读模式(默认)
 # F = open('test10.txt','w')#覆盖写入
 # F = open('test10.txt','x')#如果文件已存在，引发异常？？
@@ -26,7 +28,7 @@ file.close()
 # 文件对象的方法
 # f.close()  关闭文件
 # f.read(size=-1)  从文件中读取size个字符，未给定size或给定负值时读取剩余所有字符，并返回字符串
-# f.readlines()   从文件中读取一整行字符串,返回由每一行组成的列表
+# f.readlines()   从文件中读取一整行字符串,返回由每一行字符串为元素组成的列表
 # f.write(str)   将字符串str写入文件
 # f.write(str+'\n')  字符串按行写入文件中，每写入一次就换行
 # f.writelines(seq)  向文件中写入字符串序列seq,seq应该是一个返回字符串的可迭代对象
@@ -55,6 +57,7 @@ f.close()
 # 两种方法依次输出文本文件中的每一行
 f = open('test10.txt', 'r')
 # 1.通过f.readlines()方法获取列表
+# 注意：文件很大时不能用readlines()方法，打开文件会占用巨量内存
 for line in f.readlines():
 	print(line)
 # 2.直接迭代读取文本文件中的每一行

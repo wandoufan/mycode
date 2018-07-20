@@ -60,6 +60,10 @@ print(s1.index.name)
 # Series对象的索引可以通过赋值的方式直接修改
 s1.index = ['a', 'b', 'c']
 print(s1)
+# 注意：Index对象是不可修改的(immutable),因此用户不能对其进行修改
+# 即不能直接修改索引列表中的单个值
+index = s.index
+# index[1] ='d'# 非法操作
 
 # ------------------------------------------------------------------------------
 
@@ -93,13 +97,32 @@ print(frame)
 # DataFrame的values属性可以返回一个包含所有数据的二维数组对象
 print(frame.values)
 print(type(frame.values))
+
 # 通过类似获取字典中value的方式，可以将DataFrame的一列获取为一个Series对象
 # 获取的Series对象的索引和DataFrame中一样，而且name属性也已经被设置了
-s1 = frame['year']
-print(s1)
+print(frame['year'])
+# frame[param1][param2]获取具体的一个值,第一个参数为字段column,第二个参数为索引index 
+print(frame['year']['two'])
 # 也可以通过.ix方法指定索引值来将DataFrame的一行获取为一个Series对象
-s2 = frame.ix['two']
-print(s2)
+print(frame.ix['two'])
+# frame.ix[param1][param2]获取具体的一个值,第一个参数为实际指定的索引index,第二个参数为字段column
+print(frame.ix['two']['year'])
+# 可以通过.iloc方法指定数字n(n代表数字索引)来将DataFrame的一行获取为一个Series对象
+print(frame.iloc[1])
+# frame.iloc[param1][param2]获取具体的一个值,第一个参数为数字索引n,第二个参数为字段column
+print(frame.iloc[1]['year'])
+
+# DataFrame.head(n)函数查看前n行数据，如果不加n参数则显示全部数据
+print(frame.head())
+print(frame.head(1))
+# DataFrame.tail(n)函数查看前n行数据，如果不加n参数则显示全部数据
+print(frame.tail())
+print(frame.tail(1))
+# 查看DataFrame的长度,即行数/索引长度
+print(len(frame))
+# DataFrame.shape查看表格数据的长宽，返回一个元组，(行数,列数)
+print(frame.shape)
+
 # DataFrame的列/字段可以通过类似字典赋值的方式直接进行赋值
 frame['name'] = ['Tom','Jreey','Jack']
 print(frame)
@@ -113,6 +136,7 @@ print(frame)
 # del关键字通过类似字典类型的方式来删除列
 del frame['time']
 print(frame)
+
 # 除了元素是列表的字典外，元素是字典的字典(即嵌套字典)也可以用来构造DataFrame
 # 用外层字典的键来作为列/字段，内层字典的键来作为行/索引，相同的索引会自动合并
 data = {'time':{1:2008,2:2011,3:2015},
@@ -122,45 +146,61 @@ frame = DataFrame(data)
 print(frame)
 # DataFrame的T属性可以将列表进行转置
 print(frame.T)
+
 # 除了上面两种字典类型之外,还有多个其他类型的数据可以用来构造DataFrame
 # lists/dicts/Series/DataFrame类型的数据都可以用来构造DataFrame
-list_1 = ['a','b','c']
-frame = DataFrame(list_1,columns=['column'])
+list_1 = ['blue','black','red']
+frame = DataFrame(list_1,columns=['color'])
 print(frame)
 #-------------------------------------------------------------------------------
 
 # pandas的索引对象负责管理轴标签和其他元数据(比如轴名称等)
 # 构建Series或DataFrame时，所用到的任何数组或其他序列的标签都会被转换为一个Index
 
-# page 123
+s = Series(range(4),index=['d','a','c','b'])
+# Index对象是不可修改的(immutable),因此用户不能对其进行修改，即不能直接修改索引列表中的单个值
+index = s.index
+# index[1] ='d'# 非法操作
+print('-------------------------------------')
+print(s)
+# series对象可以通过.index方法来给索引重新赋值
+s.index = ['a','b','c','d']
+print(s)
+# series对象也可以通过.reindex方法来给索引重新赋值
+s = s.reindex(['a','b','c','d','e'])
+print(s)
+
+
+
+# page 127 ，感觉这部分不太重要，写的有点啰嗦，考虑跳过往下看或者直接上网搜索最常用的一些方法
 
 #---------------------------------------------------------------------------------
 
-# 目前项目代码中实际用到的功能
+# # 目前项目代码中实际用到的功能
 
-# pandas.read_csv()函数经常被用来读取数据，返回一个DataFrame类型的结果
-# pandas.read_csv()函数包含非常多的参数，常用参数有：
-# filepath_or_buffer : 指定文件路径，路径URL可以是http, ftp, s3, 和 file.
-# sep: 指定分割符，默认是','，C引擎不能自动检测分隔符，但Python解析引擎可以
-frame = pd.read_csv('D:/test.csv')
-frame.index = [4,5,6]
-print(frame)
+# # pandas.read_csv()函数经常被用来读取一个csv文件，返回一个DataFrame类型的结果
+# # pandas.read_csv()函数包含非常多的参数，常用参数有：
+# # filepath_or_buffer : 指定文件路径，路径URL可以是http, ftp, s3, 和 file.
+# # sep: 指定分割符，默认是','，C引擎不能自动检测分隔符，但Python解析引擎可以
+# frame = pd.read_csv('D:/test.csv')
+# frame.index = [4,5,6]
+# print(frame)
 
-# DataFrame.head(n)函数查看前n行数据，如果不加n参数则显示全部数据
-print(frame.head())
-print(frame.head(1))
-# DataFrame.tail(n)函数查看前n行数据，如果不加n参数则显示全部数据
-print(frame.tail())
-print(frame.tail(1))
+# # DataFrame.head(n)函数查看前n行数据，如果不加n参数则显示全部数据
+# print(frame.head())
+# print(frame.head(1))
+# # DataFrame.tail(n)函数查看前n行数据，如果不加n参数则显示全部数据
+# print(frame.tail())
+# print(frame.tail(1))
 
-# 查看DataFrame的长度,即行数/索引长度
-print(len(frame))
+# # 查看DataFrame的长度,即行数/索引长度
+# print(len(frame))
 
-# DataFrame.shape查看表格数据的长宽，返回一个元组，(行数,列数)
-print(frame.shape)
+# # DataFrame.shape查看表格数据的长宽，返回一个元组，(行数,列数)
+# print(frame.shape)
 
-print('-------------------------------------')
-# DataFrame.iloc[param1][param2]查看具体的某个数值
-# param1为索引值，param2为指定的字段
-print(frame.iloc[2])
-print(frame.iloc[2]['year'])
+# # DataFrame.iloc[param1][param2]查看具体的某个数值
+# # param1为索引值，param2为指定的字段
+# print(frame.iloc[2])
+# print(frame.iloc[2]['year'])
+

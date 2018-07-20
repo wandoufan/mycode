@@ -9,9 +9,14 @@
 
 
 import csv
+import sys
 
 # list1 = ['a', 'b', 'c', 'd']
 # list2 = ['x', 'y', 'z']
+
+# 注意：CSV单行数据有大小限制，超过限制会报错_csv.Error: field larger than field limit (131072)
+# 可以通过csv.field_size_limit修改大小限制
+csv.field_size_limit(sys.maxsize)
 
 # 读文件
 #reader(csvfile, dialect='excel', **fmtparams)
@@ -20,8 +25,8 @@ import csv
 # 注意：open函数中用'rt'/'wt'，即要用文本模式读写，用'rb'/'wb'会报错
 with open('test.csv', 'rt') as csv_file:
     content = csv.reader(csv_file)
-    for i in content:
-        print(i)
+    for i in content:# content 是'_csv.reader'类型的对象
+        print(i)# i是一个列表，包含文件中一行的数据
 
 
 # 写文件

@@ -57,12 +57,12 @@
 # 'git remote add origin https://github.com/wandoufan/git_test.git'https方式连接远程库
 # 备注：https方式需要每次输入账户密码且速度较慢，推荐使用ssh方式
 # 'git remote rm origin'删除远程库
-# 'git remote'查看远程库名字，-v参数查看详细信息
+# 'git remote -v'查看远程库名字，-v参数查看详细信息
 
 
 # ssh方式登录权限问题相关：
 # 使用ssh方式连接远程库之前需要在本地生成公钥文件并在github上登记
-# 'cd ~/.ssh'打开C:\Users\Administrator\.ssh路径
+# 'cd ~/.ssh'打开C:\Users\Administrator\.ssh路径(路径可能还不存在，运行下面命令会在生成该路径)
 # 'ssh-keygen'在上面的路径中生成公钥文件id_rsa.pub和秘钥文件id_rsa，passphrase口令可以设置为空
 # 拷贝公钥文件的内容，打开https://github.com/settings/profile，在SSH key那栏选择New SSH Key，并将复制内容拷贝到其中
 # https://blog.csdn.net/mengmengz07/article/details/70157018
@@ -71,7 +71,7 @@
 
 # 提交本地代码到远程库：
 # 除了本地仓库还可以把本地的代码提交到远程仓库，例如github上
-# push命令可以使远程的代码和本地的代码保持一致
+# push命令可以使远程的代码和本地的代码保持一致(本地增删改的数据，远程也会相同增删改)
 # 'git push -u origin master'把当前master分支的所有内容推送到远程库上，推送前需要add和commit
 # -u参数不但会把本地master分支推送到远程上新建的master分支，还会把本地和远程的master分支关联起来，方便后边再推送/拉取
 # 'git push origin master'建立连接后可以不加-u参数就直接推送
@@ -95,6 +95,9 @@
 # 'git clone git@github.com:wandoufan/git_test.git'ssh方式从远程库上克隆库到当前工作目录，会在工作目录里新建一个git_test文件夹
 # 'git clone https://github.com/wandoufan/git_test.git'https方式克隆库到当前工作目录
 # 'git clone -b branch_name git@github.com:wandoufan/git_test.git'克隆指定分支到本地，-b参数指定分支
+# 注意：当一个远程库有多个分支时，克隆操作必须用-b参数指定要下载的分支
+# 注意：执行克隆命令前不能用'git init'来初始化目录，正常克隆到本地的库应该带有和远程库一致的commit信息
+# 而初始化的目录就是一个新的库，无法和远程库连接进行后续的push等操作。
 
 
 # 分支相关的命令：

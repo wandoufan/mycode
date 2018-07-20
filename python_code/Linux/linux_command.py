@@ -88,7 +88,11 @@
 # 查看文件目录相关的命令：
 # 'ls'命令是列出目录内容(List Directory Contents)
 # 'ls -l'命令以详情模式(long listing fashion)列出文件夹的内容。
+# 'll'命令和'ls -l'一样，是简写形式
 # 'ls -a'命令会列出文件夹里的所有内容，包括以"."开头的隐藏文件。
+# 'ls -lh'命令以Gb,Mb,Kb等格式显示出每个文件的大小
+# 'ls -l | grep '^-' | wc -l'命令显示当前目录下所有的文件个数
+# 'ls -l | grep '^d' | wc -l'命令显示当前目录下所有的目录个数
 # 'lsblk'就是列出块设备。除了RAM外，以标准的树状输出格式，整齐地显示块设备。
 # 'lsblk -l'命令以列表格式显示块设备(而不是树状格式)。
 # 'tree'以树状结构列出当前路径或指定路径的文件，使用之前可能需要安装
@@ -116,8 +120,10 @@
 # 'nl'显示内容的同时显示行号
 # 'more'一页一页的显示文件内容
 # 'less'可以往前翻页
-# 'head'只看头几行
-# 'tail'只看结尾几行
+# 'head'只看文件前几行
+# -n:仅列出前n行
+# 'tail'只看文件结尾几行
+# -n:仅列出后n行
 # 'od'以二进制方式读取文件
 # 'wc'查看文件的行数,英文字符数,所有字符数
 # -l:仅列出行数
@@ -300,6 +306,8 @@
 # -v:反向选择，即显示没有目标字符串的行
 # --color=auto:在行中给目标字符串加上颜色
 # 'cat test1.txt | grep -i 'hello'' 选取test1.txt中所有包含'hello'字符串的行
+# 'grep 'hello' test1.txt' 选取test1.txt中所有包含'hello'字符串的行
+# 'grep -i [a-z] test1.txt' 选取test1.txt中所有包含英文字母的行(正则匹配)
 # 'sort file/stdin' 给目标文件或接收到的标准输入排序
 # -f:忽略大小写
 # -b:忽略最前面的空格
@@ -383,8 +391,14 @@
 # 'service vsftpd status'查看vsftpd服务状态
 # 'netstat -apn | grep port'查看占用指定端口的进程以及进程的PID
 # 'kill -9 PID'杀掉指定PID对应的进程
-# 'nohup python a./test &'？？？守护进程，关掉xshell之后进程还会继续运行
+# 'nohup python test.py &' 守护进程，关掉xshell窗口之后进程还会继续运行
+# 注意：nohup命令会在命令执行的目录下生成一个nohup.out文件用来记录进程执行的情况
 # nohup命令的用法？？？'nohup jupyter notebook &'
 # 在tmux中新建一个会话，在新会话中启动服务关闭窗口后服务也可以继续运行，类似于nohup
 # 'open host_ip port'打开ftp命令,
 # 'rpm -qa | grep ftp'查看服务器上是否安装了ftp服务？？
+
+# 查看进程相关的命令？？？：
+# 'jobs' 只能查看当前窗口的后台进程，如果关闭了后台执行脚本的窗口，
+# 该命令失效，这个时候就只能用到下面的命令查看
+# 'ps -ef'可以查看主机所有运行的进程,'ps -ef | grep 过滤条件'

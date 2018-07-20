@@ -7,13 +7,13 @@ print(aComplex.real, '\n')  # 该复数的实部
 print(aComplex.imag, '\n')  # 该复数的虚部
 print(aComplex.conjugate(), '\n')  # 返回该复数的共轭复数
 
-#//表示地板除
+# //表示地板除
 a = 1 // 2
 print(a)
 b = 1.0 // 2.0
 print(b)
 
-#/表示真正的除法
+# /表示真正的除法
 c = 1 / 2
 print(c)
 d = 1.0 / 2.0
@@ -42,3 +42,19 @@ print(12 >> 3)  # 右移3位
 print(12 & 3)  # 按位与运算
 print(12 ^ 3)  # 按位异或运算
 print(12 | 3)  # 按位或运算
+
+# 赋值运算符:
+a += b  # 加法赋值运算符
+a = a + b
+a -= b  # 减法赋值运算符
+a = a - b
+a *= b  # 乘法赋值运算符
+a = a * b
+a /= b  # 除法赋值运算符
+a = a / b
+a **= b  # 幂赋值运算符
+a = a**b
+a %= b  # 取余运算符
+a = a % b
+a //= b # 地板除运算符
+a = a // b

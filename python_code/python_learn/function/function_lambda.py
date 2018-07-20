@@ -7,7 +7,7 @@
 def calculate(x, y):
     return 2 * x + y
 
-print(calculate(2, 1))
+# print(calculate(2, 1))
 
 # 使用lambda表达式来定义函数,例子中表达式返回一个函数对象，因此使用时需要进行赋值操作
 g = lambda x, y: 2 * x + y

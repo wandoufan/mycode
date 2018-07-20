@@ -75,6 +75,7 @@ print(seg_list)
 
 
 # 2.设置词典
+# 注意：对词典的修改设置操作，既可以使原本被切分的词不再被切分，也可以是原本不被切分的词被切分
 # a.添加新词典
 # 开发者可以指定自己自定义的词典，以便包含 jieba 词库里没有的词。
 # (虽然 jieba 有新词识别能力，但是自行添加新词可以保证更高的正确率)
@@ -104,6 +105,7 @@ print('before:'+'/'.join(seg_list))
 jieba.suggest_freq('台中', True)
 seg_list = jieba.cut(str_4)
 print('after: '+'/'.join(seg_list))
+
 
 
 # 3.关键词抽取
