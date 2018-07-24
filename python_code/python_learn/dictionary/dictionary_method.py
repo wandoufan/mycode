@@ -53,13 +53,29 @@ print('删除的值为：', dict1.pop('a', 'not exist this key'))
 dict2.update(dict1)
 print(dict2)
 
+# ----------------------------------------------------------------------------------
 
-# 例子：
+# 例子1：给字典中的键和值后边都加上test字段
 dict1 = {'a': 'A', 'b': 'B', 'c': 'C'}
-
 def func1(a):
     return a + 'test'
-
 def func2():
     return {func1(k): func1(v) for k, v in dict1.items()}
 print(func2())
+
+# 例子2：以列表中的元素为key,出现次数为value写入一个字典中
+# 方法1
+list1 = ['a', 'b', 'd', 'a', 'c', 'd', 'a']
+dict1 = {}
+set1 = set(list1)
+list2 = list(set1)
+dict1 = {}.fromkeys(list2, 0)
+for word in list1:
+	dict1[word] = dict1[word] + 1
+print(dict1)
+# 方法2
+list1 = ['a', 'b', 'd', 'a', 'c', 'd', 'a']
+dict1 = {}
+for word in list1:
+	dict1[word] = dict1.get(word, 0) + 1
+print(dict1)

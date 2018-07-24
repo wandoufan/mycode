@@ -13,6 +13,7 @@
 	
 # conda常用命令:
 # 命令官网：https://conda.io/docs/user-guide/tasks/manage-environments.html
+# conda默认安装路径为'/home/xingyifan/miniconda3/bin',conda命令找不到时需要添加环境变量
 # 'conda --version'或'conda -V' 查看conda版本
 # 'conda info' 查看conda的详细信息
 # 'conda update conda' 更新conda版本

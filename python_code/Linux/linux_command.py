@@ -38,6 +38,13 @@
 # 'nano' 文本编辑器
 # 'sync' 把内存中的数据写入硬盘中保存，常用于关机前操作
 # 'echo $PATH'查询环境变量路径
+# 添加新的环境变量方法一：
+# 'export PATH=new_path:$PATH' 但关闭窗口后下次再登录时新路径就失效了
+# 添加新的环境变量方法二：
+# 'vim /etc/profile'打开全局配置文件或'vim ~/.bash_profile'打开用户本地配置文件
+# 'export PATH=new_path:$PATH' 在文档最后添加新路径
+# 'source /etc/profile' 或'source ~/.bash_profile'使配置文件重新生效
+# 注意：Linux中常有报错:command not found(实际命令已经安装),一般都是因为命令没有添加到环境变量
 # 'touch 文件名'快速创建空的文件
 # 'file filename'查看文件的类型，即属于ASCII文件或是data文件或是binary文件
 # 'alias 命令别名='原命令''设置命令别名，例如:'alias lm='ls -l|more''

@@ -42,11 +42,11 @@ print('a' in 'abcde')
 print(str1.index('c'))
 # print(str1.index('f'))
 
-# 若字符串仅由字母和数字构成，则返回Ture，否则返回False
+# 若字符串仅由字符(含中文字符和英文字母)和数字构成，则返回Ture，否则返回False
 print(str1.isalnum())
 print(str2.isalnum())
 
-# 若字符串仅由字母构成，则返回Ture，否则返回False
+# 若字符串仅由字符(含中文字符和英文字母)构成，则返回Ture，否则返回False
 print(str1.isalpha())
 print(str3.isalpha())
 

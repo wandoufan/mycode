@@ -9,8 +9,8 @@
 # 1.import 模块名
 import hello
 hello.sayhello()
-# 2.from 模块名 import 类名 
-# 导入模块中的一个类，而不是导入整个模块，可以使代码速度更快，尤其适合于大型库
+# 2.from 模块名 import 类名/函数名 
+# 导入模块中的一个类/函数，而不是导入整个模块，可以使代码速度更快，尤其适合于大型库
 from hello import Hi
 hi = Hi()
 hi.sayhi()
@@ -38,6 +38,6 @@ import sys
 
 # reload(module)函数用于重新加载之前已经载入的模块
 # reload()函数一般用于原模块有变化等特殊情况，且被reload的模块之前需要已经import过
-# 常用情况：(注意在新版python中sys.setdefaultencoding()已经被废除)
-reload(sys)
-sys.setdefaultencoding('uft-8')
+# 注意：在新版python中，reload被包含在importlib模块里，使用前需要先导入importlib模块
+import importlib
+importlib.reload(sys)

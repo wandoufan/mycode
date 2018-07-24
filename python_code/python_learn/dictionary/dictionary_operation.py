@@ -10,7 +10,7 @@ dict2 = dict((['x', 1], ['y', 2]))  # 使用dict()方法创建
 dict3 = {}.fromkeys(('x', 'y'), -1)  # 使用{}.fromkeys方法创建，字典元素具有相同的值
 
 # 注意，获取字典值两种方法的区别：
-# 当要取的键值在字典中不存在时，get方法会返回None,而[key]会报错
+# 当要取的键值在字典中不存在时，get方法会返回None或自己设定的值,而[key]会报错
 # print(dict1.get('abc'))
 # print(dict1['abc'])
 

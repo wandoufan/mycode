@@ -24,3 +24,12 @@ else:
 # '^word'表示以word开头，'word$'表示以word结尾，在Linux命令中也可以直接使用
 # 正则表达式可以直接在linux命令中使用，例如：
 # 'grep -i [a-z] test1.txt' 选取test1.txt中所有包含英文字母的行
+
+# 如何判断字符串中仅包含英文字母??
+# def test(word):
+#     is_english = 'yes'
+#     for character in word:
+#         if not bool(re.search(r'[a-z]|[A-Z]', character)):
+#             is_english = 'no'
+#     if is_english == 'yes':
+#         return False
