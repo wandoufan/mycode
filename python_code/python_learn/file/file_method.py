@@ -57,7 +57,8 @@ f.close()
 # 两种方法依次输出文本文件中的每一行
 f = open('test10.txt', 'r')
 # 1.通过f.readlines()方法获取列表
-# 注意：文件很大时不能用readlines()方法，打开文件会占用巨量内存
+# 注意：尽量不要使用readlines()方法，性能比较差
+# 尤其当文件很大时，打开文件会占用巨量内存
 for line in f.readlines():
 	print(line)
 # 2.直接迭代读取文本文件中的每一行

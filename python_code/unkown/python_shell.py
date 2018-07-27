@@ -1,5 +1,6 @@
 # 关于python中如何调用shell命令：
 # https://blog.csdn.net/qinglu000/article/details/52302560
+# https://blog.csdn.net/csujiangyu/article/details/44871759
 
 
 # # Python经常被称作“胶水语言”，因为它能够轻易地操作其他程序，轻易地包装使用其他语言编写的库。

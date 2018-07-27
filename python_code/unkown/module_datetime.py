@@ -10,6 +10,6 @@ start_time = datetime.now()
 for i in range(10):
 	i+=1
 end_time = datetime.now()
-run_time = (end_time-start_time).seconds
+run_time = (end_time-start_time).seconds# seconds方法把时间换算为秒
 
 print(start_time,'\n',end_time,'\n',run_time)

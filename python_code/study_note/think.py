@@ -41,6 +41,7 @@ class A:
 		self.test2(a, is_from_test1=True)
 a = A()
 a.test2('abc')
+
 2018.6.22
 关于ftp方式上传和wget方式下载时的覆盖问题：
 如果要下载/上传的文件在目标路径已经存在，则会进行自动覆盖；
@@ -99,3 +100,20 @@ for line in f:
 例如，需要从一个很大的test1.txt文件中取出一小部分来做测试。
 用python代码实现需要用open函数从文件中逐行读取，并逐行写入另一份文件，比较麻烦。
 用linux可以直接运行命令:'head 100 test1.txt > test2.txt'
+
+
+2018.7.26
+需要在循环遍历过程中对字典的某些不符合条件的键值对进行删除
+错误的写法:
+字典类型不支持在迭代中直接删除键值对(可以修改值)，否则会报错
+for word in dict1:
+    if dict1[word] < 3:
+        del dict1[word]
+print(dict1)
+正确的写法：
+把字典转换为列表类型就可以在循环过程中直接删除
+dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+for word in list(dict1):
+    if dict1[word] < 3:
+        del dict1[word]
+print(dict1)

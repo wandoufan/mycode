@@ -91,7 +91,8 @@ print(stra.split())
 print(strb.split('-'))
 print(strb.split('-', 1))
 
-# 将字符串中指定的一部分用另一部分来代替，第三个参数指定替换次数
+# 将字符串中指定的一部分用另一部分来代替，
+# 第一个参数为原字符串，第二次参数为新字符串，第三个参数指定替换次数，默认不限次数
 print(str1.replace('b', 'g', 2))
 # 去除字符串中的空格
 str1 = 'sdjf sdjkd   sd kfu'

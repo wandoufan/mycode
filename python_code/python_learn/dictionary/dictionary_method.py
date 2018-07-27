@@ -79,3 +79,20 @@ dict1 = {}
 for word in list1:
 	dict1[word] = dict1.get(word, 0) + 1
 print(dict1)
+
+# 例子3： 需要在循环遍历过程中对字典的某些不符合条件的键值对进行删除
+# 错误的写法:
+# 字典类型不支持在迭代中直接删除键值对(可以修改值)，否则会报错：dictionary changed size during iteration
+dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+for word in dict1:
+    if dict1[word] < 3:
+        # del dict1[word]
+        dict1[word] = 5
+print(dict1)
+# 正确的写法：
+# 把字典转换为列表类型就可以在循环过程中直接删除
+dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+for word in list(dict1):
+    if dict1[word] < 3:
+        del dict1[word]
+print(dict1)

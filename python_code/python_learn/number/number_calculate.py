@@ -1,7 +1,4 @@
-a = -0X12  # 0x表示十六进制
-print(a, '\n')
-b = 3**2
-print(b, '\n')
+# a+bj形式表示复数
 aComplex = 2.3 - 4.5j
 print(aComplex.real, '\n')  # 该复数的实部
 print(aComplex.imag, '\n')  # 该复数的虚部
