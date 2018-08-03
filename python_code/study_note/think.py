@@ -117,3 +117,14 @@ for word in list(dict1):
     if dict1[word] < 3:
         del dict1[word]
 print(dict1)
+
+2018.8.2
+Python编码规范培训：
+1.字符串拼接时尽量使用%或format，不要用+(效率很低)
+2.全局变量尽量不用
+3.当类中本身没有父类或继承object时，就不需要用super函数来继承超类
+4.对于过长的语句除了可以用换行符进行换行之外，也可以用小括号()整个括起来
+filter_func = (lambda v: len(v.text) > 1 and v.aggregation > self.min_aggregation and 
+                                v.freq > self.min_freq and v.left > self.min_entropy and v.right > self.min_entropy)
+
+

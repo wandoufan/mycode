@@ -9,6 +9,10 @@
 # 第一次修改->git add->第二次修改->git commit，则第二次修改不会被提交，除非第一次修改->git add->第二次修改->git add->git commit
 # 即每次修改都要往暂存区添加一次，否则不会被提交
 
+# git、github、gitlib的区别：
+# git是一个代码版本管理的工具
+# github是一个基于git实现的共有的代码托管的仓库/网站
+# gitlib是一个基于git实现的私有的代码托管仓库，更适合公司/团队内部使用
 
 # git相关的名词概念：
 # 工作区(working directory)-电脑中指定的存放代码的目录就是一个工作区

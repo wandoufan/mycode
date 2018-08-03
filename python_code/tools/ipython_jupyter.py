@@ -3,7 +3,9 @@
 # IPython可以看做一个增强版的python shell,可以提高python的编写、测试、调试的速度
 # IPython主要用于交互式数据处理和数据的可视化处理。
 # 另外还提供Jupyter notebook使用的一个Jupyter内核（IPython notebook）
+# IPython是python的解释器之一，另外的其他解释器还有CPython、PyPy、Jython、IronPython等
 # 参考文档：https://blog.csdn.net/gavin_john/article/details/53086766
+# https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001407375700558864523211a5049c4983176de304549c8000
 
 # Jupyter Notebook/IPython notebook本质是一个Web应用程序，可以支持40多种编程语言
 # 使用浏览器作为界面，向后台的IPython服务器发送请求，并显示结果，

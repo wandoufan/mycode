@@ -2,9 +2,9 @@
 
 # PyMySQL模块是python3中用来连接操作mysql数据库的模块
 # 在Python2中则使用mysqldb模块
+# 参考资料：
 # http://www.runoob.com/python3/python3-mysql.html
 # https://pypi.org/project/PyMySQL/
-
 
 # 注意:这个模块有坑，虽然模块名本身是大写PyMySQL,但import时要用小写pymysql，否则报错找不到模块
 

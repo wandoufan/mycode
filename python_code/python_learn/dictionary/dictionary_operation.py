@@ -31,7 +31,7 @@ print('已知key,直接查看value:', dict1['port'])
 for key in dict2:  # 注意：字典名后面的方法可以省略, 默认就是Key的值
     print('只需要字典名就可以循环查看', 'key=%s,value=%s' % (key, dict2[key]))
 
-# 判断对象是否是字典的成员
+# 判断对象是否是字典的成员，返回True或False
 print('port' in dict1)
 
 # 每个键只能对应一个值，当有键发生冲突时，取最后的赋值

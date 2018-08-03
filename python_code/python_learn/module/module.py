@@ -14,7 +14,8 @@ hello.sayhello()
 from hello import Hi
 hi = Hi()
 hi.sayhi()
-# 3.import 模块名 as 新名字，可以给导入的命名空间替换一个新的名字,适用用原模块名字复杂
+# 3.import 模块名 as 新名字，可以给导入的命名空间替换一个新的名字
+# 用于原模块名字很长很复杂的情况，或者原名字与其他的模块/函数冲突的情况
 import hello as world
 world.sayhello()
 

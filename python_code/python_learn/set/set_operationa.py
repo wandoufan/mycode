@@ -2,6 +2,10 @@
 # 可变集合可以添加和删除元素，不可变集合不可以改变
 # 可变集合不是可哈希的，只有不可变集合可以作为字典的键或集合的一个成员
 
+# 声明一个集合
+s = set()
+print(type(s))
+
 # 集合的创建只能用集合的工厂方法可变集合set(),不可变集合frozenset()
 s1 = set('bbaaac')
 s2 = frozenset('aaaxxxzzzyyy')
