@@ -138,6 +138,29 @@
 # 注意：标签总是和某个commit绑定，如果commit出现在两个分支上，那么在两个分支上都可以看到标签
 
 
+# git submodule的命令：
+# 参考资料：https://www.cnblogs.com/nicksheng/p/601711.html
+# 对于一个包含许多子模块的大型项目，每一个子模块都有专人来维护
+# 如果每个子模块更新时都需要把整个项目版本更新一次，整个项目会非常混乱
+# git的submodule可以提供每个子模块独立的版本管理功能
+# 每个子模块可以单独在git上作为一个项目维护，然后submodule可以在大型项目中对应位置像指针一样去引用这些子模块
+# 使用submodule方式引用的子模块在git网页上显示的目录名后边会有版本ID
+# 'git clone <repository> --recursive'递归的方式克隆整个项目到而本地
+# 对于项目中其他采用submodule方式的子模块，如果不加上--recursive参数克隆到本地的对应目录会是空的
+# 使用submodule之后项目目录下会自动创建.gitmodules隐藏文件，里面记录项目中所有使用submodule的子模块及其git地址
+# 'git submodule add <repository> <path>'向项目中以submodule添加子模块
+# 执行之前要先切换到本地项目中对应的子目录，执行之后会从git上下载指定子模块到本地的对应目录中
+# <repository>参数代表子模块的git地址，一般用ssh方式
+# <path>参数代表子模块在项目中名字
+# 例如：'git submodule add git@gitlab.yunfutech.com:nlp_projects/oov_detection.git discover_new_word'
+# 'git submodule init'初始化子模块
+# 'git submodule update'更新子模块
+# 'git submodule foreach git pull'拉取所有子模块
+# 注意：在后期维护中每次对子模块进行更新后，项目中的子模块不会自己更新，指向的仍然是之前的版本ID
+# 项目中子模块随之更新需要：？？？
+
+
+
 # -----------------------------------------------------------------------------------------
 # 多人维护同一份代码时：
 # 本地1             远程              本地2

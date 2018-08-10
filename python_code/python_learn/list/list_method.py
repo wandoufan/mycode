@@ -22,7 +22,7 @@ alist.insert(0, 'first')
 # 返回某个对象在列表的出现次数
 print(alist.count(1))
 
-# 删除列表某个元素
+# 删除列表某个元素,如果要删除的元素不在列表中会直接报错
 alist.remove('e')
 print(alist)
 
@@ -53,3 +53,69 @@ print(','.join(list1))
 # 把列表的内容清空
 alist.clear()
 print(alist)
+
+# ---------------------------------------------------------------------------------------------
+
+# 例子1：删除列表中所有的4
+# 注意：在for循环中可以对列表中的元素进行修改，但不能在循环中增删列表中的元素!!!
+# 对列表增删元素的本质是改变了列表的长度
+# python在执行"for i in list:"时会固定的获得一个可迭代对象，整个迭代的次数就已经确定下来了
+# 因此在循环中增删元素就会有越界/漏值的危险
+# 参考资料：https://www.zhihu.com/question/49098374
+
+# 错误方法1
+a = [1, 2, 4, 4, 5]
+for i in a:
+    if i == 4:
+        a.remove(4)
+print(a)
+# [1, 2, 4, 5]
+# 错误方法2 for循环中使用del删除元素会超出索引长度而报错
+b = [1, 2, 4, 4, 5]
+for i in range(len(b)):
+    if b[i] == 4:
+        # del b[i]
+        pass
+print(b)
+# IndexError: list index out of range
+
+# 解决方法1 使用while循环
+c = [1, 2, 4, 4, 5]
+i = 0
+while i < len(c):
+    if c[i] == 4:
+        del c[i]
+    else:
+        i += 1
+print(c)
+# [1, 2, 5]
+# 解决方法2 推荐使用标准写法
+d = [1, 2, 4, 4, 5]
+d = [i for i in d if i != 4]
+print(d)
+# [1, 2, 5]
+
+
+# 例子2：在for循环中删除列表的后几个元素
+# 注意：不能在for循环中把一个列表不断的赋值给本身
+
+# 错误的方法：在for循环中把列表处理后又赋值给了列表本身
+def func(list1):
+    list1.pop()
+    return list1
+list1 = [1, 2, 3, 4, 5, 6, 7]
+for i in range(5):
+    list1 = func(list1)# 可能会造成错误
+print(list1)
+
+# 正确的方法：
+# 列表类型的数据会在内部直接修改，不需要把列表赋值给本身，函数也不需要有返回值
+def func(list1):
+    list1.pop()
+    return list1
+list1 = [1, 2, 3, 4, 5, 6, 7]
+for i in range(5):
+    func(list1)
+print(list1)
+
+

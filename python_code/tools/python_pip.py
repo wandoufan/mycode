@@ -15,4 +15,5 @@
 # 'pip uninstall package' 卸载指定的python包
 # 'pip show package' 查看指定python包的详细信息
 # 'pip list' 查看当前环境中的python包列表
+# 注意查看到的都是安装的第三方包，不包含python内置的库
 # 'pip list --outdated'或'pip list -o'查看可以进行更新的包

@@ -33,7 +33,7 @@
 # -----------------------------------------------------------------------------------------------
 
 # cython编译步骤：
-# 1.目标python代码hello.pyx(.pyx是cython格式的文件)
+# 1.目标python代码hello.pyx(.pyx是cython格式的文件,也可以将现有的.py文件直接改名.pyx)
 def test(num):
     k = 100
     for i in range(num):
@@ -97,13 +97,21 @@ def test(int num):
 # 加入变量类型后的效果：
 # run time: 0:00:00.374669
 
+# 注意：使用cython优化只会减少程序运行的消耗时间，不会影响到程序的运行结果
+# 即,使用cython优化和不使用cython优化的程序运行结果应该是一样的
+# 在实际使用过程有声明了变量类型后计算结果改变的情况，声明的类型应该是对的，具体错误原因未知
+# 因此使用cython优化后要注意检查结果的一致性
+
 # ------------------------------------------------------------------------------------------
 
 # 关于def、cdef、cpdef的区别：
 # 1.def:
 # 只能用来声明python中的函数；def函数可以被Python和cython调用；
+# 备注：实际测试中发现，对于.pyx中被外部python调用的接口函数(单独的函数，并非类中的函数)
+# 只能用def声明，用cdef和cpdef声明都会报错
 # 2.cdef:
 # 用来声明C语言中的变量类型；cdef声明的函数可以被cython和c调用；
+# 备注：实际使用中，cdef常用于声明类和变量，很少用于声明函数
 # cdef函数可以接受python中没有的变量类型，如指针
 # cdef函数仅在以下情况下使用：
 # *需要传递一个非Python类型的数据类型
@@ -111,6 +119,7 @@ def test(int num):
 # *需要经常调用的一个函数且不需要从python中调用(仅在当前代码内部运行而不暴露给外部python代码调用的函数)
 # 3.cpdef:
 # 可以同时声明python和C中的函数，会通过cython产生一个def函数和cdef函数；
+# 备注：实际使用中，cpdef极少用到
 # cpdef函数仅在以下情况下使用：
 # *需要经常调用的一个函数且需要从Python中调用(暴露给外部的python代码调用的函数接口)
 # 参考文档：
@@ -149,7 +158,10 @@ def test(int num):
 # AttributeError: 'wordseg.wordseg.WordInfo' object has no attribute 'number'
 # * 对变量进行public声明时，一定要写在类开头，不能写在函数内部，否则会报错：
 # Local variable cannot be declared public
-# * 对于cdef声明的class类中的暴露给外部调用的函数必须用cpdef声明
+# * 在整个pyx文件中被外部调用的接口函数(不在类中的单独的函数)声明不能用cpdef，否则报错：
+# closures inside cpdef functions not yet supported
+# * 在整个pyx文件中被外部调用的接口函数(不在类中的单独的函数)声明也不能用cdef，否则会找不函数并报错：
+# cannot import name 'discover_new_word'
 
 
 # 使用拓展:
@@ -187,10 +199,11 @@ def test(int num):
 # 单精度浮点型float：3.4 x 10^（-38）~ 3.4 x 10^（+38） 
 # 双精度浮点型double：1.7 x 10^（-308）~ 1.7 x 10^（+308） 
 
-#---------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
 # 参考代码：
 # https://github.com/explosion/spaCy/blob/master/spacy/tokenizer.pyx
-# 代码示例：
+# 代码示例1：新词发现代码
+# 其中WordSegment类为对外的接口(外部python代码直接调用WordSegment类)
 
 # coding=utf-8
 import re
@@ -427,3 +440,260 @@ cdef class WordSegment(object):
         except Exception as e:
             traceback.print_exc()
 
+# ----------------------------------------------------------------------------------------------
+
+# 代码示例2：优化后新词发现代码
+# 其中discover_new_word函数为对外的接口(外部python代码直接调用discover_new_word函数)
+# coding=utf-8
+
+import re
+import codecs
+import math
+from datetime import datetime
+
+
+cdef class WordNeighbor(object):
+
+    cdef public unicode text
+    cdef public dict left_word
+    cdef public dict right_word
+    cdef public float left_entropy
+    cdef public float right_entropy
+
+    def __init__(self, text):
+        self.text = text  # 文本片段
+        self.left_word = {}  # 词的左邻字集合，字为key,字频为value
+        self.right_word = {}  # 词的右邻字集合，字为key,字频为value
+        self.left_entropy = 0.0  # 单字的左熵
+        self.right_entropy = 0.0  # 单字的右熵
+
+    def update_neighbor(self, left, right):
+        """
+        更新文本片段的左右邻字集合
+        其中左/右邻字为空格(即' ')和不存在(即'')的情况合并统计计数
+        """
+        if left or left == '':
+            if left == '':
+                left = ' '
+            self.left_word[left] = self.left_word.get(left, 0) + 1
+        if right or right == '':
+            if right == '':
+                right = ' '
+            self.right_word[right] = self.right_word.get(right, 0) + 1
+
+    def compute_entropy(self, left_word, right_word):
+        """
+        计算文本片段的左右熵
+        """
+        self.left_entropy = self.entropy_of_dict(left_word)
+        self.right_entropy = self.entropy_of_dict(right_word)
+
+    def entropy_of_dict(self, neighbor_dict):
+        """
+        计算熵值
+        """
+        length = 0
+        for v in neighbor_dict.values():
+            length = length + v
+        return sum([-v / length * math.log(float(v) / length) for v in neighbor_dict.values()])
+
+
+cdef class WordInfo(object):
+
+    cdef public unicode text
+    cdef public float freq
+    cdef public int count
+    cdef public float left_entropy
+    cdef public float right_entropy
+    cdef public float aggregation
+    cdef public float final_score
+    cdef public float freq_score
+
+    def __init__(self, text):
+        self.text = text  # 文本片段
+        self.freq = 0.0  # 词出现的频率
+        self.count = 0  # 词出现的次数
+        self.left_entropy = 0.0  # 词的左熵
+        self.right_entropy = 0.0  # 词的右熵
+        self.aggregation = 0.0  # 词的凝合程度/聚合程度
+        self.final_score = 0.0  # 词的最终分数，即（左熵+右熵）*aggregation
+        self.freq_score = 0.0  # 以freq_score为准进行排序,即freq*final_score
+
+    def update_count(self):
+        """
+        更新文本片段出现的次数
+        """
+        self.count += 1
+
+    def compute_freq(self, length):
+        """
+        计算文本片段的词频
+        """
+        self.freq = self.count / length
+        return self.freq
+
+    def compute_aggregation(self, freq_dict):
+        """
+        计算文本片段的聚合度
+        """
+        parts = self.generate_parts(self.text)
+        if len(parts) > 0:
+            self.aggregation = min(
+                [self.freq / freq_dict[part[0]] / freq_dict[part[1]] for part in parts])
+
+    def compute_final_score(self):
+        """
+        计算文本片段的分数
+        score = (left + right) * aggregation
+        """
+        self.final_score = (self.left_entropy +
+                            self.right_entropy) * self.aggregation
+
+    def compute_freq_score(self):
+        """
+        计算文本片段分数和词频的乘积
+        freq_score = freq * final_score
+        """
+        self.freq_score = self.freq * self.final_score
+
+    def generate_parts(self, string):
+        """
+        将字符串切分为所有可能的两部分
+        例如，输入 "abcd", 返回[("a", "bcd"), ("ab", "cd"), ("abc", "d")]
+        如果输入字符串长度为1，返回空列表
+        """
+        cdef int length
+        cdef list res
+        length = len(string)
+        res = []
+        for i in range(1, length):
+            res.append((string[0:i], string[i:]))
+        return res
+
+
+def is_word(word):
+    """
+    判断是否是合格的单词
+    """
+    if re.search(r'\s', word):  # 含有空格、回车、换行、制表符不算作单词
+        return False
+    elif re.match(r'^[a-zA-Z]+$', word):  # 纯英文的字符串不算做单词
+        return False
+    elif re.search(r'[a-z]|[A-Z]|[\u4E00-\u9FA5]', word):  # 单词但含有英文或汉字才记作单词
+        return True
+    else:
+        return False
+
+def get_all_indexes(line, max_word_len):
+    """
+    生成文本片段所有可能的索引集合
+    :param line:读取的语料中每一行文本内容
+    :param max_word_len:限制的最大词长
+    """
+    cdef list indexes
+    cdef int length
+    indexes = []
+    length = len(line)
+    for i in range(0, length):
+        for j in range(i + 1, min(i + 1 + max_word_len, length + 1)):
+            indexes.append((i, j))
+    # 返回一个以(i,j)元组为元素的indexes列表
+    return indexes
+
+def filter_func(wordinfo_list, min_freq, min_entropy, min_aggregation):
+    '''
+    按照config文件中设定的左右熵和聚合度的阈值对候选词进行过滤
+    '''
+    cdef list word_infos
+    word_filter = (lambda v: len(v.text) > 1 and v.aggregation > min_aggregation and
+                   v.freq > min_freq and v.left_entropy > min_entropy and v.right_entropy > min_entropy)
+    # word_infos是过滤后的包含所有符合标准候选词的WordInfo对象的列表
+    word_infos = [w for w in list(filter(word_filter, wordinfo_list))]
+    return word_infos
+
+
+def discover_new_word(fi, int max_word_len=5, float min_freq=0.00005, float min_entropy=2.0, float min_aggregation=50):
+    """
+    主函数
+    计算文本片段的各种属性信息
+    """
+    # 保留符号：中文，英文，数字，#&.+(为了发现新词C++、C#、R&B等)
+    pattern = re.compile(
+        '[\\s,<>/?:;\'\"[\\]{}()\\|~!$%^*\\-_=，。《》、？：；“”‘’｛｝【】（）…￥！—┄－]+')
+
+    # 先按行计算候选词的出现次数，左邻字集合，右邻字集合
+    cdef dict word_cands
+    cdef dict word_neighbor
+    cdef dict freq_dict
+    cdef int length
+    # word_cands是一个以候选词为key,候选词的WordInfo对象为value的字典结构
+    word_cands = {}
+    # word_neighbor是一个以候选词为key,候选词的WordNeighbor对象为value的字典结构
+    word_neighbor = {}
+    # freq_dict是一个以候选词为key,候选词的词频freq为value的字典结构
+    freq_dict = {}
+    # length是文本的长度
+    length = 0
+    with codecs.open(fi, mode='r', encoding='utf-8') as lines:
+        for line in lines:
+            # 将匹配的各种标点符号都替换为空格
+            line = re.sub(pattern, ' ', line)
+            length = length + len(line)
+            indexes = get_all_indexes(line, max_word_len)
+            for index in indexes:
+                word = line[index[0]:index[1]]
+                if word not in word_cands:
+                    word_cands[word] = WordInfo(word)
+                word_cands[word].update_count()
+                # 长度为2的文本片段存入邻字字典
+                if word not in word_neighbor and len(word) == 2:
+                    word_neighbor[word] = WordNeighbor(word)
+                if word in word_neighbor:
+                    word_neighbor[word].update_neighbor(
+                        line[index[0] - 1:index[0]], line[index[1]:index[1] + 1])
+
+    # 总的计算候选词的词频,freq信息在freq_dict和WordInfo中都存放一份
+    for word in word_cands:
+        freq_dict[word] = word_cands[word].compute_freq(length)
+
+    # 总的计算候选词的聚合度等(计算聚合度需要提前计算出候选词每个子部分的词频)
+    for word in word_cands:
+        # 对长度等于1或不符合正则标准的候选词，只需要它的词频信息，后期会过滤掉，因此不需要再计算聚合度等信息
+        if len(word) == 1:
+            continue
+        if not is_word(word):
+            continue
+        word_cands[word].compute_aggregation(freq_dict)
+
+    # 计算完聚合度之后过滤掉长度为1或不符合正则标准的候选词
+    for word in list(word_cands):  # 字典结构不支持在循环过程中直接删除
+        if len(word) == 1:
+            del word_cands[word]
+            continue
+        if not is_word(word):
+            del word_cands[word]
+
+    # 计算候选词的左右熵信息
+    for word in word_neighbor:
+        left_word = word_neighbor[word].left_word
+        right_word = word_neighbor[word].right_word
+        word_neighbor[word].compute_entropy(left_word, right_word)
+    for word in word_cands:
+        word_cands[word].left_entropy = word_neighbor[word[0:2]].left_entropy
+        word_cands[word].right_entropy = word_neighbor[word[-2:]].right_entropy
+
+    # 计算候选词的综合分数
+    for word in word_cands:
+        word_cands[word].compute_final_score()
+        word_cands[word].compute_freq_score()
+
+    # 按照候选词的freq_score属性排序后生成一个包含所有候选词的WordInfo对象的列表
+    cdef list wordinfo_list
+    wordinfo_list = list(word_cands.values())
+    wordinfo_list = sorted(
+        wordinfo_list, key=lambda word_info: word_info.freq_score, reverse=True)
+
+    # 按照config文件中设定的左右熵和聚合度的阈值对候选词进行过滤后返回一个列表
+    word_infos = filter_func(wordinfo_list, min_freq,
+                             min_entropy, min_aggregation)
+    return word_infos

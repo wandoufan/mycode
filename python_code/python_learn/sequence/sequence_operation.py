@@ -13,6 +13,7 @@ print(alist[0])#第一个元素
 print(alist[-1])#最后一个元素
 print(alist[1:3])#第二个元素到第三个元素,注意不包括list[3]
 print(alist[2:])#从第三个元素到最后一个元素
+print(alist[-2:])# 注意：输出后两位！！！
 print(alist[1:-1])#从第二个元素到最后一个元素
 print(alist[-3])#倒数第三个元素
 print(alist[2-3])#2-3为-1，即最后一个元素

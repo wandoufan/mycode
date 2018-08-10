@@ -104,8 +104,9 @@ for line in f:
 
 2018.7.26
 需要在循环遍历过程中对字典的某些不符合条件的键值对进行删除
+字典类型不支持在迭代中直接删除键值对(可以修改值)，否则会报错:
+dictionary changed size during iteration
 错误的写法:
-字典类型不支持在迭代中直接删除键值对(可以修改值)，否则会报错
 for word in dict1:
     if dict1[word] < 3:
         del dict1[word]
@@ -121,10 +122,36 @@ print(dict1)
 2018.8.2
 Python编码规范培训：
 1.字符串拼接时尽量使用%或format，不要用+(效率很低)
-2.全局变量尽量不用
+2.尽量不使用全局变量
 3.当类中本身没有父类或继承object时，就不需要用super函数来继承超类
 4.对于过长的语句除了可以用换行符进行换行之外，也可以用小括号()整个括起来
 filter_func = (lambda v: len(v.text) > 1 and v.aggregation > self.min_aggregation and 
                                 v.freq > self.min_freq and v.left > self.min_entropy and v.right > self.min_entropy)
 
+
+2018.8.9
+1.不能在for循环中增加或删除列表元素，详见list_method.py中相关总结
+
+2.不能在for循环中赋值给本身
+错误的写法：列表不断的赋值给本身
+def func(list1):
+    list1.pop()
+    return list1
+list1 = [1, 2, 3, 4, 5, 6, 7]
+for i in range(5):
+    list1 = func(list1)
+print(list1)
+正确的写法：列表类型的数据会在内部直接修改，不需要把列表赋值给本身，函数也不需要有返回值
+def func(list1):
+    list1.pop()
+    return list1
+list1 = [1, 2, 3, 4, 5, 6, 7]
+for i in range(5):
+    func(list1)
+print(list1)
+
+3.推荐使用标准写法可以在循环中动态修改列表元素
+d = [1, 2, 4, 4, 5]
+d = [i for i in d if i != 4]
+print(d)
 

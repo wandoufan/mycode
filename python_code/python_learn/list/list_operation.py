@@ -29,7 +29,7 @@ blist.append(['d','e','f'])
 print(blist)
 
 #删除列表元素，使用索引标记或者list.remove()方法
-del alist[0]
+del alist[0] # 如果索引超出序列长度会报错
 alist.remove('abc') 
 print(alist)
 
