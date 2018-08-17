@@ -59,7 +59,7 @@
 # 'git remote add origin git@github.com:wandoufan/git_test.git'ssh方式连接github添加远程库
 # 备注：远程库/远程主机的默认名字origin(起源)
 # 'git remote add origin https://github.com/wandoufan/git_test.git'https方式连接远程库
-# 备注：https方式需要每次输入账户密码且速度较慢，推荐使用ssh方式
+# 备注：https方式需要每次输入账户密码且速度较慢，推荐使用ssh方式(ssh方式需要提前配置密钥)
 # 'git remote rm origin'删除远程库
 # 'git remote -v'查看远程库名字，-v参数查看详细信息
 
@@ -76,6 +76,7 @@
 # 提交本地代码到远程库：
 # 除了本地仓库还可以把本地的代码提交到远程仓库，例如github上
 # push命令可以使远程的代码和本地的代码保持一致(本地增删改的数据，远程也会相同增删改)
+# 'git push <远程主机名> <本地分支名>:<远程分支名>'
 # 'git push -u origin master'把当前master分支的所有内容推送到远程库上，推送前需要add和commit
 # -u参数不但会把本地master分支推送到远程上新建的master分支，还会把本地和远程的master分支关联起来，方便后边再推送/拉取
 # 'git push origin master'建立连接后可以不加-u参数就直接推送
@@ -138,8 +139,8 @@
 # 注意：标签总是和某个commit绑定，如果commit出现在两个分支上，那么在两个分支上都可以看到标签
 
 
-# git submodule的命令：
-# 参考资料：https://www.cnblogs.com/nicksheng/p/601711.html
+# git submodule的使用：
+# 参考资料：https://www.cnblogs.com/nicksheng/p/6201711.html
 # 对于一个包含许多子模块的大型项目，每一个子模块都有专人来维护
 # 如果每个子模块更新时都需要把整个项目版本更新一次，整个项目会非常混乱
 # git的submodule可以提供每个子模块独立的版本管理功能
@@ -149,16 +150,21 @@
 # 对于项目中其他采用submodule方式的子模块，如果不加上--recursive参数克隆到本地的对应目录会是空的
 # 使用submodule之后项目目录下会自动创建.gitmodules隐藏文件，里面记录项目中所有使用submodule的子模块及其git地址
 # 'git submodule add <repository> <path>'向项目中以submodule添加子模块
-# 执行之前要先切换到本地项目中对应的子目录，执行之后会从git上下载指定子模块到本地的对应目录中
+# 注意：执行之前要先切换到本地项目中对应的子模块所在目录中，执行之后会从git上下载指定子模块到本地的对应目录中
 # <repository>参数代表子模块的git地址，一般用ssh方式
 # <path>参数代表子模块在项目中名字
 # 例如：'git submodule add git@gitlab.yunfutech.com:nlp_projects/oov_detection.git discover_new_word'
+# 项目中子模块的更新过程：
+# 先将本地子模块修改后push到远程库上，此时远程库上的子模块已经是新的版本
+# 但是项目中的子模块不会随之更新，指向的仍是之前的版本ID，需要手动更新
+# 先切换到本地项目对应的子模块所在的目录中，执行'git pull'操作将远程的新版子模块更新到本地
+# 此时本地的子模块代码已经更新，退出子模块所在目录后对项目执行add和commit，将项目push到远程库上
+# 注意：操作时要注意当前工作目录是在子模块所在的目录还是项目中的其他目录
+# 这两个目录的git log等都不相同，分别对应子模块的git和整个项目的git
+# git submodule其他常用命令：
 # 'git submodule init'初始化子模块
 # 'git submodule update'更新子模块
 # 'git submodule foreach git pull'拉取所有子模块
-# 注意：在后期维护中每次对子模块进行更新后，项目中的子模块不会自己更新，指向的仍然是之前的版本ID
-# 项目中子模块随之更新需要：？？？
-
 
 
 # -----------------------------------------------------------------------------------------

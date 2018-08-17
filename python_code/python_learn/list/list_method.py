@@ -105,14 +105,13 @@ def func(list1):
     return list1
 list1 = [1, 2, 3, 4, 5, 6, 7]
 for i in range(5):
-    list1 = func(list1)# 可能会造成错误
+    list1 = func(list1)# 可能会造成隐藏bug
 print(list1)
 
 # 正确的方法：
 # 列表类型的数据会在内部直接修改，不需要把列表赋值给本身，函数也不需要有返回值
 def func(list1):
     list1.pop()
-    return list1
 list1 = [1, 2, 3, 4, 5, 6, 7]
 for i in range(5):
     func(list1)

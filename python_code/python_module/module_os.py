@@ -6,7 +6,7 @@
 # OS模块中关于文件/目录常用的函数方法
 import os
 
-# getcwd()函数用来获得应用程序当前的工作目录(current work directory)
+# getcwd()函数用来获得应用程序当前的工作目录的路径(current work directory)
 print(os.getcwd())
 
 # chdir(path)函数用来改变当前工作目录
@@ -45,12 +45,9 @@ os.rename('file_old','file_new')
 os.system(shell_cmd)
 os.system('calc')
 
-
 #walk(top_path)函数遍历top参数指定路径下的所有子目录，并返回三元组(路径，包含目录，包含文件)
 for i in os.walk('C:/Users/xyf/Documents/python 代码/test_10'):
     print(i)
-
-
 
 #以下是os.path模块中路径相关的函数
 #dirname()函数获取文件目录，即去掉路径中的文件名

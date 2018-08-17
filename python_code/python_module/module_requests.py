@@ -56,6 +56,7 @@ print(r8.encoding)
 r8.encoding = 'ISO-8859-1'
 # 对于非文本内容，r.content可以以字节形式获取二进制的响应内容
 print(r8.content)
+# 通过r.json读取服务器响应的内容
 # requests内置了json解码器，r.json处理json数据
 print(r8.json())
 
@@ -72,3 +73,20 @@ print(r9.raw.read(10))
 dict2 = {'user-agent': 'my-app/0.0.1'}
 r1 = requests.get('https://api.github.com/some/endpoint', headers=dict2)
 print(r1.url)
+
+# ---------------------------------------------------------------------------------------------
+# 例子1：传送文本内容作为参数，并输出返回结果
+
+import requests
+import json
+
+file_path = 'C:/mywork/yunfu/nlp_project/discover_new_word/测试数据/zhoujielun.txt'
+
+with open(file_path, 'r', encoding='utf-8') as f:
+    text = f.read()
+dict1 = {'text': text}
+r1 = requests.get('http://service.yunfutech.com:17889/discoverword', data=json.dumps(dict1))
+
+print(r1.url)
+print(type(r1.json))
+print(r1.json())

@@ -33,13 +33,9 @@ str1 = 'abcd'
 dict1 = {'a': 1, 'b': 2, 'c': 3}
 
 j1 = json.dumps(list1)
-
 print(j1, type(j1).__name__)
-
 data1 = json.loads(j1)
-
 print(data1, type(data1).__name__)
-
 
 # 将list1转化为json数据并写入json.txt文件中
 with open('json.txt', 'w') as f:

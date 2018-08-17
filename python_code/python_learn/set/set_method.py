@@ -33,3 +33,25 @@ s5.difference_update(s4)
 print('s5变为s5,s4的差集',s5)
 s5.symmetric_difference_update(s4)
 print('s5变为s4,s5的异或集',sorted(s5))
+
+# ----------------------------------------------------------------------------------------
+# 例子1：在for循环中对集合set进行添加修改
+# 错误方法：在for循环中把集合处理后又赋值给集合本身
+def func(set1, i):
+    set1.add(i)
+    return set1
+
+set1 = set('abcde') 
+for i in range(5):
+    set1 = func(set1, i)# 可能会造成隐藏bug
+print(set1)
+
+# 正确的方法：
+# 集合类型的数据会在内部直接修改，不需要把集合赋值给本身，函数也不需要有返回值
+def func(set1, i):
+    set1.add(i)
+
+set1 = set('abcde')    
+for i in range(5):
+    func(set1, i)
+print(set1)
