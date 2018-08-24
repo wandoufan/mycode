@@ -1,6 +1,9 @@
 import struct
 import os
 
+# 备注：本脚本从.scel格式的搜狗词库中提取出词并写入.txt文本中
+# 只需要写入词库文件所在目录和输出文本所在目录即可运行
+
 # 由于原代码不适用python3且有大量bug
 # 以及有函数没有必要使用且一些代码书写不太规范或冗余
 # 所以本人在原有的大框架基本不动的情况下作了大量的细节更改。
@@ -134,9 +137,9 @@ def scel2txt(file_name):
 if __name__ == '__main__':
 
     # scel所在文件夹路径
-    in_path = 'C:\mywork\mytest'
+    in_path = 'C:\mywork\yunfu\get_sougou_word'
     # 输出词典所在文件夹路径
-    out_path = 'C:\mywork\mytest\sougou_result1.txt'
+    out_path = 'C:\mywork\yunfu\get_sougou_word\sougou_result1.txt'
 
     fin = [fname for fname in os.listdir(in_path) if fname[-5:] == ".scel"]
     for f in fin:

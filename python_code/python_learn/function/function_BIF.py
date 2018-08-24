@@ -50,7 +50,7 @@ print(list(map(lambda x: 2 * x, range(10))))
 # iterable：是可迭代类型;
 # cmp：用于比较的函数，比较什么由key决定;
 # key：用列表元素的某个属性或函数进行作为关键字，有默认值，迭代集合中的一项;
-# reverse：排序规则. reverse = True  降序 或者 reverse = False 升序，默认值False。
+# reverse：排序规则. reverse=True  降序 或者 reverse=False 升序，默认值False。
 list_1 = [('d',3),('b',4),('c',2),('a',1)]
 list_2 = sorted(list_1, key=lambda x:x[0])# 以每个元组的第一个元素为key进行排序
 # 其中'x'变量代表list_1中的每个元组元素

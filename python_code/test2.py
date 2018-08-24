@@ -1,18 +1,8 @@
-# coding:utf-8
-from discover_word import word_segment
-import requests
-import json
+import os 
+print(os.getcwd())
 
-def test(text):
-    return word_segment(text)
+in_path = 'C:\mywork\mytest\my.txt'
 
-if __name__ == '__main__':
-    file_path = '/data/share/tmp/new_words_mining/test_v1.1/zhoujielun'
-    with open(file_path, 'r', encoding='utf-8') as f:
-        text = f.read()
-
-    result = test(text)
-    print('!!!!', len(result))
-    print(result)
-
-
+with open(in_path, 'r') as f:
+    for line in f.readlines():
+        print(line)

@@ -132,7 +132,7 @@ filter_func = (lambda v: len(v.text) > 1 and v.aggregation > self.min_aggregatio
 2018.8.9
 1.不能在for循环中增加或删除列表元素，详见list_method.py中相关总结
 
-2.不能在for循环中赋值给本身
+2.不能在for循环中赋值给本身，可能会造成隐藏错误
 错误的写法：列表不断的赋值给本身
 def func(list1):
     list1.pop()
@@ -155,3 +155,20 @@ d = [1, 2, 4, 4, 5]
 d = [i for i in d if i != 4]
 print(d)
 
+
+2018.8.21
+注意灵活运行sum函数可以使代码更简洁
+# 例子1：计算字典中值的和
+dict1 = {'a':1,'b':2,'c':3,'d':4}
+# 不推荐的写法，比较麻烦
+num1 = 0
+for v in dict1.values():
+    num1 = num1 + v
+print(num1)
+# 推荐的写法(灵活运用sum函数)
+num2 = sum(v for v in dict1.values())
+print(num2)
+# 例子2：计算列表中值的和
+list1 = [1,2,3,4]
+num3 = sum(i for i in list1)
+print(num3)

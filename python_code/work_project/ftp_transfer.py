@@ -14,7 +14,7 @@ class FtpTransfer(object):
 
 	# 目前ftp的地址、端口、账号、密码已经写入代码，如果后续这些信息成为变量，
 	# 需要每次在run.py中调用ftp功能模块时传入新的信息
-	def __init__(self, host='10.145.84.178', port=8881, username='ftpuser', password='yeying123'):
+	def __init__(self, host='129.1.1.1', port=80, username='user', password='123456'):
 		'''
 		初始化连接登录ftp
 		:param host:ftp主机
@@ -72,7 +72,7 @@ class FtpTransfer(object):
 			else:
 				return 0, 'OK'
 
-	def download_train_data(self, version, user='ftpuser', password='yeying123'):
+	def download_train_data(self, version, user='user', password='123456'):
 		'''
 		wget方式从ftp下载执行训练任务需要的train-data数据
 		ftp上训练数据路径：train-data/V0.01
@@ -98,7 +98,7 @@ class FtpTransfer(object):
 			cmd4 = 'rm -rf %s' %version
 			os.system(cmd4)
 
-		cmd1 = 'wget -nH -r -l inf -P %s --ftp-user=%s --ftp-password=%s ftp://10.145.84.178:8881/%s' %(localpath, user, password, remotepath)
+		cmd1 = 'wget -nH -r -l inf -P %s --ftp-user=%s --ftp-password=%s ftp://129.1.1.1:80/%s' %(localpath, user, password, remotepath)
 		os.system(cmd1)
 		# 下载到本地后要把目标数据从上层目录中挪出来，之后再删除上层目录
 		# 下载到本地目录：/home/work/workdir/train-data/train-data/V0.01
@@ -115,7 +115,7 @@ class FtpTransfer(object):
 			msg = 'download ftp train-data failed'
 			return code, msg
 
-	def download_test_data(self, version, dataset_id, user='ftpuser', password='yeying123'):
+	def download_test_data(self, version, dataset_id, user='user', password='123456'):
 		'''
 		wget方式从ftp下载执行评估任务需要的test-data数据
 		ftp上测试数据路径：test-data/V0.01
@@ -143,7 +143,7 @@ class FtpTransfer(object):
 			cmd4 = 'rm -rf %s' %version
 			os.system(cmd4)
 
-		cmd1 = 'wget -nH -r -l inf -P %s --ftp-user=%s --ftp-password=%s ftp://10.145.84.178:8881/%s' %(localpath, user, password, remotepath)
+		cmd1 = 'wget -nH -r -l inf -P %s --ftp-user=%s --ftp-password=%s ftp://129.1.1.1:80/%s' %(localpath, user, password, remotepath)
 		os.system(cmd1)
 		# 下载到本地后要把目标数据从上层目录中挪出来，之后再删除上层目录
 		# 下载到本地目录：/home/work/workdir/test-data/test-data/V0.01
@@ -160,7 +160,7 @@ class FtpTransfer(object):
 			msg = 'download ftp test-data failed'
 			return code, msg
 
-	def download_model_data(self, version, user='ftpuser', password='yeying123'):
+	def download_model_data(self, version, user='user', password='123456'):
 		'''
 		wget方式从ftp下载执行评估任务需要的model-data数据
 		ftp上的训练结果数据路径：model-data/V0.01/output/release
@@ -191,7 +191,7 @@ class FtpTransfer(object):
 			cmd1 = 'rm -rf *'
 			os.system(cmd1)
 
-		cmd2 = 'wget -nH -r -l inf -P %s --ftp-user=%s --ftp-password=%s ftp://10.145.84.178:8881/%s' %(localpath, user, password, remotepath)
+		cmd2 = 'wget -nH -r -l inf -P %s --ftp-user=%s --ftp-password=%s ftp://129.1.1.1:80/%s' %(localpath, user, password, remotepath)
 		os.system(cmd2)
 		# 下载到本地后要把目标数据从上层目录中挪出来，之后再删除上层目录
 		# 下载到本地目录：/home/work/workdir/model-data/V0.01/output/release/model-data/V0.01/output/release
@@ -317,32 +317,7 @@ class FtpTransfer(object):
 			return 0, 'OK'
 
 
-#if __name__ == '__main__':
-	# ftptransfer=FtpTransfer()
-	# ftptransfer.create_zipfile('/home/work/workdir/model-data/V0.71/output/release')
-	# 	host = '10.145.84.178'
-	# 	port = 8881
-	# 	user = 'ftpuser'
-	# 	password = 'yeying123'
 
-	# 	version = 'V0.61'
-
-	# 	download_localpath = '/home/work/workdir/train-data'
-	# 	download_localpath = '/home/work/workdir/ftp-test'
-	# 	download_remotepath = 'train-data/%s' %version
-
-	# 	upload_train_localpath = '/home/work/workdir/model-data/%s/output/release' %version
-	# 	upload_train_remotepath = '/model-data/%s/output' %version
-
-	# 	upload_evaluation_localpath = '/home/work/workdir/assessment-data/%s/2/output/release' %version
-	# 	upload_evaluation_remotepath = '/assessment-data/%s/2/output' %version
-
-	# 	code, msg = ftptransfer.download(version)
-	# 	print('!!!!!',code,msg)
-	# 	code, msg = ftptransfer.upload_train_data(version)
-	# 	print('!!!!!',code,msg)
-	# 	code, msg = ftptransfer.upload_evaluation_data(version)
-	# 	print('!!!!!',code,msg)
 
 
 

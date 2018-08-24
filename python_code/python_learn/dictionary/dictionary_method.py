@@ -79,6 +79,11 @@ dict1 = {}
 for word in list1:
 	dict1[word] = dict1.get(word, 0) + 1
 print(dict1)
+# 方法3
+from collections import Counter
+list1 = ['a', 'b', 'd', 'a', 'c', 'd', 'a']
+c = Counter(list1)
+print(dict(c))
 
 # 例子3： 需要在循环遍历过程中对字典的某些不符合条件的键值对进行删除
 # 错误的写法:
@@ -96,3 +101,21 @@ for word in list(dict1):
     if dict1[word] < 3:
         del dict1[word]
 print(dict1)
+
+# 例子4：计算字典中所有值的和
+dict1 = {'a':1,'b':2,'c':3,'d':4}
+# 不推荐的写法，比较麻烦
+num1 = 0
+for v in dict1.values():
+    num1 = num1 + v
+print(num1)
+# 推荐的写法(灵活运用sum函数)
+num2 = sum(v for v in dict1.values())
+print(num2)
+
+# 例子5：将两个字典按键进行合并
+stop_word_dict1 = {'a':3,'b':2,'c':1,'d':4}
+stop_word_dict2 = {'b':3, 'c':2, 'e':2}
+for k2 in stop_word_dict2.keys():
+    stop_word_dict1[k2] = stop_word_dict2[k2] + stop_word_dict1.get(k2, 0)
+print(stop_word_dict1)
