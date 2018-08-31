@@ -1,148 +1,77 @@
-import struct
-import os
+# set_discover = set()
+# set_ltp = set()
 
-# 由于原代码不适用python3且有大量bug
-# 以及有函数没有必要使用且一些代码书写不太规范或冗余
-# 所以本人在原有的大框架基本不动的情况下作了大量的细节更改。
-# 使得没有乱码出现，文件夹导入更方便等等。
-# Author：Ling Yue, Taiyuan U of Tech
-# Blog: http://blog.yueling.me
+# set_discover.add('士兵')
+# set_discover.add('北京')
+# set_ltp.add('士兵')
+# set_ltp.add('上海')
 
+# print(set_discover)
+# # {'士兵', '北京'}
+# print(set_ltp)
+# # {'士兵', '上海'}
 
-# 原作者：
-# 搜狗的scel词库就是保存的文本的unicode编码，每两个字节一个字符（中文汉字或者英文字母）
-# 找出其每部分的偏移位置即可
-# 主要两部分
-# 1.全局拼音表，貌似是所有的拼音组合，字典序
-#       格式为(index,len,pinyin)的列表
-#       index: 两个字节的整数 代表这个拼音的索引
-#       len: 两个字节的整数 拼音的字节长度
-#       pinyin: 当前的拼音，每个字符两个字节，总长len
-#
-# 2.汉语词组表
-#       格式为(same,py_table_len,py_table,{word_len,word,ext_len,ext})的一个列表
-#       same: 两个字节 整数 同音词数量
-#       py_table_len:  两个字节 整数
-#       py_table: 整数列表，每个整数两个字节,每个整数代表一个拼音的索引
-#
-#       word_len:两个字节 整数 代表中文词组字节数长度
-#       word: 中文词组,每个中文汉字两个字节，总长度word_len
-#       ext_len: 两个字节 整数 代表扩展信息的长度，好像都是10
-#       ext: 扩展信息 前两个字节是一个整数(不知道是不是词频) 后八个字节全是0
-#
-#      {word_len,word,ext_len,ext} 一共重复same次 同音词 相同拼音表
+# set_result = set_discover - set_ltp
+# print(set_result)
+
+list1 = ['曾国藩', '非常', '失败', '自己', '信仰', '研究', '如果', '企业', '张宏杰', '方式',\
+ '怎么', '内部', '能够', '罗泽南', '选择', '比较', '特别', '普通', '尚拙', '权术', '士兵', \
+ '领教工坊', '打仗', '湘军', '我们', '任何', '绿营', '最后', '军队', '建立', '创建', '没有',\
+  '善于', '导致', '今天', '各种', '太平天国', '中国历史', '采取', '先要保', '原则', '件大事', \
+  '因为', '正规军', '认为', '>之间', '领导力', '战斗力', '取胜', '遇到', '形成', '制度', '治理', \
+  '理学', '背后', '相反', '往往', '只能', '主要', '起点', '从小', '经营', '地方', '里面', '读书人', \
+  '天资', '上看', '做事', '事业', '才能', '一>般', '每天']
 
 
-# 拼音表偏移，
-startPy = 0x1540;
+list1 = ['曾国藩', '非常', '失败', '自己', '信仰', '研究', '如果', '企业', '张宏杰', '方式', '怎么', '内部', \
+'能够', '罗泽南', '选择', '比较', '特别', '普通', '尚拙', '权术', '士兵', '领教工坊', '打仗', \
+'湘军', '我们', '任何', '绿营', '最后', '军队', '建立', '创建', '没有', '善于', '导致', '今天',\
+ '各种', '太平天国', '中国历史', '采取', '先要保', '原则', '件大事', '因为', '正规军', '认为', \
+ '之间', '领导力', '战斗力', '取胜', '遇到', '形成', '制度', '治理', '理学', '背后', '相反', \
+ '往往', '只能', '主要', '起点', '从小', '经营', '地方', '里面', '读书人', '天资', '上看', \
+ '做事', '事业', '才能', '一般', '每天']
+print(len(list1))
 
-# 汉语词组表偏移
-startChinese = 0x2628;
-
-# 全局拼音表
-GPy_Table = {}
-
-# 解析结果
-# 元组(词频,拼音,中文词组)的列表
-GTable = []
-
-# 原始字节码转为字符串
-def byte2str(data):
-    pos = 0
-    str = ''
-    while pos < len(data):
-        c = chr(struct.unpack('H', bytes([data[pos], data[pos + 1]]))[0])
-        if c != chr(0):
-            str += c
-        pos += 2
-    return str
-
-# 获取拼音表
-def getPyTable(data):
-    data = data[4:]
-    pos = 0
-    while pos < len(data):
-        index = struct.unpack('H', bytes([data[pos],data[pos + 1]]))[0]
-        pos += 2
-        lenPy = struct.unpack('H', bytes([data[pos], data[pos + 1]]))[0]
-        pos += 2
-        py = byte2str(data[pos:pos + lenPy])
-
-        GPy_Table[index] = py
-        pos += lenPy
-
-# 获取一个词组的拼音
-def getWordPy(data):
-    pos = 0
-    ret = ''
-    while pos < len(data):
-        index = struct.unpack('H', bytes([data[pos], data[pos + 1]]))[0]
-        ret += GPy_Table[index]
-        pos += 2
-    return ret
-
-# 读取中文表
-def getChinese(data):
-    pos = 0
-    while pos < len(data):
-        # 同音词数量
-        same = struct.unpack('H', bytes([data[pos], data[pos + 1]]))[0]
-
-        # 拼音索引表长度
-        pos += 2
-        py_table_len = struct.unpack('H', bytes([data[pos], data[pos + 1]]))[0]
-
-        # 拼音索引表
-        pos += 2
-        py = getWordPy(data[pos: pos + py_table_len])
-
-        # 中文词组
-        pos += py_table_len
-        for i in range(same):
-            # 中文词组长度
-            c_len = struct.unpack('H', bytes([data[pos], data[pos + 1]]))[0]
-            # 中文词组
-            pos += 2
-            word = byte2str(data[pos: pos + c_len])
-            # 扩展数据长度
-            pos += c_len
-            ext_len = struct.unpack('H', bytes([data[pos], data[pos + 1]]))[0]
-            # 词频
-            pos += 2
-            count = struct.unpack('H', bytes([data[pos], data[pos + 1]]))[0]
-
-            # 保存
-            GTable.append((count, py, word))
-
-            # 到下个词的偏移位置
-            pos += ext_len
+set1 = set(list1)
+print(len(set1))
 
 
-def scel2txt(file_name):
-    print('-' * 60)
-    with open(file_name, 'rb') as f:
-        data = f.read()
 
-    print("词库名：", byte2str(data[0x130:0x338])) # .encode('GB18030')
-    print("词库类型：", byte2str(data[0x338:0x540]))
-    print("描述信息：", byte2str(data[0x540:0xd40]))
-    print("词库示例：", byte2str(data[0xd40:startPy]))
 
-    getPyTable(data[startPy:startChinese])
-    getChinese(data[startChinese:])
 
-if __name__ == '__main__':
 
-    # scel所在文件夹路径
-    in_path = 'C:\mywork\mytest'
-    # 输出词典所在文件夹路径
-    out_path = 'C:\mywork\mytest\sougou_result1.txt'
 
-    fin = [fname for fname in os.listdir(in_path) if fname[-5:] == ".scel"]
-    for f in fin:
-        f = os.path.join(in_path, f)
-        scel2txt(f)
 
-    # 保存结果
-    with open(out_path, 'w', encoding='utf8') as f:
-        f.writelines([word+'\n' for count, py, word in GTable])
+
+
+
+
+
+
+
+
+
+# import re
+
+# list1 = ['。ab c', 'p2， p', 'S2, b', '1《个', '一y(i', '123', 'yi一', 'abc', 'p2p', '。中文']
+# for word in list1:
+#     # if re.match(r'[a-zA-Z]', word):
+#     #     print(word)
+#     # if re.match(r'^[0-9]+$', word):
+#     #     continue
+#     if re.search(r'[\s,<>/?:;\'\"[\]{}()\|~!$%^*\-_=，。《》、？：#&.+；“”‘’｛｝【】（）…￥！—┄－]', word):
+#         print('中间带有标点符号' ,word)
+
+
+
+# for text in list1:
+#     p_zh = re.compile(r'([\':&a-zA-Z0-9\u3400-\u9FCC ]+)+?', re.U)
+#     try:
+#         matched = p_zh.findall(text)
+#         res = ' '.join(matched).strip()
+#     except Exception:
+#         res = ''
+
+#     res = re.sub(r'\s+', ' ', res)
+
+#     print(res)

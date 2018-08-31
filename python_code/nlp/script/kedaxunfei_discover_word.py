@@ -9,7 +9,7 @@ pattern = re.compile(r'\s')
 # result_path = 'C:/mywork/yunfu/nlp_project/discover_new_word/科大讯飞25条语料发现新词测试结果经过ltp分词过滤'
 result_path = 'C:/mywork/yunfu/nlp_project/discover_new_word/科大讯飞25条语料测试结果'
 
-for i in range(1, 2):
+for i in range(1, 10):
     file_path = 'C:/mywork/yunfu/nlp_project/discover_new_word/科大讯飞25条语料测试数据/collection_0%d.txt' % i
     file_name = os.path.basename(file_path)
     result_file = result_path + '/result_' + file_name

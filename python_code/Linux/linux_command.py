@@ -232,7 +232,7 @@
 # -d:解开压缩文件,-k:压缩后保留原文件,-z:新建压缩文件(可以不写),-v:显示压缩比等信息
 # 'bzcat *.bz2'不用解压缩，直接读出*.bz2格式的文本文件的内容
 # tar命令功能强大，可以将多个文件或目录打包成一个大文件，并使用gzip/bzip2进行压缩
-# 'tar [-j|-z] [cv] [-f new_tar_filename] filename'打包与压缩
+# 'tar [-j|-z] [cv] [-f new_tar_filename] filename'打包与压缩,其中filename是要被压缩的文件
 # 'tar [-j|-z] [tv] [-f new_tar_filename]'查看压缩包包含的文件名
 # 'tar [-j|-z] [xv] [-f new_tar_filename] [-C 目录]'解压缩
 # -j:通过bzip2方式进行解压缩，文件格式为*.tar.bz2
@@ -241,7 +241,7 @@
 # -x:解开打包文件或者压缩文件
 # -t:查看打包文件包含的文件名
 # -v:在解压缩的过程中，显示正在处理的文件名
-# -f 新建的文件名：f参数后面接要被处理的tar文件的完整文件名(也可以包含路径)
+# -f new_tar_filename：f参数指定生成的压缩包文件的名字，如test.tar.gz
 # -C 目录：在解开压缩时指定解压缩的路径
 # 注意：-c,-t,-x三个参数不能同时出现在一个命令里
 # 'zip -r new_filename.zip filename'指定文件/目录生成*.zip格式的文件
