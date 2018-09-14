@@ -9,6 +9,12 @@ str6 = 'ABCDEfgh'
 str7 = '   '
 str8 = '  begin    '
 str9 = 'hello,world,python!'
+
+# zfill(width) 方法返回指定长度的字符串，原字符串右对齐，前面填充0，其中width参数设定字符串长度
+# zfill方法常用于遍历带有数字编号的文件名
+for i in range(1,110):
+    print('file_%s' % str(i).zfill(3))
+    
 # 把字符串里的所有字符都变为大写
 print(str1.upper())
 

@@ -12,6 +12,8 @@ import sys
 # 注意：向sys.path中添加路径只有在程序生命周期内有效，退出python环境后路径失效
 sys.path.append(module_path)
 sys.path.insert(0, module_path)
+# 注意：一般在python项目中导入同级或下一级的模块都很方便，但要导入上级目录的模块需要提前添加路径到sys.path
+sys.path.append('../') # 添加上级目录
 
 # 注意：sys.argv的使用方法是接收在shell环境中输入的命令参数!
 # 例如在cmd中执行脚本test.py: python test.py hello world

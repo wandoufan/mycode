@@ -67,6 +67,7 @@ import re
 # [\u4E00-\u9FA5] :匹配所有中文字符
 
 
+# 测试：
 # str_1 = """welcome 欢迎 123 to 来到 456 beijing 北京 789 fd fod food foood fooood
 # xz xyz xyyz xyyyz xyyyyz xyyyyyz"""
 # str_1 = 'abcDE FGhijk'
@@ -85,17 +86,19 @@ result = pattern.search(str_1)
 print(result)
 
 
-# 例子1：不区分大小写的匹配全英文片段(需要判断匹配到的长度和整个片段的长度是否一致)：
+#    例子1：不区分大小写的匹配全英文片段(需要判断匹配到的长度和整个片段的长度是否一致)：
 # (?i)^[a-z]+$
 # re.compile(r"^[a-z]+$",re.I)
 # ^[a-zA-Z]+$
 # ^([a-z]|[A-Z])+$   为什么不行？？？
 # ^([a-z]+|[A-Z]+)$  为什么不行？？？
-# 例子2：匹配全大写英文或全小写英文片段(需要判断匹配到的长度和整个片段的长度是否一致)：
+#    例子2：匹配全大写英文或全小写英文片段(需要判断匹配到的长度和整个片段的长度是否一致)：
 # ^[a-z]+|[A-Z]+$
-# 例子3：判断文本是否是全英文文本(只有英语单词和空格):
+#    例子3：判断文本是否是全英文文本(只有英语单词和空格):
 # 如何匹配到'hello python world'中的每一个单词？？？
 # re.compile(r"^([a-z]+)\b$", re.I)  为什么不行？？？
+#    例子4：匹配文本中是否含有指定的多个词(不是单字)：
+# re.search(r'公斤|千克|经济', text)
 
      
 # Linux命令中使用正则表达式：
@@ -208,6 +211,12 @@ print(result)
 # pattern = re.compile('[\\s\\d,.<>/?:;\'\"[\\]{}()\\|~!@#$%^&*\\-_=+a-zA-Z，。《》、？：；“”‘’｛｝【】（）…￥！—┄－]+')
 # doc = re.sub(pattern, ' ', doc)
 # pred_label = re.sub(r'__label__', '', pred_labels[0][0])
+
+# 匹配各种标点符号：
+# pattern = re.compile(r'[*{}^……=%￥#@！!、,，。`;；？?_【】《》<>()（）~|&]+')
+# text = pattern.sub(' ', text)
+# pattern = re.compile('\[]')
+# text = pattern.sub(' ', text)
 
 # word = '奔驰S级'
 # # 筛选出中文英文混合的词

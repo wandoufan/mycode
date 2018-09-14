@@ -47,6 +47,7 @@ print(list(map(lambda x: 2 * x, range(10))))
 # 关于排序函数sorted的具体用法：
 # https://www.cnblogs.com/sysu-blackbear/p/3283993.html
 # sorted(iterable, cmp=None, key=None, reverse=False) 返回经过排序的可迭代的类型
+# 注意：sorted函数排序后返回的是列表list类型
 # iterable：是可迭代类型;
 # cmp：用于比较的函数，比较什么由key决定;
 # key：用列表元素的某个属性或函数进行作为关键字，有默认值，迭代集合中的一项;

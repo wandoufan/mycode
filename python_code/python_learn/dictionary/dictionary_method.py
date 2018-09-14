@@ -21,14 +21,14 @@ print('字典长度:', len(dict1))
 print('对象hash值：', hash('a'))
 print('值相等的数字hash值相同：', hash(1) == hash(1.0))
 
-# 返回字典中所有的键
+# 返回字典中所有的键,注意返回类型不是列表,还需要用list方法转换为列表
 print(dict1.keys())
 
 # 将键按字典序排序在输出
 dict4 = dict.fromkeys(('r', 'a', 'z', 'k'), -1)
 print('按字典序的键', sorted(dict4.keys()))
 
-# 返回字典中所有的值
+# 返回字典中所有的值,注意返回类型不是列表,还需要用list方法转换为列表
 print(dict1.values())
 
 # 返回字典中所有的键值元组

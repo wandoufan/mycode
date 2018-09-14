@@ -176,31 +176,46 @@ print(s)
 
 #---------------------------------------------------------------------------------
 
-# # 目前项目代码中实际用到的功能
+# 目前项目代码中实际用到的功能
 
-# # pandas.read_csv()函数经常被用来读取一个csv文件，返回一个DataFrame类型的结果
-# # pandas.read_csv()函数包含非常多的参数，常用参数有：
-# # filepath_or_buffer : 指定文件路径，路径URL可以是http, ftp, s3, 和 file.
-# # sep: 指定分割符，默认是','，C引擎不能自动检测分隔符，但Python解析引擎可以
-# frame = pd.read_csv('D:/test.csv')
-# frame.index = [4,5,6]
-# print(frame)
+# pandas.read_csv()函数经常被用来读取一个csv文件，返回一个DataFrame类型的结果
+# pandas.read_csv()函数包含非常多的参数，常用参数有：
+# filepath_or_buffer : 指定文件路径，路径URL可以是http, ftp, s3, 和 file.
+# sep: 指定分割符，默认是','，C引擎不能自动检测分隔符，但Python解析引擎可以
+frame = pd.read_csv('D:/test.csv')
+frame.index = [4,5,6]
+print(frame)
 
-# # DataFrame.head(n)函数查看前n行数据，如果不加n参数则显示全部数据
-# print(frame.head())
-# print(frame.head(1))
-# # DataFrame.tail(n)函数查看前n行数据，如果不加n参数则显示全部数据
-# print(frame.tail())
-# print(frame.tail(1))
+# DataFrame.head(n)函数查看前n行数据，如果不加n参数则显示全部数据
+print(frame.head())
+print(frame.head(1))
+# DataFrame.tail(n)函数查看前n行数据，如果不加n参数则显示全部数据
+print(frame.tail())
+print(frame.tail(1))
 
-# # 查看DataFrame的长度,即行数/索引长度
-# print(len(frame))
+# 查看DataFrame的长度,即行数/索引长度
+print(len(frame))
 
-# # DataFrame.shape查看表格数据的长宽，返回一个元组，(行数,列数)
-# print(frame.shape)
+# DataFrame.shape查看表格数据的长宽，返回一个元组，(行数,列数)
+print(frame.shape)
 
-# # DataFrame.iloc[param1][param2]查看具体的某个数值
-# # param1为索引值，param2为指定的字段
-# print(frame.iloc[2])
-# print(frame.iloc[2]['year'])
+# DataFrame.iloc[param1][param2]查看具体的某个数值
+# param1为索引值，param2为指定的字段
+print(frame.iloc[2])
+print(frame.iloc[2]['year'])
 
+# ---------------------------------------------------------------------------------
+
+# pandas.read_excel()函数可以读取各种格式的excel表格文件(包含xlsx)，返回一个DataFrame类型的结果，并且可以指定表格中具体的工作表sheet
+pandas.read_excel(io, sheet_name=0, header=0, names=None, index_col=None, usecols=None, squeeze=False, dtype=None, \
+    engine=None, converters=None, true_values=None, false_values=None, skiprows=None, nrows=None, na_values=None, \
+    parse_dates=False, date_parser=None, thousands=None, comment=None, skipfooter=0, convert_float=True, **kwds)
+# io:string类型，表格文件路径
+# sheet_name：string类型(工作表名)/int类型(工作表序号，从0开始)/包含string和int的list类型/None(所有工作表)，指定表格中具体的工作表sheet
+# 注意:sheet_name参数值为string/int时返回一个DataFrame类型的结果，
+# 参数值为list/None时返回一个key为工作表名，value为DataFrame的有序字典结构('collections.OrderedDict')
+# 例如： data_dict = pd.read_excel(xlsx_file, sheet_name=None)
+# header：......
+# names：......
+# 函数中自带的参数不好用，一直报错，没有找到详细说明，建议使用返回对象DataFrame类型本身的方法进行进一步处理
+# 详见http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_excel.html

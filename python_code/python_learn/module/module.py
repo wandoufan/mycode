@@ -36,6 +36,8 @@ if __name__ == '__main__':
 # 模块最好放在site_packages目录下，该目录用来存放模块的
 import sys
 # print(sys.path)
+# 注意：一般在python项目中导入同级或下一级的模块都很方便，但要导入上级目录的模块需要提前添加路径到sys.path
+sys.path.append('../') # 添加上一级的目录
 
 # reload(module)函数用于重新加载之前已经载入的模块
 # reload()函数一般用于原模块有变化等特殊情况，且被reload的模块之前需要已经import过

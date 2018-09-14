@@ -11,5 +11,5 @@ print('%o is a sequence of number' %108)  # 转化为无符号八进制数
 print('%#o is a sequence of number' %108)  # 转化为无符号八进制数，#用来显示进制表示符
 print('%#x is a sequence of number' %108)  # 转化为无符号十六进制数
 print('%#X is a sequence of number' %108)  # 转化为无符号十六进制数
-print('%.2f is a sequence of number' %3.1415926)  # 转化为精确到小数点后两位的浮点数
+print('%.2f is a sequence of number' %3.1415926)  # 转化为精确到小数点后两位的浮点数(转化变后为字符串格式)
 print('%e is a sequence of number' %108) # 转化为科学计数法

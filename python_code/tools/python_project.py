@@ -26,7 +26,7 @@
 # 模糊导入就是import package from * 的方式
 # 尽量保证__init__.py文件简单，不在文件内写有效的工程代码
 
-# 4.test目录
+# 4.tests目录
 # 存放测试代码
 
 # 5.LICENSE.txt
@@ -48,6 +48,7 @@
 # |   |-- __init__.py
 # |   |-- useful_1.py
 # |   |-- useful_2.py
+# |   |-- demo.py # 一个简单的测试文件
 # |-- tests
 # |   |-- __init__.py
 # |   |-- test1.py

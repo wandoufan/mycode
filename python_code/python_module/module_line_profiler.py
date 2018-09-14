@@ -32,9 +32,8 @@ if __name__ == '__main__':
     lp.print_stats()
 
 # 方法二：在Linux命令中使用
-# 'python -m line_profiler test.py.lprof' 运行命令时要加上 -m line_profiler参数
-# 注意代码test.py后面还要加上.lprof 
-# 或者使用命令'kernprof -l -v test.py'
+# 'kernprof -l test.py'运行程序，并得到一个记录时间信息的test.py.lprof文件
+# 'python -m line_profiler test.py.lprof' 获取时间信息，注意运行命令时要加上 -m line_profiler参数
 # 不需要在python代码中导入库，但仍然需要在相应的函数上面加上修饰器@profile
 @profile
 def test1():

@@ -1,77 +1,30 @@
-# set_discover = set()
-# set_ltp = set()
+# coding:utf-8
+from discover_word import word_segment
+import csv
 
-# set_discover.add('士兵')
-# set_discover.add('北京')
-# set_ltp.add('士兵')
-# set_ltp.add('上海')
+file_path = '/data/share/corpus/military/ner_data/news_data/all_news.csv'
 
-# print(set_discover)
-# # {'士兵', '北京'}
-# print(set_ltp)
-# # {'士兵', '上海'}
+def get_word(text):
 
-# set_result = set_discover - set_ltp
-# print(set_result)
-
-list1 = ['曾国藩', '非常', '失败', '自己', '信仰', '研究', '如果', '企业', '张宏杰', '方式',\
- '怎么', '内部', '能够', '罗泽南', '选择', '比较', '特别', '普通', '尚拙', '权术', '士兵', \
- '领教工坊', '打仗', '湘军', '我们', '任何', '绿营', '最后', '军队', '建立', '创建', '没有',\
-  '善于', '导致', '今天', '各种', '太平天国', '中国历史', '采取', '先要保', '原则', '件大事', \
-  '因为', '正规军', '认为', '>之间', '领导力', '战斗力', '取胜', '遇到', '形成', '制度', '治理', \
-  '理学', '背后', '相反', '往往', '只能', '主要', '起点', '从小', '经营', '地方', '里面', '读书人', \
-  '天资', '上看', '做事', '事业', '才能', '一>般', '每天']
-
-
-list1 = ['曾国藩', '非常', '失败', '自己', '信仰', '研究', '如果', '企业', '张宏杰', '方式', '怎么', '内部', \
-'能够', '罗泽南', '选择', '比较', '特别', '普通', '尚拙', '权术', '士兵', '领教工坊', '打仗', \
-'湘军', '我们', '任何', '绿营', '最后', '军队', '建立', '创建', '没有', '善于', '导致', '今天',\
- '各种', '太平天国', '中国历史', '采取', '先要保', '原则', '件大事', '因为', '正规军', '认为', \
- '之间', '领导力', '战斗力', '取胜', '遇到', '形成', '制度', '治理', '理学', '背后', '相反', \
- '往往', '只能', '主要', '起点', '从小', '经营', '地方', '里面', '读书人', '天资', '上看', \
- '做事', '事业', '才能', '一般', '每天']
-print(len(list1))
-
-set1 = set(list1)
-print(len(set1))
+    result = word_segment(text)
+    # print(result)
+    word_list = list(result.keys())
+    word_list.remove('code')
+    word_list.remove('message')
+    return word_list
 
 
 
+with open(file_path, 'rt') as csv_file:
+    content = csv.reader(csv_file)
+    result_list = []
+    for line in content:
+        text = line[2]
+        result_list.extend(get_word(text))
+        print('新词结果 ：', result_list)
+    result_set = set(result_list)
+    print('集合长度 : ', result_set)
+    print(result_set)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-# import re
-
-# list1 = ['。ab c', 'p2， p', 'S2, b', '1《个', '一y(i', '123', 'yi一', 'abc', 'p2p', '。中文']
-# for word in list1:
-#     # if re.match(r'[a-zA-Z]', word):
-#     #     print(word)
-#     # if re.match(r'^[0-9]+$', word):
-#     #     continue
-#     if re.search(r'[\s,<>/?:;\'\"[\]{}()\|~!$%^*\-_=，。《》、？：#&.+；“”‘’｛｝【】（）…￥！—┄－]', word):
-#         print('中间带有标点符号' ,word)
-
-
-
-# for text in list1:
-#     p_zh = re.compile(r'([\':&a-zA-Z0-9\u3400-\u9FCC ]+)+?', re.U)
-#     try:
-#         matched = p_zh.findall(text)
-#         res = ' '.join(matched).strip()
-#     except Exception:
-#         res = ''
-
-#     res = re.sub(r'\s+', ' ', res)
-
-#     print(res)

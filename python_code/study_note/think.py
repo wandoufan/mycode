@@ -172,3 +172,22 @@ print(num2)
 list1 = [1,2,3,4]
 num3 = sum(i for i in list1)
 print(num3)
+
+
+2018.9.6
+一般True和False不用==来判断，例如：debug为一个标志位参数，值为True或False
+# 不合适的写法：
+if debug == True:
+    pass
+if debug == False:
+    pass
+# 推荐的写法1：
+if debug:
+    pass
+else:
+    pass
+# 推荐的写法2：
+if debug is True:
+    pass
+if debug is False:
+    pass

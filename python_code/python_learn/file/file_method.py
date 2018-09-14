@@ -57,7 +57,7 @@ f.close()
 # 两种方法依次输出文本文件中的每一行
 f = open('test10.txt', 'r')
 # 1.通过f.readlines()方法获取列表
-# 注意：尽量不要使用readlines()方法，性能比较差
+# 注意：尽量不要使用readlines()方法，因为readlines()方法会把文件都一次性读入内存中，性能比较差
 # 尤其当文件很大时，打开文件会占用巨量内存
 for line in f.readlines():
 	print(line)

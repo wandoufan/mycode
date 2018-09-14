@@ -22,17 +22,19 @@ csv.field_size_limit(sys.maxsize)
 #reader(csvfile, dialect='excel', **fmtparams)
 # 第一个参数是可迭代的文件对象，第二个参数是编码风格，默认excel
 # 第三个是格式化参数覆盖之前dialect对象指定的编码风格
+# 也可以用参数encoding='utf-8'指定编码格式
 # 注意：open函数中用'rt'/'wt'，即要用文本模式读写，用'rb'/'wb'会报错
 with open('test.csv', 'rt') as csv_file:
     content = csv.reader(csv_file)
-    for i in content:# content 是'_csv.reader'类型的对象
-        print(i)# i是一个列表，包含文件中一行的数据
+    for line in content:# content 是'_csv.reader'类型的对象
+        print(line)# line是一个列表，包含表格中一行的数据
 
 
 # 写文件
 #writer(csvfile, dialect='excel', **fmtparams)
 # 第一个参数是可迭代的文件对象，第二个参数是编码风格，默认excel
 # 第三个是格式化参数覆盖之前dialect对象指定的编码风格
+# 也可以用参数encoding='utf-8'指定编码格式
 
 list1 = ['one','bule',3,'2008']
 list2 = ['two','yellow',-7,'2011']
