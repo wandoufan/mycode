@@ -65,6 +65,7 @@ setup(
 # build目录中有hello.cpython-36m-x86_64-linux-gnu.so文件(python经过cython编译之后的模块)
 # 注意：.so文件就是经过cython编译后的用来替代原来.pyx文件的，即编译产生.so文件后实际就不再需要.pyx文件了
 # 一定要把.so文件从build目录移动到和.pyx文件同一目录下，否则其他调用它的代码会找不到它
+# 另外编译除了产生.so文件之外还会产生很多其他的文件，都是不需要的
 
 # 4.在其他python代码或会话中直接调用hello.pyx中的函数
 from hello import test
@@ -162,6 +163,14 @@ def test(int num):
 # closures inside cpdef functions not yet supported
 # * 在整个pyx文件中被外部调用的接口函数(不在类中的单独的函数)声明也不能用cdef，否则会找不函数并报错：
 # cannot import name 'discover_new_word'
+
+
+# 注意：关于在cython代码中使用除法：
+# 参考：https://stackoverflow.com/questions/19537673/slow-division-in-cython
+# 在python中使用除法7/8 等于 0.875
+# 在cython中默认使用的除法是用的C语言中的除法，7/8 等于 0，即整型/整型结果也是整型
+# 如果需要在cython中使用除法，可以用1.0*7/8，相当于类型转换
+# 类似的地方还有很多，一些代码会按照C语言的语法进行处理，需要特别注意
 
 
 # 使用拓展:

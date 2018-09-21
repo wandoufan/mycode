@@ -21,7 +21,7 @@
 # 分支(branch)-分支就是每次提交组成的时间线，HEAD指向分支例如master,分支再指向当前最新一次的提交
 
 # git配置文件：
-# windows环境下配置文件在C:\Users\Administrator\.gitconfig文件中，可以设置git提交时的用户邮箱
+# windows环境下配置文件在C:\Users\Administrator\.gitconfig文件中，可以设置git提交时的用户名和用户邮箱
 # 在git bash中可以直接用命令查看'vim ~/.gitconfig'
 
 
@@ -66,7 +66,8 @@
 
 # ssh方式登录权限问题相关：
 # 使用ssh方式连接远程库之前需要在本地生成公钥文件并在github上登记
-# 'cd ~/.ssh'打开C:\Users\Administrator\.ssh路径(路径可能还不存在，运行下面命令会在生成该路径)
+# 'cd ~/.ssh'进入linux环境下的密钥目录
+# windows环境下打开C:\Users\Administrator\.ssh路径(路径可能还不存在，运行下面命令会在生成该路径)
 # 'ssh-keygen'在上面的路径中生成公钥文件id_rsa.pub和秘钥文件id_rsa，passphrase口令可以设置为空
 # 拷贝公钥文件的内容，打开https://github.com/settings/profile，在SSH key那栏选择New SSH Key，并将复制内容拷贝到其中
 # https://blog.csdn.net/mengmengz07/article/details/70157018

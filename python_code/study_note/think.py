@@ -191,3 +191,9 @@ if debug is True:
     pass
 if debug is False:
     pass
+
+2018.9.20
+灵活运用linux命令来减少实现自动化运行
+例如,需要比较同一个代码连续运行两次的结果是否一致：
+python test.py > a && python test.py > b && diff a b
+
