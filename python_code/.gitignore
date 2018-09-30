@@ -1,0 +1,6 @@
+.idea
+__pycache__/
+test.py
+test2.py
+test3.py
+result

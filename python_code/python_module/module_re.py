@@ -120,8 +120,8 @@ print(result)
 # print(result.span())
 
 # # 2.re.search(pattern,string,flags=0)扫描整个字符串并返回第一个成功的匹配
-# # 如果字符串的所有地方都匹配不成功就返回none，匹配成功返回一个匹配对象
-# # 所有参数和re.match()函数一致
+# 如果字符串的所有地方都匹配不成功就返回none，匹配成功返回一个匹配对象
+# 所有参数和re.match()函数一致
 # str_1 = 'welcome 欢迎 123 to 来到 123 beijing 北京 123'
 # result = re.search(r'[0-9]', str_1)
 # print(result)
@@ -207,33 +207,38 @@ print(result)
 
 # -------------------------------------------------------------------------------------
 # 实际用到的项目
-# 各种标点符号：
-# pattern = re.compile('[\\s\\d,.<>/?:;\'\"[\\]{}()\\|~!@#$%^&*\\-_=+a-zA-Z，。《》、？：；“”‘’｛｝【】（）…￥！—┄－]+')
-# doc = re.sub(pattern, ' ', doc)
-# pred_label = re.sub(r'__label__', '', pred_labels[0][0])
+# 1.匹配各种标点符号：
+pattern = re.compile('[\\s\\d,.<>/?:;\'\"[\\]{}()\\|~!@#$%^&*\\-_=+a-zA-Z，。《》、？：；“”‘’｛｝【】（）…￥！—┄－]+')
+doc = re.sub(pattern, ' ', doc)
+pred_label = re.sub(r'__label__', '', pred_labels[0][0])
 
-# 匹配各种标点符号：
-# pattern = re.compile(r'[*{}^……=%￥#@！!、,，。`;；？?_【】《》<>()（）~|&]+')
-# text = pattern.sub(' ', text)
-# pattern = re.compile('\[]')
-# text = pattern.sub(' ', text)
+# 2.匹配各种标点符号：
+pattern = re.compile(r'[*{}^……=%￥#@！!、,，。`;；？?_【】《》<>()（）~|&]+')
+text = pattern.sub(' ', text)
+pattern = re.compile('\[]')
+text = pattern.sub(' ', text)
 
-# word = '奔驰S级'
-# # 筛选出中文英文混合的词
-# if re.search(r'[a-z][\u4E00-\u9FA5]|[A-Z][\u4E00-\u9FA5]|[\u4E00-\u9FA5][a-z]|[\u4E00-\u9FA5][A-Z]', word) is not None:
-# 	print('yes')
-# else:
-# 	print('no')
+# 3.筛选出中文英文混合的词：
+word = '奔驰S级'
+if re.search(r'[a-z][\u4E00-\u9FA5]|[A-Z][\u4E00-\u9FA5]|[\u4E00-\u9FA5][a-z]|[\u4E00-\u9FA5][A-Z]', word) is not None:
+	print('yes')
+else:
+	print('no')
 
-# '^word'表示以word开头，'word$'表示以word结尾，在Linux命令中也可以直接使用
-# 正则表达式可以直接在linux命令中使用，例如：
-# 'grep -i [a-z] test1.txt' 选取test1.txt中所有包含英文字母的行
+# 4.判断字符串中是否仅包含英文字母
+def test(word):
+    is_english = 'yes'
+    for character in word:
+        if not bool(re.search(r'[a-z]|[A-Z]', character)):
+            is_english = 'no'
+    if is_english == 'yes':
+        return 'only by english'
 
-# 如何判断字符串中仅包含英文字母??
-# def test(word):
-#     is_english = 'yes'
-#     for character in word:
-#         if not bool(re.search(r'[a-z]|[A-Z]', character)):
-#             is_english = 'no'
-#     if is_english == 'yes':
-#         return 'only by english'
+# 5.去除HTML中的各种标签，只保留文字部分(标签都是<>形式)
+pattern = re.compile(r"<[^>]+>")
+result = pattern.sub('', text)
+
+# 6.从文本中提取出《》中间的书名，电影名等
+pattern = re.compile(r"《[^》]+》")
+result = pattern.findall(str1)
+name_list = [name.strip('《').strip('》') for name in result]

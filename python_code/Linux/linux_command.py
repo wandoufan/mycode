@@ -3,6 +3,8 @@
 # Linux命令大全：
 # http://www.runoob.com/linux/linux-command-manual.html
 
+# 注意：在Linux中ctrl+s是锁屏的快捷键，使用xshell连接Linux时如果手误按ctrl+s会造成vim卡死的假象，ctrl+q退出锁屏即可
+
 
 # 系统运行等级相关命令：
 # 'ctrl+Alt+F1~F6':切换文字界面登陆tt1~tt6终端(level 3)
@@ -368,7 +370,7 @@
 # sudo ufw enable #开启防火墙
 # sudo ufw status #查看防火墙状态
 
-
+# ---------------------------------------------------------------------------
 # 待整理命令：
 
 # 软件安装卸载相关的命令？？？：
@@ -411,3 +413,5 @@
 # 'ps -ef'可以查看主机所有运行的进程,'ps -ef | grep 过滤条件'
 
 # 'diff a b' 比较两个文件的不同
+
+# 替代top的htop，和替代grep的ag命令（https://github.com/ggreer/the_silver_searcher）

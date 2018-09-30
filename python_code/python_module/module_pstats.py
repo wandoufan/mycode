@@ -1,6 +1,9 @@
 # coding:utf-8
+
+
 # pstats模块用来分析python代码，一般和cProfile搭配使用，用来分析cProfile输出的文件内容
 # 参考文档：https://docs.python.org/3/library/profile.html
+
 # Stats对象的常用方法：
 # 1.strip_dirs(): 去掉无关的路径信息
 # 2.sort_stats(): 排序，
@@ -14,6 +17,7 @@
 # 4.print_callers('init') 输出有谁调用了'init'函数
 
 # ----------------------------------------------------------------------------------------
+# 使用示例
 import cProfile
 import pstats
 
