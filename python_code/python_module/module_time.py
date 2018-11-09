@@ -9,7 +9,13 @@ import time
 print(time.time())
 
 # 把时间戳转化为本地时间struct_time
-print(time.localtime())
+print(time.localtime())# struct_time对象
+print(time.localtime().tm_year)# struct_time对象的年属性值
+print(time.localtime().tm_mon)# struct_time对象的月属性值
+print(time.localtime().tm_mday)# struct_time对象的日期属性值
+print(time.localtime().tm_hour)# struct_time对象的小时属性值
+print(time.localtime().tm_min)# struct_time对象的分钟属性值
+print(time.localtime().tm_sec)# struct_time对象的秒属性值
 
 # 把时间戳转化为UTC时区(0时区)
 print(time.gmtime())

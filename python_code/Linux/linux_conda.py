@@ -26,6 +26,7 @@
 # 利用上面的conda命令可以直接把python安装到conda环境中
 # 'source activate python36' 进入python36环境
 # 'source deactivate python36' 退出python36环境
+# 备注：myenv是环境名，如python36; package是包名，如jieba
 # 'conda create -n myenv package' 用一个特殊的包创建新的环境
 # 'conda create -n myenv package=0.15.0' 用一个特殊版本的包创建新的环境
 # 'conda create --name myclone --clone myenv' 克隆当前的环境

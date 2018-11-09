@@ -4,11 +4,11 @@
 # fasttext是facebook开源的一个词向量与文本分类工具，典型应用场景是带监督的文本分类问题。
 # 提供简单而高效的文本分类和表征学习的方法，性能比肩深度学习而且速度更快。
 
-# 注意：fastText和fasttext不一样??
-# 在conda list中都显示为fasttext,但版本号不一样
-# 安装fasttext(版本0.8.3):
+# 安装方法：
+# 注意：两种方法安装的结果在conda list中都显示为fasttext,只有版本号不一样，但fastText和fasttext两者的功能并不一样
+# 1.安装fasttext(版本0.8.3):
 # 'pip install fasttext'
-# 安装fastText(版本0.8.22)：
+# 2.安装fastText(版本0.8.22)：
 # 'git clone https://github.com/facebookresearch/fastText.git'
 # 'cd fastText'
 # 'make'
@@ -65,6 +65,8 @@ import numpy as np
 # 其中model是模型，k代表输出可能性最大的前k个参数，
 # 返回结果为两个双重的
 
+# 利用fasttext可以训练出一个分类模型，只需要把大量的正确样例数据输入，就可以产出一个自动判断的模型
+# 后续再往模型中输入一个词就可以判断出是否是我们需要的词。可以用于数据后期清洗。
 
 
 

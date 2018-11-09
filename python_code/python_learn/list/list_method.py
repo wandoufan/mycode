@@ -13,6 +13,7 @@ alist.append('e')
 print(alist)
 
 # 在列表尾部追加一个列表
+# 注意extend()函数没有返回值，即不能赋值clist = alist.extend(blist)
 alist.extend(blist)
 print(alist)
 

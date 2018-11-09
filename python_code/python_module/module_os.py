@@ -15,12 +15,17 @@ print(os.getcwd())
 os.chdir('C:/Users/xyf/Documents/python 代码/test_10')
 # 特别地，os.chdir(..)返回上一层目录
 
-# listdir(path='.')函数返回包含指定目录中所有文件和子目录的列表
+# listdir(path='.')函数返回包含指定目录中所有文件和子目录的列表，注意这个方法不能对子目录的子目录进行逐层遍历
 # path参数可以指定列举目录，默认值为'.'，代表当前目录，也可以用'..'代表上一层目录
 print(os.listdir())
 print(os.listdir('C:/Users/xyf/Documents/python 代码'))
 print(os.listdir('.'))
 print(os.listdir('..'))
+
+# walk(top_path)函数遍历top参数指定路径下的所有子目录，并返回三元组(当前路径，包含子目录，包含的文件)
+# walk方法返回的是一个可以迭代的对象，每一个三元组元素都是元组类型，三元组中分别对应的是字符串，列表，列表
+for i in os.walk('C:/Users/xyf/Documents/python 代码/test_10'):
+    print(i)
 
 # mkdir(path)函数用来创建文件夹，如果文件夹存在，则返回FileExistError异常
 os.mkdir('C:/Users/xyf/Documents/python 代码/file_old')
@@ -44,10 +49,6 @@ os.rename('file_old', 'file_new')
 # system()函数用于执行脚本，以及调用操作系统自带的各种小工具,如计算器
 os.system(shell_cmd)
 os.system('calc')
-
-# walk(top_path)函数遍历top参数指定路径下的所有子目录，并返回三元组(路径，包含目录，包含文件)
-for i in os.walk('C:/Users/xyf/Documents/python 代码/test_10'):
-    print(i)
 
 # 以下是os.path模块中路径相关的函数
 # dirname()函数获取文件目录，即去掉路径中的文件名

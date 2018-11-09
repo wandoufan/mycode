@@ -16,10 +16,10 @@ import codecs
 # mix2t  混合转繁体（Mixed to Traditional Chinese） 
 # mix2s  混合转简体（Mixed to Simplified Chinese）
 
-# 简体转繁体
+# 繁体转简体
 cc = opencc.OpenCC('t2s')
 print(cc.convert('我愛北京天安門'))
-# 繁体转简体
+# 简体转繁体
 cc = opencc.OpenCC('s2t')
 print(cc.convert('我爱北京天安门'))
 

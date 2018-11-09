@@ -85,7 +85,7 @@ list1 = ['a', 'b', 'd', 'a', 'c', 'd', 'a']
 c = Counter(list1)
 print(dict(c))
 
-# 例子3： 需要在循环遍历过程中对字典的某些不符合条件的键值对进行删除
+# 例子3： 需要在循环遍历过程中对字典的某些不符合条件的键值对进行删除或者修改
 # 错误的写法:
 # 字典类型不支持在迭代中直接删除键值对(可以修改值)，否则会报错：dictionary changed size during iteration
 dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
@@ -95,11 +95,20 @@ for word in dict1:
         dict1[word] = 5
 print(dict1)
 # 正确的写法：
-# 把字典转换为列表类型就可以在循环过程中直接删除
+# 方法1：把字典转换为列表类型就可以在循环过程中直接删除
 dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
 for word in list(dict1):
     if dict1[word] < 3:
         del dict1[word]
+    if dict1[word] > 4:
+        dict1[word] += 1
+print(dict1)
+# 方法2：在列表中循环
+dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+keys = list(dict1.keys())
+for key in keys:
+    if dict1[key] < 3:
+        del dict1[key]
 print(dict1)
 
 # 例子4：计算字典中所有值的和

@@ -58,12 +58,16 @@ list_2 = sorted(list_1, key=lambda x:x[0])# 以每个元组的第一个元素为
 print(list_2)
 list_2 = sorted(list_1, key=lambda x:x[1])# 以每个元组的第二个元素为key进行排序
 print(list_2)
+
+# 例子1,以每个列表元素的长度为key进行排序，其中key可以为函数，但函数只能有一个参数
 list_1 = [[1,2,3],[1,2],[2,3,4],[1,2,3,4]]
 def f(x):
 	return len(x)
-# 以每个列表元素的长度为key进行排序，其中key可以为函数，但函数只能有一个参数
 list_2 = sorted(list_1,key=f)
 print(list_2)
+
+# 例子2,按照字典的value出现次数来排序
+result = sorted(dict1.items(), key=lambda x: x[1], reverse=True)
 
 # 另外，列表对象本身也带有排序方法,且方法的参数和sorted函数相同
 # L.sort(cmp=None, key=None, reverse=False) 不返回值
