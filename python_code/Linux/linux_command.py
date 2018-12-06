@@ -4,6 +4,9 @@
 # http://www.runoob.com/linux/linux-command-manual.html
 
 # 注意：在Linux中ctrl+s是锁屏的快捷键，使用xshell连接Linux时如果手误按ctrl+s会造成vim卡死的假象，ctrl+q退出锁屏即可
+# 相关快捷键：
+# ctrl+insert 复制
+# shift+insert 粘贴
 
 
 # 系统运行等级相关命令：
@@ -415,3 +418,11 @@
 # 'diff a b' 比较两个文件的不同
 
 # 替代top的htop，和替代grep的ag命令（https://github.com/ggreer/the_silver_searcher）
+
+# 文件相关的命令？？？：
+# ln -s  <源文件或文件夹>  <软链接地址>
+# 软链接可以是针对文件，也可以是针对目录
+# 当 我们需要在不同的目录，用到相同的文件时，我们不需要在每一个需要的目录下都放一个必须相同的文件，\
+# 我们只要在某个固定的目录，放上该文件，然后在其它的 目录下用ln命令链接（link）它就可以，不必重复的占用磁盘空间
+# 相当于windows系统中的快捷方式
+# 软链接的删除、修改？？软连接与硬链接的区别？？

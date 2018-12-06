@@ -14,7 +14,7 @@ file.close()
 # open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True)
 # file参数是文件名，如果不带路径会默认在当前文件夹寻找并打开
 # mode参数指定文件打开模式
-# encoding参数指定编码格式，常用encoding='utf-8'或encoding='gbk'
+# encoding参数指定编码格式，常用encoding='utf-8'或encoding='gbk'或'gb18030'或'ISO-8859-1'
 # F = open('test10.txt','r')#只读模式(默认)
 # F = open('test10.txt','w')#覆盖写入
 # F = open('test10.txt','x')#如果文件已存在，引发异常？？
@@ -80,6 +80,22 @@ print(f.tell())
 # 将文件的内容都放入列表中并输出出来
 print(list(f))
 
-
+# 读文件时常有编码错误，需要调整编码格式，解决该问题的样例(待研究chardet库？？)
+if not os.path.isfile(file_name):
+    logging.error('there is no file named %s, please check the path and input again!' % file_name)
+    return None
+else:
+    import chardet
+    f = open(file_name, 'rb')
+    result = chardet.detect(f.readline())
+    # print(result)
+    file_encodes = 'utf-8'
+    if 'utf' not in result['encoding']:
+        file_encodes = 'gb18030'
+    f.close()
+    f = open(file_name, encoding=file_encodes)
+    lines = f.readlines()
+    f.close()
+    text = ' '.join(lines)
 
 

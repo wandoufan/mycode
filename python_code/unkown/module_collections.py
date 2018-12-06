@@ -11,7 +11,13 @@
 
 from collections import Counter
 
-# 以列表中的元素为key,出现次数为value写入一个字典中：
+
+# defaultdict可以在字典中值不存在的情况下不报错，而返回一个固定的值
+word_dict[word]
+
+
+
+# 例子1以列表中的元素为key,出现次数为value写入一个字典中：
 
 # 方法1：
 list1 = ['a', 'b', 'd', 'a', 'c', 'd', 'a']

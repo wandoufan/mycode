@@ -53,3 +53,18 @@
 # |   |-- __init__.py
 # |   |-- test1.py
 # |   |-- test2.py
+
+
+# ├── app  # 代码目录
+# │   ├── configs　# 应用的配置文件
+# │   ├── utils　# 工具包
+# │   ├── implemention.py　# 实现逻辑
+# │   └── server.py　# 主程序入口
+# ├── goo.json　# goo的配置文件
+# ├── log.config.yaml　# log的配置文件
+# ├── protos　# proto文件+生成的protobuf python文件目录
+# ├── README.md
+# ├── requirements.txt # 生产依赖
+# ├── requirements.dev.txt # 开发依赖
+# ├── tests # 测试目录
+# └── script # 脚本目录

@@ -12,6 +12,7 @@ str9 = 'hello,world,python!'
 
 # zfill(width) 方法返回指定长度的字符串，原字符串右对齐，前面填充0，其中width参数设定字符串长度
 # zfill方法常用于遍历带有数字编号的文件名
+# zfill方法的对象是字符串，不是整型数字
 for i in range(1,110):
     print('file_%s' % str(i).zfill(3))
     
@@ -30,10 +31,10 @@ print(str6.swapcase())
 # 计算部分字符在字符串中出现的次数
 print(str1.count('b'))
 
-# 判断指定范围的字符串是否指定的关键字为开头
+# 判断指定范围的字符串是否指定的关键字为开头，返回True或False
 print(str1.startswith('a'))
 
-# 判断指定范围的字符串是否以指定的关键字为结尾
+# 判断指定范围的字符串是否以指定的关键字为结尾，返回True或False
 print(str1.endswith('obj', 1, 6))
 print(str1.endswith('e', 0, 20))
 

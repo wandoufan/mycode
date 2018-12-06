@@ -15,7 +15,7 @@ for i in range(10):
 	i+=1
 end_time = datetime.datetime.now()
 run_time = (end_time-start_time).seconds# seconds方法把时间换算为秒
-
+# 备注：时间格式一般如0:00:00.151117，时间过短转换为秒格式会直接变为0
 
 # datetime模块中提供的常量：
 print(datetime.MINYEAR)

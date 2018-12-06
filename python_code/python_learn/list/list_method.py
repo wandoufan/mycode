@@ -13,7 +13,8 @@ alist.append('e')
 print(alist)
 
 # 在列表尾部追加一个列表
-# 注意extend()函数没有返回值，即不能赋值clist = alist.extend(blist)
+# 注意:extend()函数没有返回值，即不能赋值clist = alist.extend(blist)!!
+# extend()的返回值是None
 alist.extend(blist)
 print(alist)
 
@@ -118,4 +119,11 @@ for i in range(5):
     func(list1)
 print(list1)
 
-
+# 例子3：判断两个列表之间是否具有包含关系
+# 注意：元素与列表之间可以用in方法判断包含关系，但列表之间不能直接用in方法判断
+list1 = ['a', 'b', 'c', 'd']
+list2 = ['b', 'c']
+if len(list2) < len(list1):
+    for i in range(len(list1)):
+        if list2 == list1[i:i+len(list2)]:
+            print('yes', i, i+len(list2))

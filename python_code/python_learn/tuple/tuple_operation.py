@@ -6,7 +6,8 @@ print(type(tuple_1))
 
 # 元组创建赋值
 atuple = (123, 'abc', 3.14, ['alist', 456], 3 - 4j)
-btuple = (123,)  # 当元组只有一个元素时需要加一个逗号，否则会被当作是其他数据类型
+# 注意：当元组只有一个元素时需要加一个逗号，否则会被当作是其他数据类型
+btuple = (123,)  
 ctuple = (1, 2, 3, 4, 5, 6, 7, 8, 9)
 print(tuple('abc'))
 print(type(btuple).__name__)

@@ -100,8 +100,6 @@ dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
 for word in list(dict1):
     if dict1[word] < 3:
         del dict1[word]
-    if dict1[word] > 4:
-        dict1[word] += 1
 print(dict1)
 # 方法2：在列表中循环
 dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
@@ -128,3 +126,10 @@ stop_word_dict2 = {'b':3, 'c':2, 'e':2}
 for k2 in stop_word_dict2.keys():
     stop_word_dict1[k2] = stop_word_dict2[k2] + stop_word_dict1.get(k2, 0)
 print(stop_word_dict1)
+
+# 例子5：将字典按照value大小进行排序输出
+dict1 = {'a':3,'b':2,'c':1,'d':4}
+sort_list = sorted(dict1.items(), key=lambda x:x[1], reverse=True)
+# 备注：sorted函数的输出结果是以元组为元素的列表，可以直接再转换回字典结构
+dict2 = dict(sort_list)
+print(dict2)

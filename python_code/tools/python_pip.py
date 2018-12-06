@@ -17,3 +17,9 @@
 # 'pip list' 查看当前环境中的python包列表
 # 注意查看到的都是安装的第三方包，不包含python内置的库
 # 'pip list --outdated'或'pip list -o'查看可以进行更新的包
+# 'pip install -r requirements.txt'一次性安装requirements中要求的所有包
+
+# 在linux中还可以通过下载安装包的方式来安装
+# git clone https://github.com/liu946/goo.git
+# cd goo
+# (sudo) ./install.sh

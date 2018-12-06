@@ -26,7 +26,7 @@ import numpy as np# 惯例改名为np
 # ndmin参数：指定生成数组的最小维度
 a = np.array([1, 2, 3, 4])# 用列表创建一维数组
 print(a)
-a = np.array((1, 2, 3, 4))# 用列表创建一维数组
+a = np.array((1, 2, 3, 4))# 用元组创建一维数组
 print(a)
 a = np.array([[1, 2, 3, 4], ['a', 'b', 'c', 'd'], ['A', 'B', 'C', 'D']])# 用列表创建三维数组
 print(a)
@@ -43,7 +43,7 @@ print(a.ndim)# 维数一直是2？？？2维代表平面？？理解维数的概
 # ndarray.shape 返回数组的形状，返回一个元组类型，元组的长度即为数组的维数
 print(a.shape)
 # ndarray.shape也可以用于调整数组的大小
-a.shape = (3, 3)
+# a.shape = (3, 3)
 
 
 

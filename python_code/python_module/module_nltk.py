@@ -1,4 +1,6 @@
-# nltk模块是用来对文本语言进行处理,更适用于英文,使用前需要先安装
+# coding:utf-8
+# nltk(Natural Language Toolkit)模块提供分词、词性标注、命名实体识别等多个NLP功能
+# nltk更适用于英文,使用前需要先安装
 
 # https://www.cnblogs.com/zephyr-1/p/6035310.html?utm_source=itdadao&utm_medium=referral
 # http://www.nltk.org/
@@ -53,7 +55,7 @@ from nltk.util import ngrams
 from collections import Counter
 str1 = '1234567891234561234123'
 for i in range(5):
-    b = ngrams(str1, i)# 即bigram模型
+    b = ngrams(str1, i)
     for j in b:
         print(j)
 # 感觉该方法只是一个简单的切分脚本，并没有实现Ngram的定义，没有实现预测的功能？

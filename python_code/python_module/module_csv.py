@@ -25,19 +25,19 @@ csv.field_size_limit(sys.maxsize)
 # 注意：open函数中用'rt'/'wt'，即要用文本模式读写，也可以直接用'r/w'，用'rb'/'wb'会报错
 with open('test.csv', 'rt') as csv_file:
     content = csv.reader(csv_file)
-    for line in content:# content 是'_csv.reader'类型的对象
-        print(line)# line是一个列表，包含表格中一行的数据
+    for line in content:  # content 是'_csv.reader'类型的对象
+        print(line)  # line是一个列表，包含表格中一行的数据
 
 
 # 写文件
 #writer(csvfile, dialect='excel', **fmtparams)
 # 第一个参数是可迭代的文件对象，一般是句柄；第二个参数是编码风格，默认excel
 # 第三个是格式化参数覆盖之前dialect对象指定的编码风格
-# 也可以用参数encoding='utf-8'指定编码格式
+# 也可以用参数encoding指定编码格式(ISO-8859-1/utf-8/gbk等)
 
-list1 = ['one','bule',3,'2008']
-list2 = ['two','yellow',-7,'2011']
-list3 = ['three','red',6,'2015']
+list1 = ['one', 'bule', 3, '2008']
+list2 = ['two', 'yellow', -7, '2011']
+list3 = ['three', 'red', 6, '2015']
 
 with open('D:/test.csv', 'wt') as csv_file:
     csv_writer = csv.writer(csv_file, dialect='excel')
@@ -49,7 +49,8 @@ with open('D:/test.csv', 'wt') as csv_file:
 # 注意：如果文件't.csv'事先存在，调用writer函数会先清空原文件中的文本，再执行writerow/writerows方法。
 
 # 写文件时可以一次写入多行数据，而且每行包含多列元素
-list1 = [['姓名', '性别', '班级'], ['张三', '男', '三班'], ['李四', '女', '一班'], ['王五', '', '二班'], ['', '', '四班']]
+list1 = [['姓名', '性别', '班级'], ['张三', '男', '三班'], [
+    '李四', '女', '一班'], ['王五', '', '二班'], ['', '', '四班']]
 path = 'C:/mywork/a.csv'
 # 注意：打开文件时设置参数newline=''，否则表格每两行之间会空一行
 with open(path, 'w', newline='') as file:
