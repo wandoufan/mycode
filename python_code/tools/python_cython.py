@@ -3,11 +3,12 @@
 # Cython是一个快速生成Python扩展模块的编译器，语法层面上属于是Python语法和C语言语法的混合，
 # Cython可以将程序性能瓶颈部分的Python代码(.pyx文件)编译为一个.c文件，.c文件再被C编译器
 # 编译成一个.so文件，这样程序的其他部分就可以直接调用.so文件来获得性能上的提升
-# 除了提升性能之外，cython另一重要功能就是可以直接在python代码中调用C代码
+# 除了提升性能之外，cython另一重要功能就是可以隐藏自己的有效代码，将原来暴露的.py文件转换为一个二进制的.so文件
+# 在交付代码给客户时可以采用这种方式进行代码加密隐藏
 
 # 注意：cython和cpython的区别：
 # cython是提升性能的编译器，cpython是解释python代码的解释器，除了名字接近外之间没有关系
-# 当我们从Python官方网站下载并安装好Python3.x后，我们就直接获得了一个官方版本的解释器CPython
+# 当我们从Python官方网站下载并安装好Python3.x后，我们就直接获得了一个官方版本的解 释器CPython
 # 这个解释器是用C语言开发的，所以叫CPython，在命令行下运行python就是启动CPython解释器
 # CPython是python最常用也是默认的解释器，支持绝大多数的第三方库
 # 另外的其他解释器还有IPython、PyPy、Jython、IronPython等
@@ -29,6 +30,10 @@
 # https://www.cnblogs.com/freeweb/p/6548208.html
 # http://cython.org/
 # http://docs.cython.org/en/latest/src/quickstart/build.html
+
+# 备注：以下示例是对单个文件进行编译， 正常项目中一般存在多个py文件，需要写一个自动处理的脚本？？？
+# 为什么要把py文件改名pyx？？？
+# cmdclass={'build_ext': build_ext}？？？
 
 # -----------------------------------------------------------------------------------------------
 

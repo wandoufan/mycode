@@ -1,12 +1,12 @@
 # coding:utf-8
 
-# python自带了dict、set、list、tuple等常用容器类型
-# collections库额外提供了一些容器类型，包含：
+# python自带了dict、set、list、tuple等常用容器类型, collections库额外提供了一些容器类型，包含：
 # OrderedDict类：排序字典，是字典的子类
 # namedtuple()函数：命名元组，是一个工厂函数
 # Counter类：为hashable对象计数，是字典的子类
 # deque：双向队列
 # defaultdict：使用工厂函数创建字典，使不用考虑缺失的字典键
+# 备注:collection库是系统自带库，不需要安装
 
 
 from collections import Counter

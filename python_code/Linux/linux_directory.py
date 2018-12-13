@@ -1,5 +1,7 @@
 # 主要记录Linux的各个文件目录
 
+# 注意：/data 指根目录下的data目录，./data 指当前目录下的data目录，./.data 指当前目录下的隐藏data目录
+
 # Linux的三层目录：
 # /(root,根目录)：与开机系统有关的;
 # /usr(unix software resourse)：与软件安装执行有关;

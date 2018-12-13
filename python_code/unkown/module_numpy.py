@@ -16,9 +16,9 @@
 import numpy as np# 惯例改名为np
 
 
-# 1.创建Ndarray对象
+# 1.Ndarray对象
 # numpy.array(object, dtype = None, copy = True, order = None, subok = False, ndmin = 0)
-# object参数：指定用于创建Ndarray对象的数据来源，可以是一个列表或其他数据类型
+# object参数：指定用于创建Ndarray对象的数据来源，可以是一个列表、元组或其他数据类型
 # dtype参数：指定数组元素中的数据类型,如complex, float, str, list等
 # copy参数：指明对象是否需要复制
 # order参数：指定创建数组的样式，C为行方向，F为列方向，A为任意方向(默认)
@@ -28,7 +28,7 @@ a = np.array([1, 2, 3, 4])# 用列表创建一维数组
 print(a)
 a = np.array((1, 2, 3, 4))# 用元组创建一维数组
 print(a)
-a = np.array([[1, 2, 3, 4], ['a', 'b', 'c', 'd'], ['A', 'B', 'C', 'D']])# 用列表创建三维数组
+a = np.array([[1, 2, 3, 4], ['a', 'b', 'c', 'd'], ['A', 'B', 'C', 'D']])# 用双层列表创建2维数组
 print(a)
 a = np.array((1, 2, 3, 4), ndmin=2)# 指定数组最小维度为2
 print(a)
@@ -37,13 +37,91 @@ print(a)
 
 # 2.Ndarray对象的属性
 # 数组的维数称为秩(rank)，一维数组的秩为 1，二维数组的秩为 2，以此类推
+# 用双层列表创建的数组即为二维数组，用三层列表创建的数组即为三维数组
 a = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
 # ndarray.ndim 返回数组的维数，即数组的秩
-print(a.ndim)# 维数一直是2？？？2维代表平面？？理解维数的概念？？？
-# ndarray.shape 返回数组的形状，返回一个元组类型，元组的长度即为数组的维数
+print(a.ndim)
+# ndarray.shape 返回数组的形状即n行m列，返回一个元组类型，元组的长度即为数组的维数
 print(a.shape)
-# ndarray.shape也可以用于调整数组的大小
-# a.shape = (3, 3)
+# ndarray.size 返回数组中元素的总个数，即n*m
+print(a.size)
+# ndarray.dtype 返回数组对象的元素类型
+print(a.dtype)
+# ndarray.itemsize 返回数组对象的每个元素大小,以字节为单位
+print(a.itemsize)   
+# ndarray.flags 返回数组对象的内存信息,详细含义参考菜鸟教程
+print(a.flags)
+# ndarray.real 返回数组元素的实部
+print(a.real)
+
+# 3.创建Ndarray数组
+# Ndarray对象除了上述numpy.array方法外，还可以用以下几种方法创建
+# numpy.empty(shape, dtype = float, order = 'C')创建一个指定形状、数据类型且未初始化的数组
+# order参数有'C'和'F'两个选项，分别代表行优先和列优先
+# 注意：数组未初始化时，数组中元素为随机值
+print(np.empty([3, 2], dtype=int))
+# numpy.zeros(shape, dtype = float, order = 'C')创建一个指定大小的数组，数组元素以0来填充
+# order参数有'C'和'F'两个选项，分别代表C的行数组和F的列数组
+print(np.zeros([3, 2]))
+# numpy.ones(shape, dtype = None, order = 'C')创建一个指定大小的数组，数组元素以1来填充
+print(np.ones([3, 2]))
+
+# 4.从已有数组中创建数组
+# numpy.asarray 类似 numpy.array，但 numpy.asarray 只有三个参数
+# numpy.asarray(a, dtype = None, order = None)
+a = np.asarray([1, 2, 3])# 用列表创建数组
+print(a)
+a = np.asarray([(1, 2, 3), (4, 5, 6)])# 用列表元组创建数组
+print(a)
+
+# 5.从数值范围创建数组
+# numpy.arange(start=0, stop, step=1, dtype)
+# arange方法从指定范围内创建数组
+# 参数分别为：起始(默认为0)、终止、步长(默认为1)、数据类型
+print(np.arange(1, 15, 2))
+# np.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)
+# linspace方法创建一个由等差数列组成的一维数组
+# num参数为数组元素个数，默认为50个；endpoint参数设置数列是否包含stop值
+print(np.linspace(1, 22, 10, dtype=int))
+# np.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None)
+# logspace方法创建一个由等比数列组成的数组
+# start参数为base**start; stop参数为base**stop；base参数为对数log的底数，默认以10为底
+print(np.logspace(0, 6, num=7, base=2))
+
+# 6.Ndarray数组的切片和索引
+# ndarray数组对象可以通过下标进行索引(索引值也是从0开始)，并通过内置的slice函数从原数组中切割出一个新的数组
+a = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
+# slice(start, stop, step), start/stop为起始/终止索引值
+print(a[slice(1, 3, 1)])
+# ndarray数组也可以通过类似列表的方式来直接切片
+print(a[1][2])
+print(a[1:3])
+print(a[1:])
+# 切片中还可以通过省略号...来表示所有元素
+print(a[...,1])# 返回第二列元素
+print(a[1,...])# 返回第二行元素
+print(a[...,1:])# 返回第二列以后的元素
+print(a[1,2])# 返回1行2列的元素
+
+print('\n', '------------------------------', '\n')
+
+# 7.Ndarray数组的高级索引
+# ndarray数组对象除了用上述的整数或切片作为索引外，还可以采用整数数组索引、布尔索引及花式索引
+a = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
+print(a)
+# 整数数组索引，第一个数组中是目标元素的行号，第二数组中的是目标元素的列号，两个数组组合为目标元素的坐标
+print(a[[0, 0, 2, 2], [0, 3, 0, 3,]])# 返回数组的四个角的元素
+print(a[1:3, 1:3])# 返回数组中间四个元素
+print(a[1:3, [1,2]])# 返回数组中间四个元素
+# 布尔索引可以通过布尔运算
+
+
+
+
+
+
+
+
 
 
 
