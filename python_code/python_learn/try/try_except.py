@@ -1,5 +1,12 @@
 # try语句可以捕获语句范围内的异常,包括try-except，try-except-finally，raise
 
+# 注意：try-except结构并不能支持所有的错误类型，如语法错误SyntaxError
+# 即如果try-except内部出现语法错误，IDE仍然会报错
+# try:
+#     dict1=['port':80,'number':'3.14']
+# except Exception as reason:
+#     print(reason)
+
 
 # 对于所有的错误的类型都可以用Exception来代替
 try:
@@ -41,7 +48,7 @@ except:
     print('出错了！')
 
 
-# try-finally语句中无论是否异常,都可以将finally语句块的内容实现,如重要的关闭保存工作
+# try-except-finally语句中无论是否异常,都可以将finally语句块的内容实现,如重要的关闭保存工作
 try:
     f = open('C:/Users/xyf/Documents/python 代码/test_10/test10.txt', 'r')
     a = 1 + 'b'
@@ -64,7 +71,10 @@ try:
 except:
     print('出错了！')
 
-# 例子1：try-except经常和循环搭配使用，即使循环中某次出现问题还可以继续执行完循环操作
+
+# ------------------------------------------------------------------------
+
+# 使用样例1：try-except经常和循环搭配使用，即使循环中某次出现问题还可以继续执行完循环操作
 for i in range(10):
     try:
         print(i)

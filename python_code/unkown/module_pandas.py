@@ -20,6 +20,7 @@ from pandas import DataFrame# 注意首字母是大写
 list_1 = [2,4,-6,7,]
 s = Series(list_1)
 print(s)
+
 # values属性获取数值
 print(s.values)
 # index属性获取索引

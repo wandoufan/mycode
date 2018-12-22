@@ -1,20 +1,20 @@
-# 常见的error类型
+# try-except结构支持的error类型
 
-# Exception:所有的错误类型都可以用Exception来代替
+# Exception:所有的错误类型都可以用Exception来代替，即常见错误的基类
 
 # AssertionError:断言语句失败
 # assert关键字后边的条件为假时，程序将停止并返回AssertionError异常，一般用作测试程序的检查点
-list1 = [1, 2, 3]
+# list1 = [1, 2, 3]
 # assert len(list1) > 3
 
 # AttributeError:试图访问的对象属性不存在
-# list1.fishc()
+# list1.abc()
 
 # IndexError:索引超出序列范围
 # print(list1[3])
 
 # KeyError:字典查找一个不存在的关键字
-dict1 = {'port': 80, 'number': '3.14'}
+# dict1 = {'port': 80, 'number': '3.14'}
 # print(dict1['color'])
 
 # NameError:试图访问一个不存在的变量
@@ -24,9 +24,6 @@ dict1 = {'port': 80, 'number': '3.14'}
 # f=open('not_exist.txt','r')
 # for each_line in f:
 #    print(each_line)
-
-# SyntaxError:Python语法错误
-# dict1=['port':80,'number':'3.14']
 
 # TypeError：不同类型数据间的无效操作
 # a=1+'b'

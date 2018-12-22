@@ -1,4 +1,13 @@
+# 主要介绍python对象的布尔值以及逻辑运算符
+
 # 判断一个对象的布尔值，其中not为'非'
+
+# 8.关于逻辑运算符：
+# x or y: if x is true,then x,else y   返回x或y的值
+# x and y: if x is true,then y,else x   返回x或y的值
+# not x    返回True或False
+
+
 # 所有的空对象，括号，值为零的所有数字等，它们的布尔值都是false
 # 以下类型的数据布尔值都是false
 print(not None)
@@ -10,6 +19,14 @@ print(not [])
 print(not ())
 print(not '')
 print('\n')
+
+# bool函数用来判断对象的布尔值
+print(bool(0))
+print(bool([]))
+print(bool(-2))
+print(bool(1))
+print(bool(3))
+print(bool('hello'))
 
 # 判断两个对象的布尔值是否相等
 print('abcde' < 'abbde')
@@ -55,3 +72,5 @@ print(id(x))
 print(id(y))
 print(x is y)
 print(x is not y)
+
+

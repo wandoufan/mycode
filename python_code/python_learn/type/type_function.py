@@ -1,59 +1,32 @@
+# 主要介绍类型判断函数type()及相关的类型转换函数
 
-#type()以一个对象作为参数，并返回该对象的类型
-
-print(type(4).__name__)
-
+# 1.type()以一个对象作为参数，并返回该对象的类型
 print(type(4.0))
-
 print(type('$*!'))
-
-a=type('hello,world!')
-print(a)
-
-b=type(type(4))
-print(b)
-
+print(type(type(4)))
+# 其中type对象的__name__属性可以返回简短的类型属性
+print(type(4).__name__)
 print('\n')
 
-#str()函数将对象的内容转化为字符串，相当于引号''
-a=str(True)
-print(a[1])
-
-b=str(3.1415)
-print(b[1])
-
-c=str([1,2,'b',3,'c',4])
-print(c[0])
-print(c[1])
-print(c[2])
-
-d=str(0xff)
-print(d)
-
+# 2.isinstance()用来判断对象是否是某种指定的数据类型，如果是返回True,如果不是返回False
+# 第一个参数是要判断的对象，第二个参数是指定的数据类型(可以有多个类型)
+num = 3.14
+print(isinstance(num, (int, float, complex)))  # 判断对象是否是个数字
 print('\n')
 
-#repr()函数与str()函数大致相同
-d=repr(3.1415)
-print(d[1])
-
-
-#用来转换对象类型
+# 3.转换对象类型的函数
+# 转换为整型数，对象必须是整数或浮点数
 print(int(3.6))
-print(float(4))
-print(complex(3))
-print(list('abcd'))
+# 转换为浮点数，对象必须是整数或浮点数
+print(float(4)) 
+# 转换为复数，对象必须是数字 
+print(complex(3)) 
+# 转换为列表，对象必须是可迭代对象 
+print(list('abcd')) 
+# 转换为元组，对象必须是可迭代对象  
 print(tuple('abcd'))
-print(bool(0))
-print(bool([]))
-print(bool(-2))
-print(bool(1))
-print(bool(3))
-print(bool('hello'))
-
-print(type(int(3.2)).__name__)
-
-
-
-
-
-
+# 转换为字符串，相当于对对象直接加引号'' 
+print(str([1, 2, 'b', 3, 'c', 4]))
+# 转换为字符串，相当于对对象直接加引号'' 
+print(repr(3.1415))
+print('\n')
