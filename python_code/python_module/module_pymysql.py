@@ -1,6 +1,6 @@
 # coding:utf-8
 
-# PyMySQL模块是python3中用来连接操作mysql数据库的模块
+# PyMySQL模块是python3中用来连接操作mysql数据库的模块，可以实现在python中直接使用sql语句
 # 在Python2中则使用mysqldb模块
 # 参考资料：
 # http://www.runoob.com/python3/python3-mysql.html
