@@ -2,8 +2,10 @@
 # SQL(structured query lanuguage)，即结构化查询语句
 
 # mysql安装
-# https://www.mysql.com/downloads/
+# linux环境下安装：
 # http://www.runoob.com/mysql/mysql-install.html
+# windows环境下安装：
+# https://www.mysql.com/downloads/
 # 在官网下载MySQL Community Edition版本，安装文件为mysql-installer-community-8.0.11.0.msi
 # 安装时会有check requirements,如果有未打钩的选项表示不符合安装前环境要求；
 # 对于不符合的选项，点击execute可以直接下载要求中需要的软件环境
@@ -80,21 +82,3 @@
 # 4.不能使用mysql关键字作为数据库名，数据表名
 # 5.windows下对大小写不敏感，但Linux下对大小写敏感，建议用小写
 
-# mysql的三种数据类型：
-# 1.数字类型,包括整型和浮点型,最常用的包括：int,float,double
-# 2.字符串类型，包括：
-# a.普通的文本字符串类型(固定长度0~255的char型和变长的varchar型)
-# 如果需要快速的性能，选择char型
-# 如果需要节省空间，选择varchar型
-# b.可选类型(存储长文本的text型和存储声音图像等二进制数据的blob型)
-# 如果搜索的内容不区分大小写，可以使用text型
-# 如果搜索的内容区分大小写，可以blob型
-# c.特殊类型(set型和enum型)
-# set('value1','value2',.....)只允许选择一个值，如性别字段
-# enum('value1','value2',.....)允许选多个值，如兴趣字段
-# 3.时间日期类型，包括：
-# date,格式为2018-07-09
-# time,格式为08:10:30
-# datetime,格式为2018-07-09 08:10:30
-# year,格式为2018或18
-# timestamp,时间标签
