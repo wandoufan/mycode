@@ -16,16 +16,16 @@ passwd = '000000'
 database = 'db_test'
 
 # 连接数据库
-connection = pymysql.connect(host, user, passwd, database, port=3307)
+connection = pymysql.connect(host, user, passwd, database, port=3306)  # mysql的默认端口是3306
 
 # 使用cursor方法创建一个游标对象cursor
 cursor = connection.cursor()
 cursor.execute('use db_test')# 使用execute方法执行sql语句，命令末尾不用加分号;
 
-# 创建新的数据表
+# 1.创建新的数据表
 cursor.execute('create table if not exists teacher (id int auto_increment primary key)')
 
-# 数据表中插入数据
+# 2.数据表中插入数据
 try:
 	result = cursor.execute("insert into student if not exists values(007,'丁七','1999-02-02','二班')")
 	connection.commit()# 提交修改
@@ -34,7 +34,7 @@ except:
 # 注意: commit方法和rollback方法保证了系统的安全性
 # 注意：每次增删改等操作后都要commit方法进行提交，否则操作结果无法保存
 
-# 查询数据表中的数据
+# 3.查询数据表中的数据
 try:
 	cursor.execute('select * from student')
 	# fetchone方法获取查询的第一个结果
@@ -48,14 +48,14 @@ try:
 except Exception as reason:
 	print('error: select data failed\n',reason)
 
-# 修改数据表中的数据
+# 4.修改数据表中的数据
 try:
 	cursor.execute("update student set grade='三年级' where id=009;")
 	
 except Exception as reason:
 	print('error: select data failed\n',reason)
 
-# 删除数据表中的数据
+# 5.删除数据表中的数据
 try:
 	cursor.execute('delete from student where id=007;')
 	

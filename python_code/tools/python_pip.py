@@ -4,6 +4,11 @@
 # 'curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py'
 # 'python get-pip.py'
 
+# 在linux中还可以通过下载安装包的方式来安装
+# git clone https://github.com/liu946/goo.git
+# cd goo
+# (sudo) ./install.sh
+
 # pip本身的更新
 # On Linux or macOS:
 # 'pip install -U pip'
@@ -19,7 +24,3 @@
 # 'pip list --outdated'或'pip list -o'查看可以进行更新的包
 # 'pip install -r requirements.txt'一次性安装requirements中要求的所有包
 
-# 在linux中还可以通过下载安装包的方式来安装
-# git clone https://github.com/liu946/goo.git
-# cd goo
-# (sudo) ./install.sh

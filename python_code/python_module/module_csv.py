@@ -6,6 +6,9 @@
 # 与Excel文件不同，CSV文件中：值没有类型，所有值都是字符串;不能指定字体颜色等样式;
 # 不能指定单元格的宽高，不能合并单元格;没有多个工作表;不能嵌入图像图表;
 
+# 注意：csv库主要用于*.csv格式的文件，如果用来读取*.xlsx格式的文件可能会有编码等方面的错误
+# 如果是*.xlsx格式的文件需要转换为*.csv格式后再进行操作(用另存为的方式转换格式，而不是直接修改文件后缀)
+
 
 import csv
 import sys
@@ -30,7 +33,7 @@ with open('test.csv', 'rt') as csv_file:
 
 
 # 写文件
-#writer(csvfile, dialect='excel', **fmtparams)
+# writer(csvfile, dialect='excel', **fmtparams)
 # 第一个参数是可迭代的文件对象，一般是句柄；第二个参数是编码风格，默认excel
 # 第三个是格式化参数覆盖之前dialect对象指定的编码风格
 # 也可以用参数encoding指定编码格式(ISO-8859-1/utf-8/gbk等)

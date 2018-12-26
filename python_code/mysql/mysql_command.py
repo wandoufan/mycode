@@ -30,7 +30,7 @@
 
 # 2.3 修改
 # 修改数据库的字符集
-# 'alter database db_name default default character set gbk' 
+# 'alter database db_name default character set gbk' 
 # 备注：没有命令可以直接修改数据库名字，数据库改名需要通过复杂的操作才能实现
 
 # 2.4 查看
@@ -168,6 +168,7 @@
 
 # 5.2.字符串类型，包括：
 # a.普通的文本字符串类型(固定长度0~255的char型和变长的varchar型)
+# 注意：在定义char和varchar时都要声明长度，否则默认长度只有1
 # 如果需要快速的性能，选择char型
 # 如果需要节省空间，选择varchar型
 # b.可选类型(存储长文本的text型和存储声音图像等二进制数据的blob型)
@@ -186,15 +187,58 @@
 
 
 # 6.mysql的查询语句
+# ？？？
+
+
+# 7.编码格式
+# 7.1 查看编码格式
+# 查看数据库编码格式
+# 'show create datebase db_name;'
+# 查看数据表编码格式
+# 'show create table tb_name'
+
+# 7.2 创建时指定编码格式
+# 创建数据库
+# 'create database db_name character set=GBK;' 
+# 创建数据表
+# 'create table tb_test (id int) character set=utf8;'
+# 注意：如果创建时不指定编码格式，则默认编码格式是latin1，不支持中文
+
+# 7.3 修改编码格式
+# 修改数据库的编码格式
+# 'alter database db_name default character set gbk' 
+# 修改数据表的编码格式
+# 'alter table tb_name convert to character set utf8;'
 
 # ----------------------------------------------------------------------
 
 # 第七章SQL中的运算符及流程控制语句：
-# ???
+# ？？？
 
 # SQL中的常用函数：
-# ？？
+# ？？？
 
 # mysql导出数据：
+# 导出数据库
+# ？？？
+# 导出数据表
+# "select * from tb_word into outfile '/var/lib/mysql-files/topic_word.txt';"
+# 示例：导出为CSV格式，数据之间用逗号隔开
+# ？？？
+# 示例：在linux环境(不用sql语句)下直接用命令导出数据
+# 'mysqldump -u userName -p  dabaseName  > fileName.sql'？？？ 
+# 注意：mysql默认只允许导出到指定路径，导出其他路径会有关于'secure-file-priv'的安全报错
+# 查看数据导出路径设置
+# "show global variables like '%secure%';"
 
 # mysql导入数据：
+# 导入数据库
+# ？？？
+# 导入数据表
+# ？？？
+
+# 其他常用命令：
+# 1.查看mysql的系统参数
+# 'show global variables'
+# 2.查看mysql端口(默认端口是3306)
+# "show global variables like 'port'"

@@ -377,10 +377,14 @@
 # 待整理命令：
 
 # 软件安装卸载相关的命令？？？：
+# yum和apt-get是Linux中两个常用软件安装命令，绝大部分软件都可以用这两个命令进行安装，相当于应用商店
+# 'yum search python'搜索yum支持的python版本
+# 'yum install python'安装python
 # 'apt-get'只能用于ubuntu还是也需要安装才能使用
 # 'apt-get update'ubuntu下更新软件源，一般在下载新软件之前可能需要更新一下
 # 'apt-get install software_name'安装软件
 # 'apt-get purge software_name'卸载软件
+
 # 'make'命令？？
 # 经常会下载一些安装包到本地，解压后进入目录直接输入'make'命令就可以安装
 
