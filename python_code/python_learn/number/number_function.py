@@ -47,3 +47,9 @@ print(chr(97))
 print(chr(65))
 print(chr(48))
 print(chr(33))
+
+# -------------------------------------------------------------------------
+
+# 例子1：用python实现依次输出a到z
+for i in range(ord('a'), ord('a') + 26):
+    print(chr(i))

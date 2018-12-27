@@ -140,7 +140,7 @@
 # 示例：把教师表中名字等于c的数据删除
 # 'delete from teacher_info where name='c';'
 # 示例：把教师表中前5行的数据删除
-# 'delete teacher_info limit 5;'
+# 'delete from teacher_info limit 5;'
 # 删除数据表中所有的数据(相当于清空操作)
 # 'truncate [table] tb_name;'
 
@@ -186,11 +186,34 @@
 # timestamp,时间标签
 
 
-# 6.mysql的查询语句
-# ？？？
+# 6.mysql的查询语句：
+# 6.1 单表查询
+# 'select column_name,... from tb_name [where 条件表达式] [group by 分组字段名] [order by 排序字段名] [having 条件表达式] [limit 输出个数]'
+# 查看数据表中所有的字段的值
+# 'select * from tb_name;'
+# 查看数据表中指定字段的值
+# 'select column_name,... from tb_name;'
+# 示例： 查询学生表中年龄大于10的学生
+# 'select * from student_info where age > 10;'
+
+# 6.2 聚合函数查询
+# 聚合函数根据一组数据求出一个值，聚合函数的结果只能根据选定行中非空的值进行计算，null值会被忽略
+
+# 6.3 多表查询
+# 多表查询又称为连接查询，包括内连接，外连接(左连接、右连接、全连接)
+# 示例：
+# 'select student_info.name, teacher_info.name from student_info, teacher_info where student_info.name = teacher_info.name;'
+# 示例：如果不加where条件，得到结果个数会是一个笛卡尔乘积，
+# 'select student_info.name, teacher_info.name from student_info, teacher_info;'
+
+# 6.4 子查询
+
+# 6.5 合并查询结果
+
+# 6.6 正则表达式查询
 
 
-# 7.编码格式
+# 7.编码格式：
 # 7.1 查看编码格式
 # 查看数据库编码格式
 # 'show create datebase db_name;'
@@ -210,35 +233,71 @@
 # 修改数据表的编码格式
 # 'alter table tb_name convert to character set utf8;'
 
-# ----------------------------------------------------------------------
 
-# 第七章SQL中的运算符及流程控制语句：
-# ？？？
-
-# SQL中的常用函数：
-# ？？？
-
-# mysql导出数据：
-# 导出数据库
-# ？？？
-# 导出数据表
-# "select * from tb_word into outfile '/var/lib/mysql-files/topic_word.txt';"
+# 8.数据导入导出：
+# 8.1 sql语句导出
+# sql语句导出数据表(可以导出为文本、XML、HTML等格式)
+# 'select * from tb_name into outfile file_path [option,...]'
+# 常用option如下
+# fields terminated by '字符'  将字段按指定字符分隔，默认为制表符\t
+# fields [optionally] enclosed by '字符'  将每个字段两边加上指定的字符，一般用于添加引号""，默认不添加字符
+# lines starting by '字符'  给每一行数据开头添加字符，默认不添加字符
+# lines terminated by '字符'  给每一行数据结尾添加字符，默认为换行符\n
+# 示例：导出为txt文本格式，每一行以>开头
+# "select * from tb_word into outfile '/var/lib/mysql-files/topic_word.txt' lines starting by '>';"
 # 示例：导出为CSV格式，数据之间用逗号隔开
-# ？？？
-# 示例：在linux环境(不用sql语句)下直接用命令导出数据
-# 'mysqldump -u userName -p  dabaseName  > fileName.sql'？？？ 
-# 注意：mysql默认只允许导出到指定路径，导出其他路径会有关于'secure-file-priv'的安全报错
+# "select * from tb_word into outfile '/var/lib/mysql-files/topic_word.csv' fields terminated by ',';"
+# 注意：使用sql语句默认只允许导出到指定路径(Linux命令导出没有路径限制)，导出其他路径会有关于'secure-file-priv'的安全报错
 # 查看数据导出路径设置
 # "show global variables like '%secure%';"
+# 备注：sql中没有找到直接导出数据库的语句
 
-# mysql导入数据：
-# 导入数据库
-# ？？？
-# 导入数据表
-# ？？？
+# 8.2 linux命令导出
+# linux命令导出数据库(包含所有表结构和表中数据)
+# 'mysqldump -u user_name -p db_name > file_path'
+# 示例：导出db_test数据库到指定路径
+# 'mysqldump -u root -p db_test > /root/data/db_test.sql'
+# linux命令导出数据库(只导出表结构不含表中数据)
+# 'mysqldump -u user_name -p -d db_name > file_path'
+# linux命令导出数据表(包含表结构和表中数据)
+# 'mysqldump -u user_name -p db_name tb_name > file_path'
+# 示例：导出db_test数据库中的tb_word数据表到指定路径
+# 'mysqldump -u root -p db_test tb_word > /root/data/tb_test.sql'
+# linux命苦导出数据表(只导出表结构不含表中数据)
+# 'mysqldump -u user_name -p -d db_name table_name > file_path' 
+
+# 8.3 sql语句导入数据
+# sql语句导入数据表(导入前数据表必须已经存在且字段格式与要导入的数据文件一致)
+# 'load data infile file_path into table tb_name'
+# 示例：将指定文件中的数据导入tb_word数据表中
+# 'load data infile '/var/lib/mysql-files/test' into table tb_word;'
+# 注意：使用sql语句导入数据时同样只能从mysql指定的路径下导入数据文件
+
+# 8.4 linux命令导入数据库
+# linux命令导入数据库(导入前数据库必须已经存在)
+# 'mysql -u user_name -p db_name < database_file_path'
+# linux命令导入数据表(不需要指定导入的数据表)
+# 'mysql -u user_name -p db_name < table_file_path'
+# 备注：导入的sql文件都应该是*.sql格式的
 
 # 其他常用命令：
 # 1.查看mysql的系统参数
 # 'show global variables'
 # 2.查看mysql端口(默认端口是3306)
 # "show global variables like 'port'"
+# 3.获取数据版本号
+# 'select version();'
+# 4.获取当前数据库名
+# 'select database();'或'select schema();'
+# 5.获取当前用户名
+# 'select user();'或'select system_user();'或'select current_user();'
+# 6.获取mysql服务器的连接状况
+# 'select connection_id();'
+
+
+# ----------------------------------------------------------------------
+
+# 待完善：
+# 1.数据库索引
+# 2.数据库触发器
+# 3.数据库视图

@@ -6,7 +6,8 @@
 # http://www.runoob.com/python3/python3-mysql.html
 # https://pypi.org/project/PyMySQL/
 
-# 注意:这个模块有坑，虽然模块名本身是大写PyMySQL,但import时要用小写pymysql，否则报错找不到模块
+# 注意：这个模块有坑，虽然模块名本身是大写PyMySQL,但import时要用小写pymysql，否则报错找不到模块
+# 注意：除了查询外，增删改等操作都需要用commit()函数来提交修改
 
 import pymysql
 
@@ -51,14 +52,14 @@ except Exception as reason:
 # 4.修改数据表中的数据
 try:
 	cursor.execute("update student set grade='三年级' where id=009;")
-	
+	connection.commit()# 提交修改
 except Exception as reason:
 	print('error: select data failed\n',reason)
 
 # 5.删除数据表中的数据
 try:
 	cursor.execute('delete from student where id=007;')
-	
+	connection.commit()# 提交修改
 except Exception as reason:
 	print('error: select data failed\n',reason)
 

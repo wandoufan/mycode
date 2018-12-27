@@ -2,18 +2,19 @@
 
 
 # 1.关于斜杠和转义的用法：
-# 引号表示注释，\n表示字符串换行
-print('hi there,this a long message for you\
-	that goes over multiple lines.. \nyou will find out soon that triple quotes in python allows this kind of fun!\n')
 # 斜杠\表示转义，也可以表示代码本身的换行，用于代码太长时换行，可以直接忽略
 list1 = [1, 2, 3, 4,\
          5, 6, 7, 8]
 print(list1)
-# 原始字符串操作符r/R来表示特殊字符
-print(r'\n')  # 输出特殊字符
+# \n表示字符串换行，相当于空出一行
+print('hi there,this a long message for you\
+	that goes over multiple lines.. \nyou will find out soon that triple quotes in python allows this kind of fun!\n')
 # \t表示tab，可以使字符串中间隔开一个tab的距离
 print('关于特殊符号\t的解释')
-
+# \r表示回车，相当于换行
+print('!!!!\r????')
+# 原始字符串操作符r或R来表示特殊字符
+print(r'\n')  # 输出特殊字符
 
 # 2.python中字符串的单引号，双引号，三引号的区别：
 # 单引号可以直接表示字符串，但遇到字符串包含单引号时必须使用转义符才能表示
