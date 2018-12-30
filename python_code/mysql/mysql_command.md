@@ -1,6 +1,7 @@
 # 主要记录mysql的一些命令：
 
-* 参考资料：http://www.runoob.com/mysql/mysql-install.html
+* 参考资料
+> http://www.runoob.com/mysql/mysql-install.html
 * 注意：在命令中要尽量加入'if exists'和'if not exists'来减少报错
 * 注意：命令中的{}部分表示任选其一，[]部分表示可选可不选
 * 注意：所有的数据库名，表名，表字段都是区分大小写的

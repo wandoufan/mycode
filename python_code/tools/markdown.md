@@ -1,11 +1,11 @@
 Markdown 是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式,文件后缀是.md。  
 一般项目中的readme等等的说明性文件都使用markdown来编写，在sublime中编辑markdown需要提前安装插件。  
 Markdown使用参考资料：  
-https://www.appinn.com/markdown/  
-https://www.jianshu.com/p/0130ad32a08d  
-https://blog.csdn.net/bat67/article/details/72804251  
-http://mahua.jser.me/  
-https://www.cnblogs.com/liugang*vip/p/6337580.html  
+> https://www.appinn.com/markdown/  
+> https://www.jianshu.com/p/0130ad32a08d  
+> https://blog.csdn.net/bat67/article/details/72804251  
+> http://mahua.jser.me/  
+> https://www.cnblogs.com/liugang*vip/p/6337580.html  
 
 1.标题  
 markdown中总共有6级标题，#越多代表标题级别越低，标题字体越小
@@ -51,6 +51,7 @@ b. 测试
 5.引用  
 在文本前加上「 > 」即可将普通文本变成引用文本，一行中的多个「 > 」可以表示多层引用  
 引用的嵌套层级没有限制，「 > 」也不一定要连在一起  
+通常对网址变成引用格式
 > 一级引用  
 >> 二级引用  
 >>> 三级引用  

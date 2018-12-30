@@ -1,11 +1,11 @@
 # 主要记录mysql的一些基本知识点：
-* SQL(structured query lanuguage)，即结构化查询语句
+* SQL(structured query lanuguage)，即结构化查询语句，属于关系型数据库
 
 ## mysql安装
 * linux环境下安装：
-* http://www.runoob.com/mysql/mysql-install.html
+> http://www.runoob.com/mysql/mysql-install.html
 * windows环境下安装：
-* https://www.mysql.com/downloads/
+> https://www.mysql.com/downloads/
 * 在官网下载MySQL Community Edition版本，安装文件为mysql-installer-community-8.0.11.0.msi
 * 安装时会有check requirements,如果有未打钩的选项表示不符合安装前环境要求；
 * 对于不符合的选项，点击execute可以直接下载要求中需要的软件环境
