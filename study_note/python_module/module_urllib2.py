@@ -2,6 +2,8 @@
 
 # urllib2模块提供URL相关的功能，它提供了非常简单的借口用来抓取各种协议的URL
 # urllib2模块可以简单的看做urllib模块的升级版
+# 参考资料：
+# https://docs.python.org/3/library/urllib.request.html#module-urllib.request
 
 # urllib2模块和request模块二者功能非常接近，区别是：
 # request模块是基于urllib3的，urllib模块是python的内置模块，而request模块是第三方的模块
@@ -21,16 +23,16 @@ from urllib import robotparser# 专门用来解析robots.txt文件
 url = 'https://www.baidu.com'
 response = request.urlopen(url)
 print(type(response))
-# 返回请求的结果
+# 返回请求的结果(请求成功是OK)
 print(response.reason)
-# 返回请求状态码
+# 返回请求状态码(请求成功是200)
 print(response.code)
 print(response.getcode())
 # 返回对象的URL路径
 print(response.url)
 print(response.geturl())
 # 返回网页基本信息
-# print(response.info())
+print(response.info())
 # 返回网页的内容，注意不加编码格式会产生乱码
 print(response.read().decode('utf-8'))
 
