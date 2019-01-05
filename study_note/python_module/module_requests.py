@@ -35,62 +35,71 @@ r5 = requests.head('https://www.baidu.com')
 r6 = requests.options('https://www.baidu.com')
 
 
-# 2.传递url查询参数：
-# requests库的请求方法可以通过params关键字参数以字典格式来指定请求数据/请求参数/查询参数
-dict1 = {'key1': 'value1', 'key2': 'value2',
-         'key3': None, 'key4': ['value3', 'value4']}
-r7 = requests.get("https://www.baidu.com", params=dict1)
+# 2.设置查询参数：
+# params参数接收字典格式的请求数据/请求参数/查询参数
+my_params = {
+    'key1': 'value1',
+    'key2': 'value2',
+    'key3': None, 'key4': ['value3', 'value4']
+}
+r = requests.get("https://www.baidu.com", params=my_params)
 # 每个参数可以支持多个值，将每个值加入列表结构中即可
 # 注意：值为None的键不会被添加到URL的查询字符串里
-print(r7.url)
 
 
-# 3.获取响应消息：
+# 3.设置请求头部header：
+# header参数接收字典格式的请求头部数据，用于将脚本伪装成浏览器来欺骗http服务器
+# 注意: 定制头部header的优先级低于某些特定的信息源，即自行设置的参数不一定都能生效
+my_headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
+}
+r = requests.get('https://movie.douban.com/chart', headers=my_headers)
+
+
+# 4.设置cookie
+# cookies参数接收字典格式的cookie数据
+my_cookies = {
+    'username': 'test',
+    'password': '000000'
+}
+r = requests.get('https://movie.douban.com/chart', cookies=my_cookies)
+
+
+# 5.设置超时时间
+# timeout参数接收以秒计数的数字，requests在超过设定时间后就停止等待响应
+# 注意：timeout参数仅针对连接过程，在连接后下载响应内容的时间不受timeout的影响
+r = requests.get('https://movie.douban.com/chart', timeout=0.5)
+
+
+# 4.获取响应消息：
+r = requests.get('https://movie.douban.com/chart')
 # 响应对象包含以下属性：
-# url属性
-# ....
+# 获取对象的url
+print(r.url)
+# 获取对象的状态码
+print(r.status_code)
+# 获取请求错误的具体原因(仅当状态码为4xx或5xx的情况)
+print(r.raise_for_status())
+# 获取编码格式
+print(r.encoding)
+# 设置编码格式
+r.encoding = 'ISO-8859-1'
+# 获取响应的消息报头(返回一个字典结构)
+print(r.headers)
+print(r.headers['Date'])
+# 获取响应中cookie(返回一个字典结构)
+print(r.cookies)
+print(r.cookies['bid'])
+# 获取对象的响应内容
+# print(r.text)
+# 获取二进制的响应内容
+# print(r.content)
+# requests中有一个内置的json解码器，用来处理json数据
+# print(r.json())
 
-# r是返回的请求的状态码
-r8 = requests.get('https://movie.douban.com/chart')
-# 通过r.text读取服务器响应的内容
-# 响应内容是str格式的，相当于网页源码的内容，可以进一步进行分割处理
-print(r8.text)
-# 通过r.encoding获得/修改编码格式
-print(r8.encoding)
-r8.encoding = 'ISO-8859-1'
-# 对于非文本内容，r.content可以以字节形式获取二进制的响应内容
-print(r8.content)
-# 通过r.json读取服务器响应的内容
-# requests内置了json解码器，r.json处理json数据
-# print(r8.json())
 
-
-# 原始响应内容：
-# 如果想获取来自服务器的原始套接字响应，可以访问r.raw,需要在请求中把关键字stream置为True
-# r9 = requests.get('https://movie.douban.com/chart', stream=True)
-# print(r9.raw)
-# print(r9.raw.read(10))
-
-
-# 定制请求头：
-# 如果想为请求添加HTTP头部，传递一个字典给headers参数即可
-# dict2 = {'user-agent': 'my-app/0.0.1'}
-# r1 = requests.get('https://api.github.com/some/endpoint', headers=dict2)
-# print(r1.url)
-
-# ---------------------------------------------------------------------------------------------
-# 例子1：传送文本内容作为参数，并输出返回结果
-
-# import requests
-# import json
-
-# file_path = 'C:/mywork/yunfu/nlp_project/discover_new_word/测试数据/zhoujielun.txt'
-
-# with open(file_path, 'r', encoding='utf-8') as f:
-#     text = f.read()
-# dict1 = {'text': text}
-# r1 = requests.get('http://service.yunfutech.com:17889/discoverword', data=json.dumps(dict1))
-
-# print(r1.url)
-# print(type(r1.json))
-# print(r1.json())
+# 5.原始响应内容：
+# 如果想获取来自服务器的原始套接字响应，需要提前在请求中把关键字stream置为True
+r = requests.get('https://movie.douban.com/chart', stream=True)
+print(r.raw)
+print(r.raw.read(10))
