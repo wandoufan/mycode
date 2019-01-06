@@ -43,7 +43,7 @@ my_params = {
     'key3': None, 'key4': ['value3', 'value4']
 }
 r = requests.get("https://www.baidu.com", params=my_params)
-# 每个参数可以支持多个值，将每个值加入列表结构中即可
+# 每个参数可以支持多个值，当一个参数有多个值时，多个值可以放入一个列表中
 # 注意：值为None的键不会被添加到URL的查询字符串里
 
 

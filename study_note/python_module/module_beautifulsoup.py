@@ -94,32 +94,20 @@ print(soup.select('a#footer'))  # 查找所有a标签中id属性的值为'footer
 print(soup.select('#footer, #icp'))  # 查找所有标签中id属性的值为'footer'或'icp'的标签
 
 # 4.通过标签中某个属性的值查找标签
+print(soup.select('span[class="title"]'))  # 查找所有span标签中class属性的值为'title'的标签
+# 其中属性的值可以与正则表达式结合进行模糊匹配
+print(soup.select('span[class^="t"]'))  # 查找所有span标签中class属性的值以't'为开头的标签
+print(soup.select('span[class$="e"]'))  # 查找所有span标签中class属性的值以'e'为结尾的标签
+print(soup.select('span[class*="i"]'))  # 查找所有span标签中class属性的值中包含'i'的标签
 
 # 5.通过标签中是否存在某个属性查找标签
+print(soup.select('span[class]'))  # 查找所有含有class属性的span标签
 
-# 6.通过标签逐层查找下面的子孙标签
+# 6.通过标签逐层查找下面的子孙标签，多个标签之间用空格隔开
+print(soup.select('body div span'))  # 查找body标签中div标签中的span标签
 
 # 7.通过标签查找下面的直接子标签
-
-# 4.组合查找
-# 不同标签中间用空格隔开，例如查找body标签中的link标签
-# print(len(soup.select('body link')))
-# print(len(soup.select('link')))
-
-# 5.属性查找
-# 要查找的属性用中括号，属性和tag要属于同一节点，中间不加空格
-# 例如查找class值为lnk-doubanapp的a标签
-# print(soup.select('a[class=lnk-doubanapp]'))
-# 例如查找body标签中class值为no的div标签，不同的标签中间要加空格
-# for div_tag in soup.select('body div[class=no]'):
-#   print(div_tag)
-# 用find方法来实现上面的功能(可以发现find方法更麻烦)：
-# body_tag = soup.find_all('body')[0]
-# div_tags = body_tag.find_all('div')
-# for div_tag in div_tags:
-#   if 'class' in div_tag.attrs:
-#       if 'no' in div_tag.get('class'):
-#           print(div_tag)
+print(soup.select('a > span'))  # 查找a标签下面的直接子标签span
 
 
 # 三.4种对象及其属性:

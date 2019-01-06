@@ -1,18 +1,29 @@
-# random模块用于产生随机数序列
-
+# random模块用于产生随机数序列，提供随机相关的功能
 
 import random
 
-print(random.randint(1, 5))  # 返回两个参数之间的随机整型
-print(random.randrange(1, 9, 2))  # 返回1，9之间且step为2的随机整型
-print(random.uniform(0.9, 3.14))  # 返回两个参数之间的随机浮点数
-print(random.random())  # 返回0.0和1.0之间的随机浮点数
-a = 'hello'
-print(random.choice(a))  # 返回给定序列里的一个随机元素
 
-# random.seed()方法可以使多次生成的随机数相同
+# 1.返回两个整数之间的随机整数
+print(random.randint(1, 5))
+
+# 2.返回两个整数之间且固定步长的随机整数
+print(random.randrange(1, 9, 2))
+
+# 3.返回两个浮点数之间的随机浮点数
+print(random.uniform(0.9, 3.14))
+
+# 4.返回0.0和1.0之间的随机浮点数
+print(random.random())
+
+# 5.返回给定序列里的一个随机元素
+string = 'hello'
+print(random.choice(string))
+num_list = [1, 2, 3, 4]
+print(random.choice(num_list))
+
+# 6.random.seed()方法可以使多次生成的随机数相同
 count = 0
-while count<5:
-	random.seed(1)
-	print(random.random())
-	count+=1
+while count < 5:
+    random.seed(1)
+    print(random.random())
+    count += 1

@@ -123,7 +123,7 @@ Connection: Keep-Alive
 * 即get方法提交的数据会在地址栏中显示出来，而以post方法提交地址栏不会有改变
 * 2.get方法提交的数据大小会有限制(因为部分浏览器对url的长度有限制)，post方法提交的数据没有大小限制
 * 备注：http协议本身对传输的数据和url的大小没有限制
-* 3.get方法提交的数据会明文出现在url上，post方法的安全性比get方法要高
+* 3.get方法提交的数据会明文出现在url上，而post方法提交的数据不会出现在url中，post方法的安全性比get方法要高
 * 4.get方式需要使用Request.QueryString来取得变量的值，而post方式通过Request.Form来获取变量的值
 
 

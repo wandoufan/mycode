@@ -22,6 +22,9 @@ from urllib import robotparser# 专门用来解析robots.txt文件
 # 1.urllib.request.urlopen(url, data=None, [timeout, ]*, cafile=None, capath=None, cadefault=False, context=None)
 # urlopen()方法打开一个url对象或string对象或request对象，并返回一个响应体
 # data参数以字典格式指定请求数据，当data参数非空值时，http会执行post请求方法而不是get请求方法
+# 注意：data一定要是bytes对象，dict需要用parse.urlencode方法进行处理
+# 注意：传递请求数据{start:200, filter:None}后使用的是post方法，因此请求数据是不会显示在url中的
+# 因此response.url仍然是'https://movie.douban.com'，但实际上已经访问到了'https://movie.douban.com/top250?start=200&filter='
 # timeout参数用于自定义超时时间，如果没有指定，会采用默认超时时间
 url = 'https://www.baidu.com'
 response = request.urlopen(url)
@@ -43,8 +46,9 @@ print(response.read().decode('utf-8'))
 # 2.urllib.request.Request(url, data=None, headers={}, origin_req_host=None, unverifiable=False, method=None)
 # Request类提供抽象的url请求，它相比urlopen方法功能更加全面，可以自己添加请求头部header信息
 # data参数以字典格式指定请求数据，当data参数非空值时，http会执行post请求方法而不是get请求方法
+# 备注：一个参数有多个值时，多个值可以放入一个列表中
 # header参数接收字典格式的请求头部数据，用于将脚本伪装成浏览器来欺骗http服务器
-dict1 = {'Id': ['123'], 'type': ['test1,test2,test3'], 'Date1': ['2018-03-25'], 'Date2': ['2018-04-26']}
+dict1 = {'Id': '123', 'type': ['test1,test2,test3'], 'Date1': '2018-03-25', 'Date2': '2018-04-26'}
 my_dict = parse.urlencode(dict1).encode('utf-8')
 my_headers = {  
     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
