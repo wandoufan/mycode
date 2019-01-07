@@ -1,6 +1,4 @@
 # encoding:utf-8
-
-
 from urllib import request  # 用来打开和读取url
 from urllib import error  # 包含由url.request产生的异常
 from urllib import parse  # 用来解析url
@@ -28,6 +26,7 @@ def parse_html(html, url_dict):
         img_tag = tag.select('img')
         name = img_tag[0]['alt']
         url_dict[name] = address
+    return url_dict
 
 
 def get_movie_info(movie_url):
@@ -35,7 +34,9 @@ def get_movie_info(movie_url):
     获取单个电影的详细信息
     """
     info_dict = {}
-    response = requests.get(movie_url)
+    my_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
+    response = requests.get(movie_url, headers=my_headers)
+    # print(response.status_code)
     soup = BeautifulSoup(response.text, 'html.parser')
     script_tag = soup.select('script[type="application/ld+json"]')[0]
     movie_info = json.loads(script_tag.string, strict=False)
@@ -64,25 +65,26 @@ def get_all_movie(base_url):
         #            'Host': 'www.douban.com'
         #            }
         if i == 0:
-            response = requests.post(base_url, headers=my_headers)
-            print(response.status_code)
+            response = requests.get(base_url, headers=my_headers)
+            # print(response.status_code)
             content = response.text
-            parse_html(content, url_dict)
+            url_dict = parse_html(content, url_dict)
             time.sleep(random.uniform(1, 2))
         else:
             my_param = {}
             my_param['start'] = i * 25
             my_param['filter'] = None
-            response = requests.post(base_url, params=my_param, headers=my_headers)
-            print(response.status_code)
+            response = requests.get(base_url, params=my_param, headers=my_headers)
+            # print(response.status_code)
             content = response.text
-            parse_html(content, url_dict)
+            url_dict = parse_html(content, url_dict)
             time.sleep(random.uniform(1, 2))
 
-    print(len(url_dict))
+    # print('总电影个数:', len(url_dict))
     for name, movie_url in url_dict.items():
-        print(name, movie_url)
+        # print(name, movie_url)
         movie_dict[name] = get_movie_info(movie_url)
+        time.sleep(random.uniform(1, 2))
     return movie_dict
 
 
@@ -97,14 +99,24 @@ def store_sql(movie_dict):
     connection = pymysql.connect(host, user, passwd, database, port=3306)
     cursor = connection.cursor()
     cursor.execute('use douban_movie')
-
+    for name, info in movie_dict.items():
+        name = '"""' + name + '"""'
+        url = '"""' + info['url'] + '"""'
+        director = '"""' + info['director'] + '"""'
+        actor = '"""' + str(info['actor_list']) + '"""'
+        description = '"""' + info['description'] + '"""'
+        date = '"""' + info['date'] + '"""'
+        score = info['score']
+        command = 'insert movie_info(name, url, director, actor, description, date, score) values(%s, %s, %s, %s, %s, %s, %s)' %(name, url, director, actor, description, date, score)
+        cursor.execute(command)
+        connection.commit()
 
 
 if __name__ == '__main__':
     base_url = 'https://movie.douban.com/top250'
     movie_dict = get_all_movie(base_url)
-
-
+    with open('movie_dict.text', 'w') as f:
+        json.dump(movie_dict, f)
 
 
 
