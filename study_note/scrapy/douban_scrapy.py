@@ -1,4 +1,5 @@
 # encoding:utf-8
+# 爬取豆瓣电影top250的详细信息
 from urllib import request  # 用来打开和读取url
 from urllib import error  # 包含由url.request产生的异常
 from urllib import parse  # 用来解析url
@@ -36,7 +37,7 @@ def get_movie_info(movie_url):
     info_dict = {}
     my_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
     response = requests.get(movie_url, headers=my_headers)
-    # print(response.status_code)
+    print(response.status_code)
     soup = BeautifulSoup(response.text, 'html.parser')
     script_tag = soup.select('script[type="application/ld+json"]')[0]
     movie_info = json.loads(script_tag.string, strict=False)
@@ -66,7 +67,7 @@ def get_all_movie(base_url):
         #            }
         if i == 0:
             response = requests.get(base_url, headers=my_headers)
-            # print(response.status_code)
+            print(response.status_code)
             content = response.text
             url_dict = parse_html(content, url_dict)
             time.sleep(random.uniform(1, 2))
@@ -75,14 +76,14 @@ def get_all_movie(base_url):
             my_param['start'] = i * 25
             my_param['filter'] = None
             response = requests.get(base_url, params=my_param, headers=my_headers)
-            # print(response.status_code)
+            print(response.status_code)
             content = response.text
             url_dict = parse_html(content, url_dict)
             time.sleep(random.uniform(1, 2))
 
-    # print('总电影个数:', len(url_dict))
+    print('总电影个数:', len(url_dict))
     for name, movie_url in url_dict.items():
-        # print(name, movie_url)
+        print(name, movie_url)
         movie_dict[name] = get_movie_info(movie_url)
         time.sleep(random.uniform(1, 2))
     return movie_dict
@@ -115,8 +116,8 @@ def store_sql(movie_dict):
 if __name__ == '__main__':
     base_url = 'https://movie.douban.com/top250'
     movie_dict = get_all_movie(base_url)
-    with open('movie_dict.text', 'w') as f:
-        json.dump(movie_dict, f)
+    # with open('movie_dict.text', 'w') as f:
+    #     json.dump(movie_dict, f)
 
 
 

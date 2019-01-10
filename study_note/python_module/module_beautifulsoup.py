@@ -20,6 +20,7 @@ content = response.text
 soup = BeautifulSoup(content, 'html.parser')
 
 # 备注：beautifulsoup中最常用的是find方法和select方法
+# 备注：既可以soup.find/select，也可以tag.find/select
 
 
 
@@ -123,11 +124,14 @@ print(soup.select('a > span'))  # 查找a标签下面的直接子标签span
 # print(soup.a.get('class'), soup.a['class'])# 可以按照字典方法去获取标签的某一个属性
 
 # 2.NavigableString,就是标签内部的文字部分
-# print(type(soup.p.string))
-# 利用soup.标签名.string就可以获取标签中的文字，但当标签中文字有多个部分时可能返回None
-# print(soup.p.string)
-# 使用get_text()方法同样可以获取标签中的文字，在标签中文字包含多个部分时仍能有效返回文字
-# print(soup.p.get_text())
+# 使用tag.string就可以获取标签中的文字，返回一个字符串类型
+# 注意：如果tag下面还包含多个子节点，tag就无法确定.string方法该调用哪个子节点的内容，会返回一个None
+# print(tag.string)
+# 使用tag.get_text()方法同样可以获取标签中的文字，在tag下面包含多个子节点时仍能有效返回文字，返回一个字符串类型
+# 注意：返回的字符串会把tag中的文字和子标签中文字拼接起来
+# print(tag.get_text())
+# 使用tag.contents可以获取tag下面包括文字和子标签在内的所有内容，返回一个列表结构
+# print(tag.contents)
 
 # 3.BeautifulSoup,表示的是一个html文档的全部内容,可以当做一个特殊的Tag
 # print(type(soup))
