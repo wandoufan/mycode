@@ -1,40 +1,79 @@
-#python的函数都是有返回值的，即使返回值为None
-#函数参数分为形式参数和实际参数；形参指函数括号中定义的变量名，实参指函数调用实际传递进来的值
+# 主要介绍python中函数的一些基本知识点
 
 
-#关键字参数是在定义时通过参数名指定要赋值的参数，避免搞错参数的顺序而导致函数调用出错
-def add(num1,num2):
-    '''注释：add()函数用于参数相加'''
-    return num1+num2
-print('关键字参数',add(num1=1,num2=2))
+# 一、函数的基本知识
 
-#默认参数是在定义时赋予了默认值的参数，从而可以不带参数的调用函数
-def output(name='port:',number='80'):
-    return name+number
-print('默认参数',output())
+# 1.python函数注释的标准格式
+def student_info(name, age):
+    """
+    首先介绍函数的基本功能
+    :param name: 介绍name参数
+    :param age: 介绍age参数
+    :return: 介绍函数的返回值
+    """
+    return name + str(age)
 
-#收集参数/可变参数，即不确定函数有多少个参数时在参数前加*表示打包,函数的其他参数不加*标识
-def test1(*list1,extra):
-    print('收集参数',list1)
-    print('位置参数',extra)
-test1(1,2,3,4,extra='abc')
-#星号*既可以打包也可以解包，将一个列表list2传入test函数中作为收集参数时需要在list2前加*表示实参需解包后使用
-def test2(*list2):
-    print('有%d个收集参数'%(len(list2)))
-list2=['a','b','c']
-test2(list2)
-test2(*list2)
+# 2.用pass关键字来标记未写完的函数
+# 在python中的函数中如果不写任何语句块，解释器会产生报错
+# 用pass语句来标记暂时不写的代码块，pass语句不做任何事情
+def pass_test():
+    """
+    未完成待补充的函数
+    """
+    pass
 
-#函数内的注释称为函数文档字符串,通过'''来标识，可以用特殊属性function.__doc__来获取
-print('查看函数文档',add.__doc__)
+# 3.函数内的注释称为函数文档字符串,通过'''来标识，可以用特殊属性function.__doc__来获取
+def test():
+    """
+    这是函数的注释文档
+    """
+    pass
+print(test.__doc__)
 
-#不确定函数用法时用help(function)查看函数文档
-help(add)
+# 4.可以通过函数对象的.__name__属性来获取函数的名字
+func = test
+print(func.__name__)
 
-#函数返回值的数据类型可以动态变化，并且各不相同
-def test3():
-    return 1,2,'a','b'
-print('返回元组',test3())
-def test4():
-    return [1,2,'a','b']
-print('返回列表',test4())
+# 5.不确定函数用法时用help(function)查看函数文档
+help(test)
+
+
+# 二、函数的返回值
+
+# 1.python的函数都是有返回值的，即使返回值为None
+def test():
+    """
+    没有return语句时返回值为None
+    """
+    a = 1 + 1
+print(test())
+
+# 2.关于函数返回值的数据类型
+def test():
+    """
+    函数返回多个参数时，如果没有指定，默认是将参数组合为一个元组类型返回
+    """
+    return 1, 2, 'a', 'b'
+print(test(), type(test()))
+def test():
+    """
+    指定函数返回参数的类型
+    """
+    return [1, 2, 'a', 'b']
+print(test(), type(test()))
+
+# 3.func和func()的区别
+# python中的函数加上括号之后就会直接执行，如果不加括号就可以像变量一样被传递
+# 注意：python语言中函数可以像变量一样被当做参数传递给另一个函数，而C和Java语言中不能这么实现
+def double(x):
+    print(2 * x)
+
+def test(x, func):
+    """
+    函数可以接受函数作为参数，同样的，函数可以作为参数被传递给另一个函数
+    """
+    func(x)
+
+param = double
+print(type(param))
+test(1, param)
