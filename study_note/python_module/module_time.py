@@ -5,6 +5,17 @@
 
 import time
 
+
+# 推迟调用线程的运行，参数代表推迟的秒数
+time.sleep(2)
+time.sleep(0.01)
+
+# 计算程序的运行时间
+start_time = time.clock()
+time.sleep(1)
+end_time = time.clock()
+print('运行时间：', end_time - start_time)
+
 # 返回时间戳(时间戳表示的是从1970年1月1日00:00:00开始按秒计算的偏移量)
 print(time.time())
 
@@ -27,7 +38,3 @@ print(time.mktime(time.localtime()))
 print(time.ctime())
 t = time.localtime()
 print(time.asctime(t))
-
-# 推迟调用线程的运行，参数代表推迟的秒数
-time.sleep(5)
-time.sleep(0.01)
