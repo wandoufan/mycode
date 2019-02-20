@@ -8,6 +8,8 @@ print(type(tuple_1))
 atuple = (123, 'abc', 3.14, ['alist', 456], 3 - 4j)
 # 注意：当元组只有一个元素时需要加一个逗号，否则会被当作是其他数据类型
 btuple = (123,) # 不能写为btuple = (123)
+print(type(btuple))
+print(type(123))
 ctuple = (1, 2, 3, 4, 5, 6, 7, 8, 9)
 print(tuple('abc'))
 print(type(btuple).__name__)
