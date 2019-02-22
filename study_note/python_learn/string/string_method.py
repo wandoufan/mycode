@@ -113,3 +113,30 @@ print(str9.title())
 
 # 若字符串是title格式的，则返回Ture，否则返回False
 print(str9.istitle())
+
+
+# -----------------------------------------
+
+# 示例1：多种方法翻转字符串
+string = '123456'
+
+# 方法1
+print(string[::-1])
+
+# 方法2
+list1 = list(string)
+list1.reverse()
+print(''.join(list1))
+
+# 方法3
+result = ''
+for i in range(len(string)):
+    result += string[- i -1]
+print(result)
+
+# 方法4
+result = ''
+list1 = list(string)
+for i in range(len(string)):
+    result += list1.pop()
+print(result)

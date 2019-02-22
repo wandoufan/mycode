@@ -20,6 +20,7 @@ print(bool(True))
 print('\n')
 
 # 2.id函数用来获取对象的内存地址
+# 如果数据对象的id属性相同，那么它们的type和value属性也一定相同
 # 如果两个变量的内存地址相同，那么它们就是同一对象
 a = 1
 b = 3-2
@@ -28,6 +29,9 @@ print(id(b))
 # 用is和is not可以判断两个变量是否指向了同一对象
 print(a is b)
 print(a is not b)
+# 对象和其本身的引用一般都是同一个id
+seq = '12345'
+print(seq is seq[:])
 print('\n')
 
 # 3.逻辑运算符

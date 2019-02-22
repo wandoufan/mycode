@@ -1,6 +1,9 @@
-# 集合(set)是python的一种基本数据类型，没有特别的语法格式，字典的数据是无序的
+# 主要记录python中的集合
+
+# 集合(set)是python的一种基本数据类型，没有特别的语法格式，集合中的数据是无序的
 # 可变集合可以添加和删除元素，不可变集合不可以改变
 # 可变集合不是可哈希的，只有不可变集合可以作为字典的键或集合的一个成员
+
 
 # 声明一个集合
 s = set()
@@ -12,7 +15,6 @@ s2 = frozenset('aaaxxxzzzyyy')
 s3 = frozenset('aaacbb')
 s4 = set('bbaaa')
 s5 = set('abcdefg')
-
 print(sorted(s1))
 print(s2)
 
@@ -40,7 +42,6 @@ s5 -= set(s4)
 print('s5变为s5-s4的差集',s5)
 s5 ^= set(s2)
 print('s5变为s5,s2的异或集',s5)
-
 
 # 访问集合成员(集合本身是无序的，既没有数字索引也没有键，只能通过for循环迭代访问)
 for i in s1:
