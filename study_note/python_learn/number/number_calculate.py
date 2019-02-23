@@ -1,7 +1,12 @@
-# a+bj形式表示复数
+# 主要记录python中数字计算相关的操作
+
+
+# a+bj形式表示复数，其中实部和虚部都是浮点数
+# 备注：虚部后缀可以是j或J
 aComplex = 2.3 - 4.5j
-print(aComplex.real, '\n')  # 该复数的实部
-print(aComplex.imag, '\n')  # 该复数的虚部
+aComplex = 2.3 - 4.5J
+print(aComplex.real)  # 该复数的实部
+print(aComplex.imag)  # 该复数的虚部
 print(aComplex.conjugate(), '\n')  # 返回该复数的共轭复数
 
 # //表示地板除
@@ -69,3 +74,10 @@ for i in range(1, 11):
     print('原始结果 : ', i * 0.1)
     num = i * 0.1
     print('精确后结果 ： ','%.1f' %(i*0.1))
+
+
+# -----------------------------------------------------------------------
+
+# 示例1：幂运算
+# 注意：0**0的结果是1，不是0
+print([i**i for i in range(3)])

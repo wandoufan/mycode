@@ -5,10 +5,10 @@ class Listnode:
         self.value=value
         self.next=next
 n5=Listnode('e')
-n4=Listnode('d')
-n3=Listnode('c',n4)
-n2=Listnode('b',n3)
-n1=Listnode('a',n2)
+n4=Listnode('d', n5)
+n3=Listnode('c', n4)
+n2=Listnode('b', n3)
+n1=Listnode('a', n2)
 
 def reverse(first):
     if first is None or first.next is None:
@@ -27,7 +27,7 @@ def reverse(first):
             break
     return head
 
-#print(reverse(n1).value)
+print(reverse(n1).value)
 
 def reverse_2(head):#区别在于三个指针的位置
     x=head.next

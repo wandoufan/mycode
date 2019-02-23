@@ -1,3 +1,6 @@
+# 主要记录Python中与数字相关的内置函数
+
+
 # abs()返回参数的绝对值
 print(abs(4))
 print(abs(-4))
