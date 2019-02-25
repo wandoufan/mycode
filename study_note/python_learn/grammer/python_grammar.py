@@ -13,8 +13,14 @@ print('hi there,this a long message for you\
 print('关于特殊符号\t的解释')
 # \r表示回车，相当于换行
 print('!!!!\r????')
+
 # 原始字符串操作符r或R来表示特殊字符
-print(r'\n')  # 输出特殊字符
+# 注意：使用r或R就可以输出特殊字符，其中r或R不会被输出
+print(r'\nabc')  # 输出特殊字符
+
+# python中可以在一行写多个语句，中间用分号;分开
+a = '12345'; print(a)
+
 
 # 2.python中字符串的单引号，双引号，三引号的区别：
 # 单引号可以直接表示字符串，但遇到字符串包含单引号时必须使用转义符才能表示
@@ -52,9 +58,53 @@ print(a, b)
 
 
 # 5.python中的三元表达式(三元运算符)：
-# 三元表达式其他语言中是 条件表达式？表达式1：表达式2
+# 三元表达式在C或Java语言中是 条件表达式？表达式1：表达式2
+# max = x > y ? x : y (注意这样的格式在python中不成立)
 # Python中是  表达式1 条件表达式 表达式2
 a = 1
 b = 2
-x=a if a>b else b
+x=a if a > b else b
 print(x)
+
+
+# 6.关于赋值=的用法
+# 合法用法：
+x = y = z = 1
+x += 1
+print(x, y, z)
+# 非法用法
+# x = (y = z +1)
+
+
+# 7.python中标识符(变量)的命名规范:
+# python中的标识符可以由数字，字母，下划线组成，但不能以数字开头
+# 标识符可以以下划线开头，如__init__
+# python中的标识符区分字母大小写
+# 用户定义的标识符不能和python内置的关键字重复
+
+
+# 8.python的关键字
+# 关键字是python中的保留字符，不能用作其他常数或标识符，关键字中只含小写字母
+# 常见关键字包括：
+# and   exec   not   assert   finally   or   break   for   pass   yield
+# class   from   print   continue   global   raise   def   if   return
+# del   import   try   elif   in   while   else   is   with   except   lambda
+
+
+# 9.python中的比较运算符'>'和'<'
+# 比较运算符的优先级高于逻辑运算符，且返回结果是True或False
+# 注意：比较运算符可以进行连续比较，如果一个部分为假，则整个表达式为假
+print(1 < 2 < 3)
+print('x' < 'y' < 'z')
+
+# 可以进行比较操作的对象包括：
+print(1 < 2.0) # 数字和数字之间
+print('axy' < 'zbc') # 字符串和字符串之间
+print([1, 2, 3] < [3, 2, 1]) # 列表和列表之间
+print((1, 2, 3) < (2, 1)) # 元组和元组之间
+# 注意：字符串、元组、列表等序列类型的比较都是从第一个元素开始逐个进行比较的
+# 如果前面元素都相等，则长度较长的序列更大
+
+# 不可以进行比较操作的对象包括：
+# print(3 > 'a') # 数字和字符串之间
+# print(3 - 4j > 2 + 3j) # 复数和复数之间

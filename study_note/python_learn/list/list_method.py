@@ -119,6 +119,7 @@ for i in range(5):
     func(list1)
 print(list1)
 
+
 # 例子3：判断两个列表之间是否具有包含关系
 # 注意：元素与列表之间可以用in方法判断包含关系，但列表之间不能直接用in方法判断
 list1 = ['a', 'b', 'c', 'd']
@@ -128,9 +129,11 @@ if len(list2) < len(list1):
         if list2 == list1[i:i+len(list2)]:
             print('yes', i, i+len(list2))
 
+
 # 例子4：一行代码实现99乘法表
 list1 = ['%s*%s=%s' %(i, j, i*j) for i in range(1, 10) for j in range(1, 10)]
 print(list1)
+
 
 # 例子5：列表乘以整数倍
 list1 = [1, 2, 3] * 3

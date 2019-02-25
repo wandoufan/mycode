@@ -3,6 +3,7 @@
 
 # a+bj形式表示复数，其中实部和虚部都是浮点数
 # 备注：虚部后缀可以是j或J
+# 注意：两个复数之间不可以比较大小
 aComplex = 2.3 - 4.5j
 aComplex = 2.3 - 4.5J
 print(aComplex.real)  # 该复数的实部

@@ -60,7 +60,8 @@
 * not null | null 设置该列数据是否允许为空，默认允许为空值
 * default_value 设置该列数据的默认值
 * auto_increment 设置自动编号，一般用于id等字段，一个数据表只能有一个自动编号的列
-* primary key 设置该列为数据表的主键，一个数据表只能有一个列为主键，主键的值要求唯一不能重复
+* primary key 设置该列为数据表的主键，主键的值要求唯一不能重复
+* 注意：一个数据表只能有一个主键，一个主键可以包含多个字段，称为复合主键，但最好一个主键只包含一个字段
 * reference_definition 为该字段添加注释
 * 示例：创建一个学生表，其中id列为非空自动编号的主键
 * 'create table student_info(id int not null auto_increment primary key);' 
@@ -379,8 +380,90 @@
 * reverse(s)函数将字符串反转
 
 ### 9.3 日期和时间函数
+* curdate()/current_date() 获取当前的日期
+* curtime()/current_time() 获取当前的时间
+* now()/localtime()/sysdate() 获取当前的日期和函数
+* datediff(d1, d2) 计算日期d1和日期d2之间相隔的天数
+* adddate(d1, n) 计算日期d1之后的n天对应的日期
+* subdate(d1, n) 计算日期d1之前的n天对应的日期
 
 ### 9.4 条件判断函数
+* if(expr, v1, v2) 如果表达式expr成立，则执行v1，否则执行v2
+* ifnull(v1, v2) 如果v1不为空，则显示v1的值，否则显示v2的值
+
+
+## 10.索引
+### 基本概念
+* 索引是一种将数据库中单列或多列的值进行排序的结构
+* 索引的优点：
+* 索引是由数据表中一列或多列组成，指向数据库中具体数据所在位置，可以优化数据库的查询效率
+* 当用户通过索引查询时不需要再遍历数据库中所有的数据，大幅提高查询效率
+* 索引的缺点：
+* 创建和维护索引需要耗费时间，且时间与数据规模成正比，不利于数据更新
+* 存储索引需要另外占用物理存储空间
+* 索引的存储类型包括b树索引和hash索引，其中默认为b树索引
+* 创建索引时要设置索引名，索引名不一定要和数据表名一致
+
+### 索引的分类
+* 1.普通索引
+* 不应用任何限制条件的索引，可以在任何数据类中创建，字段本身的约束条件可以判断其值是否为空或唯一
+* 2.唯一性索引
+* 使用unique参数可以设置唯一索引，索引值必须对应唯一字段，例如主键就是一种特殊的唯一索引
+* 3.全文索引
+* 使用fulltext参数可以设置全文索引，只能创建在char、varchar或text等字符串类型的数据字段中
+* 4.单列索引
+* 只对应一个字段的索引就可以称为单列索引，包括以上3种索引都属于单列索引
+* 5.多列索引
+* 对应表中的多个字段，可以通过多个字段查询，但应用索引时必须用到其中的第一个字段
+* 6.空间索引
+* 使用spatial参数可以设置空间索引，只能建立在空间数据类型(geometry)上，但mysql中只有myisam存储引擎支持空间检索
+
+### 创建新数据表时建立索引
+* 1.普通索引
+* 'create table student(id int not null auto_increment primary key, index student_info(id));'
+* 2.唯一索引
+* 'create table student(id int not null auto_increment primary key, unique index student_info(id));'
+* 3.全文索引
+* 'create table student(name char not null, fulltext index student_info(name))engine=MyISAM;'
+* 4.单列索引
+* 'create table student(id int not null auto_increment primary key, index student_info(id));'
+* 5.多列索引
+* 'create table student(id int not null, name char not null, index student_info(id, name));'
+* 6.空间索引
+* 'create table list(id int not null, goods geometry not null, spatial index list_info(goods))engine=MyISAM;'
+
+### 在已创建的数据表中建立索引
+* 1.普通索引
+* 'create index student_info on student(id)'
+* 2.唯一索引
+* 'create unique index student_info on student(id)'
+* 3.全文索引
+* 'create fulltext index student_info on student(name)'
+* 4.单列索引
+* 'create index student_info on student(id)'
+* 5.多列索引
+* 'create index student_info on student(id, name)'
+* 6.空间索引
+* 'create spatial index list_info on list(goods)'
+
+### 在已有索引的数据表上添加新索引
+* 1.普通索引
+* 'alter table student add index student_info(id)'
+* 2.唯一索引
+* 'alter table student add unique index student_info(id)'
+* 3.全文索引
+* 'alter table student add fulltext index student_info(name)'
+* 4.单列索引
+* 'alter table student add index student_info(id)'
+* 5.多列索引
+* 'alter table student add index student_info(id, name)'
+* 6.空间索引
+* 'alter table list add spatial index list_info(goods)'
+
+### 删除索引
+* 'drop index index_name on tb_name'
+
+
 
 
 ## 其他常用命令：
@@ -405,7 +488,7 @@
 ---
 
 ### 待完善：
-* 1.数据库索引
+* 1.数据完整性约束
 * 2.数据库触发器
 * 3.数据库视图
 

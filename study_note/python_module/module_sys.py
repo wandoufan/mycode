@@ -19,6 +19,7 @@ sys.path.append('../') # 添加上级目录
 # 例如在cmd中执行脚本test.py: python test.py hello world
 # 其中hello和world都属于sys.argv获取到的参数，脚本便可以根据获取的不同参数执行不同操作
 # sys.argv获取当前正在执行的命令行参数的参数列表
+# 注意：参数列表列表的第一个元素是脚本文件名，真正有效参数是从第二个开始的
 print(sys.argv[0])  # 0代表当前脚本的文件名
 print(sys.argv[1:])  # 有效参数是从1开始
 
