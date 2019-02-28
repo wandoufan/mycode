@@ -13,7 +13,7 @@ from collections import Counter
 
 
 # defaultdict可以在字典中值不存在的情况下不报错，而返回一个固定的值
-word_dict[word]
+# word_dict[word]
 
 
 
