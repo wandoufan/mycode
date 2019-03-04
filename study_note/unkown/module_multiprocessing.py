@@ -1,11 +1,8 @@
 # coding:utf-8
 
-
 # multiprocessing模块用来提供多进程相关的功能，与threading模块相似
 # 注意：multiprocessing模块是多进程，threading模块是多线程！
 # multiprocessing模块提供本地和远程并发的功能
-
-# 进程和线程的区别：
 
 
 import multiprocessing
