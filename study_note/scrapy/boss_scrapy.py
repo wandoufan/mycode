@@ -1,7 +1,6 @@
 # encoding:utf-8
-# 爬取boss直聘的北京地区的python岗位详细信息
 import requests
-from bs4 import BeautifulSoup  # bs4就是Beautiful Soup 4
+from bs4 import BeautifulSoup  
 import os
 import csv
 import re
@@ -135,16 +134,29 @@ def store_sql(result_list):
 
 
 if __name__ == '__main__':
+    '''
+    爬取boss直聘的北京地区的python岗位详细信息
+    '''
     result_list = []
     boss_url = 'https://www.zhipin.com/c101010100/'
 
-    # for i in range(1, 7):
-    #     base_url = 'https://www.zhipin.com/c101010100/y_%s/' %str(i)  # 不同的岗位薪资
-    #     base_url = 'https://www.zhipin.com/c101010100/t_80%s/' %str(i)  # 不同的融资阶段
-    #     base_url = 'https://www.zhipin.com/c101010100/s_30%s/' %str(i)  # 不同的公司规模
-    #     print(base_url)
-    #     result_list.extend(get_response(base_url))
-    #     time.sleep(random.uniform(1, 2))
+    for i in range(1, 7):
+        base_url = 'https://www.zhipin.com/c101010100/y_%s/' %str(i)  # 不同的岗位薪资
+        print(base_url)
+        result_list.extend(get_response(base_url))
+        time.sleep(random.uniform(1, 2))
+
+    for i in range(1, 7):
+        base_url = 'https://www.zhipin.com/c101010100/t_80%s/' %str(i)  # 不同的融资阶段
+        print(base_url)
+        result_list.extend(get_response(base_url))
+        time.sleep(random.uniform(1, 2))
+
+    for i in range(1, 7):
+        base_url = 'https://www.zhipin.com/c101010100/s_30%s/' %str(i)  # 不同的公司规模
+        print(base_url)
+        result_list.extend(get_response(base_url))
+        time.sleep(random.uniform(1, 2))
 
     for i in ['海淀区', '朝阳区', '东城区', '西城区', '丰台区', '大兴区', '通州区', '石景山区']:
         base_url = 'https://www.zhipin.com/c101010100/b_%s/' %i
@@ -153,33 +165,6 @@ if __name__ == '__main__':
         time.sleep(random.uniform(1, 2))
 
     print('工作个数：', len(result_list))
-    with open('job_info2.text', 'w') as f:
+    with open('job_info.text', 'w') as f:
         json.dump(result_list, f)
-
-
-
-    # ----------------------------------------------------
-    # with open('job_info.text', 'r') as f:
-    #     result_list1 = json.load(f)
-    # print(len(result_list1))
-
-    # with open('job_info2.text', 'r') as f:
-    #     result_list2 = json.load(f)
-    # print(len(result_list2))
-
-    # job_id_list1 = [info['job_id'] for info in result_list1]
-    # print(len(job_id_list1))
-    # job_id_list2 = [info['job_id'] for info in result_list2]
-    # print(len(job_id_list2))
-
-    # tmp_list = [info for info in result_list2 if info['job_id'] not in job_id_list1]
-    # print(len(tmp_list))
-    # result_list1.extend(tmp_list)
-    # print(len(result_list1))
-
-    # job_id_list1 = [info['job_id'] for info in result_list1]
-    # print(len(set(job_id_list1)))
-
-    # with open('job_info.text', 'w') as f:
-    #     json.dump(result_list1, f)
 

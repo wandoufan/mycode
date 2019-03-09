@@ -14,6 +14,7 @@
 
 
 ## 系统运行等级相关命令：
+* 'runlevel'  查看当前的运行等级
 * 'ctrl+Alt+F1~F6'  切换文字界面登陆tt1~tt6终端(level 3)
 * 'ctrl+Alt+F7'  切换到图像界面(level 5)
 * 'startx'  在文件界面切换到图形界面(前提是有X windows系统)
@@ -51,6 +52,7 @@
 * 'file filename'  查看文件的类型，即属于ASCII文件或是data文件或是binary文件或是directory
 * 'alias'  查看当前设置的所有命令别名
 * 'alias 命令别名='原命令''  设置命令别名，例如:'alias lm='ls -l|more''
+* 注意：设置的别名重启后就失效了，要保持永久有效需要把命令写入~/.bashrc文件中
 * 'unalias 命令别名'  取消历史设置的命令别名
 * 'history'  查看bash中输入过的所有命令  
 n  n为数字，列出最近输入过的n条命令，注意没有横杠-  
@@ -531,6 +533,7 @@ NF  表示当前行被分割后的列数
 * sudo ufw disable #关闭防火墙
 * sudo ufw enable #开启防火墙
 * sudo ufw status #查看防火墙状态
+* sudo ufw allow 22 #开通22端口
 
 * ---------------------------------------------------------------------------
 * 待整理命令：
@@ -544,14 +547,20 @@ NF  表示当前行被分割后的列数
 
 
 * 软件安装卸载相关的命令？？？：
-* yum和apt-get是Linux中两个常用软件安装命令，绝大部分软件都可以用这两个命令进行安装，相当于应用商店
+* yum和apt-get(apt??)是Linux中两个常用软件安装命令，绝大部分软件都可以用这两个命令进行安装，相当于应用商店
 * 'yum search python'搜索yum支持的python版本
 * 'yum install python'安装python
+* 'yum groupinstall package_name' 安装新包 
 * 'apt-get'只能用于ubuntu还是也需要安装才能使用
 * 'apt-get update'ubuntu下更新软件源，一般在下载新软件之前可能需要更新一下
 * 'apt-get install software_name'安装软件
-* 'apt-get purge software_name'卸载软件
+* 'apt-get remove --purge software_name'卸载软件
 * 'pip'安装python库
+* yum和apt注意可能需要把镜像资源配置为国内的，否则国外的镜像源可能被墙，造成安装软件时连接失败
+* 'apt update'  配置新的镜像资源后需要重新更新下载
+* 'curl http:...' web请求？？？
+
+
 
 * 'make'命令？？
 * 经常会下载一些安装包到本地，解压后进入目录直接输入'make'命令就可以安装
@@ -583,6 +592,7 @@ NF  表示当前行被分割后的列数
 
 * 'open host_ip port'打开ftp命令,
 * 'rpm -qa | grep ftp'查看服务器上是否安装了ftp服务？？
+* 'rpm'的功能？？
 
 
 
