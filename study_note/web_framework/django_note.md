@@ -111,6 +111,7 @@ class Person(models.Model):
     def __str__(self):
         return self.name
 ```
+备注：Django中所有的模型(Model)都必须继承django.db.models.Model模型，即顶部的导入  
 备注：推荐在数据表中写一个__str__函数，否则查询或显示的结果都会是'Person object'，无法对每一行数据做区分  
 
 ### home.html文件示例
@@ -135,6 +136,8 @@ class Person(models.Model):
 备注：django提供特殊的模板标签{}，这些标签与html无关，但是可以写在html中  
 
 ### admin.py文件示例
+* admin.py实现后台管理的功能，创建后台管理员账户后，可以通过'127.0.0.1/admin'登录进去
+* 在后台管理界面可以直接以管理员的身份对Article进行增删改查等操作(不要提前自己定义各种操作)
 ```
 from django.contrib import admin
 from .models import Article
@@ -148,11 +151,14 @@ admin.site.register(Article)
 * 'django-admin.py startproject project_name'  新建一个django项目
 * 'django-admin.py startapp app_name'  进入项目目录后新建一个应用
 * 'python manage.py startapp app_name'  进入项目目录后新建一个应用
-* 'python manage.py makemigrations'  创建更改的文件
-* 'python manage.py migrate'  将py文件应用到数据库(执行后就会在项目目录中生成数据库文件如db.sqlite3等)
+备注：以上两个命令功能一样
+* 'python manage.py makemigrations'  创建更改的文件(修改mdoels.py中数据表后要重新运行该命令更新)
+备注：上面命令运行后会生成文件，如'article/migrations/0002_article_updated.py'  
+* 'python manage.py migrate'  将py文件应用到数据库(首次执行后就会在项目目录中生成数据库文件如db.sqlite3等)
+备注：上面命令运行后数据库文件如db.sqlite3就会相应进行更新
 * 'python manage.py runserver port'  运行项目，后面可以加端口，不指定则默认8000端口
 * 'python manage.py flush'  清空数据库
-* 'python manage.py createsuperuser'  创建后台管理员，指定账户密码
+* 'python manage.py createsuperuser'  创建后台管理员(用于登录'localhost\admin')，指定账户邮箱密码
 * 'python manage.py changepassword username'  修改账户密码
 * 'python manage.py dumpdata appname > appname.json'  导出数据
 * 'python manage.py loaddata appname.json'  导入数据
@@ -166,6 +172,7 @@ admin.site.register(Article)
 
 
 ## django中的模板标签{} 
+* 这些模板标签可以看做是jinja2模板，django对其进行了封装，可以在django中直接使用
 ```
 <!DOCTYPE html>
 <html>
@@ -272,9 +279,16 @@ admin.site.register(Article)
 {{ request.GET.urlencode }}  获取当前GET参数
 ```
 
+### 继承模板
+* 模板可以通过继承进行复用
+* 撰写基本模板：所有可重定义的地方用{% block 块名 %}XXX{% endblock %}表示出来
+* 继承模板：开头处声明要继承的模板{% extends 'html文件名' %}，重写处用{% block 块名 %}XXX{% endblock %}表示出来
+* 调用模板：{% include '模板名' %}
+
 
 
 ## django与数据库
+
 ### 数据库配置
 * django支持sqlite3、Mysql、Postgresql等数据库，默认使用sqlite3数据库(无需安装配置)
 * 如果需要使用其他数据库，在settings.py中配置DATABASES即可
@@ -296,6 +310,7 @@ DATABASES = {
 ```
 from django.db import models
 
+# models.py中定义的类必须继承来自django中的models.Model
 class Person(models.Model):
     name = models.CharField(max_length=30)
     age = models.IntegerField()
@@ -349,6 +364,7 @@ classDateTimeField(auto_now = False，auto_now_add = False，** options)，参�
 如果True，将为此字段创建数据库索引  
 * primary_key
 如果True，此字段是数据表的主键，如果没有指定任何字段，django将自动添加一个AutoField来保存主键  
+注意：自动添加的主键字段默认为id，通过'类名.id'可以查看id值  
 * unique
 如果True，该字段在整个表格中必须是唯一的，一般是设置手机号码/邮箱等  
 * default
@@ -369,27 +385,30 @@ type = models.IntegerField(default=0,choices=TYPE_CHOICES)
 * 使用QuerySet API的数据库语法进行数据操作的views.py示例：
 ```
 from django.shortcuts import render
-from . import models
+from models import Book
 from django.http import HttpResponse
 
 def index(request):
     # 1. 使用ORM添加一条数据到数据库中
-    book = models.Book(name='三国演义',author='罗贯中',price=200)
+    book = Book(name='三国演义',author='罗贯中',price=200)
     book.save()
     # 2. 查询
-    # 2.1 使用主键进行查询
-    book = models.Book.objects.get(pk=1)
+    # 2.1 使用主键进行查询，直接返回要查询的类对象
+    book = Book.objects.get(pk=1)
     print(book.name,book.author,book.price)
-    # 2.2 根据其他条件进行查找，返回的是一个列表，将所有满足条件的信息都放在列表里面
-    books = models.Book.objects.filter(name='三国演义')
+    # 2.2 根据其他条件进行查找，返回的是一个列表，将所有满足条件的类对象都放在列表里面
+    books = Book.objects.filter(name='三国演义')
     print(books[0].name,books[0].author,books[0].price)
     # 3. 删除数据
-    book = models.Book.objects.get(pk = 1)
+    book = Book.objects.get(pk = 1)
     book.delete()
-    # 4. 删除数据
-    book = models.Book.objects.get(pk=2)
+    # 4. 修改数据
+    book = Book.objects.get(pk=2)
     book.price = 200
     book.save()
+    # 5.初始化查询集，得到一个包含Book表中所有数据的类对象
+    book_list = Book.objects.all()
+    book_list = book_list.filter(name='三国演义')
     return HttpResponse('图书插入成功')
 ```
 > https://code.ziqiangxuetang.com/django/django-queryset-api.html
@@ -403,10 +422,10 @@ def index(request):
 2.很多sql语句是在业务逻辑中拼出来的，如果业务逻辑生变，原生sql更改起来比较多  
 3.写sql时容易忽略web安全问题，造成一些如sql注入之类的安全漏洞  
 * 使用ORM模型操作数据库的优点：
-1.使用ORM做数据库的开发可以有效的减少重复SQL语句的概率，写出来的模型也更加直观、清晰
-2.ORM语句转化成原生的sql语句需要一定开销，但实际造成的性能损耗很小
-3.设计更加灵活，可以写出更加复杂的查询语句
-4.django封装了底层的数据库实现，ORM语句可以在sqlite3、Mysql、Postgresql等多种数据库间自由切换
+1.使用ORM做数据库的开发可以有效的减少重复SQL语句的概率，写出来的模型也更加直观、清晰  
+2.ORM语句转化成原生的sql语句需要一定开销，但实际造成的性能损耗很小  
+3.设计更加灵活，可以写出更加复杂的查询语句  
+4.django封装了底层的数据库实现，ORM语句可以在sqlite3、Mysql、Postgresql等多种数据库间自由切换  
 
 ### 在django中使用原生的sql语句
 * 除了上述基于ORM模型的QuerySet API外，django还提供了用原生sql语句操作数据库的接口
@@ -420,8 +439,10 @@ cursor.execute("insert into hello_author(name) values('郭敬明')")
 
 
 
-## django中的表单
-* 表单实现实现用户页面和后台的交互，搜集不同类型的用户输入，例如用户提交要查询的字段数据
+## django实现前后端交互
+
+### html中的表单简介
+* 表单可以让用户通过前端页面提交信息到后台，实现前后端交互，例如用户输入账户密码实现登录功能
 * html本身提供了表单功能，标签为 <form>，允许用户在表单中输入内容
 > https://code.ziqiangxuetang.com/html/html-forms.html
 ```
@@ -455,52 +476,322 @@ Username: <input type="text" name="user">
 </form>
 ```
 
-* django在forms.py中也提供了表单，可以实现表单渲染、数据验证等功能
+### django中的表单文件forms.py
+* django在forms.py中提供表单功能，可以实现表单渲染、数据验证等功能
 * 实现表单功能的forms.py示例：
 ```
+# 引入表单类
 from django import forms
- 
-class AddForm(forms.Form):
-    a = forms.IntegerField()
-    b = forms.IntegerField()
+# 引入文章模型
+from .models import Article
+
+# forms.py中定义的类必须继承来自django中的forms.ModelForm
+class ArticlePostForm(forms.ModelForm):
+    class Meta:
+        # 指明数据模型来源
+        model = Article
+        # 指明从html表单中返回的字段
+        # fields = '__all__'
+        fields = ('title', 'body')
 ```
-* 上述forms.py对应的views.py：
+注意：在表单类中必须用model参数指明对应的数据表，用fields参数指明对应的表中字段  
+forms.py接收从html中返回的字段，并赋值给models.py中对应的字段  
+fields指明的字段必须和从html表单中返回的字段，以及models.py中定义的字段保持一致  
+备注：fields指明部分字段时可以用元组表示，如果包含models类中所有字段，也可以写做fields = '__all__'  
+例如：models.py的Article类中定义了一个发表时间字段，但该字段是根据当前时间自动填写的，  
+不需要用户在前端页面中填写，因此从前端返回的字段就不包含这个时间字段  
+
+* 以上forms.py对应的html文件
+```
+<!DOCTYPE html>
+<html>
+<head>
+    <title>豌豆帆 创建文章</title>
+</head>
+<body>
+<!-- 写文章表单 -->
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <br>
+            <!-- 提交文章的表单 -->
+            <form method="post" action="." enctype="multipart/form-data">
+                <!-- Django中需要POST数据的地方都必须有csrf_token -->
+                {% csrf_token %}
+
+                <!-- 文章标题 -->
+                <div class="form-group">
+                    <!-- 标签 -->
+                    <label for="title">文章标题</label>
+                    <!-- 文本框 -->
+                    <input type="text" 
+                           class="form-control" 
+                           id="title" 
+                           name="title"
+                    >
+                </div>
+
+                <!-- 文章正文 -->
+                <div class="form-group">
+                    <label for="body">文章正文</label>
+                    <!-- 文本区域 -->
+                    <textarea type="text" 
+                              class="form-control" 
+                              id="body" 
+                              name="body" 
+                              rows="12"
+                    ></textarea>
+                </div>
+                <!-- 提交按钮 -->
+                <button type="submit" class="btn btn-primary">完成</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+```
+注意：html文件中用post方法来传送数据时必须加上{% csrf_token %}，csrf_token可以预防跨站攻击  
+注意：当用post提交数据的时候，django会去检查是否有一个csrf的随机字符串，如果没有就会报错  
+备注：django中有内置的中间件django.middleware.csrf.CsrfViewMiddleware来实现相关功能  
+
+* 以上forms.py对应的views.py文件
 ```
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import AddForm  # 引入我们创建的表单类
- 
-def index(request):
-    if request.method == 'POST':  # 当提交表单时     
-        form = AddForm(request.POST)  # form 包含提交的数据         
-        if form.is_valid():  # 如果提交的数据合法
-            a = form.cleaned_data['a']
-            b = form.cleaned_data['b']
-            return HttpResponse(str(int(a) + int(b)))
-    else:  # 当正常访问时
-        form = AddForm()
-    return render(request, 'index.html', {'form': form})
-```
-* 上述froms.py对应的html模板文件：
-```
-<form method='post'>
-{% csrf_token %}
-{{ form }}
-<input type="submit" value="提交">
-</form>
-```
-* 上述from.py对应的urls.py：
-```
-from django.conf.urls import patterns, include, url
-from django.contrib import admin
+from .models import Article
+from .forms import ArticlePostForm
 
-admin.autodiscover()
-urlpatterns = [
-    path('', tools.views.index, name='home'),
-    path('admin/', include(admin.site.urls)),
-]
+def article_create(request):
+    """
+    创建博客文章
+    """
+    # 如果用户提交了数据，就将数据保存，之后给用户反馈结果
+    if request.method == 'POST':
+        # 将提交的数据赋值到表单实例中
+        atricle_post_form = ArticlePostForm(request.POST)
+        # 判断提交数据是否合法
+        if atricle_post_form.is_valid():
+            atricle_post_form.save()
+            return HttpResponse('数据已保存成功！')
+        else:
+            # 报错并返回错误原因
+            return HttpResponse('报错：%s' % atricle_post_form.errors)
+    # 如果第一次匹配到url，用户还没有填写内容时，跳转到创建博客页面
+    else:
+        atricle_post_form = ArticlePostForm()
+        content = {'atricle_post_form': atricle_post_form}
+        return render(request, 'article/create.html', content)
+
 ```
+备注：atricle_post_form.is_valid()方法是form中的一个组件，判断数据是否有效，返回True或False  
+注意：只有forms.py中的表单类才有is_valid()方法，models.py中的数据表类没有is_valid()方法  
+备注：如果is_valid()方法报错，可以通过输出atricle_post_form.errors属性来查看报错原因
+备注：request.POST类似一个字典结构，包含用户在前端页面中填写的各种信息以及'csrfmiddlewaretoken'字段  
+备注：request.FILES类似一个字典结构，包含用户从前端页面中提交的各种文件图片等  
+备注：atricle_post_form.cleaned_data方法可以得到一个字典结构，包含表单的返回值，即request.POST中的数据
+
 > https://code.ziqiangxuetang.com/django/django-forms.html
+
+
+
+## django中的用户管理系统
+
+### 内置auth模块简介
+* django内置了用户管理系统，通过django.contrib.auth实现用户身份认证、用户组、权限管理等功能
+之前获取用户输入的用户名和密码后要自己从user表中查询是否匹配，auth模块可以协助我们快速实现用户登录信息验证  
+settings.py的INSTALLED_APPS中已经默认添加了django.contrib.auth，可以直接使用相关功能  
+
+* 1.authenticate()
+authenticate()方法提供了用户认证的功能，即验证用户名和密码是否正确，需要username和password两个关键字参数  
+如果认证有效，会返回一个user对象，authenticate()方法会在user对象上标记该用户已经过后端认证，用于后续登录  
+注意：如果直接从数据库中取出一个user对象，没有经过authenticate()方法的认证，该用户在登录时会报错  
+```
+user = authenticate(username='someone',password='somepassword')
+```
+
+* 2.login(HttpRequest, user)
+login()方法接收一个HttpRequest对象和一个已经经过认证的user对象，没有返回值，实现用户登录的功能  
+login()方法使用django的session框架给某个已认证的用户附加上session id等信息  
+```
+from django.contrib.auth import authenticate, login
+   
+def my_view(request):
+  username = request.POST['username']
+  password = request.POST['password']
+  user = authenticate(username=username, password=password)
+  if user is not None:
+    login(request, user)
+    # Redirect to a success page.
+    ...
+  else:
+    # Return an 'invalid login' error message.
+    ...
+```
+
+* 3.logout(HttpRequest)
+logout()方法接收一个HttpRequest对象，没有返回值，实现注销用户的功能  
+当调用该函数时，当前请求的session信息会全部清除。该用户即使没有登录，使用该函数也不会报错  
+```
+from django.contrib.auth import logout
+   
+def logout_view(request):
+  logout(request)
+ # Redirect to a success page.
+```
+
+### user对象
+user对象是django中经过authenticate()认证的对象，具有多种内置的方法和属性，数据库中对应的用户表为auth_user  
+注意：django只有一个用户类，即使超级用户(superusers)也只是设置了特别属性的该用户类  
+* user表的sql描述：
+```
+CREATE TABLE "auth_user" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, 
+    "password" varchar(128) NOT NULL, 
+    "username" varchar(30) NOT NULL UNIQUE,
+    "first_name" varchar(30), 
+    "last_name" varchar(30),
+    "email" varchar(254), 
+    "is_superuser" bool, 
+    "is_staff" bool, 
+    "is_active" bool,
+    "last_login" datetime NULL, 
+    "date_joined" datetime,
+    "groups" varchar,
+)
+```
+password和username是必填项，其中password用哈希算法加密后保存到数据库  
+is_staff属性为布尔值，设置用户是否有网站的管理权限，即是否可以登录/admin管理界面  
+is_active属性为布尔值，设置允许用户登录，设置为False时可以不删除用户来禁止用户登录，相当于激活功能  
+is_superuser属性为布尔值，设置用户是否为超级用户，超级用户拥有全部权限  
+date_joined属性为用户的创建时间  
+last_login属性为用户的最近登录时间  
+groups属性为用户的用户组，这是一个多对多字段  
+> https://www.cnblogs.com/linxiyue/p/4060213.html   
+
+* 1.is_authenticated()
+is_authenticated()方法检查user对象是否通过了认证，返回一个布尔值，常用来检查用户是否登录  
+如果is_authenticated()返回True，则可以request.user.name查看用户名  
+注意：通过认证不代表用户拥有任何权限，也不代表用户已经激活  
+方法1：直接用is_authenticated()方法验证用户是否登录  
+```
+def my_view(request):
+   if not request.user.is_authenticated():
+      return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+```
+方法2：根据request.user.username来验证，如果为空，则说明没有登录  
+```
+def my_view(request):
+   if not request.user.username:
+      return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+```
+方法3：django内置了用于检查用户登录状态的装饰器login_requierd()  
+若用户没有登录，则会跳转到django默认的登录url'/accounts/login/'(这个值可以在settings文件中通过LOGIN_URL进行修改)  
+并且登录成功后会重新定向到当前访问的url路径上  
+```
+from django.contrib.auth.decorators import login_required
+    
+@login_required
+def my_view(request):
+   pass
+```
+
+* 2.create_user()
+create_user()方法用来创建新用户  
+```
+from django.contrib.auth.models import User
+user = User.objects.create_user（username='',password='',email=''）
+```
+
+* 3.check_password() / set_password()
+check_password()方法用来检查用户密码是否正确，返回一个布尔值  
+set_password()方法用来修改用户密码，一般修改前要先验证之前的密码是否正确  
+```
+user = User.objects.get(username='')
+if user.check_password(old_passwd):
+   user.set_password(password=new_passwd)
+   user.save()
+```
+
+### 用户组group
+django.contrib.auth.models.Group定义了用户组的模型,每个用户组拥有id和name两个字段， 数据库中对应的用户组表为auth_group  
+user对象中有一个groups的多对多字段，多对多关系由auth_user_groups数据表维护  
+备注：group对象可以通过user_set反向查询用户组中的用户  
+
+* 1.通过group对象添加或删除用户组
+```
+from django.contrib.auth.models import Group
+
+group = Group.objects.create(name=group_name) 
+group.save()
+group.delete()
+```
+
+* 2.管理用户与用户组的关系  
+```
+# 用户加入用户组
+user.groups.add(group)
+# 用户加入用户组
+group.user_set.add(user)
+
+# 用户退出用户组
+user.groups.remove(group)
+#用户退出用户组
+group.user_set.remove(user)
+
+# 用户退出所有用户组
+user.groups.clear()
+# 用户组中所有用户退出组
+group.user_set.clear()
+```
+
+### 权限管理
+django的auth模块提供权限管理功能，可以检查用户是否对某个数据表有增、删、改的权限  
+注意：auth模块无法提供对象级的权限控制， 即检查用户是否对数据表中某条记录(如一篇博客)拥有增改删的权限  
+备注：如果需要对象级权限控制可以使用django-guardian  
+
+* 1.has_perm()
+has_perm()检查一个user对象是否对指定数据表的权限，并返回一个布尔值  
+备注：has_perm()仅是进行权限检查, 即是用户没有权限它也不会阻止程序员执行相关操作  
+```
+# 检查user是否对article模型有权限
+user.has_perm('blog.add_article')
+user.has_perm('blog.change_article')
+user.has_perm('blog.delete_article')
+```
+@permission_required装饰器可以代替has_perm并在用户没有相应权限时重定向到登录页或者抛出异常  
+permission_required(perm[, login_url=None, raise_exception=False])  
+```
+@permission_required('blog.add_article')
+def post_article(request):
+    pass
+```
+
+* 2.管理用户权限
+user和permission通过多对多字段user.user_permissions关联，在数据库中由auth_user_user_permissions数据表维护  
+```
+#添加权限
+user.user_permissions.add(permission)
+#删除权限: 
+user.user_permissions.delete(permission)
+#清空权限: 
+user.user_permissions.clear()
+```
+
+* 3.管理用户组权限
+group和permission通过多对多字段permissions关联，在数据库中由auth_group_permissions数据表维护  
+用户默认继承所属用户组的权限，可以通过设置用户组的权限来批量管理用户权限  
+```
+#添加权限: 
+group.permissions.add(permission)
+#删除权限: 
+group.permissions.delete(permission)
+#清空权限: 
+group.permissions.clear()
+```
+
+
+
 
 
 

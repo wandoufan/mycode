@@ -56,9 +56,9 @@
 # 'git config --global user.email'查看邮箱
 # --global参数表示本设备上的所有仓库都连接这个远程仓库
 # 'git config --list'查看所有的配置列表
-# 'git remote add origin git@github.com:wandoufan/git_test.git'ssh方式连接github添加远程库
+# 'git remote add origin git@github.com:wandoufan/git_test.git'  ssh方式连接github添加远程库
 # 备注：远程库/远程主机的默认名字origin(起源)
-# 'git remote add origin https://github.com/wandoufan/git_test.git'https方式连接远程库
+# 'git remote add origin https://github.com/wandoufan/git_test.git'  https方式连接远程库
 # 备注：https方式需要每次输入账户密码且速度较慢，推荐使用ssh方式(ssh方式需要提前配置密钥)
 # 'git remote rm origin'删除远程库
 # 'git remote -v'查看远程库名字，-v参数查看详细信息
@@ -66,8 +66,9 @@
 
 # ssh方式登录权限问题相关：
 # 使用ssh方式连接远程库之前需要在本地生成公钥文件并在github上登记
-# 'cd ~/.ssh'进入linux环境下的密钥目录
-# windows环境下打开C:\Users\Administrator\.ssh路径(路径可能还不存在，运行下面命令会在生成该路径)
+# linux环境下'cd ~/.ssh'进入密钥目录
+# windows环境下打开C:\Users\Administrator\.ssh路径
+# 以上两个环境中对应的路径可能还不存在，运行下面命令生成该路径
 # 'ssh-keygen'在上面的路径中生成公钥文件id_rsa.pub和秘钥文件id_rsa，passphrase口令可以设置为空
 # 拷贝公钥文件的内容，打开https://github.com/settings/profile，在SSH key那栏选择New SSH Key，并将复制内容拷贝到其中
 # https://blog.csdn.net/mengmengz07/article/details/70157018
