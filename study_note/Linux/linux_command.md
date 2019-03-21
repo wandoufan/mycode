@@ -299,7 +299,7 @@ i  设置i参数后文件不能被删除或改名，设置连接也无法写入�
 -c number 设置发送数据包的个数(默认一直发送)
 示例：'ping www.baidu.com'
 
-* 'netstat'  查看整个Linux系统的网络状态
+* 'netstat'  查看整个Linux系统的网络端口和网络状态
 -a  显示所有连线中的端口  
 -p  显示正在使用端口的程序pid和程序名称  
 -n  将域名信息转换为ip信息显示出来  
@@ -586,7 +586,8 @@ NF  表示当前行被分割后的列数
 * 'service vsftpd restart'重启vsftpd服务 
 * 'service vsftpd start'启动vsftpd服务 
 * 'service vsftpd stop'关闭vsftpd服务 
-* 上面几个操作执行完后都没有反应，没有任何返回信息？
+* '/etc/init.d/nginx start' 启动nginx服务
+* '/etc/init.d/nginx stop' 关闭nginx服务
 * 'service vsftpd status'查看vsftpd服务状态
 
 

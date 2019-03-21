@@ -15,24 +15,28 @@
 project_name
 ├── app1_name
 │   ├── admin.py  后台文件，实现后台管理功能
-│   ├── apps.py
+│   ├── apps.py  
 │   ├── __init__.py
 │   ├── migrations
-│   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   └── 0001_app1_updated.py  根据models.py中的数据表生成相应数据库文件
 │   ├── models.py  数据库文件，定义数据表、数据表中的字段、字段的属性等
-│   ├── templates  存放html模板，可以被views.py中函数渲染后得到动态内容的网页
-│   │   └── home.html  html页面文件，文件中可以加入django提供特殊的模板标签{}
 │   ├── tests.py
 │   └── views.py  定义实现不同功能的函数或类，根据需要关联templates中的模板文件
 ├── app2_name
 │   └── 结构类似app1
+├── templates  模板目录，用于存放html页面文件，可以被views.py中函数渲染后得到动态内容的网页
+│   ├── app1_name  app1对应的模板
+│   │     └── home1.html  html页面文件
+│   └── app2_name  app2对应的模板
+│         └── home2.html  html页面文件
 ├── db.sqlite3  数据库文件，默认使用sqlite3数据库
 ├── manage.py  django创建完项目后自动在目录中生成manage.py，可以用'python manage.py 参数'命令实现很多功能
 └── project_name
     ├── __init__.py
     ├── settings.py  可以设置关联数据库(DATABASES)、关联自己创建的app(INSTALLED_APPS)、配置模板文件路径(TEMPLATES)等
     ├── urls.py  通过urlpatterns匹配用户的请求地址，并关联每个地址到views.py中的函数或类
-    └── wsgi.py
+    └── wsgi.py  django自带的wsgi接口文件
 ```
 
 ### urls.py文件示例
@@ -136,8 +140,9 @@ class Person(models.Model):
 备注：django提供特殊的模板标签{}，这些标签与html无关，但是可以写在html中  
 
 ### admin.py文件示例
-* admin.py实现后台管理的功能，创建后台管理员账户后，可以通过'127.0.0.1/admin'登录进去
-* 在后台管理界面可以直接以管理员的身份对Article进行增删改查等操作(不要提前自己定义各种操作)
+admin.py实现后台管理的功能，创建后台管理员账户后，可以通过'127.0.0.1/admin'登录进去  
+在后台管理界面可以直接以管理员的身份对Article进行增删改查等操作(不要提前自己定义各种操作)  
+备注：可以在多个app的admin.py中添加应用，也可以在后台管理页面中管理多个app  
 ```
 from django.contrib import admin
 from .models import Article
@@ -275,7 +280,9 @@ admin.site.register(Article)
 ```
 {{ request.user }}  获取当前用户
 {{ request.user.username }}  获取当前用户的用户名
-{{ request.path }}  获取当前网址
+{{ request.path }}  获取不带参数的url
+{{ request.get_all_path() }}  获取带参数的url
+{{ request.get_host() }}  获取主机地址
 {{ request.GET.urlencode }}  获取当前GET参数
 ```
 
@@ -306,18 +313,26 @@ DATABASES = {
 ```
 
 ### 数据库文件models.py
-* 创建一个Person数据表，包含name字段(字符型)、int字段(整型)
+* 创建一个Article数据表，定义文章模型中的字段  
 ```
-from django.db import models
+class Article(models.Model):
+    """
+    定义博客中文章的属性
+    """
+    # 文章标题
+    title = models.CharField(max_length=150)
+    # 文章作者
+    # author字段通过外键与UserInfo模型关联起来
+    # on_delete参数用于指定数据删除的方式，避免两个关联表的数据不一致，通常设置为models.CASCADE级联删除就可以了
+    author = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
+    # 文章正文
+    body = models.TextField()
 
-# models.py中定义的类必须继承来自django中的models.Model
-class Person(models.Model):
-    name = models.CharField(max_length=30)
-    age = models.IntegerField()
     def __str__(self):
-        return self.name
+    # 使显示信息为文章标题，而非一个'Article object'
+    return self.title
 ```
-备注：推荐在数据表中写一个__str__函数，否则查询或显示的结果都会是'Person object'，无法对每一行数据做区分  
+备注：推荐在数据表中写一个__str__函数，否则查询或显示的结果都会是'Article object'，无法对每一行数据做区分  
 > https://docs.djangoproject.com/en/dev/topics/db/models/
 
 ### models.py中的字段类型
@@ -358,6 +373,8 @@ classDateTimeField(auto_now = False，auto_now_add = False，** options)，参�
 * blank
 如果True，该字段允许为空，默认是False  
 注意：blank表示运行不存储数据，null表示存储的数据值为空  
+* verbose_name
+声明该字段的含义，相对于注释  
 * db_column
 存储此字段的数据库对应的列名称，如果没有给出，django将使用该字段的名称作为数据库中字段的名称  
 * db_index
@@ -410,6 +427,15 @@ def index(request):
     book_list = Book.objects.all()
     book_list = book_list.filter(name='三国演义')
     return HttpResponse('图书插入成功')
+```
+* save方法可以通过设置参数commit=False来保存数据但暂时不提交，修改或添加一些属性后再统一提交  
+```
+# 保存数据，但暂时不提交到数据库中
+article_temp = atricle_post_form.save(commit=False)
+# 从UserInfo表中获取user对象作为Article表中的作者
+article_temp.author = UserInfo.objects.get(username=request.user.username)
+# 将文章数据保存到数据库
+article_temp.save()
 ```
 > https://code.ziqiangxuetang.com/django/django-queryset-api.html
 > https://docs.djangoproject.com/en/dev/ref/models/querysets/
@@ -477,15 +503,15 @@ Username: <input type="text" name="user">
 ```
 
 ### django中的表单文件forms.py
-* django在forms.py中提供表单功能，可以实现表单渲染、数据验证等功能
-* 实现表单功能的forms.py示例：
+* django在forms.py中提供表单功能，可以实现表单渲染、数据验证等功能  
+* 实现表单功能的forms.py示例：  
 ```
 # 引入表单类
 from django import forms
 # 引入文章模型
 from .models import Article
 
-# forms.py中定义的类必须继承来自django中的forms.ModelForm
+# forms.py中定义的类必须继承来自django中的类
 class ArticlePostForm(forms.ModelForm):
     class Meta:
         # 指明数据模型来源
@@ -500,6 +526,13 @@ fields指明的字段必须和从html表单中返回的字段，以及models.py�
 备注：fields指明部分字段时可以用元组表示，如果包含models类中所有字段，也可以写做fields = '__all__'  
 例如：models.py的Article类中定义了一个发表时间字段，但该字段是根据当前时间自动填写的，  
 不需要用户在前端页面中填写，因此从前端返回的字段就不包含这个时间字段  
+
+* 关于forms.ModelForm和forms.Form的区别：  
+django中的表单类有forms.ModelForm和forms.Form两个，都是forms中的常用类  
+如果要将表单中的数据写入数据库或者修改某些记录的值，就要让自定义表单类继承forms.ModelForm  
+如果提交表单后不会对数据库进行修改，就要让自定义表单类继承forms.Form  
+例如：用户登录表单要继承forms.Form，用户注册表单要继承forms.ModelForm  
+如果用户登录表单继承了forms.ModelForm，则正常的用户登录操作会被认为是新用户注册操作，从而产生报错  
 
 * 以上forms.py对应的html文件
 ```
@@ -586,10 +619,10 @@ def article_create(request):
 ```
 备注：atricle_post_form.is_valid()方法是form中的一个组件，判断数据是否有效，返回True或False  
 注意：只有forms.py中的表单类才有is_valid()方法，models.py中的数据表类没有is_valid()方法  
-备注：如果is_valid()方法报错，可以通过输出atricle_post_form.errors属性来查看报错原因
+备注：如果is_valid()方法报错，可以通过输出atricle_post_form.errors属性来查看报错原因  
 备注：request.POST类似一个字典结构，包含用户在前端页面中填写的各种信息以及'csrfmiddlewaretoken'字段  
 备注：request.FILES类似一个字典结构，包含用户从前端页面中提交的各种文件图片等  
-备注：atricle_post_form.cleaned_data方法可以得到一个字典结构，包含表单的返回值，即request.POST中的数据
+备注：atricle_post_form.cleaned_data方法可以得到一个字典结构，包含表单的返回值，即request.POST中的数据  
 
 > https://code.ziqiangxuetang.com/django/django-forms.html
 
@@ -598,13 +631,14 @@ def article_create(request):
 ## django中的用户管理系统
 
 ### 内置auth模块简介
-* django内置了用户管理系统，通过django.contrib.auth实现用户身份认证、用户组、权限管理等功能
+* django内置了用户管理系统，通过django.contrib.auth实现用户身份认证、用户组、权限管理等功能  
 之前获取用户输入的用户名和密码后要自己从user表中查询是否匹配，auth模块可以协助我们快速实现用户登录信息验证  
 settings.py的INSTALLED_APPS中已经默认添加了django.contrib.auth，可以直接使用相关功能  
 
 * 1.authenticate()
 authenticate()方法提供了用户认证的功能，即验证用户名和密码是否正确，需要username和password两个关键字参数  
 如果认证有效，会返回一个user对象，authenticate()方法会在user对象上标记该用户已经过后端认证，用于后续登录  
+如果认证无效，返回值为None，可以据此得知认证是否成功  
 注意：如果直接从数据库中取出一个user对象，没有经过authenticate()方法的认证，该用户在登录时会报错  
 ```
 user = authenticate(username='someone',password='somepassword')
@@ -640,7 +674,7 @@ def logout_view(request):
  # Redirect to a success page.
 ```
 
-### user对象
+### User类
 user对象是django中经过authenticate()认证的对象，具有多种内置的方法和属性，数据库中对应的用户表为auth_user  
 注意：django只有一个用户类，即使超级用户(superusers)也只是设置了特别属性的该用户类  
 * user表的sql描述：
@@ -661,6 +695,7 @@ CREATE TABLE "auth_user" (
 )
 ```
 password和username是必填项，其中password用哈希算法加密后保存到数据库  
+注意：username默认是unique的，即用户名不能重复  
 is_staff属性为布尔值，设置用户是否有网站的管理权限，即是否可以登录/admin管理界面  
 is_active属性为布尔值，设置允许用户登录，设置为False时可以不删除用户来禁止用户登录，相当于激活功能  
 is_superuser属性为布尔值，设置用户是否为超级用户，超级用户拥有全部权限  
@@ -686,8 +721,11 @@ def my_view(request):
       return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
 ```
 方法3：django内置了用于检查用户登录状态的装饰器login_requierd()  
+login_required(redirect_field_name='next', login_url=None)  
+redirect_field_name参数指定登录成功后的重定向路径，默认为next，指定其他路径则需要自定义登录模板  
+login_url参数指定跳转到的登录页面，也可以统一在settings.py的LOGIN_URL中进行设置  
 若用户没有登录，则会跳转到django默认的登录url'/accounts/login/'(这个值可以在settings文件中通过LOGIN_URL进行修改)  
-并且登录成功后会重新定向到当前访问的url路径上  
+若用户已经登录，则会继续执行函数中定义的操作  
 ```
 from django.contrib.auth.decorators import login_required
     
@@ -698,9 +736,10 @@ def my_view(request):
 
 * 2.create_user()
 create_user()方法用来创建新用户  
+备注：使用create_user方法密码会被加密存储，后续输出显示user.password会是加密后的哈希值  
 ```
 from django.contrib.auth.models import User
-user = User.objects.create_user（username='',password='',email=''）
+user = User.objects.create_user(username='',password='',email='')
 ```
 
 * 3.check_password() / set_password()
@@ -792,10 +831,104 @@ group.permissions.clear()
 
 
 
+## django中的配置文件
+django中配置文件主要是settings.py，由django自动生成，其中包括很多基本设置  
+* 1.DEBUG
+DEBUG用于打开或关闭调试模式的布尔值，默认为True，即处于调试模式  
+调试模式中django会记住它执行的每个SQL查询，出错时会显示详细的追踪信息  
+注意：调试模式会消耗服务器更多的内存，将网站部署到生产环境时需要将DEBUG设置为False  
+
+* 2.ALLOWED_HOSTS
+ALLOWED_HOSTS表示此django站点可以提供的主机或域名的字符串列表(不含端口)，默认为[]  
+这是一种防止HTTP主机头攻击的安全措施，即使在许多看似安全的Web服务器配置下也是如此  
+列表中的值可以是完全限定名称，如'www.example.com'，也可以用'*'匹配任何值  
+当DEBUG=True且ALLOWED_HOSTS=[]时，将会验证主机'localhost'或'127.0.0.1'  
 
 
 
 ## django中的静态文件
 * 静态文件是指网站中的js、css、图片、视频等文件
 * 如果要使用静态文件需要在setting.py中做配置修改，静态文件放在对应的app下的static文件夹中
+
+
+
+## uWSGI的安装和配置
+* uWSGI可以通过pip直接安装，'pip install uwsgi'，当前版本为uWSGI==2.0.18
+
+### 基础测试
+创建一个test.py文件，内容如下：  
+```
+def application(env, start_response):
+    start_response('200 OK', [('Content-Type','text/html')])
+    return [b"Hello World"] # python3
+    #return ["Hello World"] # python2
+```
+执行测试命令'uwsgi --http :8000 --wsgi-file test.py'，如果浏览器上localhost返回了Hello World则表示运行正常  
+http :8000 参数表示使用http协议，端口8000  
+wsgi-file test.py 参数表示加载指定的test.py文件  
+
+### 测试django项目
+使用uwsgi命令运行django项目，'uwsgi --http :8000 --module mysite.wsgi'  
+--module mysite.wsgi 参数表示加载mysite目录下的wsgi模块，其中wsgi.py文件一般由django自动生成  
+备注：不需要使用django自带的运行命令，'python manage.py runserver'  
+
+
+
+## nginx的安装和配置
+* nginx可以通过apt直接安装，'apt-get install nginx'
+* '/etc/init.d/nginx start'，启动nginx服务，启动后可以在'localhost:80'看到'欢迎来到nginx！'
+
+### 为网站配置nginx
+* 1.需要将一个uwsgi_params文件复制到项目目录中
+uwsgi_params文件一般位于uWSGI发行版的目录中，如ubuntu安装了nginx后文件位于'/etc/nginx/uwsgi_params'  
+另外也可以从github上克隆uwsgi_params文件到本地的项目目录中  
+
+> https://github.com/nginx/nginx/blob/master/conf/uwsgi_params  
+
+* 2.在'/etc/nginx/modules-available'目录中创建一个mysite_nginx.conf文件
+这个conf文件告诉nginx从文件系统提供媒体和静态文件，以及处理需要Django干预的请求，文件内容如下：  
+```
+# mysite_nginx.conf
+
+# the upstream component nginx needs to connect to
+upstream django {
+    # server unix:///path/to/your/mysite/mysite.sock; # for a file socket
+    server 127.0.0.1:8001; # for a web port socket (we'll use this first)
+}
+
+# configuration of the server
+server {
+    # the port your site will be served on
+    listen      8000;
+    # the domain name it will serve for
+    server_name example.com; # substitute your machine's IP address or FQDN
+    charset     utf-8;
+
+    # max upload size
+    client_max_body_size 75M;   # adjust to taste
+
+    # Django media
+    location /media  {
+        alias /path/to/your/mysite/media;  # your Django project's media files - amend as required
+    }
+
+    location /static {
+        alias /path/to/your/mysite/static; # your Django project's static files - amend as required
+    }
+
+    # Finally, send all non-media requests to the Django server.
+    location / {
+        uwsgi_pass  django;
+        include     /path/to/your/mysite/uwsgi_params; # the uwsgi_params file you installed
+    }
+}
+```
+
+* 3.建立从'/etc/nginx/sites-enabled/'到mysite_nginx.conf文件的软连接，以便nginx可以看到它
+'sudo ln -s /etc/nginx/sites-available/mysite_nginx.conf /etc/nginx/sites-enabled/'  
+
+### 部署静态文件
+* 在运行nginx之前，需要收集所有django静态文件，并设置settings.py文件的STATIC_ROOT属性  
+'STATIC_ROOT = os.path.join(BASE_DIR, "static/")'， 之后运行命令：'python manage.py collectstatic'  
+这么操作主要是为了将django中的静态文件移植到nginx上，方便对静态文件的访问  
 

@@ -4,7 +4,7 @@
 ## 一些相关概念
 * 1.WSGI(Web Server Gateway Interface)
 * WSGI不是服务器、python模块、框架、API或任何软件，而是描述web服务端和客户端通信的规范协议
-* 要实现WSGI协议，必须同时实现web服务端和客户端，运行在WSGI协议上的web框架包括flask、django、bottle
+* 要实现WSGI协议，必须同时实现web服务端和客户端，主流的python web框架flask、django、tornado都是基于WSGI规范实现的  
 
 * 2.uwsgi
 * uwsgi是一种线路协议而不是通信协议，常用于在uWSGI服务器与其他网络服务器的数据通信，定义传输信息的类型
@@ -22,10 +22,6 @@
 * 但django在与数据库的交互上相对比较慢，django的同步特性导致吞吐量小的问题，可以通过Celery等解决
 * 是否选用django，取决于项目对数据库交互的要求以及各种优化
 * django的项目代表：Instagram，Guardian
-
-### 参考资料
-> https://code.ziqiangxuetang.com/django/django-tutorial.html
-> http://www.runoob.com/django/django-tutorial.html
 
 
 ## flask(小而精)
