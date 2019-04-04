@@ -1,5 +1,56 @@
 #合并两个递增排序的链表
 
+# leecode版
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        p1 = l1
+        p2 = l2
+        
+        if p1 is None:
+            return p2
+        if p2 is None:
+            return p1
+        
+        while p1 is not None and p2 is not None:
+            if p1.val <= p2.val:
+                while p1.next is not None and p1.next.val <= p2.val:
+                    p1 = p1.next
+                tmp = p1.next
+                p1.next = p2
+                p1 = tmp
+            else:
+                while p2.next is not None and p2.next.val < p1.val:
+                    p2 = p2.next
+                tmp = p2.next
+                p2.next =p1
+                p2 = tmp
+        
+        return l1 if l1.val <= l2.val else l2
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Listnode:
     def __init__(self,value=None,next=None):
         self.value=value

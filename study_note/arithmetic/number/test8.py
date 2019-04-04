@@ -6,7 +6,7 @@ def fab1(n):
     if n == 1:
         return 1
     elif n == 2:
-        return 2
+        return 1
     else:
         a1 = 1
         a2 = 1
@@ -22,7 +22,7 @@ def fab2(n):
     if n == 1:
         return 1
     elif n == 2:
-        return 2
+        return 1
     else:
         a = 1
         b = 1
@@ -47,3 +47,6 @@ def fab3(n):
     return result
 
 # print(fab1(8),fab2(8))
+
+for i in range(1, 10):
+    print(i, fab1(i))

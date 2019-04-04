@@ -150,3 +150,9 @@ list6 = [[1, 2], 3] * 3
 print(list6)
 list7 = [[[1], 2], 3] * 3
 print(list7)
+
+
+# 例子6：用双层列表模拟一个二维数组/矩阵
+record = [[0 for i in range(5)] for i in range(3)]
+for line in record:
+    print(line)

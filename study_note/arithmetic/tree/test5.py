@@ -18,14 +18,20 @@ n3 = Node('c', n6)
 n1 = Node('a', n2, n3)
 
 # 先序遍历 NLR
-def pretree(root):
+def pretree(root, list1):
     if root == None:
         return
-    print(root.value)
-    pretree(root.left)
-    pretree(root.right)
+    # print(root.value)
+    list1.append(root.value)
+    pretree(root.left, list1)
+    pretree(root.right, list1)
 
-pretree(n1)
+def test2():
+    result = []
+    pretree(n1, result)
+    print(result)
+
+test2()
 print('\n')
 
 
@@ -38,6 +44,21 @@ def midtree(root):
     midtree(root.right)
 
 midtree(n1)
+
+def get_mid(x, list1):
+    print(list1)
+    if x is not None:
+        if x.left is None and x.right is not None:
+            list1.append('null')
+        else:
+            get_mid(x.left, list1)
+    if x is None:
+        return
+    list1.append(x.val)
+    if x.right is None and x.left is not None:
+        list1.append('null')
+    else:
+        get_mid(x.right, list1)
 print('\n')
 
 # 后序遍历 LRN

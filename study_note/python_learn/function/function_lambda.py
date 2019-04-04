@@ -15,3 +15,9 @@ print(func(2))
 # 示例2：计算2*x+y的值(冒号右边可以直接是函数中的计算过程)
 func = lambda x, y: 2 * x + y
 print(func(2, 1))
+
+# 示例3：注意运算结果是4*5，不是3*5
+y = 3
+a = lambda x: x * y
+y = 4
+print(a(5))
