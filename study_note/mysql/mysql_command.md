@@ -198,6 +198,8 @@
 * 'select * from tb_name;'
 * 查看数据表中指定字段的值
 * 'select column_name,... from tb_name;'
+* 使用关键字as给查询结果字段起别名，返回的结果字段名就变成了新起的别名
+* 'select name as student_name from student'
 * 使用比较运算符查询
 * 'select * from student_info where age > 10;'
 * 'select * from student_info where age <= 10;'
@@ -226,7 +228,7 @@
 * 备注：ASC参数表示升序排序，DESC参数表示降序排序，默认为升序排序
 * 'select * from student_info order by age desc;'
 * 'select * from student_info order by age;'
-* 使用关键字group by的分组查询
+* 使用关键字group by的分组查询，group by经常和聚合函数一起使用
 * 注意：sql_mode变量中有ONLY_FULL_GROUP_BY的限制，需要去掉，否则会有报错
 * 备注：默认情况下每组只显示一条记录，通过group_concat函数把指定字段的所有记录都显示出来
 * 'select * from student_info group by age;'
@@ -236,6 +238,15 @@
 * 备注：只有一个参数时表示返回结果的个数，有两个参数时第一个参数表示返回的起始行数，第二个参数表示返回结果的个数
 * 'select * from student_info limit 30;'
 * 'select * from student_info limit 20, 30;'
+* 使用关键字having进行查询，having通常和group by一起使用(group by不一定需要having)，用来过滤group by返回的数据集
+* 备注：having和where的区别在于where无法与聚合函数一起使用，having可以弥补where不能与聚合函数一起使用的不足
+* 示例：将学生表按name字段进行分组，然后输出name字段有两个以上重复的数据行
+* 'select group_concat(id), name from student_info group by name having count(name) >= 2'
+* 在单表查询中给表临时起名，不需要用关键字，原表名和临时表名用空格隔开
+* 注意：同一个查询语句中可以给数据表起多个临时名，多个临时名指的都是同一个数据表
+* 示例：数据表为Scores，将数据表临时命名为a和b
+* 'select a.Score, (select count(distinct b.score) from Scores b where b.score >= a.score) as Rank from Scores a order by a.Score desc'
+
 
 ### 6.2 聚合函数查询
 * 聚合函数根据一组数据求出一个值，聚合函数的结果只能根据选定行中非空的值进行计算，null值会被忽略
@@ -253,16 +264,26 @@
 
 ### 6.3 多表查询
 * 多表查询又称为连接查询，包括内连接(等同连接)，外连接(左连接、右连接、全连接)
+* 数据库在通过连接两张或多张表来返回记录时，都会生成一张中间的临时表，然后再将这张临时表返回给用户
 * 内连接是最普遍连接类型，要求构成连接的每一部分的每个表都匹配
 * 其中最常用的是等同连接/相等连接，连接后的表中某个字段与每个表中的都相同
+* 注意：内连接可以使用关键字join或inner join或省略关键字直接用逗号隔开，以下三个命令效果相同
 * 'select * from student_info, teacher_info where teacher_info.name = student_info.name;'
-* 外连接是指用outer join关键字将两个表连接起来进行查询
-* 左连接(left join)是用左表中所有数据分别与右表中每条数据进行连接组合，返回结果除内连接的数据外还包含左表中不符合条件的数据，不符合的部分在右表的字段中用null填充
+* 'select * from student_info join teacher_info where teacher_info.name = student_info.name;'
+* 'select * from student_info inner join teacher_info where teacher_info.name = student_info.name;'
+* 1.外连接是指用outer join关键字将两个表连接起来进行查询
+* 左连接(left join)是用左表中所有数据分别与右表中每条数据进行连接组合
+* 左连接相当于以左表为准，返回左表右表都有的数据(相当于内连接的数据)，以及左表有右表没有的数据(右表部分填充为null)
 * 'select * from teacher_info left join student_info on teacher_info.name = student_info.name;'
-* 右连接(right join)是将右表中所有数据分别于左表中每条数据进行连接组合，返回结果除内连接的数据外还包含右表中不符合条件的数据，不符合的部分在左表的字段中用null填充
+* 2.右连接(right join)是将右表中所有数据分别于左表中每条数据进行连接组合
+* 右连接相当于以右表为准，返回左表右表都有的数据(相当于内连接的数据)，以及右表有左表没有的数据(左表部分填充为null)
 * 'select * from teacher_info right join student_info on teacher_info.name = student_info.name;'
-* 全连接是不加连接条件，得到结果个数会是一个笛卡尔乘积
+* 3.全连接是不加连接条件，得到结果个数会是一个笛卡尔乘积
 * 'select * from student_info, teacher_info;'
+* 注意：在使用left jion时，on和where条件的区别如下
+* on条件是在生成临时表时使用的条件，它不管on中的条件是否为真，都会返回左边表中的记录
+* where条件是在临时表生成好后，再对临时表进行过滤的条件，这时已经没有left join的含义了，条件不为真的就全部过滤掉
+* 一般在内连接中用where，左连接和右连接中用on
 
 ### 6.4 子查询
 * 子查询就是一个查询的结果是另一个查询的条件，mysql支持多层查询，并且从查询最内层开始
@@ -284,9 +305,9 @@
 ### 6.5 合并查询结果
 * 合并查询结果就是将多个查询结果合并到一起显示
 * 使用关键字union的合并查询(结果合并后去重)
-* 'select name from student_info union all select name from teacher_info;'
-* 使用关键字union all的合并查询(结果简单合并)
 * 'select name from student_info union select name from teacher_info;'
+* 使用关键字union all的合并查询(结果简单合并，允许有重复值)
+* 'select name from student_info union all select name from teacher_info;'
 
 ### 6.6 正则表达式查询
 * 使用关键字regexp进行正则匹配

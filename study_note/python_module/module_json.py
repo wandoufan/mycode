@@ -29,7 +29,7 @@ str1 = 'abcd'
 dict1 = {'a': 1, 'b': 2, 'c': 3}
 
 # 一、4种常用方法
-# 1.dumps将列表序列化为json格式
+# 1.dumps将列表序列化为json格式，注意：json串的类型就是字符串
 j1 = json.dumps(list1)
 print(j1, type(j1).__name__)
 

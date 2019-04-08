@@ -127,6 +127,21 @@ Connection: Keep-Alive
 * 4.get方式需要使用Request.QueryString来取得变量的值，而post方式通过Request.Form来获取变量的值
 
 
+## post方法提交数据的四种方式
+http协议规定post方法提交的数据必须放在请求主体中，但协议并没有规定数据必须使用什么编码方式，开发者可以自己定义  
+一般服务端语言如php、python等，以及它们的framework，都内置了自动解析常见数据格式的功能用来在服务端解析  
+服务端通常是根据请求头(headers)中的Content-Type字段来获知请求中的消息主体是用何种方式编码，再对主体进行解析  
+* 1.Content-Type : application/x-www-form-urlencoded
+这属于最常见的提交方式，浏览器的原生form表单，如果不设置enctype属性，最终就会以该方式提交数据  
+提交的数据按照key1=val1&key2=val2的方式进行编码，key和val都进行了URL转码  
+* 2.Content-Type : multipart/form-data
+这也属于较常用的方式，使用表单上传文件时，必须让form的enctyped等于这个值  
+* 3.Content-Type : application/json
+这种方式用来告诉服务端消息主体是序列化后的json字符串，json格式支持比键值对复杂得多的结构化数据  
+* 4.Content-Type : text/xml
+这种方式使用http作为传输协议，xml作为编码方式的远程调用规范  
+
+
 ## 响应消息response
 * 一个响应报文包括状态行、消息报头、空行和响应正文4部分
 * 1.状态行

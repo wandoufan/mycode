@@ -76,3 +76,25 @@ list_1.sort(reverse=True)
 print(list_1)
 
 
+# 4.内置函数eval(expression, globals=None, locals=None)，将字符串str当成有效的表达式来求值并返回计算结果
+
+# 示例1：计算数值
+x = 1
+y = 2
+s = 'x + y'
+print(eval(s))
+
+# 示例2：把字符串格式的字典转换回字典格式
+dict1 = {'a': 1, 'b': 2, 'c': 3}
+s = str(dict1)
+print(s, type(s))
+d = eval(s)
+print(d, type(d))
+
+# 示例3：把json格式的字符串转换回原来的数据格式
+import json
+list1 = [1, 2, 3, 4]
+j = json.dumps(list1)
+print(j, type(j))
+l = eval(j)
+print(l, type(l))

@@ -74,8 +74,9 @@ print('\n')
 
 
 
-#广度优先（先兄弟节点，后子节点），队列实现
-#等同于从上往下，从左往右打印结点
+# 层序遍历：广度优先（先兄弟节点，后子节点），队列实现
+# 等同于从上往下，从左往右打印结点
+# 按层序逐个输出结点
 
 def breadth_first_search(root):
     queue=[]
@@ -94,3 +95,46 @@ def breadth_first_search(root):
 breadth_first_search(n1)
 
 
+# 层序遍历：要求逐层输出每一层的结点
+# 输入：[3,9,20,null,null,15,7]
+# 输出：[[3],[9,20],[15,7]]
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def levelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        result = []
+        queue = []
+        if root is None:
+            return result
+        if root.left is None and root.right is None:
+            result.append([root.val])
+            return result
+        # 使用双层列表按层存储所有结点
+        queue.append([root])
+        while len(queue[-1]) != 0:
+            tmp = []
+            for node in queue[-1]:
+                if node.left is not None:
+                    tmp.append(node.left)
+                if node.right is not None:
+                    tmp.append(node.right)
+            queue.append(tmp)
+        # 将每层的结点转换为结点的值
+        for i in range(len(queue) - 1):
+            level = queue[i]
+            node_list = []
+            for node in level:
+                node_list.append(node.val)
+            result.append(node_list)
+        
+        return result
