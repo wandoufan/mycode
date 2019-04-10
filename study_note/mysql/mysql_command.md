@@ -63,10 +63,15 @@
 * primary key 设置该列为数据表的主键，主键的值要求唯一不能重复
 * 注意：一个数据表只能有一个主键，一个主键可以包含多个字段，称为复合主键，但最好一个主键只包含一个字段
 * reference_definition 为该字段添加注释
+
 * 示例：创建一个学生表，其中id列为非空自动编号的主键
 * 'create table student_info(id int not null auto_increment primary key);' 
 * 示例：创建一个教师表，包括id和name两个字段
 * 'create table teacher_info(id int not null auto_increment primary key,name char not null);'
+
+* 利用查询结果创建数据表，类似于复制表
+* 'create table table_1 as select id, name from table_2 where age > 20;'
+
 * 向数据表中添加新字段，其中create_definition部分描述字段属性
 * 'alter table tb_name add create_definition;' 
 * 示例：向学生表中添加name和age两个字段
@@ -165,6 +170,19 @@
 * 示例：从学生表中查询id和age字段
 * 'select id, age from student_info;'
 
+### 4.5 删除/修改数据易错点
+* 注意：不能同一语句中先select表中的某些值，再利用这些值对表进行delete/update
+* 否则会报错：You can't specify target table 'teacher_info' for update in FROM clause
+* 错误示例：
+* 'delete from teacher_info where age in (select min(age) from teacher_info group by sex);'
+* 'update teacher_info set age = 10 where age in (select min(age) from teacher_info group by sex);'
+* 方法一：多嵌套一层子查询，再进行修改/删除，注意派生表要指定别名，如min_age
+* 'delete from teacher_info where age in (select age from (select min(age) as age from teacher_info group by sex) min_age);'
+* 'update teacher_info set age = 10 where age in (select age from (select min(age) as age from teacher_info group by sex) min_age);'
+* 方法二：将要修改/删除的条件存入临时表中，根据临时表修改/删除之后，再删除临时表
+* 'create table tmp as select * from teacher_info where age = 25;'
+* 'update teacher_info set age = 26 where age in (select age from tmp);'
+* 'drop table tmp;'
 
 ## 5.mysql的三种数据类型：
 ### 5.1.数字类型
@@ -189,70 +207,92 @@
 * year,格式为2018或18
 * timestamp,时间标签
 
+* 注意：time字段间可以直接比较大小，也可以通过相减得到两个日期的差值，类似datediff函数
+* 'select a.id, a.date - b.date from time_info a, time_info b where a.id > b.id and a.date < b.date;'
+
 
 ## 6.mysql的查询语句：
 ### 6.1 单表查询
 * select语句语法
 * 'select column_name,... from tb_name [where 条件表达式] [group by 分组字段名] [order by 排序字段名] [having 条件表达式] [limit 输出个数]'
+
 * 查看数据表中所有的字段的值
 * 'select * from tb_name;'
+
 * 查看数据表中指定字段的值
 * 'select column_name,... from tb_name;'
+
 * 使用关键字as给查询结果字段起别名，返回的结果字段名就变成了新起的别名
 * 'select name as student_name from student'
+
 * 使用比较运算符查询
 * 'select * from student_info where age > 10;'
 * 'select * from student_info where age <= 10;'
 * 'select * from student_info where age != 10;'
+
 * 使用关键字in的集合查询
 * 'select * from student_info where age in (7, 12);'
 * 'select * from student_info where age not in (7, 12);'
+
 * 使用关键字between and的范围查询
 * 'select * from student_info where age between 10 and 13;'
+
 * 使用关键字like的字符匹配查询
 * 备注：通配符%可以匹配任意个字符(零个，一个或多个)，通配符_只能匹配一个字符
 * 'select * from student_info where name like '%a%';'
 * 'select * from student_info where name not like '%a%';'
 * 'select * from student_info where name like '_a_';'
 * 'select * from student_info where name not like '_a_';'
+
 * 使用关键字is null的空值查询
 * 'select * from student_info where sex is null;'
 * 'select * from student_info where sex is not null;'
+
 * 使用关键字and的多条件查询
 * 'select * from student_info where name like '%a%' and age=8;'
+
 * 使用关键字or的多条件查询
 * 'select * from student_info where name like '%a%' or age=8;'
+
 * 使用关键字distinct去除结果中的重复行
 * 'select distinct name from student_info;'
+
 * 使用关键字order by对查询结果排序
 * 备注：ASC参数表示升序排序，DESC参数表示降序排序，默认为升序排序
 * 'select * from student_info order by age desc;'
 * 'select * from student_info order by age;'
+
 * 使用关键字group by的分组查询，group by经常和聚合函数一起使用
 * 注意：sql_mode变量中有ONLY_FULL_GROUP_BY的限制，需要去掉，否则会有报错
 * 备注：默认情况下每组只显示一条记录，通过group_concat函数把指定字段的所有记录都显示出来
 * 'select * from student_info group by age;'
 * 'select id, name, group_concat(age), sex from student_info group by age;'
 * 'select * from student_info group by age, sex;'
+* 示例：分组后组内排序，将教师表按性别分组，然后按年龄进行排序
+* 'select group_concat(id),group_concat(name),age,sex from teacher_info a group by a.sex, a.age order by a.sex, a.age;'
+* 示例：分组后找出每组最大的前n个，将教师表按性别分组，然后找出每组中年龄最大的前3个
+* 'select a.id, a.name, a.age, a.sex from teacher_info a where (select count(distinct b.age) from teacher_info b where b.age >= a.age and b.sex = a.sex) < 3 order by sex, age desc;'
+
 * 使用关键字limit的限制查询结果数量
 * 备注：只有一个参数时表示返回结果的个数，有两个参数时第一个参数表示返回的起始行数，第二个参数表示返回结果的个数
 * 'select * from student_info limit 30;'
 * 'select * from student_info limit 20, 30;'
+
 * 使用关键字having进行查询，having通常和group by一起使用(group by不一定需要having)，用来过滤group by返回的数据集
 * 备注：having和where的区别在于where无法与聚合函数一起使用，having可以弥补where不能与聚合函数一起使用的不足
 * 示例：将学生表按name字段进行分组，然后输出name字段有两个以上重复的数据行
 * 'select group_concat(id), name from student_info group by name having count(name) >= 2'
+
 * 在单表查询中给表临时起名，不需要用关键字，原表名和临时表名用空格隔开
 * 注意：同一个查询语句中可以给数据表起多个临时名，多个临时名指的都是同一个数据表
 * 示例：数据表为Scores，将数据表临时命名为a和b
 * 'select a.Score, (select count(distinct b.score) from Scores b where b.score >= a.score) as Rank from Scores a order by a.Score desc'
 
-
 ### 6.2 聚合函数查询
 * 聚合函数根据一组数据求出一个值，聚合函数的结果只能根据选定行中非空的值进行计算，null值会被忽略
-* count()函数返回指定字段的非null值的结果个数，当参数为*时返回包含null值的结果个数
+* count()函数返回指定字段的非null值的结果个数，当参数为\*时返回包含null值的结果个数
 * 'select count(sex) from student_info;'
-* 'select count(*) from student_info;'
+* 'select count(\*) from student_info;'
 * sum()函数返回某个字段值的总和
 * 'select sum(age) from student_info;'
 * avg()函数返回某个字段的平均值
@@ -261,6 +301,10 @@
 * 'select max(age) from student_info;'
 * min()函数返回某个字段中的最小值
 * 'select min(age) from student_info;'
+* first()函数返回第一个记录的值
+* 'select first(age) from student_info;'
+* last()函数返回最后一个记录的值
+* 'select last(age) from student_info;'
 
 ### 6.3 多表查询
 * 多表查询又称为连接查询，包括内连接(等同连接)，外连接(左连接、右连接、全连接)
@@ -392,6 +436,7 @@
 * round(x)函数对x四舍五入取整
 * round(x, y)函数对x四舍五入保留到小数点后y位
 * sort(x)函数返回x的平方根
+* mod(x, y)函数返回x除y的余数，相当于x%y
 
 ### 9.2 字符串函数
 * char_length(s)函数返回字符串的字符数
@@ -399,6 +444,8 @@
 * left(s, n)函数返回字符串的前n个字符
 * upper(s)函数将字符串所有字母都变大写
 * reverse(s)函数将字符串反转
+* ucase(s)函数将字段转换为大写
+* lcase(s)函数将字段转换为小写
 
 ### 9.3 日期和时间函数
 * curdate()/current_date() 获取当前的日期
@@ -410,6 +457,8 @@
 
 ### 9.4 条件判断函数
 * if(expr, v1, v2) 如果表达式expr成立，则执行v1，否则执行v2
+* 示例：修改教师表每个人的性别
+* 'update teacher_info set sex = if(sex = 'boy', 'girl', 'boy');'
 * ifnull(v1, v2) 如果v1不为空，则显示v1的值，否则显示v2的值
 
 
