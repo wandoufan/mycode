@@ -35,7 +35,7 @@
 * 常见的关系型数据库主要包括：oracle、mysql、DB2、Microsoft sql server、Microsoft Access、SQLLite
 * 常见的非关系型数据库主要包括：redis、mongo DB、Neo4j  
 
-### 非关系型数据库
+### 关系型数据库
 * 关系型数据库最主要的数据结构是二维表，通过二维表及表之间的联系来组成一个数据组织
 * 优点
   * 易于维护，都是使用格式一致的表结构存储
