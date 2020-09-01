@@ -26,7 +26,7 @@ csv.field_size_limit(sys.maxsize)
 # 第三个是格式化参数覆盖之前dialect对象指定的编码风格
 # 也可以用参数encoding='utf-8'指定编码格式
 # 注意：open函数中用'rt'/'wt'，即要用文本模式读写，也可以直接用'r/w'，用'rb'/'wb'会报错
-with open('test.csv', 'rt') as csv_file:
+with open('test.csv', 'rt', encoding='utf-8') as csv_file:
     content = csv.reader(csv_file)
     for line in content:  # content 是'_csv.reader'类型的对象
         print(line)  # line是一个列表，包含表格中一行的数据
