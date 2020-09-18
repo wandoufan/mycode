@@ -1,5 +1,7 @@
 ## gcc
-gcc(GUN compiler collection)，即GUN编译套件，
+gcc(GUN compiler collection)，即GUN编译套件，用来进行C/C++的编译  
+gcc编译器是Linux系统下最常用的C/C++编译器，大部分Linux发行版都会默认安装  
+gcc编译器在shell中通过'gcc'命令来调用，命令包括很多选项  
 参考资料：
 > http://c.biancheng.net/gcc/
 
@@ -15,3 +17,5 @@ GUN是运行在Liunx/Unix系统下的工具包，一般位于/usr/bin/目录下�
 
 ## MinGW
 为了在Windows系统下也可以使用GUN工具，就产生了MinGW(Minimalist GUN for Windows)  
+
+## MSYS
