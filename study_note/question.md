@@ -12,3 +12,4 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 }
 ::什么意思
+5. 在类中嵌套定义一个类
