@@ -98,7 +98,7 @@ main.cpp是实现main()函数的文件，包含创建窗口、显示窗口、运
 用Widget类获得一个实例化对象w，即用来设计窗口的对象，w.show()用来显示窗口  
 
 
-## 与窗体相关的4个文件
+## 与窗体相关的4个文件(以QWidget类为例)
 1. widget.h
 定义窗体类的头文件，定义了一个继承自类QWidget的类Widget  
 另外还包含了自己定义出的那些槽函数，和widget.cpp文件中定义出的槽函数一一对应  
@@ -107,8 +107,9 @@ Widget类的功能实现的源程序文件
 3. widget.ui
 窗体界面文件，由UI设计器自动生成，存储了窗体上各个组件的属性设置和布局  
 使用XML语言，一般用UI设计器可视化设计生成  
-4. ui_widget.h（对widget.ui编译后才在build目录下生成该文件）
+4. ui_widget.h
 根据用户设置的窗体组件及属性、信号与槽的关联等自动生成一个类的定义文件，类名为Ui_Widget  
+该文件不在项目目录下，而是在对widget.ui编译后才在build目录下生成该文件  
 
 
 ## UI设计窗口功能区域划分
@@ -130,13 +131,6 @@ Action编辑器用于可视化设计Action
 包含两列，即每个组件的属性和属性值  
 属性从上到下可以分为多个组，实际表示了类的继承关系  
 例如，label组件为：QObject→QWidget→QFrame→QLabel  
-
-
-## 组件的属性
-1. objectName
-对于窗体上创建出的每一个组件，都有一个objectName属性作为组件实例的名称  
-具体属性值由系统自动创建，一般按照组件创建顺序来命名，例如checkBox、checkBox_2、checkBox_3  
-objectName作为组件的唯一标识，一般不要对其进行修改  
 
 
 ## 界面设计布局
@@ -178,13 +172,13 @@ connect()是QObject类的一个静态函数，而QObject是所有QT类的基类�
 直接写为connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));  
 sender是发射信号的对象的名称  
 signal()是信号名称，相当特殊的函数，需要带括号，有参数时需要指明参数  
-receiver是接收信号的对象的名称  
+receiver是接收信号的对象的名称，常用this代表本对象  
 slot()是槽函数的名称，需要带括号，有参数时需要指明参数  
 4. SIGNAL和SLOT  
 SIGNAL和SLOT是QT的宏，用于指明信号和槽，并将它们的参数转换为相应的字符串  
 
 
-## 信号与槽的使用规则  
+## 信号与槽的使用规则
 1. 一个信号可以与多个槽关联，槽函数按建立连接时的顺序依次执行  
 例如：当spinNum对象的数值变化时，addFun()和updateStatus()会依次响应  
 connect(spinNum, SIGNAL(valueChanged(int)), this, SLOT(addFun(int));  
@@ -204,7 +198,25 @@ connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));
 只有在信号关联的槽函数都执行完毕之后才会执行信号后面的代码  
 
 
-## 常用信号
+## 设置信号与槽的四种方法
+1. 在UI设计界面下方的编辑器中设置槽和信号  
+设置完成后可以直接生效，其中槽函数只能从系统提供的常规函数中去选择  
+2. 点击上方工具栏中的"Edit Signals\Slots"即可进入到信号与槽编辑模式  
+选中一个组件作为sender，然后按住鼠标左键将其箭头拖动到其他组件处作为receiver  
+在弹出的列表框中分别选择信号和槽函数，设置完成后可以直接生效，其中槽函数只能从系统提供的常规函数中去选择  
+3. 可以在dialog.cpp文件中自定义出一个符合我们需要的槽函数  
+选中需要设置的组件，右键'转到槽'，之后由系统自动创建出的槽函数框架，完成函数内容即可  
+其中connect函数不需要再手动写出，由系统编译后在ui_dialog.h文件中调用setupUi()函数实现关联  
+槽函数名是系统根据组件名自动创建出来的，例如void Dialog::on_checkBox_clicked(bool checked)  
+注意：系统是根据槽函数名来实现信号和槽的关联，不要随意改动槽函数名  
+4. 可以将多个信号(组件)关联到一个自定义的槽函数上，此时槽函数是一个复合函数  
+需要手动在dialog.cpp文件中定义的Dialog类下加入connect函数，将不同信号和函数中不同操作关联起来  
+connect(ui->rBtnBlue,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
+connect(ui->rBtnRed,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
+connect(ui->rBtnBlack,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
+
+
+## 常用的系统自带信号
 1. clicked()
 2. clicked(bool)
 信号 clicked(bool) 会将 CheckBox 组件当前的选择状态作为一个参数传递，
@@ -216,13 +228,36 @@ connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));
 6. stateChanged(int)
 
 
+## 常用的系统自带槽函数
+1. close()
+close()函数用来关闭当前窗口部件，常与关闭信号关联  
+2. accept()
+accept()函数用来
+3. reject()
+reject()函数用来取消当前操作，常与取消信号关联
+4. quit()
+5. exit()
+6. exec()
+exec()函数用来调用显示一个模式对话框？？？
+7. show()
+show()函数用来调用显示一个非模式对话框，执行完成后返回主事件中？？？
+
+
+## 组件的属性
+1. objectName
+对于窗体上创建出的每一个组件，都有一个objectName属性作为组件实例的名称  
+具体属性值由系统自动创建，一般按照组件创建顺序来命名，例如checkBox、checkBox_2、checkBox_3  
+objectName作为组件的唯一标识，每个组件的objectName都不相同  
+objectName需要在设计程序之前设置好，设置好后不要再改动，否则代码也要相应改动  
+
+
 ## QFont的相关方法属性
 ```
     QFont font = ui -> textEdit -> font();
     font.setUnderline(checked);
     ui -> textEdit -> setFont(font);
 ```
-1. 常用函数：  
+1. 常用函数  
 setFamily() 设置字体  
 setBold() 字体加粗  
 setItalic() 斜体  
@@ -231,3 +266,40 @@ setUnderline() 下划线
 setStrikeOut() 删除线  
 setPointSize() 设置字体肉眼看到的实际大小，在不同设备上显示大小相同  
 setPixelSize() 设置字体像素单位的大小，在不同设备上显示大小可能不同  
+
+
+## QPalette的相关方法属性
+调色板Qpalette类是专门用于管理组件的外观颜色，每个组件都有一个palette对象  
+```
+QPalette plet = ui -> plainTextEdit -> palette();
+plet.setColor(QPalette::Text, Qt::blue);
+ui -> plainTextEdit -> setPalette(plet);
+```
+设置颜色范围的参数包括：  
+QPalette::Base 设置文本输入窗口部件(如QtextEdit等)的底色  
+QPalette::Text 设置文本输入窗口中文字的颜色  
+QPalette:WindowText 通常指窗口看不见的前景色  
+QPalette::Button 指按钮窗口部件的背景色  
+QPalette::ButtonText 指按钮窗口部件的前景色  
+QPalette::Background 背景色  
+QPalette::Foreground 前景色  
+
+设置显示颜色的参数包括：  
+Qt::black 黑色  
+Qt::blue 蓝色  
+Qt::red 红色  
+Qt::yellow 黄色  
+QColor(10, 100 , 50, 255) 用数字设置颜色  
+
+
+## UI方式实现和纯代码方式实现
+1. 通过UI方式实现窗口的设计更加简单，让用户省去了繁琐的界面设计工作  
+采用代码设计实现 UI 时，需要对组件的布局有个完整的规划，不如可视化设计直观，且编写代码工作量大  
+但用纯代码方式可以在底层实现更加强大和灵活的设计功能  
+2. 要采用纯代码方式，在创建项目时要将'Generate form'取消勾选，创建完成后项目目录下没有*.ui文件  
+3. 用UI方式和纯代码方式实现同一个功能，二者的底层代码并不相同  
+UI方式的底层代码是自动生成的(也可以有自定义的部分)  
+代码方式需要在头文件中将所有用到的组件都定义出来
+4. 代码方式实现时，在头文件的类定义中没有指向界面的指针ui
+在cpp主文件中也不再去调用指针ui
+
