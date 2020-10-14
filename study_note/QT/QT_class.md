@@ -1,0 +1,319 @@
+# QT中的类
+
+## QObject
+QObject类是所有QT对象的基类  
+
+
+## QAbstractButton
+QAbstractButton类是所有widgets按钮的抽象基类，给按钮提供公用的函数功能  
+QAbstractButton是QWidget类的子类  
+QAbstractButton是QCheckBox, QPushButton, QRadioButton, QToolButton的父类  
+1. isDown()
+表示按钮button是否是pressed down按下的  
+2. isChecked()
+表示按钮是否被检查或者标记切换的  
+只有可检查和切换（标记）的按钮可以标记或者取消标记checked or unchecked  
+3. isEnabled()
+表示按钮是否可以被用户点按  
+4. setAutoRepeat()
+设置按钮是否当用户长按按钮可以auto-repeat（自动重复执行）  
+属性autoRepeatDelay和autoRepeatInterval定义了如何重复响应执行  
+5. setCheckable()
+设置按钮是否可切换或者标记的  
+
+
+## QString
+QString类提供了一个编码的字符串，存储了若干个QChar类型的16位字符  
+1. null字符串和empty字符串的区别
+null字符串是初始化之后还未赋值的字符串，empty字符串是长度为0的空字符串  
+除了isNull()函数外，其他函数不会区分对待null字符串和empty字符串  
+推荐使用isEmpty()函数，避免使用isNull()函数  
+```
+QString str1, str2="";
+QString(str1).isNull();            // returns true
+QString(str1).isEmpty();           // returns true
+QString(str2).isNull();            // returns false
+QString(str2).isEmpty();           // returns true
+QString("abc").isNull();           // returns false
+QString("abc").isEmpty();          // returns false
+
+```
+**数据类型转换**
+注意：在QT中str不是关键字，也不是系统函数，不能直接用str对数据进行格式转换  
+1. QString转int
+int toInt(bool \*ok = nullptr, int base = 10)  
+将字符串转换为整型并返回一个整型数字，当转换失败时返回0  
+ok参数用来指示是否转换成功，当失败时ok为false，当成功时ok为true  
+base参数用来设置数字进制，范围在2到36之间，默认为10进制  
+当字符串以'0x'开始，用16进制；当字符串以'0'开始，用8进制  
+```
+bool ok;
+QString str1 = "123";
+int num = str.toInt(&ok);
+```
+2. int转QString
+QString number(long n, int base = 10)  
+把整型转换为字符串并返回一个QString字符串  
+base参数用来设置数字进制，范围在2到36之间，默认为10进制  
+注意：只能用QString::number(num)格式，不能用str.number(num)格式  
+```
+int num = 100;
+QString str = QString::number(num);
+```
+&QString setNum(int n, int base = 10)  
+直接把整型数字写入一个QString字符串中，没有返回值  
+注意：number()和setNum()的不同  
+```
+QString str;
+str.setNum(1234);
+```
+3. QString转QChar
+4. QChar转QString
+**QString常用函数**
+```
+QString str1 = "HELLO", str2 = "world";
+```
+注意：有的函数直接修改原字符串，没有返回值；有的函数不改动原字符串，会把结果当做一个返回值  
+1. &QString append()
+str1.append(str2); 在str1后面添加字符串str2  
+2. &QString prepend()
+str1.prepend(str2); 在str1前面添加字符串str2  
+3. QString toUpper()
+str3 = str2.toUpper(); str2变大写  
+4. QString toLower()
+str3 = str1.toLower(); str1变小写  
+5. int size()
+num = str1.size(); 返回字符串中字符个数，其中一个汉字算一个字符  
+6. int count()
+num = str1.count(); 返回字符串中字符个数，其中一个汉字算一个字符  
+7. int length()
+num = str1.length(); 返回字符串中字符个数，其中一个汉字算一个字符  
+8. QString trimmed()
+str3 = str1.trimmed(); 去掉字符串首尾的空格  
+9. QString simplified()
+str3 = str1.simplified(); 去掉字符串首尾的空格，且当中间有多个连续空格时也用一个空格替换  
+10. int indexOf(const QString &str, int from = 0 , Qt::CaseSensitivity cs = Qt::CaseSensitive)
+num = str1.indexOf(str2); 查找str2在str1中首次出现的位置，如果没有找到str2则返回-1  
+from参数设置开始查找的位置，默认为0；当from为-1时，从最后一次字符开始，以此类推  
+cs参数用来指定查找时是否对大小写敏感，默认区分大小写，Qt::CaseInsensitive时不区分  
+11. int lastIndexOf(const QString &str, int from = -1, Qt::CaseSensitivity cs = Qt::CaseSensitive)
+num = str1.lastIndexOf(str2); 查找str2在str1中最后出现的位置，如果没有找到str2则返回-1  
+from参数默认为-1；当from为-2时，从倒数第二个字符开始，以此类推  
+cs参数用来指定查找时是否对大小写敏感，默认区分大小写，Qt::CaseInsensitive时不区分  
+12. bool contains(const QString &str, Qt::CaseSensitivity cs = Qt::CaseSensitive)
+result = str1.contains("abc"); 判断str1中是否包含str2字符串，返回true或false  
+13. bool startsWith(const QString &s, Qt::CaseSensitivity cs = Qt::CaseSensitive)
+result = str1.startsWith(str2); 判断str1是否以str2开头，返回true或false  
+14. bool endsWith(const QString &s, Qt::CaseSensitivity cs = Qt::CaseSensitive)
+result = str1.endsWith(str2); 判断str1是否以str2结尾，返回true或false  
+15. QString left(int n)
+str3 = str1.left(n); 从str1左边取n个字符  
+16. QString right(int n)
+str3 = str1.right(n); 从str1右边取n个字符  
+17. QString section (const QString &sep, int start, int end = -1, SectionFlags flags = SectionDefault)
+str3 = str1.section(',', 2, 3); 以逗号为分隔符将str1分割，然后提取出start到end的部分  
+18. QChar at(int position)
+char1 = str1.at(n); 获取字符串中指定位置的字符  
+19. void resize(int size, QChar fillChar)
+str1.resize(n); 调整字符串str1的长度为n  
+当n小于字符串的当前长度时，会把字符串截断，只保留前n个字符  
+当n大于字符串的当前长度时，会将字符串填充到长度n，填充字符可以写到第二个参数里  
+
+
+## QChar
+QChar类提供了一个16位编码的字符  
+QChar是16位的，因此可以用来存储汉字，一个字符存储一个汉字  
+
+
+## QFont
+QFont类是专门用于管理文本的字体  
+
+```
+    QFont font = ui -> textEdit -> font();
+    font.setUnderline(checked);
+    ui -> textEdit -> setFont(font);
+```
+1. 常用函数  
+setFamily() 设置字体  
+setBold() 字体加粗  
+setItalic() 斜体  
+setOverline() 上划线  
+setUnderline() 下划线  
+setStrikeOut() 删除线  
+setPointSize() 设置字体肉眼看到的实际大小，在不同设备上显示大小相同  
+setPixelSize() 设置字体像素单位的大小，在不同设备上显示大小可能不同  
+
+
+## QPalette
+Qpalette(调色板)类是专门用于管理组件的外观颜色，每个组件都有一个palette对象  
+```
+QPalette plet = ui -> plainTextEdit -> palette();
+plet.setColor(QPalette::Text, Qt::blue);
+ui -> plainTextEdit -> setPalette(plet);
+```
+1. 设置颜色范围的参数包括：  
+QPalette::Base 设置文本输入窗口部件(如QtextEdit等)的底色  
+QPalette::Text 设置文本输入窗口中文字的颜色  
+QPalette:WindowText 通常指窗口看不见的前景色  
+QPalette::Button 指按钮窗口部件的背景色  
+QPalette::ButtonText 指按钮窗口部件的前景色  
+QPalette::Background 背景色  
+QPalette::Foreground 前景色  
+2. 设置显示颜色的参数包括：  
+Qt::black 黑色  
+Qt::blue 蓝色  
+Qt::red 红色  
+Qt::yellow 黄色  
+QColor(10, 100 , 50, 255) 用数字设置颜色  
+
+
+----------------------------/*QT容器类*/-------------------------------
+
+
+## QT容器类
+1. 基本概念
+QT提供了多个基于模板的容器类，这些容器类可以用于存储指定类型的数据项  
+QT的容器类包括顺序容器类和关联容器类  
+2. 容器类的特点
+QT的容器类比标准模板库(STL)中的容器类更轻巧、安全和易于使用  
+这些容器类是隐式共享和可重入的，而且它们进行了速度和存储优化，因此可以减少可执行文件的大小  
+这些容器类还是线程安全的，也就是说它们作为只读容器时可被多个线程访问  
+3. 容器类的数据项
+例如在QList<T>中，数据项T是一个具体的数据类型，且必须是一个可赋值的类型  
+数据项T可以是int或float等简单类型，也可以是QString或QDate等类  
+数据项T不能是QObject类或QObject的任何子类  
+4. 示例：用QList定义一个字符串类型的列表容器
+```
+QList<QString> aList;
+aList.append("Monday");
+aList.append("Tuesday");
+aList.append("Wednesday");
+QString str=aList[0];
+```
+5. QT顺序容器类
+5.1 QList  
+5.2 QLinkedList  
+5.3 QVector  
+5.4 QStack  
+5.5 QQueue  
+6. QT关联容器类
+6.1 QMap  
+6.2 QMultiMap  
+6.3 QHash  
+6.4 QMultiHash  
+6.5 QSet  
+
+
+## QList
+QList是最常用的容器类，相当于数组或列表，支持序列化访问，且访问修改数据的速度很快  
+1. insert()
+2. removeAt()
+3. replace()
+4. move()
+5. swap()
+6. append()
+7. prepend()
+8. removeFirst()
+9. removeLast()
+10. isEmpty()
+在数据项为空时返回true  
+11. size()
+返回列表中数据项的个数  
+
+
+## QLinkedList
+QLinkedList是链式列表，用链表结构存储数据项，是使用不连续的内存实现存储的  
+基于迭代器访问数据项，不支持序列化访问，访问修改数据的速度相对较慢  
+QLinkedList的接口函数与QList基本相同  
+
+
+## QVector
+QVector提供动态数组的功能，支持序列化访问  
+QVector的性能比QList更高，因为QVector的数据项是连续存储的  
+QVector的接口函数与QList基本相同  
+
+
+## QStack
+QStack是实现先进后出的容器类，相当于堆栈  
+1. push()
+2. pop()
+
+
+## QQueue
+QQueue是实现先进先出的容器类，相当于队列  
+1. enqueue()
+2. dequeue()
+
+
+## QSet
+QSet<T>是实现散列表集合的容器类，相当于集合  
+QSet按照无序方式存储数据，查找值的速度非常快  
+QSet内部就是用QHash实现的，只是hash函数已经定义好了  
+示例：  
+```
+QSet<QString> set;
+set << "dog" << "cat" << "tiger";
+```
+1. contains()
+判断元素是否是集合成员，返回一个布尔值  
+set.contains("cat")  
+
+
+## QMap
+QMap<Key, T>是实现Key-value数据的容器类，相当于字典  
+QMap是按照key的顺序进行存储数据的，查找速度相对QHash会更慢  
+除非使用QMap::insertMulti()添加键值对，否则QMap正常情况下不允许多值映射  
+示例：  
+```
+QMap<QString, int> map;
+map["one"] = 1;
+map["two"] = 2;
+map["three "] = 3;
+```
+1. insert(key, value)
+向map中加入一组键值对或者对已有的键修改对应的值  
+map.insert("four", 4);  
+2. remove(key)
+删除一组键值对  
+map.remove("two");  
+4. value(key, default)
+返回指定键对应的值，相当于[key]，当对应的值不存在时返回default  
+int num1 = map["one"];  
+int num2 = map.value("two");  
+int code = map.value("ten", 10);  
+使用value函数没有找到键对应的值时，如果不指定default，则会返回一个缺省的返回值  
+例如，要查找的值是字符串类型时，默认会返回一个空的字符串  
+
+
+## QMultiMap
+QMultiMap是QMap的子类，可以用来处理多值映射，即一个key可以对应多个value  
+注意：QMultiMap不提供'[]'操作符  
+QMultiMap中的大多数函数与QMap一致，但有少部分函数与QMap定义不一致  
+示例：  
+```
+QMultiMap<QString, int> map1, map2, map3;
+map1.insert("plenty", 100);
+mapl.insert("plenty", 2000); // map1.size() == 2
+map2.insert("plenty", 5000); // map2.size() == 1
+map3 = map1 + map2; // map3.size() == 3
+```
+1. insert()
+QMultiMap::insert()等于QMap::insertMulti()  
+2. replace()
+QMultiMap::replace()等于QMap::insert()  
+3. value(key)
+返回key对应的所有value中最新插入的那个value值  
+4. values(key)
+返回key对应的所有value，返回值是QList<T>类型  
+QList<int> values = map.values("plenty");  
+
+
+## QHash
+QHash<Key，T>是基于散列表来实现字典功能的容器类  
+QHash是按照无序方式存储数据的，查找速度相对QMap会快很多  
+使用QHash需要自定义一个名为qHash()的全局散列函数  
+QMap的键必须提供'<'运算符，而QHash的键必须提供'=='运算符  
+
+
+## QMultiHash
+QMultiHash是QHash的子类，可以用来处理多值映射，类似于QMultiMap  

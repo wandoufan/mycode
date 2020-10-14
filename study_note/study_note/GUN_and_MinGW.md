@@ -17,5 +17,19 @@ GUN是运行在Liunx/Unix系统下的工具包，一般位于/usr/bin/目录下�
 
 ## MinGW
 为了在Windows系统下也可以使用GUN工具，就产生了MinGW(Minimalist GUN for Windows)  
+利用MinGW就可以生成Windows里面的exe程序和dll链接库  
+MinGW本身主要就是编译链接等工具和头文件、库文件，并不包含系统管理、文件操作之类的Shell环境  
+MinGW原本是用于生成32位程序的，随着64位系统流行起来，从MinGW分离出来了MinGW-w64  
+MinGW-w64项目同时支持生成64位和32位程序  
 
-## MSYS
+## GUN和MinGW的区别
+1. MinGW 里面工具带有扩展名 .exe， Linux/Unix 系统里工具通常都是没有扩展名的
+2. MinGW 里面的生成器文件名为 mingw32-make.exe，Linux/Unix 系统里就叫 make
+3. MinGW 在链接时是链接到 *.a 库引用文件，生成的可执行程序运行时依赖 *.dll  
+而 Linux/Unix 系统里链接时和运行时都是使用 /*.so  
+
+## MSYS(Minimal SYStem)
+为了解决MinGW在windows环境下不能提供shell环境的问题， MinGW官方又推出了MSYS  
+MSYS相当于是一个部署在Windows系统里面的小型Unix系统环境  
+通过MSYS，我们可以直接在Windows系统下运行很多Linux命令行，有点类似git-bash  
+对于MinGW-w64项目，它对应的小型系统环境叫MSYS2（Minimal SYStem 2）  

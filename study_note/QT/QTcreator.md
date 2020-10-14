@@ -1,5 +1,11 @@
 # QTcreator
 
+## QT帮助文件
+1. 当光标停留在一个类名或函数名上时，按F1可以查看其帮助文档  
+2. 打开上方的帮助-目录-Qt Creator Manual，可以查看所有的帮助文档  
+帮助文档界面下左侧有Bookmarks、Contents、Index和Search4种模式  
+
+
 ## QTcreator提供的应用程序模板
 1. Qt Widgets Application  
 这是最常用的模板，支持桌面平台的GUI应用程序  
@@ -18,7 +24,6 @@ GUI的设计基于C++语言，采用QT提供的一套C++类库
 ## 创建界面的基类(base class)
 1. QMainWindow 主窗口类  
 主窗口具有主菜单栏、工具栏和状态栏，一般以独立窗口显示  
-QMainWindow类中好像不能使用Push Button组件  
 2. QWidget 所有具有可视界面类的基类  
 QWidget继承于QObject类和QPaintdevice类，也是QMainWindow和QDialog的父类  
 QWidget在没有指定父容器时可以作为独立的窗口，指定父容器之后可以作为父容器的内部组件  
@@ -26,6 +31,9 @@ QWidget在没有指定父容器时可以作为独立的窗口，指定父容器�
 QWidget窗口可以被其父窗口或其他窗口挡住一部分  
 3. QDialog 对话框窗口类  
 QDialog主要用于短期任务或用户进行短期通讯的顶级窗口  
+4. 三者之间比较  
+QMainWindow和QWidget创建出来的窗口右上角都有放大、缩小和关闭按钮  
+QDialog创建出来的窗口右上角只有问号和关闭按钮，没有放大和缩小按钮  
 
 
 ## 三种对话框类型
@@ -94,14 +102,24 @@ Demo2--|
 当项目增删文件时，.pro文件会自动更新，不需要手动修改  
 2. main.cpp文件  
 main.cpp是实现main()函数的文件，包含创建窗口、显示窗口、运行应用程序等功能  
-用QApplication类获得一个实例化对象a，即应用程序对象，a.exec()用来启动应用程序执行  
-用Widget类获得一个实例化对象w，即用来设计窗口的对象，w.show()用来显示窗口  
+main()函数是整个程序的入口，程序从这里开始执行  
+备注：窗口的标题默认是自己定义的类名，也可以用setWindowTitle函数进行修改
+```
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv); //用QApplication类定义并创建应用程序对象a
+    Widget w; //用Widget类定义并创建窗口对象w
+    w.setWindowTitle("this is a calcultor"); //修改窗口的标题
+    w.show(); //w.show()用来显示窗口
+    return a.exec(); //a.exec()用来启动应用程序，开始应用程序的消息循环和事件处理
+}
+```
 
 
 ## 与窗体相关的4个文件(以QWidget类为例)
 1. widget.h
 定义窗体类的头文件，定义了一个继承自类QWidget的类Widget  
-另外还包含了自己定义出的那些槽函数，和widget.cpp文件中定义出的槽函数一一对应  
+另外还对自己定义出的那些槽函数进行了声明，和widget.cpp文件中定义出的槽函数一一对应  
 2. widget.cpp
 Widget类的功能实现的源程序文件  
 3. widget.ui
@@ -131,6 +149,9 @@ Action编辑器用于可视化设计Action
 包含两列，即每个组件的属性和属性值  
 属性从上到下可以分为多个组，实际表示了类的继承关系  
 例如，label组件为：QObject→QWidget→QFrame→QLabel  
+7. 输出面板(最下方)  
+输出面板包括了问题、应用程序输出、编译输出等多个部分的程序运行信息  
+其中应用程序输出可以查看到程序运行的中间结果，常用来进行代码调试  
 
 
 ## 界面设计布局
@@ -159,147 +180,42 @@ Tab顺序是指程序在运行时，按下Tab键时输入光标的移动顺序
 注意：没有输入光标的组件是没有Tab顺序的，例如Label组件  
 
 
-## 信号与槽(signal & slot)机制
-1. 信号(signal)就是在特定情况下被触发的事件  
-例如，PushButton最常见的信号就是鼠标单击时发射的clicked()信号  
-2. 槽(slot)就是对信号响应的函数  
-一个槽就是一个函数，与一般的C++函数是一样的，可以具有任何参数，也可以被直接调用  
-也可以定义在类的任何部分(private、public或protected)  
-槽函数与一般函数的不同的是：槽函数可以与一个信号关联，信号发射时槽函数自动执行  
-3. 信号与槽关联是用QObject::connect()函数实现的  
-函数基本格式为QObject::connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));  
-connect()是QObject类的一个静态函数，而QObject是所有QT类的基类，故实际调用时可以忽略  
-直接写为connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));  
-sender是发射信号的对象的名称  
-signal()是信号名称，相当特殊的函数，需要带括号，有参数时需要指明参数  
-receiver是接收信号的对象的名称，常用this代表本对象  
-slot()是槽函数的名称，需要带括号，有参数时需要指明参数  
-4. SIGNAL和SLOT  
-SIGNAL和SLOT是QT的宏，用于指明信号和槽，并将它们的参数转换为相应的字符串  
-
-
-## 信号与槽的使用规则
-1. 一个信号可以与多个槽关联，槽函数按建立连接时的顺序依次执行  
-例如：当spinNum对象的数值变化时，addFun()和updateStatus()会依次响应  
-connect(spinNum, SIGNAL(valueChanged(int)), this, SLOT(addFun(int));  
-connect(spinNum, SIGNAL(valueChanged(int)), this, SLOT(updateStatus(int));  
-2. 一个槽可以被多个信号关联  
-例如：下面三个信号都可以触发槽函数setTextFontColor()  
-connect(ui->rBtnBlue,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-connect(ui->rBtnRed,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-connect(ui->rBtnBlack,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-3. 一个信号可以连接另一个信号，一个信号发射时也会发射另一个信号  
-例如：valueChanged()函数会触发refreshInfo()函数  
-connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));  
-4. 信号的参数与槽的参数个数和类型都要一致  
-至少信号的参数不能少于槽的参数，否则会编译报错  
-5. 在使用信号与槽的函数的类中，必须在类的定义中加入宏Q_OBJECT  
-6. 当一个信号发射时，与其关联的槽函数都会立即执行  
-只有在信号关联的槽函数都执行完毕之后才会执行信号后面的代码  
-
-
-## 设置信号与槽的四种方法
-1. 在UI设计界面下方的编辑器中设置槽和信号  
-设置完成后可以直接生效，其中槽函数只能从系统提供的常规函数中去选择  
-2. 点击上方工具栏中的"Edit Signals\Slots"即可进入到信号与槽编辑模式  
-选中一个组件作为sender，然后按住鼠标左键将其箭头拖动到其他组件处作为receiver  
-在弹出的列表框中分别选择信号和槽函数，设置完成后可以直接生效，其中槽函数只能从系统提供的常规函数中去选择  
-3. 可以在dialog.cpp文件中自定义出一个符合我们需要的槽函数  
-选中需要设置的组件，右键'转到槽'，之后由系统自动创建出的槽函数框架，完成函数内容即可  
-其中connect函数不需要再手动写出，由系统编译后在ui_dialog.h文件中调用setupUi()函数实现关联  
-槽函数名是系统根据组件名自动创建出来的，例如void Dialog::on_checkBox_clicked(bool checked)  
-注意：系统是根据槽函数名来实现信号和槽的关联，不要随意改动槽函数名  
-4. 可以将多个信号(组件)关联到一个自定义的槽函数上，此时槽函数是一个复合函数  
-需要手动在dialog.cpp文件中定义的Dialog类下加入connect函数，将不同信号和函数中不同操作关联起来  
-connect(ui->rBtnBlue,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-connect(ui->rBtnRed,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-connect(ui->rBtnBlack,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-
-
-## 常用的系统自带信号
-1. clicked()
-2. clicked(bool)
-信号 clicked(bool) 会将 CheckBox 组件当前的选择状态作为一个参数传递，
-在响应代码里可以直接利用这个传递的参数。
-而如果用信号 clicked()，则需要在代码里读取 CheckBox 组件的选中状态。
-3. pressed()
-4. released()
-5. toggled(bool)
-6. stateChanged(int)
-
-
-## 常用的系统自带槽函数
-1. close()
-close()函数用来关闭当前窗口部件，常与关闭信号关联  
-2. accept()
-accept()函数用来
-3. reject()
-reject()函数用来取消当前操作，常与取消信号关联
-4. quit()
-5. exit()
-6. exec()
-exec()函数用来调用显示一个模式对话框？？？
-7. show()
-show()函数用来调用显示一个非模式对话框，执行完成后返回主事件中？？？
-
-
-## 组件的属性
-1. objectName
-对于窗体上创建出的每一个组件，都有一个objectName属性作为组件实例的名称  
-具体属性值由系统自动创建，一般按照组件创建顺序来命名，例如checkBox、checkBox_2、checkBox_3  
-objectName作为组件的唯一标识，每个组件的objectName都不相同  
-objectName需要在设计程序之前设置好，设置好后不要再改动，否则代码也要相应改动  
-
-
-## QFont的相关方法属性
-```
-    QFont font = ui -> textEdit -> font();
-    font.setUnderline(checked);
-    ui -> textEdit -> setFont(font);
-```
-1. 常用函数  
-setFamily() 设置字体  
-setBold() 字体加粗  
-setItalic() 斜体  
-setOverline() 上划线  
-setUnderline() 下划线  
-setStrikeOut() 删除线  
-setPointSize() 设置字体肉眼看到的实际大小，在不同设备上显示大小相同  
-setPixelSize() 设置字体像素单位的大小，在不同设备上显示大小可能不同  
-
-
-## QPalette的相关方法属性
-调色板Qpalette类是专门用于管理组件的外观颜色，每个组件都有一个palette对象  
-```
-QPalette plet = ui -> plainTextEdit -> palette();
-plet.setColor(QPalette::Text, Qt::blue);
-ui -> plainTextEdit -> setPalette(plet);
-```
-设置颜色范围的参数包括：  
-QPalette::Base 设置文本输入窗口部件(如QtextEdit等)的底色  
-QPalette::Text 设置文本输入窗口中文字的颜色  
-QPalette:WindowText 通常指窗口看不见的前景色  
-QPalette::Button 指按钮窗口部件的背景色  
-QPalette::ButtonText 指按钮窗口部件的前景色  
-QPalette::Background 背景色  
-QPalette::Foreground 前景色  
-
-设置显示颜色的参数包括：  
-Qt::black 黑色  
-Qt::blue 蓝色  
-Qt::red 红色  
-Qt::yellow 黄色  
-QColor(10, 100 , 50, 255) 用数字设置颜色  
-
-
 ## UI方式实现和纯代码方式实现
 1. 通过UI方式实现窗口的设计更加简单，让用户省去了繁琐的界面设计工作  
 采用代码设计实现 UI 时，需要对组件的布局有个完整的规划，不如可视化设计直观，且编写代码工作量大  
 但用纯代码方式可以在底层实现更加强大和灵活的设计功能  
 2. 要采用纯代码方式，在创建项目时要将'Generate form'取消勾选，创建完成后项目目录下没有*.ui文件  
 3. 用UI方式和纯代码方式实现同一个功能，二者的底层代码并不相同  
-UI方式的底层代码是自动生成的(也可以有自定义的部分)  
+UI方式的底层代码是自动生成的(也可以有自定义的部分)，并不包含组件定义  
 代码方式需要在头文件中将所有用到的组件都定义出来
-4. 代码方式实现时，在头文件的类定义中没有指向界面的指针ui
-在cpp主文件中也不再去调用指针ui
+4. 代码方式实现时，在头文件的类定义中没有指向界面的指针ui  
+在cpp主文件中也不再去调用指针ui  
+
+
+## 元对象系统(Meta-Object System)
+1. 基本概念
+Qt的元对象系统提供了对象之间通信的信号与槽机制、运行时类型信息和动态属性系统  
+2. 元对象系统由以下三个基础组成：
+2.1 QObject类是所有使用元对象系统的类的基类  
+2.2 在一个类的private部分声明Q_OBJECT宏，然后类就可以使用元对象的信号与槽等各种特性  
+2.3 MOC(元对象编辑器)为每个QObject的子类提供必要的代码来实现元对象系统的特性  
+3. 元对象系统提供的其他功能：
+
+
+## 属性系统
+1. 基本概念
+QT提供一个Q_PROPERTY()宏可以定义属性，它也是基于元对象系统实现的  
+QT的属性系统与C++编译器无关，可以用任何标准的C++编译器去编译一个定义了属性的QT程序  
+2. Q_PROPERTY()宏
+3. 属性的使用
+4. 动态属性
+5. 类的附加信息
+
+
+## QT使用技巧
+1. 在头文件中自定义函数进行声明之后，可以自动在cpp文件中创建出该函数的框架  
+自定义函数-右键-Refactor-Add Definition in qwdialog.cpp  
+2. 注意变量名的大小写，否则经常会报错变量名未定义，例如'Qt'写成'QT'
+
+
 
