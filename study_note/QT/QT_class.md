@@ -52,7 +52,7 @@ QString str1 = "123";
 int num = str.toInt(&ok);
 ```
 2. int转QString
-QString number(long n, int base = 10)  
+2.1 QString number(long n, int base = 10)  
 把整型转换为字符串并返回一个QString字符串  
 base参数用来设置数字进制，范围在2到36之间，默认为10进制  
 注意：只能用QString::number(num)格式，不能用str.number(num)格式  
@@ -60,7 +60,7 @@ base参数用来设置数字进制，范围在2到36之间，默认为10进制
 int num = 100;
 QString str = QString::number(num);
 ```
-&QString setNum(int n, int base = 10)  
+2.2 &QString setNum(int n, int base = 10)  
 直接把整型数字写入一个QString字符串中，没有返回值  
 注意：number()和setNum()的不同  
 ```

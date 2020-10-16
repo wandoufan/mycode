@@ -13,11 +13,11 @@
 > http://www.cplusplus.com
 3. 标准模板库(STL)，提供了大量的方法，用于操作数据结构等
 
-## C++源文件 
+## C++源文件的后缀 
 C语言源文件的后缀在不同的编译器下都是\*.c，而C++源文件在不同的编译器下支持不同的后缀  
 1. Visual Studio(VS)：cpp、cxx、cc
 2. GCC(GUN c++):cpp、cxx、cc、c++、C
-3. 	Borland C++:cpp
+3. Borland C++:cpp
 一般推荐使用cpp作为c++文件的后缀  
 
 ## ANSI标准
@@ -37,7 +37,7 @@ A::num表示A中num成员，B::num表示B中num成员，相当于域成员运算
 int a; (局部变量)
 b = ::a(局部变量) + a(全局变量);
 3. namespace scope命名空间作用域符
-例如，在A类中声明了一个成员函数func()，但没有给出其具体的函数定义  
+例如，在A类中声明了一个成员函数func()，但没有在类内部进行具体的函数定义  
 在类A外部进行函数定义时就要写成int A::func()，来表示func()是A的成员函数  
 ```
 class A{
@@ -48,3 +48,4 @@ int A :: func() //表示func()是A类的成员函数
 	return 0;
 }
 ```
+
