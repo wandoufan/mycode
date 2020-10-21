@@ -14,9 +14,9 @@ const可以指定一个语义约束，使被修饰对象保持不变，编译器
 void test1()
 {
 	// const修饰普通类型的变量
-	const int a = 1; // const把a定义为一个常量
+	const int a = 1; // const把变量a定义为一个常量
 	int b = a; // 可以把a赋值给其他变量
-	a = 2; // 不能再对a进行赋值，否则会报错
+	// a = 2; // 不能再对a进行修改，否则会报错
 }
 
 void test2()

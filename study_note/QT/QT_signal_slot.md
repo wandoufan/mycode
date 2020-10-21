@@ -129,5 +129,9 @@ quit函数正常的退出一个事件循环，相当于exit(0)
 exit函数退出一个事件循环并返回一个代码，0代表成功，非0值代表有错误  
 6. int exec(QEventLoop::ProcessEventsFlags flags = AllEvents)
 exec函数进入到主事件循环中并等待到exit函数被调用，然后返回exit函数的那个返回代码  
+即exec()函数弹出的窗口可以一直保持，除非手动关闭  
+exec()函数只能在窗口类QDialog中使用，不能在QWidget类中使用  
 7. show()
-show()函数用来调用显示一个非模式对话框，执行完成后返回主事件中？？？
+show()函数用来调用显示一个非模式对话框，执行完成后返回主事件中  
+即show()函数弹出一个对话框之后会很快自动关闭  
+

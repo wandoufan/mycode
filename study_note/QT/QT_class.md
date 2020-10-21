@@ -1,44 +1,9 @@
 # QT中的类
 
-## QObject
-QObject类是所有QT对象的基类  
 
+----------------------------/*QT数据类型转换*/-------------------------------
 
-## QAbstractButton
-QAbstractButton类是所有widgets按钮的抽象基类，给按钮提供公用的函数功能  
-QAbstractButton是QWidget类的子类  
-QAbstractButton是QCheckBox, QPushButton, QRadioButton, QToolButton的父类  
-1. isDown()
-表示按钮button是否是pressed down按下的  
-2. isChecked()
-表示按钮是否被检查或者标记切换的  
-只有可检查和切换（标记）的按钮可以标记或者取消标记checked or unchecked  
-3. isEnabled()
-表示按钮是否可以被用户点按  
-4. setAutoRepeat()
-设置按钮是否当用户长按按钮可以auto-repeat（自动重复执行）  
-属性autoRepeatDelay和autoRepeatInterval定义了如何重复响应执行  
-5. setCheckable()
-设置按钮是否可切换或者标记的  
-
-
-## QString
-QString类提供了一个编码的字符串，存储了若干个QChar类型的16位字符  
-1. null字符串和empty字符串的区别
-null字符串是初始化之后还未赋值的字符串，empty字符串是长度为0的空字符串  
-除了isNull()函数外，其他函数不会区分对待null字符串和empty字符串  
-推荐使用isEmpty()函数，避免使用isNull()函数  
-```
-QString str1, str2="";
-QString(str1).isNull();            // returns true
-QString(str1).isEmpty();           // returns true
-QString(str2).isNull();            // returns false
-QString(str2).isEmpty();           // returns true
-QString("abc").isNull();           // returns false
-QString("abc").isEmpty();          // returns false
-
-```
-**数据类型转换**
+## 数据类型转换
 注意：在QT中str不是关键字，也不是系统函数，不能直接用str对数据进行格式转换  
 1. QString转int
 int toInt(bool \*ok = nullptr, int base = 10)  
@@ -68,11 +33,100 @@ QString str;
 str.setNum(1234);
 ```
 3. QString转QChar
+3.1 QByteArray toLatin1()  
+返回一个QByteArray格式的Latin-1字符串表达式  
+适合于普通的英文字符串，但不能包含中文，否则会产生乱码  
+```
+Qstring  str;
+char*  ch;
+QByteArray ba = str.toLatin1();
+ch=ba.data();
+```
+3.2 QByteArray toUtf8()  
+返回一个QByteArray格式的UTF8字符串表达式  
+UTF8格式支持中文字符  
+```
+Qstring  str;
+char*  ch;
+QByteArray ba = str.toUtf8();
+ch=ba.data();
+```
 4. QChar转QString
+5. QStringList转换为QString
+QString join(QString &separator)
+将字符串列表中的元素拼接起来，返回一个QString
+注意：join函数的连接字符串必须要有，可以是空字符串，但不能不写参数
+```
+QStringList alist;
+alist << "a" << "b" << "c" << "d";
+QString str1;
+str1 = alist.join("+"); //写成str1 = alist.join();会报错，join函数必须要有参数
+```
+6. QString转QStringList
+QStringList split(const QString &sep, Qt::SplitBehavior behavior = Qt::KeepEmptyParts, Qt::CaseSensitivity cs = Qt::CaseSensitive)  
+字符串按照指定分割符分割为多个字符串，并返回一个QStringList  
+如果分割符在原始字符串中不匹配，则返回的列表中只包含一个原始字符串  
+如果分割符为空字符串，则返回列表的元素为原始字符串的每个字符和前后各一个空字符串  
+例如："abcd"用""分割出的列表为["","a","b","c","d",""]  
+例如："/a/b/c/"用'/'分割出的列表为["", "a", "b", "c", ""]  
+```
+QString str1 = "a,bb,ccc,dddd";
+QStringList list1 = str1.split(','); //["a","bb","ccc","dddd"]
+QByteArray byte1;
+for(int i = 0; i < list1.size(); i++)
+{
+    byte1 = list1[i].toLatin1();
+    cout << byte1.data() << endl;
+}
+```
+
+
+
+----------------------------/*QT常用类*/-------------------------------
+
+## QObject
+QObject类是所有QT对象的基类  
+
+
+## QAbstractButton
+QAbstractButton类是所有widgets按钮的抽象基类，给按钮提供公用的函数功能  
+QAbstractButton是QWidget类的子类  
+QAbstractButton是QCheckBox, QPushButton, QRadioButton, QToolButton的父类  
+1. isDown()
+表示按钮button是否是pressed down按下的  
+2. isChecked()
+表示按钮是否被检查或者标记切换的  
+只有可检查和切换（标记）的按钮可以标记或者取消标记checked or unchecked  
+3. isEnabled()
+表示按钮是否可以被用户点按  
+4. setAutoRepeat()
+设置按钮是否当用户长按按钮可以auto-repeat（自动重复执行）  
+属性autoRepeatDelay和autoRepeatInterval定义了如何重复响应执行  
+5. setCheckable()
+设置按钮是否可切换或者标记的  
+
+
+## QString
+QString类提供了一个编码的字符串，存储了若干个QChar类型的16位字符  
+1. 初始化一个QString类型的字符串
+```
+QString str1 = "HELLO";
+```
+注意：QString类型的字符串不能直接用cout输出，否则报错，必须先转换为QChar格式  
+2. null字符串和empty字符串的区别
+null字符串是初始化之后还未赋值的字符串，empty字符串是长度为0的空字符串  
+除了isNull()函数外，其他函数不会区分对待null字符串和empty字符串  
+推荐使用isEmpty()函数，避免使用isNull()函数  
+```
+QString str1, str2="";
+QString(str1).isNull();            // returns true
+QString(str1).isEmpty();           // returns true
+QString(str2).isNull();            // returns false
+QString(str2).isEmpty();           // returns true
+QString("abc").isNull();           // returns false
+QString("abc").isEmpty();          // returns false
+```
 **QString常用函数**
-```
-QString str1 = "HELLO", str2 = "world";
-```
 注意：有的函数直接修改原字符串，没有返回值；有的函数不改动原字符串，会把结果当做一个返回值  
 1. &QString append()
 str1.append(str2); 在str1后面添加字符串str2  
@@ -129,11 +183,11 @@ QChar是16位的，因此可以用来存储汉字，一个字符存储一个汉�
 QFont类是专门用于管理文本的字体  
 
 ```
-    QFont font = ui -> textEdit -> font();
-    font.setUnderline(checked);
-    ui -> textEdit -> setFont(font);
+QFont font = ui -> textEdit -> font();
+font.setUnderline(checked);
+ui -> textEdit -> setFont(font);
 ```
-1. 常用函数  
+**QFont常用函数**
 setFamily() 设置字体  
 setBold() 字体加粗  
 setItalic() 斜体  
@@ -165,6 +219,36 @@ Qt::blue 蓝色
 Qt::red 红色  
 Qt::yellow 黄色  
 QColor(10, 100 , 50, 255) 用数字设置颜色  
+
+
+## QMessageBox
+QMessageBox类可以弹出一个对话框来通知用户或询问用户并获得回答  
+QMessageBox类是QDialog类的子类  
+注意：使用QMessageBox类时必须在开头声明头文件'#include <QMessageBox>'  
+**QMessageBox常用函数**
+1. QMessageBox::StandardButton QMessageBox::information(QWidget \*parent, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = Ok, QMessageBox::StandardButton defaultButton = NoButton)
+information函数用来显示通知信息，对话框为一个感叹号  
+函数会在widget父类前面弹出一个对话框，并显示指定的标题和文本内容  
+当用户按下'enter'时会触发一个默认按钮，默认按钮用第五个参数进行设置  
+当用户按下'esc'时会退出对话框，相当于调用了'escape button'  
+备注：如果QMessageBox的在函数参数中指定了父类，则在对话框运行时不能删除其父类  
+第一个参数设置父控件指针，可以设为NULL  
+第二个参数设置对话框标题  
+第三个参数设置对话框内容  
+第四个参数设置窗口中的按钮个数及形式(默认为OK)  
+第五个参数设置用户按下'enter'时的触发按钮，默认'NoButton'由QMessageBox自动选择  
+```
+QMessageBox::information(NULL, "title", "content", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+```
+2. QMessageBox::StandardButton QMessageBox::critical(QWidget \*parent, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = Ok, QMessageBox::StandardButton defaultButton = NoButton)
+critical函数用来显示比较严重的警告信息，对话框为一个叉号  
+3. QMessageBox::StandardButton QMessageBox::question(QWidget \*parent, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = StandardButtons(Yes | No), QMessageBox::StandardButton defaultButton = NoButton)
+question函数用来向用户询问问题并让用户进行选择，对话框为一个问号  
+4. void QMessageBox::about(QWidget \*parent, const QString &title, const QString &text)
+about函数用来弹出一个简单的对话框，对话框中没有标识符  
+```
+QMessageBox::about(NULL, "about", "this is about");
+```
 
 
 ----------------------------/*QT容器类*/-------------------------------
@@ -206,8 +290,17 @@ QString str=aList[0];
 
 ## QList
 QList是最常用的容器类，相当于数组或列表，支持序列化访问，且访问修改数据的速度很快  
+备注：QList中可以使用[]操作符去访问元素，而C++中的list不可以使用[]操作符  
+备注：
+备注：QList<QString>也可以写为QStringList，以下两个定义相同  
+```
+QList<QString> aList;
+QStringList alist;
+```
+**QList常用函数**
 1. insert()
-2. removeAt()
+2. void removeAt(int i)
+删除指定索引位置i的元素，注意函数没有返回值
 3. replace()
 4. move()
 5. swap()
@@ -215,10 +308,15 @@ QList是最常用的容器类，相当于数组或列表，支持序列化访问
 7. prepend()
 8. removeFirst()
 9. removeLast()
+9. int removeAll(item & value)
+删除列表中指定的元素  
 10. isEmpty()
 在数据项为空时返回true  
 11. size()
 返回列表中数据项的个数  
+12. void clear()
+清除列表中的所有元素  
+13. 
 
 
 ## QLinkedList
@@ -317,3 +415,5 @@ QMap的键必须提供'<'运算符，而QHash的键必须提供'=='运算符
 
 ## QMultiHash
 QMultiHash是QHash的子类，可以用来处理多值映射，类似于QMultiMap  
+
+---------------------------------------------------------------------
