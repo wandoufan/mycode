@@ -5,6 +5,7 @@
 
 ## 数据类型转换
 注意：在QT中str不是关键字，也不是系统函数，不能直接用str对数据进行格式转换  
+备注：函数中有base参数的可以在类型转换的同时实现进制的转换  
 1. QString转int
 int toInt(bool \*ok = nullptr, int base = 10)  
 将字符串转换为整型并返回一个整型数字，当转换失败时返回0  
@@ -30,7 +31,7 @@ QString str = QString::number(num);
 注意：number()和setNum()的不同  
 ```
 QString str;
-str.setNum(1234);
+str.setNum(1234, 2); //将整数1234转为2进制后再转为字符串
 ```
 3. QString转QChar
 3.1 QByteArray toLatin1()  
@@ -205,7 +206,7 @@ QPalette plet = ui -> plainTextEdit -> palette();
 plet.setColor(QPalette::Text, Qt::blue);
 ui -> plainTextEdit -> setPalette(plet);
 ```
-1. 设置颜色范围的参数包括：  
+1. 设置颜色显示区域的参数包括：  
 QPalette::Base 设置文本输入窗口部件(如QtextEdit等)的底色  
 QPalette::Text 设置文本输入窗口中文字的颜色  
 QPalette:WindowText 通常指窗口看不见的前景色  
@@ -213,12 +214,17 @@ QPalette::Button 指按钮窗口部件的背景色
 QPalette::ButtonText 指按钮窗口部件的前景色  
 QPalette::Background 背景色  
 QPalette::Foreground 前景色  
-2. 设置显示颜色的参数包括：  
+2. 常用设置颜色的参数包括：  
 Qt::black 黑色  
 Qt::blue 蓝色  
 Qt::red 红色  
 Qt::yellow 黄色  
 QColor(10, 100 , 50, 255) 用数字设置颜色  
+
+
+## QColor
+QColor类用来生成基于RGB、HSV、CMYK值的各种颜色  
+待补充...  
 
 
 ## QMessageBox
@@ -248,6 +254,18 @@ question函数用来向用户询问问题并让用户进行选择，对话框为
 about函数用来弹出一个简单的对话框，对话框中没有标识符  
 ```
 QMessageBox::about(NULL, "about", "this is about");
+```
+
+
+## QDebug
+QDebug类提供了可以产生debugging信息的输出流，常用来输出调试信息  
+注意：使用QtDebug类时必须在开头声明头文件'#include <QDebug>'  
+**QtDebug常用函数**
+1. qDebug()
+qDebug是最常用的函数，可以代替cout输出一个或多个参数信息  
+qDebug函数可以直接使用，不必声明所属的类，也不必通过对象引用  
+```
+qDebug() << "the result is " << str1;
 ```
 
 
@@ -291,7 +309,6 @@ QString str=aList[0];
 ## QList
 QList是最常用的容器类，相当于数组或列表，支持序列化访问，且访问修改数据的速度很快  
 备注：QList中可以使用[]操作符去访问元素，而C++中的list不可以使用[]操作符  
-备注：
 备注：QList<QString>也可以写为QStringList，以下两个定义相同  
 ```
 QList<QString> aList;

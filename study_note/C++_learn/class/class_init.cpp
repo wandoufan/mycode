@@ -2,6 +2,7 @@
 # include <iostream>
 using namespace std;
 
+/*类的初始化*/
 
 //定义一个类
 class CMeter

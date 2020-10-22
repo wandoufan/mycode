@@ -17,7 +17,7 @@ iostream是Input Output Stream的缩写，意思是输入输出流
 如果不声明命名空间，则需要使用时'std::cout'或'std::endl'
 5. 注意：cout和cin不是C++的关键字，而是ostream和istream类的对象
 6. 在命令窗口输入完一个参数后按回车再输入下一个参数
-7. 注意：cout方法也不能直接去输出list等复合类型的数据，这一点和python不同
+7. 注意：即使cout方法也不能直接去输出list等复合类型的数据，这一点和python不同
 */
 
 
