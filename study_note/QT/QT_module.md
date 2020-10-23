@@ -6,7 +6,9 @@
 1. QT中每一个组件都对应一个类，例如SpinBox组件对应QSpinBox类
 2. checkBox(方块勾选)和radioButton(圆圈勾选)两种组件之间的区别：
 多个checkBox可以同时选择，多个radioButton只能选择其中一个  
-3. QSlider、QScrollBar 和 Qdial 3个组件都从QAbstractSlider继承而来，有一些共有的属性  
+3. 组件的各种属性可以通过UI界面右下角的属性编辑器设置，也可以在代码中调用类的函数进行设置
+一般用来设置属性的函数都以set开头，例如setValue()  
+
 
 ## ui
 ui是QT中的一个指针，通过ui可以访问到UI界面中设置的所有组件  
@@ -32,7 +34,6 @@ Double Spin Box组件用于浮点数的显示和输入，可以设置显示小�
 使用QSpinBox和QDoubleSpinBox读取和设置数值时，无需做字符串和数值之间的转换，也无需做进制转换，其显示效果在设置好后会自动生成，因此非常适合数值的输入输出  
 **常用属性**
 备注：QSpinBox和QDoubleSpinBox都是QAbstractSpinBox的子类，具有大多数相同的属性，只是参数类型不同  
-备注：以下属性可以通过UI界面右下角的属性编辑器设置，也可以在代码中调用类的函数进行设置  
 prefix		数字显示的前缀，例如'$'  
 suffix		数字显示的后缀，例如'kg'  
 minimum		数值范围的最小值，如0  
@@ -42,7 +43,7 @@ value		当前显示的值
 displaylntegerBase	QSpinBox特有属性，显示整数使用的进制，例如2就表示二进制  
 decimals	QDoubleSpinBox特有属性，显示数值的小数位数，例如2就显示两位小数  
 **常用函数**
-1. int value() 
+1. int value()
 读取组件中当前的输入值  
 ```
 int number = ui -> spinBox_2 -> value();
@@ -64,20 +65,99 @@ ui -> spinBox_2 -> setDisplayIntegerBase(base);
 ```
 
 
+## AbstractSlider
+AbstractSlider本身不是一个组件，QAbstractSlider是QSlider、QScrollBar和Qdial 3个的父类，提供了共有的基础属性  
+**常用属性**
+minimum			设置输入范围的最小值，默认为0  
+maximum			设置输入范围的最大值，默认为99  
+singleStep		设置单步长，拖动标尺上的滑块或按下左/右光标键时的最小变化数值，默认为1  
+pageStep		在Slider上输入焦点，按PgUp或PgDn键时变化的数值，默认为10  
+value			设置组件的当前值(minimum和maximum之内)，默认为0  
+sliderPosition		设置滑块的位置，默认为0  
+tracking		设置sliderPosition是否等同于value，默认为true  
+orientation		设置Slider的方向，取值包括Qt::Horizontal(水平方向)和Qt::Vertical(垂直方向)，默认为水平方向  
+invertedAppearance		设置显示方式是否反向，取值false时，水平的Slider 由左向右数值增大，默认为false  
+invertedControls		设置反向按键控制，取值true时，按下PgUp或PgDn 按键时调整数值的反向相反，默认为false  
+
+
 ## Dial
 Dial组件是一个表盘式数值输入组件，可以通过转动表针来获得输入值，对应QDial类  
 **常用属性**
+备注：QDial是QAbstractSlider的子类，具备QAbstractSlider提供的基础属性  
+1. notches Visible		设置表盘的刻度是否可见，默认false  
+2. notchTarget			表盘刻度间的间隔像素值，默认3.7  
+3. warpping				设置表盘更细小的刻度是否可见，默认为false  
 
 
 ## Slider
 Slider组件提供一个垂直或水平的滑动条，通过滑动来设置数值，可以用于数值输入，对应QSlider类  
 **常用属性**
+备注：Slider是QAbstractSlider的子类，具备QAbstractSlider提供的基础属性  
+1. tickPosition		标尺刻度的显示位置，取值包括以下6种：  
+QSlider::NoTicks：不显示刻度(默认)  
+QSlider::TicksBothSides：标尺两侧都显示刻度  
+QSlider::TicksAbove：标尺上方显示刻度  
+QSlider::TicksBelow：标尺下方显示刻度  
+QSlider::TicksLeft：标尺左侧显示刻度  
+QSlider::TicksRight：标尺右侧显示刻度  
+2. tickInterval		标尺刻度的间隔值，默认为0，此时会在singleStep和pageStep之间自动选择  
 
 
 ## Scroll Bar
-Scroll Bar组件提供一个卷滚条，类似于Slider组件，还可以用于卷滚显示区域，对应QScrollBar类  
+Scroll Bar组件提供一个垂直或水平的卷滚条用于卷滚显示区域，类似于Slider组件，对应QScrollBar类  
 **常用属性**
+QScrollBar是QAbstractSlider的子类，只有基础属性，没有自己特有的属性  
 
+
+## Progress Bar
+Progress Bar组件提供一个进度条，常用于进度显示，对应QProgressBar类  
+**常用属性**
+minimum		设置最小值，默认为0  
+maximum		设置最大值，默认为100  
+value		设置当前值(minimum和maximum之内)，默认为24  
+textVisible		设置是否显示进度百分百，默认true  
+orientation		设置进度的填充方向为水平或垂直方向，默认为水平方向  
+format			设置显示文字的格式，取值包括以下三种：  
+'%p%'显示百分比(默认)  
+'%v'显示当前值  
+'%m'显示总步数  
+
+
+## Date Time Edit
+Date Time Edit是用来编辑和显示日期时间的组件，对应QDateTimeEdit类  
+QDateTimeEdit是QTimeEdit和QDateEdit的父类，也是QAbstractSpinBox的子类  
+**常用属性**
+备注： datetime属性和date、time两个属性之间是互相关联的  
+datetime			设置日期时间  
+date				设置日期  
+time				设置时间  
+maximumDateTime		设置最大日期时间  
+minimumDateTime		设置最小日期时间  
+maximumDate			设置最大日期  
+minimumDate			设置最小日期  
+maximumTime			设置最大时间  
+minimumTime			设置最小时间  
+currentSection			设置当前输入光标所在的时间日期数据段，默认为YearSection  
+例如，当前输入光标在YearSection段，就修改'年'的值  
+currentSectionIndex		设置用序号表示的输入光标所在的段，默认为0  
+calendarPopup			设置是否允许弹出一个日历选择框，默认为false  
+displayFormat			设置日期时间数据的显示格式，默认为yyyy/M/d H:mm  
+例如，一个日期时间数据就显示为'2016-11-02 08:23:46'  
+
+
+## Time Edit
+Time Edit是用来编辑和显示时间的组件，对应QTimeEdit类  
+QTimeEdit是QDateTimeEdit的子类，只有基础属性，没有自己特有的属性  
+
+
+## Date Edit
+Date Edit是用来编辑和显示日期的组件，对应QDateEdit类  
+QDateEdit是QDateTimeEdit的子类，只有基础属性，没有自己特有的属性  
+
+
+
+## Calendar Widget
+Calendar Widget是用来编辑和显示日历的组件，对应QCalendarWidget类  
 
 ## plainTextEdit
 
