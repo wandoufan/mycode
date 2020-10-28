@@ -34,6 +34,7 @@ QString str;
 str.setNum(1234, 2); //将整数1234转为2进制后再转为字符串
 ```
 3. QString转QChar
+注意：QString类型的字符串不能直接用cout输出，否则报错，必须先转换为QChar格式  
 3.1 QByteArray toLatin1()  
 返回一个QByteArray格式的Latin-1字符串表达式  
 适合于普通的英文字符串，但不能包含中文，否则会产生乱码  
@@ -41,7 +42,7 @@ str.setNum(1234, 2); //将整数1234转为2进制后再转为字符串
 Qstring  str;
 char*  ch;
 QByteArray ba = str.toLatin1();
-ch=ba.data();
+ch=ba.data();  //不能直接用cout输出QByteArray对象，而是要输出对象的data()方法
 ```
 3.2 QByteArray toUtf8()  
 返回一个QByteArray格式的UTF8字符串表达式  
@@ -50,7 +51,7 @@ UTF8格式支持中文字符
 Qstring  str;
 char*  ch;
 QByteArray ba = str.toUtf8();
-ch=ba.data();
+ch=ba.data();  //不能直接用cout输出QByteArray对象，而是要输出对象的data()方法
 ```
 4. QChar转QString
 5. QStringList转换为QString

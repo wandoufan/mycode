@@ -8,7 +8,7 @@
 多个checkBox可以同时选择，多个radioButton只能选择其中一个  
 3. 组件的各种属性可以通过UI界面右下角的属性编辑器设置，也可以在代码中调用类的函数进行设置
 一般用来设置属性的函数都以set开头，例如setValue()  
-
+4. 可以用'object_name-> metaObject()->className();'来查看当前对象的类型  
 
 ## ui
 ui是QT中的一个指针，通过ui可以访问到UI界面中设置的所有组件  
@@ -178,9 +178,9 @@ Calendar Widget是用来编辑和显示日历的组件，对应QCalendarWidget�
 
 ## objectName属性
 对于窗体上创建出的每一个组件，都有一个objectName属性作为组件实例的名称  
-具体属性值由系统自动创建，一般按照组件创建顺序来命名，例如checkBox、checkBox_2、checkBox_3  
 objectName作为组件的唯一标识，每个组件的objectName都不相同  
-objectName需要在设计程序之前设置好，设置好后不要再改动，否则代码也要相应改动  
+具体属性值由系统自动创建，一般按照组件创建顺序来命名，例如checkBox、checkBox_2、checkBox_3  
+objectName也可以自定义命名，但需要在设计程序之前设置好，设置好后不要再改动，否则代码也要相应改动  
 
 
 ## checkable属性
