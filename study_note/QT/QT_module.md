@@ -10,6 +10,16 @@
 一般用来设置属性的函数都以set开头，例如setValue()  
 4. 可以用'object_name-> metaObject()->className();'来查看当前对象的类型  
 
+## 使用中发现
+1. 如果选择plainTextEdit组件，则设置文本的下划线、斜体、粗体都正常
+但如果选择了TextEdit组件，只有设置文本下划线是正常的
+文本的斜体和粗体只能在程序运行之后再写入文字才能生效，且生效仅限一次
+在编译之前就写好的文字则无法生效
+2. ui -> lineEdit -> text();方法可以把文本框的内容读取出来，返回一个QString
+3. textBrowser组件可以通过setText(str)方法把内容显示输出出来  
+4. 代码中经常报错找不到组件，实际有这个组件，可能是系统没有及时认出来，可以对项目进行'清除'操作
+
+
 ## ui
 ui是QT中的一个指针，通过ui可以访问到UI界面中设置的所有组件  
 使用方法为：ui -> objectName -> func();
@@ -143,6 +153,25 @@ currentSectionIndex		设置用序号表示的输入光标所在的段，默认�
 calendarPopup			设置是否允许弹出一个日历选择框，默认为false  
 displayFormat			设置日期时间数据的显示格式，默认为yyyy/M/d H:mm  
 例如，一个日期时间数据就显示为'2016-11-02 08:23:46'  
+```
+字符		意义
+d	天，不补零显示，1-31
+dd	天，补零显示，01-31
+M	月，不补零显示，1-12
+MM	月，补零显示，01-12
+yy	年，两位显示，00-99
+yyyy	年，4位数字显示，如 2016
+h	小时，不补零，0-23 或 1-12 (如果显示 AM/PM)
+hh	小时，补零2位显示，00-23 或 01-12 (如果显示 AM/PM)
+H	小时，不补零，0-23 (即使显示 AM/PM)
+HH	小时，补零显示，00-23 (即使显示 AM/PM)
+m	分钟，不补零，0-59
+mm	分钟，补零显示，00-59
+z	毫秒，不补零，0-999
+zzz	毫秒，补零 3 位显示，000-999
+AP或A	使用 AM/pm 显示
+ap或a	使用 am/pm 显示
+```
 
 
 ## Time Edit
@@ -158,6 +187,16 @@ QDateEdit是QDateTimeEdit的子类，只有基础属性，没有自己特有的�
 
 ## Calendar Widget
 Calendar Widget是用来编辑和显示日历的组件，对应QCalendarWidget类  
+用户在日历组件上选择日期时会触发selectionChanged()，可以以此为信号创建槽函数  
+```
+void Widget_Time::on_calendarWidget_selectionChanged()
+{
+    //将日历上选择的日期写入到文本框中
+    QDate user_date = ui -> calendarWidget -> selectedDate();
+    QString date_str = user_date.toString("yyyy-MM-dd");
+    ui -> select_date -> setText(date_str);
+}
+```
 
 ## plainTextEdit
 
@@ -165,13 +204,7 @@ Calendar Widget是用来编辑和显示日历的组件，对应QCalendarWidget�
 
 
 
-1. 实际使用中发现：
-如果选择plainTextEdit组件，则设置文本的下划线、斜体、粗体都正常
-但如果选择了TextEdit组件，只有设置文本下划线是正常的
-文本的斜体和粗体只能在程序运行之后再写入文字才能生效，且生效仅限一次
-在编译之前就写好的文字则无法生效
-2. 
-3. textBrowser组件可以通过setText(str)方法把内容显示输出出来  
+
 
 
 ----------------------------/*组件的属性*/-------------------------------

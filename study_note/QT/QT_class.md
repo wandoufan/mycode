@@ -81,8 +81,16 @@ for(int i = 0; i < list1.size(); i++)
     cout << byte1.data() << endl;
 }
 ```
-
-
+7. QVariant转QString
+```
+QVariant qv;
+QString qs = qv.toString();
+```
+8. QString 转 QVariant
+```
+QString qs;
+QVariant qv(qs);
+```
 
 ----------------------------/*QT常用类*/-------------------------------
 
@@ -179,6 +187,43 @@ str1.resize(n); 调整字符串str1的长度为n
 ## QChar
 QChar类提供了一个16位编码的字符  
 QChar是16位的，因此可以用来存储汉字，一个字符存储一个汉字  
+
+
+## QVariant
+QVariant类提供了QT的通用数据类型的封装容器，支持几乎所有QT数据类型，有点类似json  
+支持的类型包括int、float、char、json、bool、bytearray、list、hash、string...
+如果有几种不同类型的数据需要传递，QVariant常用来替代结构体struct  
+导出QVariant的数据类型和导入QVariant的数据类型是一致的  
+
+
+## QDatetime
+QDatetime类提供日期和时间相关的函数  
+另外，还有QDate类和QTime类  
+**常用函数**
+1. QDateTime currentDateTime() 
+获取当前时间日期，返回一个QDateTime对象  
+```
+QDateTime current_datetime = QDateTime::currentDateTime();
+ui -> timeEdit -> setTime(current_datetime.time());
+```
+2. QString toString(const QString &format) 
+按照一定格式转化成字符串，返回字符串对象  
+```
+QDateTime current_datetime = QDateTime::currentDateTime();
+ui -> Edit_time -> setText(current_datetime.toString("hh:mm:ss"));
+```
+3. QDateTime fromString(const QString &string, Qt::DateFormat format = Qt::TextDate)
+把时间日期的字符串按照一定格式转化为一个QDateTime对象  
+```
+QDateTime user_time = QDateTime::fromString(str, "hh:mm:ss");
+ui -> timeEdit -> setTime(user_time.time());
+```
+
+
+## QTimer
+QTimer类提供了计时器和定时器的功能  
+注意：QTimer并不是一个可见的组件，在UI设计器里找不到它  
+> http://c.biancheng.net/view/1848.html
 
 
 ## QFont
