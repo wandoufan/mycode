@@ -41,5 +41,31 @@ ActiveX控件是以COM组件为技术基础进行实现的
 2. COM对象一般作为一个可调用的模块来使用，ActiveX一般嵌入在网页中使用  
 
 
+## COM组件三个基本接口类
+> https://blog.csdn.net/weiwangchao_/article/details/6949264
+1. IUnknown
+2. IClassFactory
+3. IDispatch
 
-## NET Framework
+## COM组件相关的Windows API函数
+备注：MFC中可能要用到这几个函数，QT中一般都封装好了，不需要直接调用  
+1. OleInitialize
+Ole是在Com的基础上作的扩展，是ActiveX运行的基础  
+OleInitialize是初始化Ole的运行环境，OleInitialize肯定会调用CoInitialize  
+OleInitialize用来初始化Com（其实也是调用CoInitializeEx），支持多线程  
+OleInitialize相比CoInitialize多了以下内容：  
+A) Clipboard  
+B) Drag and drop  
+C) Object linking and embedding (OLE)  
+D) In-place activation  
+如果不需要这些，用CoInitialize就可以  
+备注：OleInitialize和OleUninitialize成对使用  
+2. CoInitialize和CoInitializeEx
+CoInitialize和CoInitializeEx都是windows的API，主要是告诉windows以什么方式为程序创建COM对象  
+原因是程序调用com库函数（除CoGetMalloc和内存分配函数）之前必须初始化com库  
+CoInitialize指明以单线程方式创建  
+CoInitialize仅仅初始化Com，支持多线程，也就是说如果多线程调用Com接口，必须在每个线程中都调用CoInitialize  
+CoInitializeEx可以指定COINIT_MULTITHREADED以多线程方式创建  
+3. AfxOleInit
+AfxOleInit实际上调用了OleInitialize，虽然它在内部也调用了CoInitializeEx，但它只能处理单线程，这是AfxOleInit和CoInitialize主要区别  
+MFC程序建议使用AfxOleInit（）  

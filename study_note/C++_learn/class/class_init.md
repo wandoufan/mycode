@@ -1,47 +1,35 @@
-# include <stdio.h>
-# include <iostream>
-using namespace std;
 
-/*类的初始化*/
-
-//定义一个类
+## 类的定义
+```
 class CMeter
 {
 public:
 	double m_nPercent; //声明一个公有成员变量
 	void StepIt(); //声明一个公有成员方法
 	void SetPos(int nPos); //声明一个公有成员方法
-	void get_print();
 	int GetPos() //声明并定义一个公有成员方法
 	{
 		return m_nPos;
 	}
 private:
 	int m_nPos; //声明一个私有成员变量
-	void print(); //声明一个私有成员方法
 };
 
-void CMeter::StepIt() //在类的外部定义类的公有成员方法
+void CMeter::StepIt() //在类的外部定义类的成员方法
 {
 	m_nPos++;
 }
-
-void CMeter::SetPos(int nPos) //在类的外部定义类的公有成员方法
+void CMeter::SetPos(int nPos) //在类的外部定义类的成员方法
 {
 	m_nPos = nPos;
 }
+```
 
-void CMeter::get_print() //在类的外部定义类的公有成员方法
-{
-	print(); //通过类的公有方法来调用类的私有方法
-}
 
-void CMeter::print() //在类的外部定义类的私有成员方法
-{
-	cout << "this is a private test" << endl;
-}
-
-//实例化对象
+## 对象的定义和初始化
+1. 对象定义有三种方式：声明之后定义、声明之时定义、一次性定义  
+为实现类的封闭性，尽量在声明之后定义  
+```
 void class_init()
 {
 	CMeter myMeter, * Meter, Meters[2]; //对象可以是普通对象、指针对象、数组对象
@@ -52,18 +40,4 @@ void class_init()
 	Meter -> m_nPercent = 0.98; //通过指针访问成员时只能使用'->'
 	cout << Meter -> m_nPercent << endl;
 }
-
-//私有方法测试
-void private_test()
-{
-	CMeter myMeter;
-	myMeter.get_print();
-}
-
-
-int main()
-{
-	// class_init();
-	private_test();
-	return 0;
-}
+```

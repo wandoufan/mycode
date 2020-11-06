@@ -21,6 +21,8 @@ Qt类中的信号(signals)对应COM组件中的事件
 ## QAxBase
 QAxBase是一个抽象类，提供了API接口来初始化和调用COM对象  
 QAxBase是QAxObject和QAxWidget的父类，提供了二者很多公用的基础函数  
+注意：QAxBase是抽象类不能直接使用，必须由其子类QAxObject和QAxWidget来实例化  
+QAxBase在COM数据类型和等价的Qt数据类型之间作了转换，但有的COM types没有等价的Qt数据结构  
 注意：使用前要先声明'#include <QAxBase>'  
 注意：QAxContainer模块不是QTcore自带的，使用QAxObject类和QAxWidget类之前，要在项目的.pro文件中进行声明：'QT +=  axcontainer'，否则报错'QAxObject' file not found  
 **常用函数**
@@ -29,6 +31,7 @@ dynamicCall函数可以调用COM组件的方法，并返回方法的返回值
 当方法没有返回值，或调用方法失败时，返回一个无效的QVariant  
 第一个参数是字符串格式的组件方法名，另外最多可以传递八个QVariant类型的参数  
 备注：这八个参数好像是给组件方法的参数  
+另外，dynamicCall函数还可以设置COM组件的属性  
 
 
 
@@ -42,7 +45,7 @@ querySubObject函数可以调用COM组件的方法或属性，返回一个QAxObj
 ## QAxObject
 QAxObject类提供了一个支持COM对象的QObject  
 QAxObject和QAxWidget都是QAxBase的子类  
-注意：使用前要先声明'#include <QAxObject>'
+注意：使用前要先声明'#include <QAxObject>'  
 注意：QAxContainer模块不是QTcore自带的，使用QAxObject类和QAxWidget类之前，要在项目的.pro文件中进行声明：QT +=  axcontainer'，否则报错'QAxObject' file not found
 **常用函数**
 

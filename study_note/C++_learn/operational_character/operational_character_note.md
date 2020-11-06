@@ -51,7 +51,7 @@ A::num表示A中num成员，B::num表示B中num成员，相当于域成员运算
 class A{
 	public: int func();
 }
-int A :: func() //'::'表示func()是A类的成员函数
+int A::func() //'::'表示func()是A类的成员函数
 {
 	return 0;
 }
