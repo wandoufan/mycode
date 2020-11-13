@@ -151,7 +151,3 @@ void test(const char *p)
 ## const和非const类型转换
 'const char \*'和'char \*'是不同的类型  
 可以把非const类型赋值为const类型，但不能把const类型赋值给非const类型  
-
-
-
-## 常引用

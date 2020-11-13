@@ -5,6 +5,7 @@
 /*
 1.if语句后面没有冒号，这一点与python不同
 2.else不是一个单独的语句，必须是if语句的一部分，与if配对使用
+3.注意：elif是python里的，C/C++里没有elif，只有else if  
 */
 
 

@@ -45,6 +45,7 @@ int *p = new int[10];  //分配10个int型的内存空间
 delete[] p;
 ```
 3. new出一个类的对象
+new一般和指针搭配使用，此时只需要指出类名，不需要写出对象名  
 ```
 class Student
 {

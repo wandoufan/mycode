@@ -37,6 +37,24 @@ class Widget_cal : public QWidget
 ```
 
 
+## QAbstractButton
+QAbstractButton类是所有widgets按钮的抽象基类，给按钮提供公用的函数功能  
+QAbstractButton是QWidget类的子类  
+QAbstractButton是QCheckBox, QPushButton, QRadioButton, QToolButton的父类  
+1. isDown()
+表示按钮button是否是pressed down按下的  
+2. isChecked()
+表示按钮是否被检查或者标记切换的  
+只有可检查和切换（标记）的按钮可以标记或者取消标记checked or unchecked  
+3. isEnabled()
+表示按钮是否可以被用户点按  
+4. setAutoRepeat()
+设置按钮是否当用户长按按钮可以auto-repeat（自动重复执行）  
+属性autoRepeatDelay和autoRepeatInterval定义了如何重复响应执行  
+5. setCheckable()
+设置按钮是否可切换或者标记的  
+
+
 ## Spin Box / Double Spin Box
 Spin Box和Double Spin Box是常用的用于数字相关的输入组件  
 Spin Box组件用于整数的显示和输入，可以设置进制，对应QSpinBox类  

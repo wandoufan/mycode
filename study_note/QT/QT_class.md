@@ -33,8 +33,8 @@ QString str = QString::number(num);
 QString str;
 str.setNum(1234, 2); //将整数1234转为2进制后再转为字符串
 ```
-3. QString转QChar
-注意：QString类型的字符串不能直接用cout输出，否则报错，必须先转换为QChar格式  
+3. QString转QByteArray
+注意：QString类型的字符串不能直接用cout输出，否则报错，必须先转换为QByteArray格式  
 3.1 QByteArray toLatin1()  
 返回一个QByteArray格式的Latin-1字符串表达式  
 适合于普通的英文字符串，但不能包含中文，否则会产生乱码  
@@ -53,7 +53,15 @@ char*  ch;
 QByteArray ba = str.toUtf8();
 ch=ba.data();  //不能直接用cout输出QByteArray对象，而是要输出对象的data()方法
 ```
-4. QChar转QString
+3.3 QByteArray toLocal8Bit()  
+返回一个QByteArray格式的8位编码字符串表达式  
+```
+Qstring  str;
+char*  ch;
+QByteArray ba = str.toLocal8Bit();
+ch=ba.data();  //不能直接用cout输出QByteArray对象，而是要输出对象的data()方法
+```
+4. QByteArray转QString
 5. QStringList转换为QString
 QString join(QString &separator)
 将字符串列表中的元素拼接起来，返回一个QString
@@ -96,24 +104,6 @@ QVariant qv(qs);
 
 ## QObject
 QObject类是所有QT对象的基类  
-
-
-## QAbstractButton
-QAbstractButton类是所有widgets按钮的抽象基类，给按钮提供公用的函数功能  
-QAbstractButton是QWidget类的子类  
-QAbstractButton是QCheckBox, QPushButton, QRadioButton, QToolButton的父类  
-1. isDown()
-表示按钮button是否是pressed down按下的  
-2. isChecked()
-表示按钮是否被检查或者标记切换的  
-只有可检查和切换（标记）的按钮可以标记或者取消标记checked or unchecked  
-3. isEnabled()
-表示按钮是否可以被用户点按  
-4. setAutoRepeat()
-设置按钮是否当用户长按按钮可以auto-repeat（自动重复执行）  
-属性autoRepeatDelay和autoRepeatInterval定义了如何重复响应执行  
-5. setCheckable()
-设置按钮是否可切换或者标记的  
 
 
 ## QString
@@ -327,6 +317,46 @@ qDebug函数可以直接使用，不必声明所属的类，也不必通过对�
 ```
 qDebug() << "the result is " << str1;
 ```
+
+
+## QIODevice
+QIODevice类是QT中所有I/O设备的基础接口类  
+
+
+## QFileDevice
+QFileDevice类提供了接口用来从打开文件中读文件和写文件，其父类是QIODevice  
+
+
+## QFile
+QFile类提供了接口用来读文件和写文件，其父类是QFileDevice  
+使用时需要包含头文件'#include <QFile>'  
+**常用函数**
+1. void setFileName(const QString &name)
+设置文件名字，名字中可以是相对路径，可以是绝对路径，也可以没有路径  
+注意：文件名路径时只支持"/"，不支持"\"  
+```
+myfile.setFileName("E:/test.raw");
+```
+2. bool QFile::open(QIODevice::OpenMode mode)
+用指定模式打开文件，返回ture或false  
+常用参数包括： QIODevice::ReadOnly、QIODevice::WriteOnly、QIODevice::ReadWrite  
+备注：在WriteOnly和ReadWrite模式下，如果文件不存在，会在打开前自动创建该文件  
+QIODevice::Truncate表示设备在打开前是截断的，设备所有早期的内容都会丢失  
+```
+myfile.open(QIODevice::WriteOnly | QIODevice::Truncate);
+```
+3. qint64 QIODevice::write(const char \*data, qint64 maxSize)
+直接向文件中写入数据，返回数据的字节长度，写入失败时返回-1  
+```
+int number = myfile.write("this is a write test")
+```
+4. [override virtual] void QFileDevice::close()
+调用QFileDevice::flush()函数，并关闭文件  
+来自于flush()函数的error会被忽略  
+5. bool QFileDevice::flush()
+冲洗掉文件缓冲区的所有数据，返回返回ture或false  
+
+
 
 
 ----------------------------/*QT容器类*/-------------------------------

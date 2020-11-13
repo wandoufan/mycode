@@ -53,10 +53,34 @@ connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));
 备注：系统不仅会在cpp文件中自动创建出槽函数框架，同时也会自动在.h头文件中自动对槽函数进行声明  
 4. 可以将多个信号(组件)关联到一个自定义的槽函数上，此时槽函数是一个复合函数  
 复合函数不需要对应一个具体的组件，而是多个组件都通过connect函数关联到这个复合函数上  
-需要手动在dialog.cpp文件中定义的Dialog类下加入connect函数，将不同信号和函数中不同操作关联起来  
-connect(ui->rBtnBlue,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-connect(ui->rBtnRed,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-connect(ui->rBtnBlack,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
+需要手动在类的构造函数下加入connect函数，将不同信号和函数中不同操作关联起来  
+```
+Dialog::Dialog(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::Dialog)
+{
+    ui->setupUi(this);
+    connect(ui -> radioButton, SIGNAL(clicked()), this, SLOT(setTextFontColor()));
+    connect(ui -> radioButton_2, SIGNAL(clicked()), this, SLOT(setTextFontColor()));
+    connect(ui -> radioButton_3, SIGNAL(clicked()), this, SLOT(setTextFontColor()));
+}
+```
+然后手动在类中声明自定义的槽函数上，具体定义如下：  
+```
+void Dialog::setTextFontColor()
+{
+    QPalette plet = ui -> plainTextEdit -> palette();
+    if (ui -> radioButton -> isChecked())
+        plet.setColor(QPalette::Text, Qt::black);
+    else if (ui -> radioButton_2 -> isChecked())
+        plet.setColor(QPalette::Text, Qt::red);
+    else if (ui -> radioButton_3 -> isChecked())
+        plet.setColor(QPalette::Text, Qt::blue);
+    else
+        plet.setColor(QPalette::Text, Qt::yellow);
+    ui -> plainTextEdit -> setPalette(plet);
+}
+```
 
 
 ## 常用的系统自带信号
