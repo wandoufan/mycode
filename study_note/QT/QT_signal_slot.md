@@ -37,6 +37,7 @@ connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));
 5. 在使用信号与槽的函数的类中，必须在类的定义中加入宏Q_OBJECT  
 6. 当一个信号发射时，与其关联的槽函数都会立即执行  
 只有在信号关联的槽函数都执行完毕之后才会执行信号后面的代码  
+7. 定义的槽函数必须放在类中的slot下面，否则connect函数识别不到  
 
 
 ## 设置信号与槽的四种方法

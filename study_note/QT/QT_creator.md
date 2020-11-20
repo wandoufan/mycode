@@ -106,7 +106,6 @@ Demo2--|
 2. main.cpp文件  
 main.cpp是实现main()函数的文件，包含创建窗口、显示窗口、运行应用程序等功能  
 main()函数是整个程序的入口，程序从这里开始执行  
-备注：窗口的标题默认是自己定义的类名，也可以用setWindowTitle函数进行修改  
 ```
 int main(int argc, char *argv[])
 {

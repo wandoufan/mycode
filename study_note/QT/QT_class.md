@@ -200,7 +200,7 @@ ui -> timeEdit -> setTime(current_datetime.time());
 按照一定格式转化成字符串，返回字符串对象  
 ```
 QDateTime current_datetime = QDateTime::currentDateTime();
-ui -> Edit_time -> setText(current_datetime.toString("hh:mm:ss"));
+ui -> Edit_time -> setText(current_datetime.toString("hh:mm:ss:zzz"));
 ```
 3. QDateTime fromString(const QString &string, Qt::DateFormat format = Qt::TextDate)
 把时间日期的字符串按照一定格式转化为一个QDateTime对象  
@@ -211,9 +211,53 @@ ui -> timeEdit -> setTime(user_time.time());
 
 
 ## QTimer
-QTimer类提供了计时器和定时器的功能  
+QTimer类提供了单次触发的定时器和循环重复的定时器  
 注意：QTimer并不是一个可见的组件，在UI设计器里找不到它  
-> http://c.biancheng.net/view/1848.html
+**使用示例**
+1. 循环重复定时器
+```
+//每秒钟执行一次监听函数  
+QTimer *timer;
+timer = new QTimer(this);
+connect(timer, SIGNAL(timeout()), this , SLOT(listen()));
+timer -> start(1000);
+```
+2. 单次触发定时器
+```
+//一分钟之后再去执行test函数，相当于sleep了一分钟
+QTimer::singleShot(60000, this, SLOT(test()));
+```
+**QTimer常用函数**
+1. [signal] void QTimer::timeout()
+timeout函数是QTimer最主要的信号函数，一般用在connect函数的信号参数中  
+当时间用完时就会触发timeout函数  
+注意：这是一个私有的信号函数，可以用在connect中，但不能被用户去触发  
+2. [slot] void QTimer::start(int msec)
+start函数用来启动循环计时器，其中函数参数表示每个循环周期的长度  
+例如，start(2000)相当于每隔2秒钟去执行一次槽函数  
+如果之前已经用setInterval函数进行过设置，则start函数的参数可以为空  
+如果计时器已经在运行，则计时器停止并重新开始计时  
+如果计时器是单次的，则计时器只会运行一次  
+interval函数和start函数的参数值都是用来设置每个循环周期的长度  
+注意：如果interval函数和start函数都进行了设置，则以后面设置的参数为准  
+3. [slot] void QTimer::stop()
+stop函数是一个槽函数，用来停止计时器  
+4. [static] void QTimer::singleShot(int msec, const QObject \*receiver, const char \*member)
+singleShot函数用来启动单次触发定时器，相当于sleep函数  
+第一个参数是定时时间  
+第二个参数是接收对象  
+第三个参数是时间到了之后被触发的槽函数  
+备注：singleShot是一个静态公共函数，即可以不经实例化就直接调用，使用很方便  
+5. int interval() const
+查询当前的interval值，即每个循环周期的长度，单位毫秒，默认为0  
+6. void setInterval(int msec)
+设置的interval值，单位毫秒，一般可以直接在调用start函数时设置  
+interval函数和start函数的参数值都是用来设置每个循环周期的长度  
+注意：如果interval函数和start函数都进行了设置，则以后面设置的参数为准  
+7. bool isActive() const
+查询当前计时器是否在运行  
+8. bool isSingleShot() const
+查询当前定时器是否是单次定时器  
 
 
 ## QFont
@@ -356,6 +400,17 @@ int number = myfile.write("this is a write test")
 5. bool QFileDevice::flush()
 冲洗掉文件缓冲区的所有数据，返回返回ture或false  
 
+
+## QImage
+QImage类提供了不依赖于硬件的图像表示，主要用于I/O和直接逐像素访问、操作  
+**使用示例**
+1. 打开一个本地图片，调整大小后保存
+```
+QImage signimage;
+signimage.load("E:/1.png");
+signimage =  signimage.scaled(pic_width, pic_height);
+signimage.save("E:/1.png");
+```
 
 
 
