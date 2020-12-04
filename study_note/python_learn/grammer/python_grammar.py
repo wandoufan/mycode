@@ -6,6 +6,8 @@
 list1 = [1, 2, 3, 4,\
          5, 6, 7, 8]
 print(list1)
+# 若字符串中本身含有一个\，则需要在前面再加一个\
+string = "this is a \\"
 # \n表示字符串换行，相当于空出一行
 print('hi there,this a long message for you\
 	that goes over multiple lines.. \nyou will find out soon that triple quotes in python allows this kind of fun!\n')

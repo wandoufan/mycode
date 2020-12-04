@@ -16,3 +16,7 @@
 * SideBarEnhancements  提供文件目录方面更详细的功能
 
 * Python PEP8 Autoformat  提供PEP8代码格式规范
+
+## 其他功能
+1. 设置编码格式
+上方工具栏--File--Set File Encoding to  

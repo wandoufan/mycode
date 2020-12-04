@@ -84,6 +84,25 @@ void test_namespace()
 }
 
 ```
+6. 命名空间可以直接把类名写进去，相当于把类里的所有成员都加入了命名空间  
+备注：QT程序中是这样写的，其他地方不知道是否能这样操作  
+```
+QT_BEGIN_NAMESPACE
+namespace Ui { class Widget_database; }
+QT_END_NAMESPACE
+
+class Widget_database : public QWidget
+{
+    Q_OBJECT
+
+public:
+    Widget_database(QWidget *parent = nullptr);
+    ~Widget_database();
+
+private:
+    Ui::Widget_database *ui;
+};
+```
 
 
 ## 命名空间中标识符的引用
