@@ -80,9 +80,10 @@ oracle可以在所有主流平台上运行
 管理维护的操作比较复杂  
 **sqlite**
 1. 基本情况
-sqlite是一个小型数据库，所有的数据表、索引等数据库元素全部都存在一个文件里  
+sqlite是一个微型数据库，所有的数据表、索引等数据库元素全部都存在一个文件里  
 sqlite expert是sqlite数据库的可视化管理工具，包含了sqlite数据库驱动  
 即安装了sqlite expert之后就无需再安装sqlite数据库驱动  
+备注：QT自带了sqllite数据库，无需再进行安装  
 2. 优点
 sqlite是开源免费的  
 体积很小，sqlite的驱动库文件只有500KB  

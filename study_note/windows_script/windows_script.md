@@ -33,8 +33,10 @@ os.system(command)
 1. 设置之前要保证磁盘系统为NTFS格式  
 2. 一般创建出的文件夹默认Users用户组都有访问权限，但无法直接删除Users组  
 需要先设置'属性-安全-高级安全-禁用继承'或'/inheritance:d'，之后才能删除User组  
+creator owner用户组同理，但creator owner不知道怎么用脚本去删除  
 3. 不推荐使用cacls，推荐使用改进版icacls，在cmd中输入icacls可以显示所有参数  
-4. 设置权限时默认只针对当前文件夹，如果要应用到子文件和子文件夹，要加'/T'参数  
+4. 设置权限时默认只针对当前文件夹，如果要应用到子文件和子文件夹，要在权限中加上(OI)(CI)  
+例如，'/grant ftp_group1:(OI)(CI)(RX,W)'  
 5. 设置多个权限时，权限之间可能会有冲突，系统会以较大的权限为准  
 例如，同时设置M，R，W权限时，R和W设置无效，只有M权限生效  
 **perm权限掩码**
@@ -137,6 +139,9 @@ icacls E:\share_test\1718-001 /remove 1718-001
 1. 一般先设置文件夹权限，再设置文件夹共享
 2. 一般要用管理员权限去打开运行cmd，然后才能执行文件夹共享相关的命令
 3. 可以用'net share /?'来查看命令的所有参数
+4. 在共享文件夹中删除文件时，文件会不经过回收站而直接彻底删除
+保险起见，要么禁止其他用户的删除权限，要么对共享文件夹设置备份  
+如果数据已经被删除，只能通过数据恢复软件来尝试恢复了  
 **常用命令**
 1. 查看当前电脑的所有共享文件夹及其共享名
 ```
@@ -154,7 +159,7 @@ drive:path参数：共享文件夹的绝对路径
 /unlimited参数：同时访问共享目录的用户数不受限制  
 /remark:"text"参数：为共享文件夹设置注释(没找到在哪看注释)  
 3. 将文件夹共享给指定的用户或用户组，并设置其权限
-注意：如果在共享时不指定用户权限，则默认everyone有可读权限  
+注意：如果在共享时不指定用户权限，则默认Everyone用户组有可读权限  
 ```
 标准格式，设置用户权限
 net share myshare=E:\share_test /grant:user,[read|change|full]
@@ -170,4 +175,29 @@ full参数：表示完全控制权限
 ```
 net share sharename /delete
 net share E:\share_test /delete
+```
+
+
+## windows数据备份的wbadmin命令
+使用windows server backup进行备份时无法设置备份副本的个数  
+可以用wbadmin命令来删除多余的备份副本  
+**常用命令**
+1. 查看当前电脑中所有的备份
+```
+可以查看所有备份的时间和版本号
+wbadmin get versions
+```
+2. 删除电脑中的备份
+windows server backup的备份文件不是按每次备份单独存为一个文件  
+而是把所有备份都叠加为一个文件，文件名显示为最新备份的版本号  
+因此无法通过删除文件夹来删除多余备份，只能用wbadmin命令去删除  
+```
+指定保留最新的3个备份，多余备份都删除
+wbadmin delete backup -keepversions:3
+删除所有备份
+wbadmin delete backup -keepversions:0
+删除最早的备份
+wbadmin delete backup -deleteOldest
+删除指定版本的备份
+wbadmin delete backup -version:版本号
 ```

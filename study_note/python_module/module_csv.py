@@ -42,7 +42,8 @@ list1 = ['one', 'bule', 3, '2008']
 list2 = ['two', 'yellow', -7, '2011']
 list3 = ['three', 'red', 6, '2015']
 
-with open('D:/test.csv', 'wt') as csv_file:
+# 如果不加上newline参数，则默认在CSV中会写一行空一行
+with open('D:/test.csv', 'wt', newline = "") as csv_file:
     csv_writer = csv.writer(csv_file, dialect='excel')
     csv_writer.writerow(list1)
     csv_writer.writerow(list2)
