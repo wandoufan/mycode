@@ -34,6 +34,19 @@ CLSID也称为CLASSID代表COM组件中的类对象，可以在注册表里查�
 3. GUID(Globally Unique Identifier)全局唯一标识符
 
 
+## 获取ocx的classid
+1. 对于安装程序后产生的ocx文件，一般安装过程中会往注册表里写数据
+因此可以通过注册表去搜索查看ocx的classid  
+2. 对于一个单独的ocx文件，在手动注册前，注册表里是肯定没有其classid的
+可以使用dumpcpp.exe工具，对ocx自动生成.h和.cpp文件  
+.cpp文件中setcontrol函数会有写出其classid  
+
+
+## ocx文件注册
+对于一个单独的oxc文件，使用前需要手动对其进行注册  
+用管理员权限打开cmd.exe，输入命令'regsvr32 ocx_path'  
+
+
 ## ActiveX和COM的对比
 ActiveX控件是以COM组件为技术基础进行实现的  
 二者并没有本质的区别，仅有一些概念上的差异，使用惯例上来说：  

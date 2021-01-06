@@ -32,6 +32,10 @@ critical函数用来显示比较严重的警告信息，对话框为一个叉号
 3. QMessageBox::StandardButton QMessageBox::question(QWidget \*parent, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = StandardButtons(Yes | No), QMessageBox::StandardButton defaultButton = NoButton)
 question函数用来向用户询问问题并让用户进行选择，对话框为一个问号  
 
+```
+if(QMessageBox::Yes == QMessageBox::question(NULL, "提示", info, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+```
+
 4. void QMessageBox::about(QWidget \*parent, const QString &title, const QString &text)
 about函数用来弹出一个简单的对话框，对话框中没有标识符  
 ```

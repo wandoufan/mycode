@@ -40,6 +40,8 @@ if(avg)
   return avg(5, 8);
 else
   return -1;
+```
+```
 例2 调用接口函数ControlLED
 unsigned char buffer;
 typedef int (*ControlLED_Func)(int freq, int duration, unsigned char *buffer);

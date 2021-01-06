@@ -36,49 +36,6 @@ setPointSize() 设置字体肉眼看到的实际大小，在不同设备上显�
 setPixelSize() 设置字体像素单位的大小，在不同设备上显示大小可能不同  
 
 
-## QPalette
-Qpalette(调色板)类是专门用于管理组件的外观颜色，每个组件都有一个palette对象  
-```
-QPalette plet = ui -> plainTextEdit -> palette();
-plet.setColor(QPalette::Text, Qt::blue);
-ui -> plainTextEdit -> setPalette(plet);
-```
-1. 设置颜色显示区域的参数包括：  
-QPalette::Base 设置文本输入窗口部件(如QtextEdit等)的底色  
-QPalette::Text 设置文本输入窗口中文字的颜色  
-QPalette:WindowText 通常指窗口看不见的前景色  
-QPalette::Button 指按钮窗口部件的背景色  
-QPalette::ButtonText 指按钮窗口部件的前景色  
-QPalette::Background 背景色  
-QPalette::Foreground 前景色  
-2. 常用设置颜色的参数包括：  
-Qt::black 黑色  
-Qt::blue 蓝色  
-Qt::red 红色  
-Qt::yellow 黄色  
-QColor(10, 100 , 50, 255) 用数字设置颜色  
-
-
-## QColor
-QColor类用来生成基于RGB、HSV、CMYK值的各种颜色  
-一般产生的都是各种颜色对象，然后被其他函数调用作为颜色参数  
-```
-直接初始化一个QColor对象
-QColor(10, 100 , 50, 255)
-```
-**QColor常用函数**
-1. void QColor::setRgb(int r, int g, int b, int a = 255)
-setRgb函数用来设置颜色对象的RGB值  
-r参数用来设置红色，范围0到255之间  
-g参数用来设置绿色，范围0到255之间  
-b参数用来设置蓝色，范围0到255之间  
-a参数用来设置alpha值，即颜色的透明度，默认为255  
-```
-QColor mycolor;
-mycolor.setRgb(10, 100 , 50); 每个参数的含义，参数范围为0~255
-```
-
-
 ## QIODevice
 QIODevice类是QT中所有I/O设备的基础接口类  
 

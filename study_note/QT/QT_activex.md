@@ -90,6 +90,7 @@ dumpcpp.exe一般是位于QT的编译器目录的bin目录下，例如:'C:\Qt\5.
 'dumpcpp.exe C:/Windows/SysWOW64/HWPenSign.ocx'
 'dumpcpp.exe {a0637eb8-68db-4cf0-a26c-1ca438e1d6d1}'
 ```
+备注：不知道classid的情况下，可以先使用路径，生成的.cpp文件中setcontrol函数会有写出classid  
 3. 在dumpcpp.exe的同目录下会生成.cpp和.h文件，例如'hwpensignlib.h'和'hwpensignlib.cpp'  
 将这两个文件拷贝到QT项目目录下，可能项目识别不到这两个文件，需要在.pro文件中手动写入文件名  
 4. 自动生成的.h文件中会定义一个继承于QAxWidget或QAxObject的子类  
@@ -104,6 +105,15 @@ class HWPENSIGNLIB_EXPORT HWPenSign : public QAxWidget
 ## QT调用控件方法三
 通过将ocx控件生成dll来实现调用   
 具体实现过程未测试  
+
+
+## 获取ocx控件的文档
+和dumpcpp.exe类似，QT还提供了dumpdoc.exe工具来自动生成ocx的文档  
+可以通过ocx的文件路径或classid来指定ocx  
+-o参数用来说明生成文档的路径，其中文档为html格式  
+```
+'dumpdoc.exe C:\cwui.ocx -o E:\cwui_doc.html'
+```
 
 
 ## 汉王手写板开发中遇到的实际问题

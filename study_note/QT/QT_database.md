@@ -52,7 +52,7 @@ sql查询结果数据的只读数据模型，用于select查询结果的只读�
 QAbstractTableModel - QSqlQueryModel - QSqlTableModel - QSqlRelationTableModel
 
 
-## 使用步骤
+## 连接sql server步骤
 > https://blog.csdn.net/xianchao0127/article/details/111084495
 > https://www.cnblogs.com/JackyPeng/articles/7612037.html
 1. 登录到数据库中，手动在数据库中新建一个目标数据库

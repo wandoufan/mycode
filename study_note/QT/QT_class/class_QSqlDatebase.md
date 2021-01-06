@@ -2,7 +2,8 @@
 
 ## 基本功能
 QSqlDatabase类用于建立与数据库的连接，#include <QSqlDatabase>  
-连接之前要先在ODBC进行相应的配置  
+对于sql server数据库，连接之前要先在ODBC进行相应的配置  
+对于单机型数据库，如sqlite，只需要设置数据库文件即可  
 不同数据库在QT中使用不同的驱动类型，具体对应关系如下：  
 ```
 Driver Type - Description
@@ -18,7 +19,7 @@ QTDS - Sybase Adaptive Server
 ```
 
 
-## 常用函数
+## 常用函数(以sql server为例)
 1. [static] QSqlDatabase QSqlDatabase addDatabase(const QString &type, const QString &connectionName = QLatin1String(defaultConnection))
 addDatabase函数用来创建出一个数据库对象，具体参数详见上面对应表  
 一次只能建立一个连接，新连接建立时旧连接会被自动删去  
@@ -61,4 +62,14 @@ if(mydb.open())
 返回数据库连接或执行过程中的报错，返回类型为QSqlError
 ```
 qDebug() << mydb.lastError().text();
+```
+
+## 连接sqlite数据库
+使用sqlite数据库无需配置账户密码等，只需要指明数据库文件  
+注意：数据库文件要写出完整的路径  
+```
+QSqlDatabase mydb = QSqlDatabase::addDatabase("QSQLITE");
+mydb.setDatabaseName(QString::fromLocal8Bit("E:\\xingyifan\\project\\db_file\\card_reader.db"));
+if(mydb.open())
+......
 ```
