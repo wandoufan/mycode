@@ -2,7 +2,7 @@
 
 ## 注意事项
 1. 新建一个QWidget类的QT项目，UI界面中的默认大窗口就是QWidget类的一个对象
-注意对象名默认为'Widget'，这个对象名和源文件中构造函数的Ui::Widget是一致对应的  
+注意：对象名默认为'Widget'，这个对象名和源文件中构造函数的Ui::Widget是一致对应的  
 ```
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -15,6 +15,17 @@ Widget::Widget(QWidget *parent)
 ```
 error: C2027: 使用了未定义类型“Ui::Widget”
 ```
+2. 对Widget窗口本身进行大小位置等设置时，用this来指向当前窗口对象
+```
+Widget::Widget(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::Widget)
+{
+    ui->setupUi(this);
+    this -> setGeometry(250, 50, 500, 500);//设置窗口的大小位置
+}
+```
+
 
 ## UI设计窗口功能区域划分
 双击项目中的.ui文件可以打开UI设计窗口，包括：  

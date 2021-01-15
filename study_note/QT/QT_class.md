@@ -2,20 +2,11 @@
 
 ----------------------------/*QT常用类*/-------------------------------
 
-## QObject
-QObject类是所有QT对象的基类  
 
 
 ## QChar
 QChar类提供了一个16位编码的字符  
 QChar是16位的，因此可以用来存储汉字，一个字符存储一个汉字  
-
-
-## QVariant
-QVariant类提供了QT的通用数据类型的封装容器，支持几乎所有QT数据类型，有点类似json  
-支持的类型包括int、float、char、json、bool、bytearray、list、hash、string...
-如果有几种不同类型的数据需要传递，QVariant常用来替代结构体struct  
-导出QVariant的数据类型和导入QVariant的数据类型是一致的  
 
 
 ## QFont

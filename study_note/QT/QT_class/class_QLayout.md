@@ -18,16 +18,30 @@ QLayout
 ```
 
 
-
-源文件示例：  
+## 源文件示例
+以引入Labview中的CWButton拨杆按钮为例：  
+CWButton可以在CustomButton的构造函数中用setGeometry函数设置大小
+但在UI界面中，自定义控件拖过去之后默认是一个很小的方块，需要手动拉大之后才能看到完整的控件  
+可以将控件添加到Layout中，这样默认就能显示完整的大小  
 ```
 #include "customwidget.h"
 #include <QVBoxLayout>
 
-CustomWidget::CustomWidget(QWidget *parent) : QWidget(parent)
+CustomButton::CustomButton(QWidget *parent) :
+    QWidget(parent)
 {
+    qt_button = new CWButton(licenseKey, this);
+    qt_button -> setGeometry(0, 0, 300, 300);
     auto mainLayout = new QVBoxLayout(this);
-    button = new CWUIControlsLib::CWButton(this);
-    mainLayout->addWidget(button);
+    mainLayout -> addWidget(qt_button);
+    mainLayout -> setContentsMargins(0, 0, 0, 0);
 }
 ```
+
+
+## 常用函数
+1. void QLayout::setContentsMargins(int left, int top, int right, int bottom)
+默认情况下，Layout控件和Widget边框之间有一个缝隙(11个像素的间距)  
+可以用setContentsMargins来具体设置间距的大小，一般都改为0  
+备注：setMargin(int margin)函数有同样的功能，但已经过时，不再使用  
+

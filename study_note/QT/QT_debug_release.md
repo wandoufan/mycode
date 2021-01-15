@@ -17,5 +17,22 @@ Profile是上面两种版本之中取一个平衡,兼顾性能和调试
 2. F10单步执行  
 
 
+## debug与realease的区别
+
+
 ## release崩溃问题
 对于相同代码的程序，有时候可能debug模式下能运行，但release模式下就会崩溃  
+release模式下的要求比debug模式更加严格  
+常见的崩溃原因：  
+1. 定义了变量或指针但是没有进行初始化  
+
+另外，代码中有些变量定义了但未使用，这种情况一般只显示为warning，不一定会造成崩溃  
+在debug模式下不影响程序执行，但在release模式下就可能造成程序崩溃  
+```
+// result记录函数是否执行成功，但后续并没用到result
+bool result = GetIndex();
+```
+程序崩溃时经常会有如下报错，但实际是内存方面错误，与sogou无关  
+```
+C:\Program Files (x86)\SogouInput\Components\
+```

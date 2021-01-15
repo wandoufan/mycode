@@ -42,3 +42,7 @@
 'deltree folder_path'  
 * 查看所有共享文件
 'net share'  
+* 注册dll或ocx
+'regsvr32 file_path'
+* 取消注册dll或ocx
+'regsvr32 /u file_path'

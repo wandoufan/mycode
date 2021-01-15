@@ -3,6 +3,7 @@
 ## C盘下的syswow64和system32目录
 参考资料：  
 > https://blog.csdn.net/oncealong/article/details/50477997
+对于64位的Windows操作系统，C：\Windows下有syswow64和system32两个目录  
 两个目录都是存放系统文件的，但和目录名称刚好相反：  
 System32的文件夹装的是64位的系统文件，而SysWow64文件夹装的是32位的系统文件  
 WOW64 (Windows-on-Windows 64-bit)是一个Windows操作系统的子系统  

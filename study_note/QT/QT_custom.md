@@ -19,7 +19,6 @@ QT中提供了很多基本的组件，但实际使用中可能还需要其他组
 ---------------------------------------------------------------
 
 ## 提升法简介
-
 缺点：
 提升法用于界面可视化设计时不够直观，不能在界面上立刻显示自定义组件的效果  
 
@@ -35,9 +34,9 @@ QT中提供了很多基本的组件，但实际使用中可能还需要其他组
 
 ## 插件法简介
 插件是指为UI设计器设计自定义组件的Widget插件  
-可以直接安装到UI设计器的组件面板里，设计使用时就能看到其实际显示效果  
-但在编译和运行时需要用到插件的dll文件(windows平台上)  
-
+插件可以直接安装到UI设计器的组件面板里，设计使用时就能看到其实际显示效果  
+插件法的本质是把自定义组件放到一个Widget里面包起来，然后将Widget导出为dll  
+在创建自定义控件项目时就指明了控件的基类为QWidget，即控件类自动继承了QWidget  
 
 
 ## 创建QT自定义控件项目的详细步骤
@@ -47,6 +46,7 @@ QT中提供了很多基本的组件，但实际使用中可能还需要其他组
 4. Custom Widgets:填写自定义控件的类名
 注意：自定义控件类的类名首字母要大写，例如'CustomButton'  
 右侧'源文件'中的内容会自动生成，默认即可  
+其中，控件的基类默认为QWidget，一般不要改动  
 可以在这里为自定义控件添加图标文件，添加后会在.qrc文件中显示  
 右侧'说明'和'默认属性'可以不填，后面可以通过函数进行填写  
 5. Plugin Details:填写插件名称
@@ -99,6 +99,17 @@ demo11_custom
 5. 不能在插件源文件的构造函数中对自定义组件进行实例化和属性设置
 首先，在构造函数里对CustomButton进行实例化没有作用  
 另外，这样产生出来的dll拷贝到对应路径下后，会造成qt designer打不开  
+6. 返回按钮名称的问题
+在插件源文件中有一个返回按钮名称的函数，默认为自定义控件的类名  
+这里返回的名称就是将来在左侧组件列表中显示的名称  
+注意：这里的名称一定不能随意改写，必须和自定义控件的类名完全一样  
+如果随意写一个名字，如'CWButton1'，过程中不会报错，但将来拖入到设计界面中会是一个空白的组件，什么都显示不出来  
+```
+QString CustomButtonPlugin::name() const
+{
+    return QLatin1String("CustomButton");
+}
+```
 
 
 ## 插件法1. 用UI界面将QT基本组件组合成复合组件
@@ -114,8 +125,10 @@ demo11_custom
 6. 选择.ui文件，在UI设计界面任意组合我们需要的自定义控件
 备注：可以在UI界面中对自定义控件的位置和大小进行设置  
 UI界面中底部的Widget大窗口的大小即为将来自定义控件的大小  
+自定义控件在Widget大窗口中的位置即为将来的显示位置，一般要放最左上角  
 7. 在插件源文件中对自定义控件的名称、描述、所在组名等进行设置
 注意：不要通过domXml()函数对组件的大小和位置进行设置  
+注意：不要修改name()函数中默认的控件名称，否则将来显示空白  
 详见 QDesignerCustomWidgetInterface.md  
 8. 在控件头文件的类声明中添加宏'QDESIGNER_WIDGET_EXPORT'
 另外，加上'#include <QtDesigner/QDesignerExportWidget>'  
@@ -127,13 +140,17 @@ UI界面中底部的Widget大窗口的大小即为将来自定义控件的大小
 error: You need to set an executable in the custom run configuration.
 ```
 
+
 ## 插件法2. 用纯代码将QT基本组件设计成自定义组件
 1. 在qt creator中新建一个自定义控件项目
 2. 在自动生成的控件头文件和控件源文件中插入组件相关的代码
 备注：可以在这部分代码中用函数对自定义控件的位置和大小进行设置  
+一般在源文件的构造函数中用setGeometry()函数来设置大小和位置  
+其中位置参数一般都要设为0，即控件要出现在Widget的最左上角  
 代码实现部分参考：QT_purecode.md  
 3. 在插件源文件中对自定义控件的名称、描述、所在组名等进行设置
 注意：不要通过domXml()函数对组件的大小和位置进行设置  
+注意：不要修改name()函数中默认的控件名称，否则将来显示空白  
 详见 QDesignerCustomWidgetInterface.md  
 4. 在控件头文件的类声明中添加宏'QDESIGNER_WIDGET_EXPORT'
 另外，加上'#include <QtDesigner/QDesignerExportWidget>'  
@@ -147,14 +164,50 @@ error: You need to set an executable in the custom run configuration.
 
 
 ## 插件法3. 插件法用外部的组件转换封装成QT可用的组件
-备注：测试失败，dll导出后在designer里显示是一个空白  
-仿照纯代码创建自定义控件的过程，将外部组件包进一个Widget里面，然后把整个Widget封装出来  
 以引入Labview中的CWButton拨杆按钮为例：  
-其中，CustomButton是我们新建的自定义组件类，继承于QWidget  
+1. 控件简介
+拿到了一个cwui.ocx文件，要求将其中的CWButton提取并封装到qt designer中使用  
+其中，CWButton是一个来自于LabView的开关式按钮，具有多种显示形态和属性  
+这个控件是完全来自于QT外部的控件，并不是由QT自身控件组合而成的  
+2. 分析过程
+用dumpcpp工具将cwui.ocx解析，得到一个头文件和对应源文件，均为一万多行的代码  
+在自动生成的原始代码中就有很多的报错，只能手动将报错部分注释掉  
+后来得知这个ocx文件是32位的，而最开始用了64位的dumpcpp工具去解析，这可能会造成一定的问题  
+分析代码文件，包含CWButton类在内，里面包含了很多个组件  
+但是CWButton和其他部分相互嵌套，关系很复杂，尝试把CWButton单独取出来失败  
+备注：对于自动生成的代码一般不要修改，也不要单独取出一部分，很可能会出错  
+决定将整个代码都一起用，先测试直接将CWButton实例化并调用其设置函数  
+测试成功，表明这段代码本身没有问题，可以直接使用  
+3. 创建过程
+针对CWButton创建自定义控件的过程中遇到了很多问题，直接记录最终成功的方案  
+自动生成的头文件和源文件保持不动，新建一个自定义组件类CustomButton  
 把外部组件CWButton类的实例对象作为CustomButton的一个成员  
-至于CWButton本身的源文件和头文件放入到同目录下即可，不需要对其改动  
 在插件源文件返回对象时，返回CustomButton对象，而不是CWButton对象  
-1. custombutton.h示例：
+```
+CWButton
+	│  CWButton.pro 项目管理文件
+	│  CWButton.pro.user
+	│      
+	├─custombutton
+	│  │  custombutton.pri 控件项目文件
+	│  │  
+	│  ├─Headers
+	│  │      custombutton.h 控件头文件
+	│  │      cwuicontrolslib.h 自动生成的头文件
+	│  └─Sources
+	│         custombutton.cpp 控件源文件
+	│         cwuicontrolslib.cpp 自动生成源文件
+	├─Resources
+	│      icons.qrc 资源集合文件
+	│
+	├─Headers
+	│      custombuttonplugin.h 插件头文件
+	│      
+	└─Sources
+	       custombuttonplugin.cpp 插件源文件
+```
+4. 部分代码示例
+custombutton.h示例：
 ```
 #ifndef CUSTOMBUTTON_H
 #define CUSTOMBUTTON_H
@@ -175,10 +228,9 @@ public:
     CWButton *qt_button;
     QString licenseKey;
 };
-
 #endif // CUSTOMBUTTON_H
 ```
-2. custombutton.cpp示例：
+custombutton.cpp示例：
 ```
 #include "custombutton.h"
 #include <QVBoxLayout>
@@ -194,7 +246,7 @@ CustomButton::CustomButton(QWidget *parent) :
     mainLayout -> addWidget(qt_button);
 }
 ```
-3. custombuttonplugin.cpp示例
+custombuttonplugin.cpp示例
 ```
 QWidget *CustomButtonPlugin::createWidget(QWidget *parent)
 {
@@ -244,20 +296,5 @@ LIBS += $$PWD/lib/custombuttonplugin.lib
 
 -----------------------------------------------------
 
-## 给自定义组件添加属性
-QT提供的各种基本组件都可以通过UI界面右下角的属性编辑器进行设置  
-自定义的组件可以添加属性以及属性值
-1. 方法一：
-通过Q_PROPERTY宏定义自定义控件的相关属性，比如：
-Q_PROPERTY(double minValue READ getMinValue WRITE setMinValue)
-上述语句会添加属性minValue，数据类型为double
-READ后的函数用于读取关联的变量值并在designer中显示
-WRITE后的函数用于将designer中的输入值设置为关联的变量值
-数据类型不同，在使用自定义控件过程中设置属性时会自动弹出不同类型的Dialog，
-比如QColor类型对应QColorDialog，QFont类型对应QFontDialog等。
-备注：这些语句在定义时写在自定义控件类的内部（控件头文件中）
-2. 方法二：
-在QT Designer中可以选择我们的自定义组件，然后通过UI界面进行属性功能的添加
-
-
-
+## 给自定义组件添加属性、信号与槽函数
+详见QT_property.md  
