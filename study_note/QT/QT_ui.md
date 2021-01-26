@@ -15,14 +15,14 @@ Widget::Widget(QWidget *parent)
 ```
 error: C2027: 使用了未定义类型“Ui::Widget”
 ```
-2. 对Widget窗口本身进行大小位置等设置时，用this来指向当前窗口对象
+2. this指针就是指向这个Widget窗口本身，可以调用一些函数来设置其大小和位置  
 ```
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    this -> setGeometry(250, 50, 500, 500);//设置窗口的大小位置
+    this -> setGeometry(1000, 100, 300, 300);//设置窗口的大小和位置
 }
 ```
 

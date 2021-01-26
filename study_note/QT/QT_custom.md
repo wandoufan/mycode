@@ -233,20 +233,16 @@ public:
 custombutton.cpp示例：
 ```
 #include "custombutton.h"
-#include <QVBoxLayout>
 
 CustomButton::CustomButton(QWidget *parent) :
     QWidget(parent)
 {
     qt_button = new CWButton(licenseKey, this);
-    qt_button -> setGeometry(0, 0, 100, 100);
-    qt_button -> show();
-
-    auto mainLayout = new QVBoxLayout(this);
-    mainLayout -> addWidget(qt_button);
+    qt_button -> setGeometry(0, 0, 300, 300);
+    this -> setFixedSize(300, 300);
 }
 ```
-custombuttonplugin.cpp示例
+custombuttonplugin.cpp示例：
 ```
 QWidget *CustomButtonPlugin::createWidget(QWidget *parent)
 {
@@ -280,6 +276,7 @@ C:\Qt\Tools\QtCreator\lib\qtcreator\plugins
 ```
 注意：qt creator只有一个，位数版本是固定的，必须使用对应的dll  
 例如，这台电脑上的QT是MSVC 2019 64位的，自定义控件也要用MSVC 2019 64位release出来相应的dll文件  
+如果拷贝了32位的dll文件，则在creator的UI界面里就找不到这个控件  
 2. 在项目目录下新建一个include文件夹和一个lib文件夹
 将自定义控件的控件头文件拷贝到include文件夹中  
 将自定义控件release时生成的lib文件拷贝到lib文件夹中  
@@ -293,6 +290,48 @@ LIBS += $$PWD/lib/custombuttonplugin.lib
 在生成的项目运行目录下，将自定义控件dll拷贝到exe文件的同目录下  
 5. 再次用对应版本的编译器以release模式运行，如果成功此时就会弹出带有自定义控件的窗口
 
+
+## 关于测试CWButton拨杆按钮时的位数问题
+1. 问题描述
+在自定义控件创建完成之后，想对信号函数等功能进行测试  
+CWButton是32位的，而这台电脑上的QT creator是64位的  
+把64位dll拷贝进creator的路径下，然后把控件拖到到UI界面中  
+如果用32位编译，则会产生报错；如果用64位编译，则控件显示为空白  
+2. 解决方案
+换个思路，不用dll，也不把控件拖到UI界面上  
+用纯代码的方式，把控件的源文件和头文件拷贝到项目目录下  
+然后直接将类对象实例化，用32位编译运行即可  
+3. 总结
+关于在64位的QT creator中去使用32位的dll，没有找到合适的解决方法  
+
+
+## 关于自定义控件默认大小的问题
+1. 问题描述
+dll添加到designer或creator中之后，自定义控件拖到UI界面上默认是个很小的方块  
+这个方块就是Widget窗口，需要手动拉大之后才能把里面包含的自定义控件显示出来  
+窗口默认大小为16x16，一般需要在控件的源文件中对窗口的大小进行扩大设置  
+2. 解决方案
+以自定义控件CWButton中的custombutton.cpp示例：  
+```
+#include "custombutton.h"
+
+CustomButton::CustomButton(QWidget *parent) :
+    QWidget(parent)
+{
+    qt_button = new CWButton(licenseKey, this);
+    qt_button -> setGeometry(0, 0, 300, 300);
+    this -> setFixedSize(300, 300);
+}
+```
+其中，qt_button是需要包进Widget里面的自定义控件CWButton  
+自定义控件的大小可以用setGeometry函数设置  
+窗口显示的默认大小必须用setFixedSize函数设置  
+备注：以前误以为这个控件必须放进一个layout里才能调整大小，其实不用的  
+3. 关于this指针调用setFixedSize函数的进一步说明
+this指针就是这个Widget窗口本身，可以调用一些函数来设置其大小和位置  
+如果是一个直接运行的窗口程序，使用setGeometry函数和setFixedSize函数都可以  
+如果是用来生成自定义控件dll的程序(非直接运行)，就必须使用setFixedSize函数  
+使用setGeometry函数不会报错，但控件还是会显示成一个很小的方块，即设置无效  
 
 -----------------------------------------------------
 

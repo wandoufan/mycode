@@ -139,6 +139,7 @@ signals:
 }
 ```
 在写函数的具体定义中要加上触发信号函数的语句  
+使用emit关键字表示触发信号函数  
 ```
 void CustomButton::SetValue(bool value)
 {
@@ -173,6 +174,8 @@ public:
 3.2 枚举变量的定义一定要写到这个类的内部，否则这个属性在属性编辑器里显示不出来  
 如果在其他头文件中（非类的内部）定义了枚举变量，即使include了这个头文件也不行  
 使用其他地方的枚举变量不会报错，但在属性编辑器中就显示不出这条属性了  
+备注：实际中遇到了这个问题，要用到的枚举变量在其他头文件中，而且不是在类的内部  
+解决办法是在这个类的内部再写一个名字不同但内容相同的枚举变量，然后用函数把两个枚举变量对应起来  
 3.3 对于其他类中定义的枚举变量，也可以在这个类中添加为属性  
 但是要求写上全名(OtherClass::MyModes)，而且其他类也必须继承于QObject，并用Q_ENUM()宏进行注册  
 4. 非QT标准类型的属性类型
@@ -199,8 +202,24 @@ class CWUICONTROLSLIB_EXPORT CWButton : public QAxWidget
 但是具体怎么添加这种类型的属性一直还没有测试成功，总是有各种报错  
 
 
-## Q_ENUM()宏
+## Q_ENUM宏
 Q_ENUM()宏是属于QObject类中的一个宏  
 枚举类型的变量必须要用Q_ENUM()宏来注册声明到元对象系统中  
 注册之后元对象系统就能识别到枚举变量的名称，进而能调用setProperty()函数  
 
+
+## Q_CLASSINFO宏
+Q_CLASSINFO宏以键值对的形式向类中添加额外的的信息，并连接到属性系统  
+Q_CLASSINFO宏可以将额外的'name-value'对加入到一个类的元对象中  
+头文件示例：在类中添加宏  
+```
+Q_CLASSINFO("Version", "3.0.0")
+Q_CLASSINFO("Name", "SkyplotWidget")
+```
+源文件示例：输出查看name和value值  
+```
+qDebug() << skyplotWidget -> metaObject() -> classInfo(0).name();
+qDebug() << skyplotWidget -> metaObject() -> classInfo(0).value();
+qDebug() << skyplotWidget -> metaObject() -> classInfo(1).name();
+qDebug() << skyplotWidget -> metaObject() -> classInfo(1).value();
+```

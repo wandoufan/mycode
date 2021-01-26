@@ -17,6 +17,9 @@ load函数加载库文件，然后根据dll文件是否加载成功，成功返�
 ```
 if(aoso_reader.load())
 ```
+注意：load函数一般单独写在构造函数中，不写在类的成员函数中，避免多次执行  
+动态库一般有多个接口函数，不要每调用一个接口函数用load函数加载一次动态库  
+调用接口函数时用isLoaded函数判断加载状态就可以了  
 3. bool QLibrary::isLoaded() const
 isLoaded函数判断库文件是否已经加载，已经加载返回1，未加载返回0  
 一般要先使用load函数，之后再用isLoaded函数去判断  
@@ -44,11 +47,13 @@ else
 ```
 例2 调用接口函数ControlLED
 unsigned char buffer;
-typedef int (*ControlLED_Func)(int freq, int duration, unsigned char *buffer);
-if(aoso_reader -> load())
+typedef int (*ControlLED_Func)(int freq, int duration, unsigned char *buffer);//定义函数指针
+if(aoso_reader -> isLoaded())
 {
+	//第一个ControlLED是函数指针的名字，第二个ControlLED是dll中接口函数的名字
+	//这两个名字可以相同，也可以不一样
     ControlLED_Func ControlLED = (ControlLED_Func)aoso_reader -> resolve("ControlLED");
-    if(ControlLED)
+    if(ControlLED)//判断函数指针是否为空
     {
         int result = ControlLED(5, 2, &buffer);
     }

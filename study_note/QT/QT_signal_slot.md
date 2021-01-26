@@ -1,43 +1,107 @@
 # QT中的信号与槽
 
-## 信号与槽(signal & slot)机制
+## 信号与槽(signal & slot)机制的原理
 1. 信号(signal)就是在特定情况下被触发的事件  
 例如，PushButton最常见的信号就是鼠标单击时发射的clicked()信号  
 2. 槽(slot)就是对信号响应的函数  
 一个槽就是一个函数，与一般的C++函数是一样的，可以具有任何参数，也可以被直接调用  
 也可以定义在类的任何部分(private、public或protected)  
 槽函数与一般函数的不同的是：槽函数可以与一个信号关联，信号发射时槽函数自动执行  
-3. 信号与槽关联是用QObject::connect()函数实现的  
-函数基本格式为QObject::connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));  
-connect()是QObject类的一个静态函数，而QObject是所有QT类的基类，故实际调用时可以忽略  
-直接写为connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));  
+3. SIGNAL和SLOT  
+SIGNAL和SLOT是QT的宏，用于指明信号和槽，必须用它们将信号函数和槽函数包起来  
+
+
+## connect()函数
+1. 基本功能
+```
+[static] QMetaObject::Connection QObject::connect(const QObject *sender, const char *signal, const QObject *receiver, const char *method, Qt::ConnectionType type = Qt::AutoConnection)
+```
+connect函数用来创建信号函数与槽函数之间的关联关系  
+如果连接成功，会返回一个连接句柄，这个句柄可以用来在随后关闭该连接  
+如果连接失败，会发货一个非法的连接句柄  
+2. 参数作用
 sender是发射信号的对象的名称  
-signal()是信号名称，相当特殊的函数，需要带括号，有参数时需要指明参数  
+signal()是信号名称，相当特殊的函数，需要带括号，有参数时需要指明参数类型  
 receiver是接收信号的对象的名称，常用this代表本对象  
-slot()是槽函数的名称，需要带括号，有参数时需要指明参数  
-4. SIGNAL和SLOT  
-SIGNAL和SLOT是QT的宏，用于指明信号和槽，并将它们的参数转换为相应的字符串  
+slot()是槽函数的名称，需要带括号，有参数时需要指明参数类型  
+3. 注意事项
+3.1 connect()是QObject类的一个静态函数，可以不经实例化而直接使用  
+因此可以直接写为connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));  
+3.2 connect函数一般写在类的构造函数中  
+3.3 信号函数与槽函数的参数只能写出参数类型，不能包含任何具体的参数名  
+```
+QLabel *label = new QLabel;
+QScrollBar *scrollBar = new QScrollBar;
+//正确写法
+QObject::connect(scrollBar, SIGNAL(valueChanged(int)),
+              label,  SLOT(setNum(int)));
+//错误写法
+QObject::connect(scrollBar, SIGNAL(valueChanged(int value)),
+              label, SLOT(setNum(int value)));
+```
+
+
+## 信号函数与槽函数
+注意：信号函数和槽函数必须在类中进行相应的声明，否则connect函数识别不到  
+备注：信号函数只需要声明即可，不需要写出其具体定义；槽函数既需要声明也需要定义  
+```
+class QDESIGNER_WIDGET_EXPORT CustomButton : public QWidget
+{
+    Q_OBJECT
+    Q_PROPERTY(bool Value READ Value WRITE SetValue NOTIFY valuechanged) //NOTIFY关键字后面是信号函数
+
+public:
+    CustomButton(QWidget *parent = 0);
+
+public:
+    bool Value();
+    void SetValue(bool value);
+
+//signals声明信号函数
+signals:
+    void ValueChanged(bool value);
+    
+//slots声明槽函数
+private slots:
+    void on_checkBox_clicked(bool checked);
+}
+```
+在写函数的具体定义中要加上触发信号函数的语句  
+使用emit关键字表示触发信号函数  
+```
+void CustomButton::SetValue(bool value)
+{
+    qt_button -> SetValue(value);
+    emit valuechanged(); //执行写函数时触发信号函数
+}
+```
 
 
 ## 信号与槽的使用规则
 1. 一个信号可以与多个槽关联，槽函数按建立连接时的顺序依次执行  
 例如：当spinNum对象的数值变化时，addFun()和updateStatus()会依次响应  
-connect(spinNum, SIGNAL(valueChanged(int)), this, SLOT(addFun(int));  
-connect(spinNum, SIGNAL(valueChanged(int)), this, SLOT(updateStatus(int));  
+```
+connect(spinNum, SIGNAL(valueChanged(int)), this, SLOT(addFun(int));
+connect(spinNum, SIGNAL(valueChanged(int)), this, SLOT(updateStatus(int));
+```
 2. 一个槽可以被多个信号关联  
 例如：下面三个信号都可以触发槽函数setTextFontColor()  
-connect(ui->rBtnBlue,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-connect(ui->rBtnRed,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
-connect(ui->rBtnBlack,SIGNAL(clicked()),this,SLOT(setTextFontColor()));  
+```
+connect(ui->rBtnBlue, SIGNAL(clicked()), this, SLOT(setTextFontColor()));
+connect(ui->rBtnRed, SIGNAL(clicked()), this, SLOT(setTextFontColor()));
+connect(ui->rBtnBlack, SIGNAL(clicked()), this, SLOT(setTextFontColor()));
+```
 3. 一个信号可以连接另一个信号，一个信号发射时也会发射另一个信号  
 例如：valueChanged()函数会触发refreshInfo()函数  
-connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));  
+```
+connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));
+```
 4. 信号的参数与槽的参数个数和类型都要一致  
 至少信号的参数不能少于槽的参数，否则会编译报错  
 5. 在使用信号与槽的函数的类中，必须在类的定义中加入宏Q_OBJECT  
+而且，信号和槽必须得是类的成员函数  
 6. 当一个信号发射时，与其关联的槽函数都会立即执行  
 只有在信号关联的槽函数都执行完毕之后才会执行信号后面的代码  
-7. 定义的槽函数必须放在类中的slot下面，否则connect函数识别不到  
 
 
 ## 设置信号与槽的四种方法
@@ -51,10 +115,10 @@ connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));
 其中connect函数不需要再手动写出，由系统编译后在ui_dialog.h文件中调用setupUi()函数实现关联  
 槽函数名是系统根据组件名自动创建出来的，例如void Dialog::on_checkBox_clicked(bool checked)  
 注意：系统是根据槽函数名来实现信号和槽的关联，不要随意改动槽函数名  
-备注：系统不仅会在cpp文件中自动创建出槽函数框架，同时也会自动在.h头文件中自动对槽函数进行声明  
 4. 可以将多个信号(组件)关联到一个自定义的槽函数上，此时槽函数是一个复合函数  
 复合函数不需要对应一个具体的组件，而是多个组件都通过connect函数关联到这个复合函数上  
 需要手动在类的构造函数下加入connect函数，将不同信号和函数中不同操作关联起来  
+构造函数示例：  
 ```
 Dialog::Dialog(QWidget *parent)
     : QDialog(parent)
@@ -66,7 +130,7 @@ Dialog::Dialog(QWidget *parent)
     connect(ui -> radioButton_3, SIGNAL(clicked()), this, SLOT(setTextFontColor()));
 }
 ```
-然后手动在类中声明自定义的槽函数上，具体定义如下：  
+槽函数定义示例：  
 ```
 void Dialog::setTextFontColor()
 {
@@ -88,14 +152,8 @@ void Dialog::setTextFontColor()
 1. void clicked()
 当鼠标左键被按下并释放时(即点击一次)会触发clicked()函数  
 clicked信号关联的槽函数是不带参数的，无法直接获取button的checkable状态  
-
 2. void clicked(bool checked = false)
 当鼠标左键被按下并释放时(即点击一次)会触发clicked(bool)函数，并将当前button的状态传递给外界  
-clicked信号关联的槽函数是带有参数的，例如，void on_checkBox_clicked(bool checked)  
-当button带有checkable属性时：  
-如果button是checked状态时，checked参数值为true；  
-如果button时unchecked状态时，checked参数值为false；  
-
 3. pressed()
 当鼠标指针在按钮上时点击左键会触发pressed函数  
 4. released()
@@ -106,7 +164,6 @@ clicked信号关联的槽函数是带有参数的，例如，void on_checkBox_cl
 当一个checkable button的标记状态发生改变时会触发toggled(bool)函数，并将当前状态传递给外界  
 如果button是checked状态时，checked参数值为true；  
 如果button时unchecked状态时，checked参数值为false；  
-
 7. stateChanged(int)
 8. accepted()
 当对话框被交互式的关闭或调用accept函数关闭时就会触发accepted信号  
@@ -116,6 +173,8 @@ corresponding handler是onAccepted状态
 当对话框被交互式的关闭或调用reject函数关闭时就会触发rejected信号  
 当使用close函数关闭对话框时不会发出rejected信号  
 corresponding handler是onRejected状态  
+10. triggered()
+triggered函数一般用于组件的右键菜单中，被QAction等被触发  
 
 
 ## clicked()和clicked(bool)的比较
@@ -123,7 +182,10 @@ corresponding handler是onRejected状态
 clicked()和clicked(bool)都会被鼠标左键点击一次而触发  
 2. 不同点：
 clicked()关联的槽函数是不带参数的，clicked(bool)关联的槽函数是带有参数的  
-例如，clicked(bool) 会将CheckBox组件当前的选择状态作为一个参数传递给关联槽函数  
+例如，void on_checkBox_clicked(bool checked)  
+如果button是checked状态时，checked参数值为true；  
+如果button时unchecked状态时，checked参数值为false；  
+clicked(bool) 会将CheckBox组件当前的选择状态作为一个参数传递给关联槽函数  
 而如果用clicked()，则需要在槽函数中用代码去读取CheckBox组件的选中状态  
 
 
@@ -135,6 +197,11 @@ toggled要比clicked更容易触发
 clicked有的toggled有，而toggled有的，clicked却不一定有  
 当调用setDown(),setChecked()或toggle()函数时，clicked不会被触发  
 当用户有点击行为，或调用setChecked()函数时，都会触发toggled  
+
+
+## toggle和trigger的比较
+toggle可以理解为开关，可以勾选为开或关的状态  
+trigger可以理解为扳机，只点击一次  
 
 
 ## 常用的系统自带槽函数
@@ -161,3 +228,8 @@ exec()函数只能在窗口类QDialog中使用，不能在QWidget类中使用
 show()函数用来调用显示一个非模式对话框，执行完成后返回主事件中  
 即show()函数弹出一个对话框之后会很快自动关闭  
 
+
+## on_pushButton_clicked函数
+注意：这个函数是一个槽函数，而不是信号函数  
+这个槽函数是最常见的命名方式，由系统自动生成  
+这个槽函数对应的信号是clicked()函数，当点击按钮时会触发  

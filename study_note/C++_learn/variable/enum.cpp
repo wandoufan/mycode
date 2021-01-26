@@ -89,12 +89,28 @@ void enum_compare()
 	cout << (day2 < Sat) << endl;
 }
 
+/*
+关于枚举变量取值时用按位或符号'|'的问题
+在QT程序中遇到了一种很少见的用法，枚举变量在取值时可以一次取多个值，值之间用'|'隔开
+应用场景：休息日rest_day可以同时具有sunday和saturday两种取值
+其中，枚举常量的取值必须都是2的幂数
+备注：资料很少，没有完全搞明白具体用法
+*/
+void enum_example1()
+{
+    /*取值用按位或符号示例*/
+    enum Week {Sunday=1, Monday=2, Tuesday=4, Wensday=8, \
+    	Thursday=16, Friday=32, Saturday=64};
+    // Week rest_day = Week::Sunday | Week::Saturday;
+}
+
 int main()
 {
 	// enum_init1();
 	// enum_init2();
 	// enum_calculate();
 	// enum_compare();
-	enum_index();
+	// enum_index();
+	// enum_example1();
 	return 0;
 }
