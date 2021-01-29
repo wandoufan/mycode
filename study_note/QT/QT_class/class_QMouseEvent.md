@@ -2,6 +2,10 @@
 
 ## 基本功能
 QMouseEvent提供了用来描述鼠标事件的参数，包括当前鼠标的位置  
+有一个常用函数mousePressEvent，详见QT_function.md  
+```
+void QWidget::mousePressEvent(QMouseEvent \*event)
+```
 
 
 ## 构造函数

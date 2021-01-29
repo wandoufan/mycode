@@ -123,6 +123,10 @@ QList是最常用的容器类，相当于数组或列表，支持序列化访问
 QList<QString> aList;
 QStringList alist;
 ```
+备注：向list中添加元素时可以直接用'<<'，比使用append方法简便  
+```
+alist << "a" << "123" << "abc";
+```
 **QList常用函数**
 1. insert()
 2. void removeAt(int i)

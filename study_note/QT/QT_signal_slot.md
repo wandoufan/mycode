@@ -18,11 +18,11 @@ SIGNAL和SLOT是QT的宏，用于指明信号和槽，必须用它们将信号�
 ```
 connect函数用来创建信号函数与槽函数之间的关联关系  
 如果连接成功，会返回一个连接句柄，这个句柄可以用来在随后关闭该连接  
-如果连接失败，会发货一个非法的连接句柄  
+如果连接失败，会返回一个非法的连接句柄  
 2. 参数作用
 sender是发射信号的对象的名称  
 signal()是信号名称，相当特殊的函数，需要带括号，有参数时需要指明参数类型  
-receiver是接收信号的对象的名称，常用this代表本对象  
+receiver是接收信号的对象的名称，常用this代表当前对象  
 slot()是槽函数的名称，需要带括号，有参数时需要指明参数类型  
 3. 注意事项
 3.1 connect()是QObject类的一个静态函数，可以不经实例化而直接使用  
@@ -41,7 +41,49 @@ QObject::connect(scrollBar, SIGNAL(valueChanged(int value)),
 ```
 
 
-## 信号函数与槽函数
+## 槽函数的执行方式
+1. 同步调用
+发出信号后，当前线程等待槽函数执行完毕后，才会继续执行下面的语句  
+2. 异步调用
+发出信号后，立即执行下面的语句，不关心槽函数什么时候执行  
+3. 注意事项
+一定是发出信号函数之后，才可能开始执行槽函数，并不是程序执行到connect()函数时就自动去执行槽函数  
+遇到槽函数最后才执行的问题，不一定是异步调用造成的，也需要检查一下是否触发了信号函数  
+
+
+## connect()函数的ConnectionType参数
+ConnectionType参数用来设置连接的类型，包括以下5种取值：  
+1. Qt::AutoConnection（默认值）
+当sender和receiver在同一个线程中时，采用Qt::DirectConnection类型  
+当sender和receiver在不同线程中时，采用Qt::QueuedConnection类型  
+
+2. Qt::DirectConnection
+当信号函数发出时，槽函数立即被调用，槽函数是在sender的线程中被执行  
+当sender和receiver在同一个线程中时，同步调用  
+当sender和receiver在不同线程中时，同步调用，但有线程安全隐患  
+
+3. Qt::QueuedConnection
+当控制器返回到了receiver的线程之后，槽函数才在receiver的线程中被执行  
+当sender和receiver在同一个线程中时，通过事件队列异步调用  
+当sender和receiver在不同线程中时，通过事件队列异步调用，线程安全  
+备注：使用该连接类型时，参数必须是QT元对象系统已知的  
+如果参数是自己定义的，则在建立连接前需要先向元对象系统注册参数的类型  
+注册方法详见帮助文档的说明  
+
+4. Qt::BlockingQueuedConnection
+和Qt::QueuedConnection基本相同，区别在于：  
+sender的线程一直是锁死的状态，直到槽函数执行完返回
+其中，槽函数也是在receiver的线程中被执行  
+当sender和receiver在同一个线程中时，不可用  
+当sender和receiver在不同线程中时，通过事件队列异步调用，线程安全  
+注意：只有当sender和receiver在不同线程时，才可以使用该参数，否则程序会死锁(deadlock)
+
+5. Qt::UniqueConnection
+UniqueConnection参数可以用来防止重复连接，严格来说不算连接类型  
+如果设置了该参数，在连接已经存在时，再建立一个完全相同的连接会失败  
+
+
+## 信号函数和槽函数的具体写法示例
 注意：信号函数和槽函数必须在类中进行相应的声明，否则connect函数识别不到  
 备注：信号函数只需要声明即可，不需要写出其具体定义；槽函数既需要声明也需要定义  
 ```

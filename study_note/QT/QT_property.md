@@ -206,6 +206,18 @@ class CWUICONTROLSLIB_EXPORT CWButton : public QAxWidget
 Q_ENUM()宏是属于QObject类中的一个宏  
 枚举类型的变量必须要用Q_ENUM()宏来注册声明到元对象系统中  
 注册之后元对象系统就能识别到枚举变量的名称，进而能调用setProperty()函数  
+1. 两个枚举类型中的常量名不能有重复的，否则会产生冲突
+```
+enum week {Sun, Mon , Tue, Wed, Thu, Fri, Sat};
+enum Day {Sun, Mon, Day1, Day2};
+```
+2. 枚举类型名和常量名也不能有重复，否则也会报错
+备注：这一点只在QT用的MSVC编译器下发现，在使用MinGw的C++代码中并没有报错  
+这可能与使用了Q_ENUM宏进行注册有关  
+```
+enum week {Sun, Mon , Tue, Wed, Thu, Fri, Sat};
+enum Sun {Sun1, Sun2, Sun3};
+```
 
 
 ## Q_CLASSINFO宏

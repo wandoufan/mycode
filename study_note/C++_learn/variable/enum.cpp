@@ -9,6 +9,7 @@ using namespace std;
 1. 枚举常量只能是标识符，不能是整型、字符、字符串等常量
 错误写法：'enum week {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};'
 2. 枚举常量表中要列出所有的取值，取值之间要以','隔开，且取值必须各不相同
+枚举类型名和常量名一般都要首字母大写
 3. 编译系统为每个枚举常量指定一个整数值，即所列举元素的序号，默认从0开始，依次加1
 枚举变量占用内存的大小与整型数相同
 4. 可以在定义枚举类型时为部分或全部枚举常量指定整数值，在指定值之前的枚举常量仍按默认方式取值，
@@ -25,6 +26,10 @@ void enum_init1()
 	在定义枚举变量：'<类型名> <变量名>;'
 	*/
 	enum week {Sun, Mon , Tue, Wed, Thu, Fri, Sat};
+	// 注意：两个枚举类型中的常量名不能有重复的，否则会产生冲突
+	enum Day {Sun, Mon, Day1, Day2};
+	// 注意：枚举类型名和常量名也不能有重复，否则也会报错
+	enum Sun {Sun1, Sun2, Sun3};
 	week today;
 }
 
@@ -106,7 +111,7 @@ void enum_example1()
 
 int main()
 {
-	// enum_init1();
+	enum_init1();
 	// enum_init2();
 	// enum_calculate();
 	// enum_compare();

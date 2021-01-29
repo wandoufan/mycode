@@ -99,7 +99,43 @@ m_pHWPenSign->setFixedSize(600, 160);
 
 ## 鼠标操作相关的函数
 1. void QWidget::mousePressEvent(QMouseEvent \*event)
+一般使用时对mousePressEvent函数进行重写  
+头文件示例：  
+```
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+```
+源文件示例：  
+```
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
 
+    action1 = new QAction("add", this);
+    action2 = new QAction("modify", this);
+    action3 = new QAction("delete", this);
+    menu1 = new QMenu(this);
+    menu1 -> addAction(action1);
+    menu1 -> addAction(action2);
+    menu1 -> addAction(action3);
+
+    connect(action1, SIGNAL(triggered()), this, SLOT(click_add()));
+    connect(action2, SIGNAL(triggered()), this, SLOT(click_modify()));
+    connect(action3, SIGNAL(triggered()), this, SLOT(click_delete()));
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if(event -> button() ==  Qt::RightButton)//判断当前事件为鼠标右击
+    {
+    	//注意：这里一定要用globalPos()函数，不能用pos()函数
+        QPoint mouse_pos = event -> globalPos();//鼠标当前位置
+        menu1 -> exec(mouse_pos);
+    }
+}
+```
 2. void QWidget::mouseReleaseEvent(QMouseEvent \*event)
 
 3. void QWidget::mouseMoveEvent(QMouseEvent \*event)

@@ -48,19 +48,6 @@ QDialog创建出来的窗口右上角只有问号和关闭按钮，没有放大�
 使用setModal(true)和setWindowModality()函数  
 
 
-## 常用QDialog对话框类
-QColorDialog（颜色对话框）  
-QFileDialog（文件对话框）  
-QFontDialog（字体对话框）  
-QInputDialog（输入对话框）  
-QMessageBox（消息对话框）  
-QProgressDialog（进度对话框）  
-QErrorMessage（错误信息对话框）  
-QPageSetupDialog（页面设置对话框）  
-QPrintDialog（打印对话框）  
-QPrintPreviewDialog（打印预览对话框）  
-
-
 ## 项目组织结构
 注意：QT项目的存放路径一定不能有中文，否则无法编译  
 1. QMainWindow 主窗口类

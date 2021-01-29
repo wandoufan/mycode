@@ -77,4 +77,8 @@ glayout -> addWidget(box1, 0, 0);
 glayout -> addWidget(box2, 0, 1);
 glayout -> addWidget(box3, 1, 0);
 ```
+备注：当要添加的对象很多时，可以直接在函数里实例化对象，这样就不用定义那么多变量名  
+```
+glayout -> addWidget(new QLabel("label :", set_window), 0, 0);
+```
 

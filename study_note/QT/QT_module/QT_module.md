@@ -27,23 +27,6 @@ ui -> message_column -> setText(QString::fromLocal8Bit("这是测试"));
 4. 代码中经常报错找不到组件，实际有这个组件，可能是系统没有及时认出来，可以对项目进行'清除'操作
 
 
-## ui
-ui是QT中的一个指针，通过ui可以访问到UI界面中设置的所有组件  
-使用方法为：ui -> objectName -> func();
-```
-ui -> textBrowser -> setText(str); //将str显示出来
-```
-注意：ui指针只能在QT类的成员方法中使用，外部函数无法调用ui指针，否则报错ui指针不识别  
-其中，QT类指三大基类和继承于三大基类的自定义子类  
-```
-// 例如，自定义的Widget_cal类继承于QWidget类，其成员方法中可以使用ui指针
-class Widget_cal : public QWidget
-{
-	...
-}
-```
-
-
 ## QAbstractButton
 QAbstractButton类是所有widgets按钮的抽象基类，给按钮提供公用的函数功能  
 QAbstractButton是QWidget类的子类  
