@@ -4,6 +4,7 @@
 QMenu提供了菜单形式的widget，可以使用在菜单栏、上下文菜单和其他弹出式菜单中  
 QMenu的父类是QWidget  
 QMenu相当于菜单，QAction相当于菜单栏中的选项  
+如果要创建窗口上方工具栏里的菜单，使用QMenuBar  
 
 
 ## 构造函数

@@ -2,9 +2,17 @@
 
 ## 基本功能
 QMouseEvent提供了用来描述鼠标事件的参数，包括当前鼠标的位置  
-有一个常用函数mousePressEvent，详见QT_function.md  
+QMouseEvent的父类是QInputEvent  
+备注：使用前在.pro文件中加入'QT += gui'  
+
+
+## 使用说明
+鼠标事件相关的函数，详见QT_function.md  
 ```
 void QWidget::mousePressEvent(QMouseEvent \*event)
+void QWidget::mouseReleaseEvent(QMouseEvent \*event)
+void QWidget::mouseMoveEvent(QMouseEvent \*event)
+void QWidget::mouseDoubleClickEvent(QMouseEvent \*event)
 ```
 
 

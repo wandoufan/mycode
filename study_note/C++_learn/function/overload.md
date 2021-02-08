@@ -16,6 +16,32 @@
 使用重载函数可以减少函数名数量，避免了命名空间污染，一定程度上解决命名冲突的问题  
 
 
+## 函数重载的使用
+在子类中，经常对基类中的纯虚函数进行重写  
+在函数定义时，在后面加上override关键字，即表示这个函数需要被重新  
+如果后面的代码中没有进行函数重写，则编译器会报错  
+头文件示例：  
+```
+class SkyplotWidget : public QWidget
+{
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+}
+```
+源文件示例：  
+```
+void SkyplotWidget::mousePressEvent(QMouseEvent *event)
+{
+    if(event -> button() ==  Qt::RightButton)//鼠标点击右键
+    {
+        mouse_pos = event -> pos();
+        mouse_global_pos = event -> globalPos();
+        menu -> exec(mouse_global_pos);
+    }
+}
+```
+
+
 ## 运算符重载
 和函数重载一样，运算符也可以进行重载，即同一个运算符代表多个含义  
 重载的运算符是带有特殊名称的函数，函数名是由关键字operator和其后要重载的运算符符号构成的  

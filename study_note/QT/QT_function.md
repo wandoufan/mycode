@@ -72,7 +72,9 @@ m_pHWPenSign->setFixedSize(600, 160);
 5. Qt::CustomContextMenu
 调用QWidget::customContextMenuRequested()  
 具体相应动作由信号对应的槽函数处理  
-
+```
+ui -> pushButton -> setContextMenuPolicy(Qt::CustomContextMenu);
+```
 
 
 ## action相关的函数
@@ -97,45 +99,81 @@ m_pHWPenSign->setFixedSize(600, 160);
 和上面函数功能类似，插入一个actions列表  
 
 
-## 鼠标操作相关的函数
-1. void QWidget::mousePressEvent(QMouseEvent \*event)
-一般使用时对mousePressEvent函数进行重写  
+## 坐标位置转换函数
+* QPoint QWidget::mapFrom(const QWidget \*parent, const QPoint &pos) const
+从指定父类widget中坐标位置映射到当前子类widget中的坐标位置  
+parent不能为空指针，必须是被调用widget的父类  
+
+* QPoint QWidget::mapFromGlobal(const QPoint &pos) const
+把全局坐标位置映射为widget中的坐标位置  
+
+* QPoint QWidget::mapFromParent(const QPoint &pos) const
+从父类widget中的坐标位置转换到当前子类widget中的坐标位置  
+如果当前widget没有父类，则效果等同于mapFromGlobal()函数  
+
+* QPoint QWidget::mapTo(const QWidget \*parent, const QPoint &pos) const
+从当前子类widget中的坐标位置映射到指定父类widget中坐标位置  
+parent不能为空指针，必须是被调用widget的父类  
+
+* QPoint QWidget::mapToGlobal(const QPoint &pos) const
+把widget中的坐标位置映射为全局坐标位置  
+
+* QPoint QWidget::mapToParent(const QPoint &pos) const
+从当前子类widget中的坐标位置映射到父类widget中的坐标位置  
+如果当前widget没有父类，则效果等同于mapToGlobal()函数  
+
+
+## QWidget中鼠标操作相关的事件
+* [virtual protected] void QWidget::mousePressEvent(QMouseEvent \*event)
+当鼠标的光标在widget内部并按下了鼠标按键时，就会调用mousePressEvent()函数  
+或者当widget被鼠标选中，鼠标使用gradMouse()函数，也会调用mousePressEvent()函数  
+按下鼠标按键但是不释放(松开)，效果等同于调用grabMouse()函数  
+注意：一般使用时对mousePressEvent函数进行重写  
 头文件示例：  
 ```
+class SkyplotWidget : public QWidget
+{
 protected:
     void mousePressEvent(QMouseEvent *event) override;
+}
 ```
 源文件示例：  
 ```
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+void SkyplotWidget::mousePressEvent(QMouseEvent *event)
 {
-    ui->setupUi(this);
-
-    action1 = new QAction("add", this);
-    action2 = new QAction("modify", this);
-    action3 = new QAction("delete", this);
-    menu1 = new QMenu(this);
-    menu1 -> addAction(action1);
-    menu1 -> addAction(action2);
-    menu1 -> addAction(action3);
-
-    connect(action1, SIGNAL(triggered()), this, SLOT(click_add()));
-    connect(action2, SIGNAL(triggered()), this, SLOT(click_modify()));
-    connect(action3, SIGNAL(triggered()), this, SLOT(click_delete()));
-}
-
-void MainWindow::mousePressEvent(QMouseEvent *event)
-{
-    if(event -> button() ==  Qt::RightButton)//判断当前事件为鼠标右击
+    if(event -> button() ==  Qt::RightButton)//鼠标点击右键
     {
-    	//注意：这里一定要用globalPos()函数，不能用pos()函数
-        QPoint mouse_pos = event -> globalPos();//鼠标当前位置
-        menu1 -> exec(mouse_pos);
+        mouse_pos = event -> pos();
+        mouse_global_pos = event -> globalPos();
+        menu -> exec(mouse_global_pos);
     }
 }
 ```
-2. void QWidget::mouseReleaseEvent(QMouseEvent \*event)
 
-3. void QWidget::mouseMoveEvent(QMouseEvent \*event)
+* void QWidget::mouseReleaseEvent(QMouseEvent \*event)
+当释放(松开)鼠标的按键时，就会调用mouseReleaseEvent()函数  
+widget已经接收过mouse press事件之后，才能接收到mouse release事件  
+这意味着，如果在widget内部按下鼠标，然后在释放鼠标之前将鼠标拖动到其他地方，widget将接收到release事件  
+有一个例外情况：按下鼠标时出现一个弹出式菜单，则这个菜单会立刻接收到鼠标事件  
+
+* void QWidget::mouseMoveEvent(QMouseEvent \*event)
+当按下鼠标的按键并移动鼠标时，就会调用mouseMoveEvent()函数  
+这个函数通常用在抓取和拖动的操作中  
+注意：默认情况下，只有鼠标按键被按下时才会去追踪光标的位置  
+如果想要在不按下鼠标按键的情况下，随时能够获取到光标的位置  
+则需要调用'setMouseTracking(true)'函数  
+
+* [virtual protected] void QWidget::mouseDoubleClickEvent(QMouseEvent \*event)
+当用户在widge内部双击，就会调用mouseDoubleClickEvent()函数  
+双击之后，widget会接收到两次mouse press事件和两次mouse release事件  
+如果操作过程中鼠标没有保持稳定，也可能会接收到一些mouse move事件  
+注意：在第二次点击完成之前，没有办法区分是单击还是双击  
+因此，一般推荐把双击当做单击的扩展，而不是用双击和单击分别触发不同的action  
+
+* void QWidget::grabMouse()
+grabMouse()函数用来捕获鼠标的输入  
+这个选中的widget会接收所有的鼠标事件，直到调用了releaseMouse()函数  
+而其他未被选中的widget不会接收到任何鼠标事件  
+注意：使用这个函数必须非常小心，经常容易造成Bug  
+备注：在正常的QT程序中基本没有必要去获取鼠标，因此一般不用这个函数  
+备注：只有可见的(visible)widget可以捕获到鼠标的输入  

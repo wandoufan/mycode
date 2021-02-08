@@ -284,6 +284,7 @@ C:\Qt\Tools\QtCreator\lib\qtcreator\plugins
 ```
 INCLUDEPATH += $$PWD/include
 LIBS += $$PWD/lib/custombuttonplugin.lib
+备注：这里的lib文件要写出文件名，不能只写一个文件路径
 ```
 4. 在项目的UI界面中添加自定义控件，用对应版本的编译器以release模式运行
 此时由于缺少动态库，运行既不会报错，也不会成功弹出窗口  
@@ -327,6 +328,7 @@ CustomButton::CustomButton(QWidget *parent) :
 自定义控件的大小可以用setGeometry函数设置  
 窗口显示的默认大小必须用setFixedSize函数设置  
 备注：以前误以为这个控件必须放进一个layout里才能调整大小，其实不用的  
+备注：这样设置相当于在代码中把大小写死了，在UI界面上就无法再调整大小  
 3. 关于this指针调用setFixedSize函数的进一步说明
 this指针就是这个Widget窗口本身，可以调用一些函数来设置其大小和位置  
 如果是一个直接运行的窗口程序，使用setGeometry函数和setFixedSize函数都可以  

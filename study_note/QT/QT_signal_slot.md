@@ -27,7 +27,7 @@ slot()是槽函数的名称，需要带括号，有参数时需要指明参数�
 3. 注意事项
 3.1 connect()是QObject类的一个静态函数，可以不经实例化而直接使用  
 因此可以直接写为connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));  
-3.2 connect函数一般写在类的构造函数中  
+3.2 信号函数的参数值会直接传递给槽函数的参数  
 3.3 信号函数与槽函数的参数只能写出参数类型，不能包含任何具体的参数名  
 ```
 QLabel *label = new QLabel;
@@ -119,6 +119,32 @@ void CustomButton::SetValue(bool value)
 ```
 
 
+## 信号与槽的函数参数问题
+1. 参数个数问题
+信号函数的参数个数要大于或等于槽函数的参数，否则会编译报错  
+当参数个数相等时，参数的类型和顺序要完全相同  
+当信号函数参数较多时，前面部分的参数的类型和顺序要完全相同，信号中多余的参数会被忽略  
+2. 参数类型
+正常情况下信号与槽之间只能传递通用数据类型，如int、string等  
+复杂数据如QVector<int>、结构体等类型就不能传递了  
+如果需要传递复杂数据，则要先将复杂数据包成通用类型的数据  
+> https://blog.csdn.net/a1356467/article/details/108519772
+3. lambda表达式传递参数
+经常遇到一种情况：  
+信号函数是一个点击按钮的clicked()函数，其本身没有参数  
+而连接的槽函数中需要传递一个参数来进行相应的运算  
+这种情况下没有办法直接通过信号函数来传递参数，可以使用lambda表达式进行传递  
+```
+//把整型变量i传到了槽函数'modifySkyplot(int i)'里面
+connect(button1, &QPushButton::clicked, [=](){modifySkyplot(i);});
+```
+注意connect函数中使用lambda的格式：  
+connect函数中可以只有三个参数，this好像可以省略；  
+没有SINGAL和SLOT标识符；  
+信号函数不再写为'SIGNAL(clicked())'，而是&QPushButton::clicked；  
+槽函数写在lambda的函数体中，即通过lambda函数再去调用槽函数；  
+
+
 ## 信号与槽的使用规则
 1. 一个信号可以与多个槽关联，槽函数按建立连接时的顺序依次执行  
 例如：当spinNum对象的数值变化时，addFun()和updateStatus()会依次响应  
@@ -138,11 +164,9 @@ connect(ui->rBtnBlack, SIGNAL(clicked()), this, SLOT(setTextFontColor()));
 ```
 connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));
 ```
-4. 信号的参数与槽的参数个数和类型都要一致  
-至少信号的参数不能少于槽的参数，否则会编译报错  
-5. 在使用信号与槽的函数的类中，必须在类的定义中加入宏Q_OBJECT  
+4. 在使用信号与槽的函数的类中，必须在类的定义中加入宏Q_OBJECT  
 而且，信号和槽必须得是类的成员函数  
-6. 当一个信号发射时，与其关联的槽函数都会立即执行  
+5. 当一个信号发射时，与其关联的槽函数都会立即执行  
 只有在信号关联的槽函数都执行完毕之后才会执行信号后面的代码  
 
 

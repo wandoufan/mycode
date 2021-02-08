@@ -1,4 +1,4 @@
-# UI
+# QT designer
 
 ## 注意事项
 1. 新建一个QWidget类的QT项目，UI界面中的默认大窗口就是QWidget类的一个对象
@@ -25,6 +25,18 @@ Widget::Widget(QWidget *parent)
     this -> setGeometry(1000, 100, 300, 300);//设置窗口的大小和位置
 }
 ```
+
+
+## QT designer中的功能扩展
+QT designer支持以下四种功能的自定义扩展  
+1. QDesignerTaskMenuExtension
+选中控件点击右键时显示的菜单  
+2. QDesignerPropertySheetExtension
+UI界面右下角的属性编辑器  
+3. QDesignerMemberSheetExtension
+给控件连接信号与槽函数时，显示的相关的信号与槽函数  
+4. QDesignerContainerExtension
+自定义的多页面容器类型控件  
 
 
 ## UI设计窗口功能区域划分

@@ -13,7 +13,7 @@
 当声明自定义控件时必须要用这个宏，来确保它们被正确的扩展到qt designer里使用  
 这个宏用于将自定义组件类从插件导出给qt designer使用  
 2. 使用方法
-一般在自定义控件项目的控件头文件中会声明自定义控件的类  
+一般用在自定义控件类本身的头文件中  
 在关键字'class'和类名中间要加上这个宏  
 另外，还要加上'#include <QtUiPlugin/QDesignerExportWidget>'  
 否则使用该控件的项目运行时会报错无法找到头文件  
@@ -28,6 +28,42 @@ class QDESIGNER_WIDGET_EXPORT CustomButton : public QWidget
 
 public:
     CustomButton(QWidget *parent = 0);
+};
+```
+
+
+## 使用示例
+QDesignerCustomWidgetInterface一般用在控件类的扩展类中  
+custombuttonplugin.h示例：  
+备注：以下代码一般是自动生成，不需要自己写出来  
+```
+#include <QDesignerCustomWidgetInterface>
+#include "custombutton.h"
+
+class CustomButtonPlugin : public QObject, public QDesignerCustomWidgetInterface
+{
+    Q_OBJECT
+    //使用Q_INTERFACES宏来将其注册到元对象系统中
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QDesignerCustomWidgetInterface")
+
+public:
+    CustomButtonPlugin(QObject *parent = 0);
+
+    bool isContainer() const;
+    bool isInitialized() const;
+    QIcon icon() const;
+    QString domXml() const;
+    QString group() const;
+    QString includeFile() const;
+    QString name() const;
+    QString toolTip() const;
+    QString whatsThis() const;
+    QWidget *createWidget(QWidget *parent);
+    void initialize(QDesignerFormEditorInterface *core);
+
+private:
+    bool m_initialized;
 };
 ```
 
