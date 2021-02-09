@@ -34,36 +34,8 @@ select all
 delete
 layout
 ```
-但有时候这些选项是不够用的，尤其是对于自定义的控件,这个时候我们可以对任务菜单进行扩展  
+但有时候这些选项是不够用的，尤其是对于自定义的控件，这个时候我们可以对任务菜单进行扩展  
 扩展任务菜单是一个QActions组成的集合，选项会加入到已有的菜单中  
-
-
-## 使用方法
-要扩展菜单，则控件类必须继承自QObject和QDesignerTaskMenuExtension  
-注意：在类中要用Q_INTERFACES宏进行声明  
-```
-#include <QDesignerTaskMenuExtension>
-
-class MyTaskMenuExtension : public QObject,
-         public QDesignerTaskMenuExtension
-{
-    Q_OBJECT
-    Q_INTERFACES(QDesignerTaskMenuExtension)
-
-public:
-    MyTaskMenuExtension(MyCustomWidget *widget, QObject *parent);
-
-    QAction *preferredEditAction() const override;
-    QList<QAction *> taskActions() const override;
-
-private slots:
-    void mySlot();
-
-private:
-    MyCustomWidget *widget;
-    QAction *myAction;
-};
-```
 
 
 ## 扩展菜单背后的创建过程
@@ -78,7 +50,6 @@ private:
 备注：QT designer中支持的四种扩展，其背后的处理过程都和上面一样  
 
 
-
 ## 常用函数
 1. [pure virtual] QList<QAction \*> QDesignerTaskMenuExtension::taskActions() const
 当选中了一个具有扩展菜单的控件时，以actions列表的形式返回任务菜单的扩展  
@@ -88,3 +59,60 @@ private:
 当选中了一个具有扩展菜单的控件时，返回被调用的action  
 这个action必须是taskActions()函数返回的actions之一  
 备注：这个函数也可以进行重新实现，不是必须重写  
+
+
+## 自定义控件扩展任务菜单的项目目录
+仿照官方文档中的'Task Menu Extension Example'写了一个项目  
+备注：具体代码参见QT_project\custom_designer_menu  
+```
+custom_designer_menu
+	│  tictactoe.pro 项目管理文件
+	│  tictactoe.pro.user
+	│      
+	├─tictactoe
+	│  │  tictactoe.pri 控件项目文件
+	│  │  
+	│  ├─Headers
+	│  │      tictactoe.h 控件头文件
+	│  │      
+	│  └─Sources
+	│         tictactoe.cpp 控件源文件
+	│          
+	├─Resources
+	│      icons.qrc 资源集合文件
+	│
+	├─Headers
+	│      tictactoeplugin.h
+	│      tictactoetaskmenu.h
+	│      tictactoetaskmenufactory.h
+	└─Sources
+	       tictactoeplugin.cpp 
+	       tictactoetaskmenu.cpp
+	       tictactoetaskmenufactory.cpp
+```
+项目中一共包含四个类：  
+1. TicTacToe
+实现控件本身的各种定义  
+
+2. TicTacToePlugin
+将控件扩展为qt designer插件的类  
+这里和一般自定义控件项目的代码基本相同，除了要对initialize()函数进行重写  
+
+3. TicTacToeTaskMenuFactory
+生成一个可以在qt designer中创建扩展任务菜单的factory  
+在这里对QExtensionFactory类中的createExtension()函数进行重写  
+
+4. TicTacToeTaskMenu
+实现任务菜单扩展的选项，定义action以及action关联的槽函数  
+在这里对QDesignerTaskMenuExtension类的 preferredEditAction()函数和taskActions()函数进行重写  
+
+
+## 待研究的问题
+1. 示例中只向菜单中添加了一个自定义选项，实际上应该是可以添加多个选项的，
+具体的实现方式还没有测试过  
+2. 关于在QT designer中读取鼠标位置的问题
+经过实际测试，在QT designer中，点击鼠标无法触发mousePressEvent(QMouseEvent \*event)函数  
+所以用event -> pos()和event -> globalPos()读到的坐标一直都是(0, 0)  
+使用QCursor::pos()可以在QT designer中读取到鼠标的位置，但无法感知什么时候点击了鼠标右键  
+如果把QCursor::pos()也写在mousePressEvent()函数里面，那同样无法被触发  
+综上，现在没找到办法可以在QT designer中读取鼠标点击右键时的位置  

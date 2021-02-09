@@ -76,6 +76,13 @@ m_pHWPenSign->setFixedSize(600, 160);
 ui -> pushButton -> setContextMenuPolicy(Qt::CustomContextMenu);
 ```
 
+* void QWidget::setCursor(const QCursor &)
+为这个widget对象设置一个光标，当鼠标位于widget内部时，会应用这个单独设置的光标  
+如果没有设置光标，则默认使用widget对象的父类的光标  
+
+* QCursor QWidget::cursor() const
+查询当前widget对象使用的光标，返回一个QCursor  
+
 
 ## action相关的函数
 * QList<QAction \*> QWidget::actions() const

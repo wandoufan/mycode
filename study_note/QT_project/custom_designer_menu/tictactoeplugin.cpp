@@ -10,6 +10,7 @@ TicTacToePlugin::TicTacToePlugin(QObject *parent)
     m_initialized = false;
 }
 
+//这里的initialize()函数不能用自动生成的默认代码，要进行重写
 void TicTacToePlugin::initialize(QDesignerFormEditorInterface *formEditor)
 {
     if (m_initialized)

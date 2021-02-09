@@ -49,4 +49,31 @@ if(event -> button() ==  Qt::RightButton)
 ```
 
 
-
+## QCursor和QMouseEvent获取的鼠标位置之间的区别
+1. 使用位置
+QMouseEvent::globalPos()一般用在mousePressEvent()等函数中，等到触发相应的mouse event后才会读取此时的鼠标位置坐标  
+QCursor::pos()可以用在代码的任意位置，每次读的都是此刻鼠标所在的位置  
+因此在代码的不同地方调用QCursor::pos()，读到的坐标可能不一样  
+2. 读取数值
+只有在代码的同一位置调用这两个函数，二者读到的坐标值才是一样的  
+即QCursor::pos() == QMouseEvent::globalPos()  
+```
+void SkyplotWidget::mousePressEvent(QMouseEvent *event)
+{
+    if(event -> button() ==  Qt::RightButton)
+    {
+        //此时二者读到的坐标值相同
+        mouse_pos = event -> pos();
+        mouse_global_pos = event -> globalPos();
+        global_point = QCursor::pos();
+        widget_point = this -> mapFromGlobal(global_point);
+        menu -> exec(mouse_global_pos);
+    }
+}
+```
+3. 在QT designer中使用
+经过实际测试，在QT designer中，点击鼠标无法触发mousePressEvent(QMouseEvent \*event)函数  
+所以用event -> pos()和event -> globalPos()读到的坐标一直都是(0, 0)  
+使用QCursor::pos()可以在QT designer中读取到鼠标的位置，但无法感知什么时候点击了鼠标右键  
+如果把QCursor::pos()也写在mousePressEvent()函数里面，那同样无法被触发  
+综上，现在没找到办法可以在QT designer中读取鼠标点击右键时的位置  

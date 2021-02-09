@@ -5,24 +5,43 @@
 这个类提供了一个标准的extension factory，也可以被用作自定义extension factory的一个接口  
 
 
-## 使用方法
-你可以创建一个新的QExtensionFactory，然后重新实现QExtensionFactory::createExtension()函数  
-例如：  
+## 以扩展右键菜单为例的使用方法
+1. 方法一
+创建一个继承于QExtensionFactory的子类  
+创建这个子类的目的就是为了对createExtension函数进行重写  
+头文件示例：  
 ```
-QObject *ANewExtensionFactory::createExtension(QObject *object,
-        const QString &iid, QObject *parent) const
+#include <QExtensionFactory>
+#include "tictactoe.h"
+#include "tictactoetaskmenu.h"
+
+class TicTacToeTaskMenuFactory : public QExtensionFactory
 {
-    if (iid != Q_TYPEID(QDesignerTaskMenuExtension))
-        return 0;
+    Q_OBJECT
+public:
+    TicTacToeTaskMenuFactory(QExtensionFactory *parent = nullptr);
 
-    if (MyCustomWidget *widget = qobject_cast<MyCustomWidget*>(object))
-        return new MyTaskMenuExtension(widget, parent);
+protected:
+    QObject *createExtension(QObject *object, const QString &iid, QObject *parent) const override;
+};
+```
+源文件示例：  
+```
+QObject *TicTacToeTaskMenuFactory::createExtension(QObject *object,
+    const QString &iid, QObject *parent) const
+{
+     if (iid != Q_TYPEID(QDesignerTaskMenuExtension))
+         return nullptr;
 
-    return 0;
+     if (TicTacToe *tic = qobject_cast<TicTacToe*>(object))
+         return new TicTacToeTaskMenu(tic, parent);
+
+     return nullptr;
 }
 ```
+
+2. 方法二
 或者你也可以使用已有的factory，然后扩展QExtensionFactory::createExtension()函数的功能，来使得这个factory能够创建扩展任务菜单  
-例如：  
 ```
 QObject *AGeneralExtensionFactory::createExtension(QObject *object,
          const QString &iid, QObject *parent) const
@@ -39,20 +58,4 @@ QObject *AGeneralExtensionFactory::createExtension(QObject *object,
         return 0;
     }
 }
-```
-
-
-创建这个子类的目的就是为了对createExtension函数进行重写  
-```
-#include <QExtensionFactory>
-
-class TicTacToeTaskMenuFactory : public QExtensionFactory
-{
-    Q_OBJECT
-public:
-    TicTacToeTaskMenuFactory(QExtensionFactory *parent = nullptr);
-
-protected:
-    QObject *createExtension(QObject *object, const QString &iid, QObject *parent) const override;
-};
 ```

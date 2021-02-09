@@ -1,8 +1,5 @@
 # QLayout
 
-## 参考资料
-https://blog.csdn.net/li162001/article/details/88126928
-
 ## 基本功能
 QLayout是QT中所有控件几何属性设置相关类的基类，提供界面布局管理功能  
 QLayout是一个抽象类，不能直接实例化，一般都是获取其子类的对象  
@@ -26,6 +23,26 @@ QLayout
 如果只有一个带有this指针，则只会显示带有this指针的这个layout  
 3. 组件在layout中显示顺序、索引序号都是和组件添加到Layout中的顺序是一致的  
 4. 在GridLayout中如果只添加了一个组件，则无论怎么参数设置，该组件都始终显示在GridLayout的中间  
+5. widget可以调用setLayout函数来设置内部布局形式  
+```
+void QWidget::setLayout(QLayout \*layout)
+```
+
+
+## 代码示例
+layout相关的代码一般写在构造函数中  
+```
+TicTacToe::TicTacToe(QWidget *parent) :
+    QWidget(parent)
+{
+   mybutton = new QPushButton("custom button");
+   mybutton -> setFixedSize(100, 50);
+   mylayout = new QVBoxLayout(this);
+   mylayout -> addWidget(mybutton);
+   this -> setLayout(mylayout);
+   this -> setFixedSize(150, 80);
+}
+```
 
 
 ## QLayout常用函数

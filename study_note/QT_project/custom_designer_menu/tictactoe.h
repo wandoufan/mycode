@@ -6,6 +6,7 @@
 #include <QAction>
 #include <QExtensionManager>
 #include <QMessageBox>
+#include <QVBoxLayout>
 
 class TicTacToe : public QWidget
 {
@@ -13,9 +14,11 @@ class TicTacToe : public QWidget
 
 public:
     TicTacToe(QWidget *parent = 0);
+    void showMessage();
 
 private:
     QPushButton *mybutton;
+    QVBoxLayout *mylayout;
 };
 
 #endif // TICTACTOE_H

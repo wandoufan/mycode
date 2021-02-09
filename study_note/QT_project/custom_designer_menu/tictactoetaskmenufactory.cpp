@@ -6,10 +6,9 @@ TicTacToeTaskMenuFactory::TicTacToeTaskMenuFactory(QExtensionManager *parent)
 
 }
 
-
+//对createExtension()函数进行重写
 QObject *TicTacToeTaskMenuFactory::createExtension(QObject *object,
-                                                    const QString &iid,
-                                                    QObject *parent) const
+                         const QString &iid, QObject *parent) const
 {
      if (iid != Q_TYPEID(QDesignerTaskMenuExtension))
          return nullptr;

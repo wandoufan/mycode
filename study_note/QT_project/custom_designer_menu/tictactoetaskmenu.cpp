@@ -1,26 +1,32 @@
 ﻿#include "tictactoetaskmenu.h"
 
-TicTacToeTaskMenu::TicTacToeTaskMenu(TicTacToe *tic, QObject *parent)
+TicTacToeTaskMenu::TicTacToeTaskMenu(TicTacToe *tictactoe2, QObject *parent)
      : QObject(parent)
-//     , editStateAction(new QAction(tr("Edit State"), this))
-//     , ticTacToe(tic)
+     //注意这里的两个参数是不一样的，这行代码的具体原理不清楚
+     , tictactoe1(tictactoe2)
 {
-    editStateAction = new QAction("edit state", this);
-    connect(editStateAction, &QAction::triggered, this, &TicTacToeTaskMenu::editState);
+    //向菜单中插入的自定义选项
+    custom_action = new QAction("custom action", this);
+    connect(custom_action, &QAction::triggered, this, &TicTacToeTaskMenu::menuTest);
+    //注意：在这里调用控件类的成员时，只能用tictactoe1，不能用tictactoe2
+    tictactoe1 -> showMessage();
 }
 
-void TicTacToeTaskMenu::editState()
-{
+//自定义选项触发后关联的槽函数，在这里定义选项关联的具体操作
+void TicTacToeTaskMenu::menuTest()
+{    
     QMessageBox::about(nullptr, "menu test", "this is a menu test");
 }
 
+//重写preferredEditAction()函数
 QAction *TicTacToeTaskMenu::preferredEditAction() const
 {
-    return editStateAction;
+    return custom_action;
 }
 
+//重写taskActions()函数
 QList<QAction *> TicTacToeTaskMenu::taskActions() const
 {
-    return QList<QAction *>{editStateAction};
+    return QList<QAction *>{custom_action};
 }
 
