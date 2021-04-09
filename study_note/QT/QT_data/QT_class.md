@@ -86,14 +86,14 @@ signimage.save("E:/1.png");
 QT提供了多个基于模板的容器类，这些容器类可以用于存储指定类型的数据项  
 QT的容器类包括顺序容器类和关联容器类  
 2. 容器类的特点
-QT的容器类比标准模板库(STL)中的容器类更轻巧、安全和易于使用  
+QT的容器类标准模板库(STL)中的容器类更轻巧、安全和易于使用  
 这些容器类是隐式共享和可重入的，而且它们进行了速度和存储优化，因此可以减少可执行文件的大小  
 这些容器类还是线程安全的，也就是说它们作为只读容器时可被多个线程访问  
 3. 容器类的数据项
 例如在QList<T>中，数据项T是一个具体的数据类型，且必须是一个可赋值的类型  
 数据项T可以是int或float等简单类型，也可以是QString或QDate等类  
 数据项T不能是QObject类或QObject的任何子类  
-4. 示例：用QList定义一个字符串类型的列表容器
+4. 示例：用QList定义一个字符串类型比的列表容器
 ```
 QList<QString> aList;
 aList.append("Monday");
@@ -113,40 +113,6 @@ QString str=aList[0];
 6.3 QHash  
 6.4 QMultiHash  
 6.5 QSet  
-
-
-## QList
-QList是最常用的容器类，相当于数组或列表，支持序列化访问，且访问修改数据的速度很快  
-备注：QList中可以使用[]操作符去访问元素，而C++中的list不可以使用[]操作符  
-备注：QList<QString>也可以写为QStringList，以下两个定义相同  
-```
-QList<QString> aList;
-QStringList alist;
-```
-备注：向list中添加元素时可以直接用'<<'，比使用append方法简便  
-```
-alist << "a" << "123" << "abc";
-```
-**QList常用函数**
-1. insert()
-2. void removeAt(int i)
-删除指定索引位置i的元素，注意函数没有返回值
-3. replace()
-4. move()
-5. swap()
-6. append()
-7. prepend()
-8. removeFirst()
-9. removeLast()
-9. int removeAll(item & value)
-删除列表中指定的元素  
-10. isEmpty()
-在数据项为空时返回true  
-11. size()
-返回列表中数据项的个数  
-12. void clear()
-清除列表中的所有元素  
-13. 
 
 
 ## QLinkedList

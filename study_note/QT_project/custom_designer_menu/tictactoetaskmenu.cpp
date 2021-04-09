@@ -2,13 +2,13 @@
 
 TicTacToeTaskMenu::TicTacToeTaskMenu(TicTacToe *tictactoe2, QObject *parent)
      : QObject(parent)
-     //注意这里的两个参数是不一样的，这行代码的具体原理不清楚
+     //注意这里的两个参数是不一样的，初始化列表
      , tictactoe1(tictactoe2)
 {
     //向菜单中插入的自定义选项
     custom_action = new QAction("custom action", this);
     connect(custom_action, &QAction::triggered, this, &TicTacToeTaskMenu::menuTest);
-    //注意：在这里调用控件类的成员时，只能用tictactoe1，不能用tictactoe2
+    //注意：在这里调用控件类的成员时，只能用tictactoe1，不能用tictactoe2，否则程序会卡死
     tictactoe1 -> showMessage();
 }
 

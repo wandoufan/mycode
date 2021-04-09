@@ -4,6 +4,8 @@
 sqlite是一个微型数据库，所有的数据表、索引等数据库元素全部都存在一个文件里  
 sqlite expert是sqlite数据库的可视化管理工具，包含了sqlite数据库驱动  
 即安装了sqlite expert之后就无需再安装sqlite数据库驱动  
+
+## 优点缺点
 1. 优点
 sqlite是开源免费的  
 体积很小，sqlite的驱动库文件只有500KB  

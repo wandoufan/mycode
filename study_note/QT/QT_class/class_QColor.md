@@ -21,7 +21,9 @@ QString SkyplotWidget::colorToString(QColor color)
 mycolor = QColor(10, 100 , 50, 255)
 ```
 2. QColor::QColor(QRgb color)
+
 3. QColor::QColor(QRgba64 rgba64)
+
 4. QColor::QColor(QLatin1String name)
 
 

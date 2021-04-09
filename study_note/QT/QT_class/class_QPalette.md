@@ -42,8 +42,17 @@ Widget::Widget(QWidget *parent)
 ```
 
 
-## 常用参数
-1. 设置颜色显示区域的参数包括：  
+## 常用函数
+* void QPalette::setColor(QPalette::ColorRole role, const QColor &color)
+设置控件指定区域的颜色  
+* const QColor &QPalette::color(QPalette::ColorRole role) const
+返回控件指定区域的颜色  
+
+
+## enum QPalette::ColorRole
+颜色显示的区域包括：  
+```
+QPalette::Window 常用的背景颜色  
 QPalette::Base 设置文本输入窗口部件的背景色  
 QPalette::Text 设置文本输入窗口中文字的颜色  
 QPalette:WindowText 通常指窗口看不见的前景色  
@@ -51,6 +60,7 @@ QPalette::Button 指按钮窗口部件的背景色
 QPalette::ButtonText 指按钮窗口部件的前景色  
 QPalette::Background 背景色  
 QPalette::Foreground 前景色  
+```
 注意：设置Widget等窗口的背景颜色用QPalette::Background，设置QtextEdit等文本输入框的背景颜色用QPalette::Base  
 
 

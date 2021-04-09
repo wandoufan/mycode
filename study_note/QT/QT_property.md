@@ -235,3 +235,62 @@ qDebug() << skyplotWidget -> metaObject() -> classInfo(0).value();
 qDebug() << skyplotWidget -> metaObject() -> classInfo(1).name();
 qDebug() << skyplotWidget -> metaObject() -> classInfo(1).value();
 ```
+
+
+## Q_DECLARE_METATYPE宏
+1. 基本功能
+对于自定义的数据类型，一般是类或结构体，要使用'Q_DECLARE_METATYPE(Type)'进行声明  
+用来让元对象系统识别Type这个类型，并提供一个默认的拷贝构造函数和析构函数  
+经过这个宏声明之后，自定义数据类型才可以被转换为QVariant类型  
+2. 放置位置
+一般来说，这个宏声明应该放在类或结构体声明的下面  
+如果不能，它也可以放在一个私有的头文件里，每次要在QVariant里使用该类型时，都要包含这个头文件  
+```
+struct MyStruct
+{
+ int i;
+ ...
+};
+Q_DECLARE_METATYPE(MyStruct)
+```
+如果自定义数据类型在一个命名空间中，则宏声明必须放在命名空间的外面  
+```
+namespace MyNamespace
+{
+    struct MyStruct{};
+}
+Q_DECLARE_METATYPE(MyNamespace::MyStruct)
+```
+3. 注意事项
+如果想要在信号与槽的connect函数或QObject的属性系统中使用自定义数据类型，还是需要调用qRegisterMetaType()函数  
+4. 使用示例
+```
+//构建一个列表，其中列表的元素是自定义出来的结构体  
+struct ChannelInfo{
+    int id;
+    QString text;
+};
+Q_DECLARE_METATYPE(ChannelInfo)
+
+QVariant channel_info;
+QList<QVariant> all_channel_info;
+
+ChannelInfo mychannel;
+mychannel.id = i;
+mychannel.text = QString::number(i);
+channel_info.setValue(mychannel);
+all_channel_info.append(channel_info);
+```
+
+
+## qRegisterMetaType()函数
+template <typename T> int qRegisterMetaType()  
+1. 函数功能：  
+调用这个函数来向元对象系统注册类型T，并返回meta type的id  
+其中T必须要先用Q_DECLARE_METATYPE宏进行声明  
+```
+int id = qRegisterMetaType<MyStruct>();
+```
+2. 在以下两种情况下要使用该函数：  
+非QMetaType内置类型要在 Qt 的属性系统中使用  
+非QMetaType内置类型要在 queued 信号与槽 中使用  

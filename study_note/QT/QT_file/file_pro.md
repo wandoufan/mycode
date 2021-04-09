@@ -36,6 +36,7 @@ QT参数指定要使用的QT模块
 ```
 QT  += core gui //默认参数，对应于QtCore和QtGui，带界面的程序都要用到该模块
 QT  += axcontainer //使用QAxContainer模块中相关的类
+QT  += widgets //使用各种widget组件
 ```
 * CONFIG
 CONFIG参数指定指定工程配置和编译参数  
