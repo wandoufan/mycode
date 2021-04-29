@@ -23,7 +23,7 @@ QLayout
 如果只有一个带有this指针，则只会显示带有this指针的这个layout  
 3. 组件在layout中显示顺序、索引序号都是和组件添加到Layout中的顺序是一致的  
 4. 在GridLayout中如果只添加了一个组件，则无论怎么参数设置，该组件都始终显示在GridLayout的中间  
-5. widget可以调用setLayout函数来设置内部布局形式  
+5. 所有widget类的组件都可以调用setLayout函数来设置内部布局形式  
 ```
 void QWidget::setLayout(QLayout \*layout)
 ```
@@ -54,17 +54,20 @@ TicTacToe::TicTacToe(QWidget *parent) :
 ```
 vlayout -> setContentsMargins(30, 30, 30, 30);
 ```
+
 2. void QLayout::addWidget(QWidget \*w)
 向当前的Layout中添加一个Widget组件，注意参数必须是指针类型  
 ```
 vlayout -> addWidget(button1);
 ```
+
 3. virtual int indexOf(QWidget \*widget) const
 查询Layout中某个控件的索引，索引号从0开始计算  
 索引序号与控件添加到Layout中的顺序是一致的  
 ```
 int index = vlayout -> indexOf(button1);
 ```
+
 4. virtual int count() const = 0
 查询Layout中包含控件的个数
 ```
@@ -74,20 +77,19 @@ int count = vlayout -> count();
 
 ## QGridLayout常用函数
 1. void QGridLayout::addLayout(QLayout \*layout, int row, int column, Qt::Alignment alignment = Qt::Alignment())
-向一个QGridLayout类型的layout中添加一个layout组件  
-row参数和column参数分别设置行数和列数  
-其中，最左上角的位置为(0, 0)  
+向GridLayout中添加另外一个layout组件  
+row参数和column参数分别设置行数和列数，其中，最左上角的位置为(0, 0)  
 alignment参数用来设置子layout在父layout中的填充程度  
 alignment默认值为0，即控件为充满整个框架  
 任意非零的alignment参数都说明子layout不能充满整个框架，此时子layout的尺寸要由sizeHint()函数来确定  
 ```
 glayout -> addLayout(vlayout, 1, 1);
 ```
+
 2. void QGridLayout::addWidget(QWidget \*widget, int row, int column, Qt::Alignment alignment = Qt::Alignment())
 向一个QGridLayout类型的layout中添加一个widget组件  
-row参数和column参数分别设置行数和列数  
-其中，最左上角的位置为(0, 0)  
-alignment参数用来设置widget组件在layout中的填充程度  
+row参数和column参数分别设置行数和列数，其中，最左上角的位置为(0, 0)  
+alignment参数用来设置widget组件在layout中的填充程度，详见下面enum Qt::AlignmentFlag  
 alignment默认值为0，即控件为充满整个框架  
 ```
 glayout -> addWidget(box1, 0, 0);
@@ -99,3 +101,23 @@ glayout -> addWidget(box3, 1, 0);
 glayout -> addWidget(new QLabel("label :", set_window), 0, 0);
 ```
 
+
+## enum Qt::AlignmentFlag
+这个枚举中的参数用来设置组件的对齐方式，如左对齐  
+```
+Constant   Value   Description
+//水平参数
+Qt::AlignLeft   0x0001   水平方向靠左
+Qt::AlignRight   0x0002   水平方向靠右
+Qt::AlignHCenter   0x0004   水平方向居中
+Qt::AlignJustify   0x0008   水平方向调整间距两端对齐
+//垂直参数
+Qt::AlignTop   0x0020   垂直方向靠上
+Qt::AlignBottom   0x0040   垂直方向靠下
+Qt::AlignVCenter   0x0080   垂直方向居中
+Qt::AlignBaseline   0x0100   垂直方向靠基准线
+//双维度参数
+Qt::AlignCenter   AlignVCenter | AlignHCenter   等价于Qt::AlignHCenter | Qt::AlignVCenter
+```
+注意：水平参数和垂直参数都是一次只能设置一个  
+备注：向layout中添加pushbutton等组件时默认会把组件拉长(充满整个框架)，加上Qt::AlignHCenter参数后，组件就会缩短居中  

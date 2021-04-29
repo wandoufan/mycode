@@ -29,9 +29,9 @@ mycolor = QColor(10, 100 , 50, 255)
 
 ## enum Qt::GlobalColor
 颜色也可以用下面的参数进行赋值  
+使用方式：QColor(Qt::lightGray)  
 ```
 Constant  Value  Description
-
 Qt::white  3  White (#ffffff)
 Qt::black  2  Black (#000000)
 Qt::red  7  Red (#ff0000)

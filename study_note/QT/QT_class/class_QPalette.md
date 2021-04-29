@@ -12,11 +12,11 @@ setStyleSheet函数的参数是一个qss语法的字符串
 外观类组件的对象都可以调用setStyleSheet函数  
 ```
 //设置字体颜色
-label->setStyleSheet("color: blue");
+label -> setStyleSheet("color: blue");
 //设置背景颜色
 label1 -> setStyleSheet("background-color:blue;");
-label->setStyleSheet("QLabel{background:#000000;}");
-label->setStyleSheet("QLabel{background-color:rgb(200,101,102);}");
+label -> setStyleSheet("QLabel{background:#000000;}");
+label -> setStyleSheet("QLabel{background-color:rgb(200,101,102);}");
 ```
 备注：如果qss语句写错了，设置不会生效，但程序也不会有报错  
 

@@ -84,6 +84,27 @@ RESET函数返回类型必须为void，并且不带任何参数
 参数的类型必须和属性的类型相同，参数会变成改变后的新的属性值  
 对于MEMBER属性，QT会在需要时自动发出信号函数  
 注意：NOTIFY必须是允许QML属性绑定的特定信号函数  
+2.6 REVISION
+如果进行设置，则该属性及其信号函数可以在QML中使用，如果不进行设置，则默认是0  
+2.7 DESIGNABLE
+设置该属性是否在QT designer的属性编辑器中可见，默认为true  
+2.8 SCRIPTABLE
+设置该属性是否可以被脚本引擎操作，默认为true，也可以在这里写上一个布尔型的成员函数  
+2.9 STORED
+设置该属性是独立存在还是依赖于其他值而存在，默认为true  
+也表示保存对象时这个属性的值是否会被保存，大多数属性都是随之保存的  
+但也有例外，如QWidget::minimumWidth()的属性值不会被保存，因为它的值是依赖于QWidget::minimumSize()  
+3.10 USER
+设置该属性是否面向用户或用户可修改的属性，默认为false  
+一般在一个类中只有USER属性，例如QAbstractButton::checked是按钮类的用户可修改属性  
+3.11 CONSTANT
+设置CONSTANT则表示该属性的值是不变的，CONSTANT类型的属性不能具有WRITE方法或NOYIFY信号  
+3.12 FINAL
+设置FINAL则表示该属性不允许被派生类重写  
+有些情况下，这可以用于效率优化，但这不是MOC的强制要求  
+3.13 REQUIRED
+设置REQUIRED则表示该属性应该被类的用户设置，对于那些暴露给QML的类比较实用，但这不是MOC的强制要求  
+在QML中，具有REQUIRED属性的类不能被实例化，除非所有的REQUIRED属性都被设置了  
 3. READ、WRITE和MEMBER的区别
 READ、WRITE和MEMBER两种方法都可以赋予属性值读/写  
 注意：READ、WRITE和MEMBER不能同时使用，赋予可读可写特性一次就够了，不能赋予两次  

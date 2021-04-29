@@ -16,8 +16,12 @@ v.setValue("abc");
 ```
 2. 以下两种方法在创建QVariant变量时直接添加数据  
 ```
-QVariant v("abc");
-QVariant v = "abc";
+QVariant v_string("abc");
+QVariant v_string = "abc";
+```
+3. 可以直接作为一个函数参数，不需要再创建一个QVariant类型的变量，减少变量命名
+```
+item->setData(Qt::DecorationRole, QVariant(inner_color));
 ```
 
 
@@ -46,10 +50,16 @@ all_channel_info.append(channel_info);//将QVariant添加到列表里
 
 ## 常用函数
 * QVariant::Type QVariant::type() const
-以QVariant::Type的形式返回QVariant中存储的数据类型  
+以QVariant::Type的形式返回QVariant中存储的数据类型，例如：  
+```
+QVariant::QString
+```
 
 * const char \*QVariant::typeName() const
-返回QVariant中存储的数据类型  
+以char的形式返回QVariant中存储的数据类型，例如：  
+```
+QString
+```
 
 * template <typename T> bool QVariant::canConvert() const
 判断QVariant变量是否可以被转换成指定模板类型T，返回true或false  
@@ -80,8 +90,36 @@ if (v.canConvert<MyCustomStruct>())
 }
 ```
 
+* int QVariant::toInt(bool \*ok = nullptr) cons
+如果数据是数字、字符、字符串、布尔型等，就以int形式返回；否则，返回0  
+如果数据可以被转换为int类型，则ok指针会被设置为true；否则，ok指针设置为false  
+备注：这里没有搞太懂，实际使用时可以不写ok参数  
+
+* bool QVariant::toBool() const
+
+* QChar QVariant::toChar() const
+
 * QString QVariant::toString() const
 
 * QStringList QVariant::toStringList() const
 
 * QTime QVariant::toTime() const
+
+* QSize QVariant::toSize() const
+
+* QPoint QVariant::toPoint() const
+
+
+## QVariant转换为QColor等类型的注意事项
+因为QVariant是Qt Core模块的一部分，因此不能提供函数来转换到Qt GUI中的数据类型(如： QColor、QImage、QPixmap等类型)  
+也就是说，没有QVariant::toColor()这个函数  
+可以使用QVariant::value()函数来实现QVariant转换为QColor  
+```
+QVariant v_color;
+QColor color = v_color.value<QColor>();
+```
+备注：将QColor等类型转换为QVariant类型则不存在这个问题，可以直接转换  
+```
+QColor color = palette().background().color();
+QVariant v_color = color;
+```

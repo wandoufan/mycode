@@ -329,7 +329,14 @@ CustomButton::CustomButton(QWidget *parent) :
 窗口显示的默认大小必须用setFixedSize函数设置  
 备注：以前误以为这个控件必须放进一个layout里才能调整大小，其实不用的  
 备注：这样设置相当于在代码中把大小写死了，在UI界面上就无法再调整大小  
-3. 关于this指针调用setFixedSize函数的进一步说明
+3. 进一步的解决
+目前没有找到办法，既能设置合适的默认大小，又能在UI界面调整大小  
+系统的默认大小实在太小了，因此可以用setMinimumSize函数设置控件的最小尺寸  
+设置之后控件拖到UI界面上就以最小尺寸显示，在UI界面上可以调大，不可以调小  
+```
+this -> setMinimumSize(300, 300);
+```
+4. 关于this指针调用setFixedSize函数的进一步说明
 this指针就是这个Widget窗口本身，可以调用一些函数来设置其大小和位置  
 如果是一个直接运行的窗口程序，使用setGeometry函数和setFixedSize函数都可以  
 如果是用来生成自定义控件dll的程序(非直接运行)，就必须使用setFixedSize函数  

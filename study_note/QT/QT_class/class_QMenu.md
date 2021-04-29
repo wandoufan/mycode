@@ -14,6 +14,7 @@ QMenu相当于菜单，QAction相当于菜单栏中的选项
 ```
 menu1 = new QMenu("submenu", this);
 ```
+
 2. QMenu::QMenu(QWidget \*parent = nullptr)
 用父指针构造一个menu对象  
 ```
@@ -31,6 +32,7 @@ menu2 -> addAction("1");
 menu2 -> addAction("2");
 menu1 -> addMenu(menu2);
 ```
+
 2. QMenu \*QMenu::addMenu(const QString &title)
 在当前菜单中用title添加一个新的子菜单，返回这个子菜单对象  
 其中，title即为子菜单对应的选项的名字  
@@ -39,6 +41,7 @@ QMenu *menu2 =  menu1 -> addMenu("submenu1");
 menu2 -> addAction("a");
 menu2 -> addAction("b");
 ```
+
 3. QMenu \*QMenu::addMenu(const QIcon &icon, const QString &title)
 在当前菜单中用图标和title添加一个新的子菜单，返回这个子菜单对象  
 
@@ -49,14 +52,17 @@ menu2 -> addAction("b");
 ```
 menu1 -> addAction(action1);
 ```
+
 2. QAction \*QMenu::addAction(const QString &text)
 在当前菜单中用text添加一个新的action，返回这个action对象  
 这个action对象的父指针默认为当前菜单  
 ```
 QAction *action1 = menu1 -> addAction("add");
 ```
+
 3. QAction \*QMenu::addAction(const QIcon &icon, const QString &text)
 在当前菜单中用图标和text添加一个新的action，返回这个action对象  
+
 4. QAction \*QMenu::addAction(const QString &text, const QObject \*receiver, const char \*member, const QKeySequence &shortcut = 0)
 在菜单中添加action时，顺便添加action的槽函数  
 这个action的triggered()信号被连接到了接收对象的槽上  
@@ -68,6 +74,7 @@ menu1 -> addAction("show", this, SLOT(onShowAboutAction()));
 ```
 connect(action1, SIGNAL(triggered()), this, SLOT(click_add()));
 ```
+
 5. QAction \*QMenu::addAction(const QIcon &icon, const QString &text, const QObject \*receiver, const char \*member, const QKeySequence &shortcut = 0)
 和上面函数功能一样，只是在创建action时多了一个图标  
 
@@ -78,6 +85,7 @@ connect(action1, SIGNAL(triggered()), this, SLOT(click_add()));
 ```
 menu1 -> addSeparator();
 ```
+
 2. QAction \*QMenu::exec()
 同步执行当前菜单，返回触发的action，如果没有触发action则返回空  
 常用用法包括：  

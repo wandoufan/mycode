@@ -25,6 +25,10 @@ choose_visible -> addItem("HalfVisible", Half);
 choose_visible -> addItem("Invisible", Zero);
 ```
 备注：当关联数据使用枚举值时，如何获取选择的值还没有搞清楚，currentData()函数返回的是QVariant类型，不知道怎么转换回自定义的enum类型  
+另外，添加选项也可以不关联数据，只写一个文本内容
+```
+choose_visible -> addItem("Visible");
+```
 
 2. void QComboBox::addItem(const QIcon &icon, const QString &text, const QVariant &userData = QVariant())
 和上面函数的功能一样，区别在于多了一个图标参数  
@@ -35,15 +39,31 @@ choose_visible -> addItem("Invisible", Zero);
 4. void QComboBox::setItemText(int index, const QString &text)
 设置指定选项的文本内容，其中index从0开始  
 
-5. int currentIndex() const
-返回当前选择选项对应的index  
+5. int QComboBox::currentIndex() const
+返回当前选择选项对应的index，index从0开始  
 
-6. QString currentText() const
+6. QString QComboBox::currentText() const
 返回当前选择选项对应的text  
 
-7. QVariant currentData(int role = Qt::UserRole) const
+7. QVariant QComboBox::currentData(int role = Qt::UserRole) const
 返回当前选择选项关联是数据  
 
-8. int count() const
+8. int QComboBox::count() const
 返回总的选项个数  
 
+
+## 公共槽函数
+1. [slot] void QComboBox::clear()
+清除ComboBox，删除所有的选项  
+
+2. [slot] void QComboBox::clearEditText()
+清除ComboBox所有行的文本内容  
+
+3. void QComboBox::setCurrentIndex(int index)
+通过index来设置下拉菜单显示的默认选项（常用）  
+
+4. void QComboBox::setCurrentText(const QString &text)
+设置选项的文本内容  
+
+5. void QComboBox::setEditText(const QString &text)
+在ComboBox的文本编辑器中设置文本内容  

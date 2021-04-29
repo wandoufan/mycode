@@ -30,6 +30,7 @@ QMenu相当于菜单，QAction相当于菜单栏中的选项
 QAction *action_add；
 action_add = new QAction("add channel", this);
 ```
+
 3. QAction(const QIcon &icon, const QString &text, QObject \*parent = nullptr)
 用图标、text和父指针来构造一个action对象  
 如果父指针指向一个action列表，则这个构造的action对象会被自动插入action列表中  
