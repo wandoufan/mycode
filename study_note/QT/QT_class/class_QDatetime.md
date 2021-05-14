@@ -23,20 +23,25 @@ AP或A	使用 AM/pm 显示
 ap或a	使用 am/pm 显示
 ```
 
-## 常用函数
-1. QDateTime currentDateTime() 
-获取当前时间日期，返回一个QDateTime对象  
-```
-QDateTime current_datetime = QDateTime::currentDateTime();
-ui -> timeEdit -> setTime(current_datetime.time());
-```
-2. QString toString(const QString &format) 
+
+## 常用公共函数
+1. QString toString(const QString &format) 
 按照一定格式转化成字符串，返回字符串对象  
 ```
 QDateTime current_datetime = QDateTime::currentDateTime();
 ui -> Edit_time -> setText(current_datetime.toString("yyyy:MM:dd:hh:mm:ss"));
 ```
-3. QDateTime fromString(const QString &string, Qt::DateFormat format = Qt::TextDate)
+
+
+## 静态公共函数
+1. [static] QDate QDate::currentDate()
+获取当前时间日期，返回一个QDateTime对象  
+```
+QDateTime current_datetime = QDateTime::currentDateTime();
+ui -> timeEdit -> setTime(current_datetime.time());
+```
+
+2. [static] QDate QDate::fromString(const QString &string, Qt::DateFormat format = Qt::TextDate)
 把时间日期的字符串按照一定格式转化为一个QDateTime对象  
 ```
 QDateTime user_time = QDateTime::fromString(str, "hh:mm:ss");

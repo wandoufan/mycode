@@ -49,7 +49,9 @@ const T &qMin(const T&value1, const T&value2)	返回 value1 和 value2 中较小
 qint64 qRound64(double value) 	将 value 近似为最接近的 qint64 整数
 int qRound(double value)	将 value 近似为最接近的 int 整数
 int qrand()	标准 C++ 中 rand() 函数的线程安全型版本，返回 0 至 RAND_MAX 之间的伪随机数
+备注：这个函数已经过时，不再使用了
 void qsrand(uint seed)	标准 C++ 中 srand() 函数的线程安全型版本，使用种子 seed 对伪随机数字序列初始化
+备注：这个函数已经过时，不再使用了
 ```
 
 

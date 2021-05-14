@@ -1,7 +1,7 @@
 # PostgreSQL笔记
 
 ## 基本情况
- PostgreSQL完全免费，而且是BSD协议，可以自己进行二次开发  
+PostgreSQL完全免费，而且是BSD协议，可以自己进行二次开发  
 PostgreSQL的默认用户名为postgres  
 PostgreSQL使用的默认端口为5432  
 备注：安装PostgreSQL的分区需要是NTFS格式，如果是在FAT或FAT32分区下，可以正常安装，但数据库初始化之后可能会有问题  

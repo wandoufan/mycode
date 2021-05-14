@@ -51,7 +51,7 @@ java文件先编译成与平台无关的.class的字节码文件
 * 缺点：
 不方便调试  
 * 代表语言：
-JavaScript、PHP、Python  
+JavaScript、PHP、Python、Lua  
 
 
 ## 静态语言(强类型语言)

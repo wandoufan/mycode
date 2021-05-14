@@ -150,6 +150,8 @@ git show ID
 'git config --list'查看所有的配置列表
 'git remote add origin git@github.com:wandoufan/git_test.git'  ssh方式连接github添加远程库
 备注：远程库/远程主机的默认名字origin(起源)
+备注：具体的ssh地址可以在github网站对应的项目上查看
+git@github.com:wandoufan/mycode.git
 'git remote add origin https://github.com/wandoufan/git_test.git'  https方式连接远程库
 备注：https方式需要每次输入账户密码且速度较慢，推荐使用ssh方式(ssh方式需要提前配置密钥)
 'git remote rm origin'删除远程库
@@ -157,14 +159,14 @@ git show ID
 
 
 ## ssh方式登录权限问题相关：
-使用ssh方式连接远程库之前需要在本地生成公钥文件并在github上登记
-linux环境下'cd ~/.ssh'进入密钥目录
-windows环境下打开C:\Users\Administrator\.ssh路径
-以上两个环境中对应的路径可能还不存在，运行下面命令生成该路径
-'ssh-keygen'在上面的路径中生成公钥文件id_rsa.pub和秘钥文件id_rsa，passphrase口令可以设置为空
-拷贝公钥文件的内容，打开https://github.com/settings/profile，在SSH key那栏选择New SSH Key，并将复制内容拷贝到其中
-https://blog.csdn.net/mengmengz07/article/details/70157018
-备注：ssh passphrase设置为空
+使用ssh方式连接远程库之前需要在本地生成公钥文件并在github上登记  
+linux环境下'cd \~/.ssh'进入密钥目录  
+windows环境下打开'C:\Users\Administrator\.ssh'路径  
+以上两个环境中对应的路径可能还不存在，运行下面命令生成该路径  
+'ssh-keygen'  
+备注：ssh passphrase密码设置为空  
+在上面的路径中生成公钥文件id_rsa.pub和秘钥文件id_rsa  
+拷贝公钥文件的内容，打开https://github.com/settings/profile，在SSH key那栏选择New SSH Key，并将复制内容拷贝到其中  
 
 
 ## 提交本地代码到远程库：
@@ -210,7 +212,7 @@ git pull = git fetch + git merge(拉取到本地 + 代码合并)
 注意：分支合并完成之后，当前分支的版本ID就会同步为合并的分支的版本ID
 注意：如果要merge的两个分支只有一个修改了内容，就可以快速合并；如果两个都修改了内容，则可能会提示冲突，需要手动修改冲突的地方
 'git branch -d branch_name'删除分支
-'git branch'查看本地分支，当前分支前面会标一个*号
+'git branch'查看本地分支，当前分支前面会标一个\*号
 'git branch -r'查看远程分支
 'git branch -a'查看所有分支(包括本地和远程)
 'git log --graph'查看分支合并图

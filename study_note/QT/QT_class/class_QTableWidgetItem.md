@@ -20,6 +20,9 @@ myItem = new QTableWidgetItem("abc");
 
 3. QTableWidgetItem::QTableWidgetItem(int type = Type)
 
+4. QTableWidgetItem::QTableWidgetItem(const QTableWidgetItem &other)
+直接复制其他的QTableWidgetItem  
+
 
 ## 常用函数
 * QTableWidget \*QTableWidgetItem::tableWidget() const
@@ -51,6 +54,25 @@ channel_table -> setItem(1, 1, item);
 flags的取值详见下面的Qt::ItemFlags  
 备注：Qt::ItemIsEditable在文档中写的是可以被编辑，但实际测试是不可编辑  
 备注：如果要设置整个表格不可编辑，用QTableWidget中的setEditTriggers方法  
+
+* [virtual] QTableWidgetItem \*QTableWidgetItem::clone() const
+创建一个item的copy  
+
+
+## 复制一个QTableWidgetItem
+有时候需要把一个单元格中内容复制到另外一个单元格里  
+如果先读出原单元格item中的QVariant，再读出QVariant中对应的数据，然后再将这个数据重新写入新单元格的item中  
+这样操作会很麻烦，而且需要事先知道每个单元格中存储的数据类型  
+可以直接把原单元格的item复制为新单元格的item  
+```
+for(int column = 0; column < channel_table -> columnCount(); column++)
+{
+    QTableWidgetItem *item_temp = channel_table -> item(from_row, column);//读出原有单元格的item
+    if(item_temp)
+        //注意：这里一定要写"item_temp -> clone()"，不能写成"item_temp"，否则无效
+        channel_table -> setItem(to_row, column, item_temp -> clone());//向新单元格插入item
+}
+```
 
 
 ## enum Qt::ItemDataRole

@@ -65,6 +65,9 @@ QList<QString> alist = { "one", "two", "three" };
 * int QList::size() const
 返回列表中元素的个数  
 
+* int QList::count() const
+返回列表中元素的个数，效果等同于size()  
+
 * T &QList::first()
 返回列表中的第一个元素，列表必须不能为空  
 

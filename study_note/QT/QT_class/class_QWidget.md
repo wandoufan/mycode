@@ -11,7 +11,7 @@ QWidget窗口可以被其父窗口或其他窗口挡住一部分
 ## 常用属性
 * windowModality : Qt::WindowModality
 这个属性用来设置哪个windows窗口会被模态的widget锁住  
-这个属性只对windows窗口有意义，默认值为Qt::NonModal.
+这个属性只对windows窗口有意义，默认值为Qt::NonModal  
 一个模态的widget会阻止其他窗口的widget获取到输入  
 把QWidget::windowModality设置为Qt::ApplicationModal等同于把Qialog::modal属性设置为true  
 1. Qt::WindowModality windowModality() const

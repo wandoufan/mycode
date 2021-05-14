@@ -263,7 +263,7 @@ connect(add_channel, SIGNAL(triggered()), this, SLOT(addChannel()));
 
 //右键即可出现菜单
 channel_table -> setContextMenuPolicy(Qt::CustomContextMenu);
-connect(channel_table, &QTableWidget::customContextMenuRequested, [=](const QPoint &pos)
+connect(channel_table, &QTableWidget::customContextMenuRequested, [=]()
 {
     channel_menu -> exec(QCursor::pos());
 });
@@ -275,5 +275,65 @@ void Widget::addChannel()
 {
     //向下插入一个新通道
     channel_table -> insertRow(channel_table -> currentRow() + 1);
+}
+```
+
+
+## 实现一行数据的上下移动
+1. 基本思路
+QTableWidget中没有直接提供接口实现该功能，只能自己写代码去实现  
+先在目标位置新插入一个空行，然后将原有行的单元格逐个复制到新行中，最后删除原有数据行  
+2. 代码示例
+```
+void ChannelTable::moveUp()
+{
+    //当前行向上移动一行
+    if(channel_table -> rowCount() == 0)
+        QMessageBox::about(NULL, "Note", "you need add a channel first");
+    else
+        this -> moveRow(channel_table -> currentRow(), channel_table -> currentRow() - 1);
+}
+
+void ChannelTable::moveDown()
+{
+    //当前行向下移动一行
+    if(channel_table -> rowCount() == 0)
+        QMessageBox::about(NULL, "Note", "you need add a channel first");
+    else
+        this -> moveRow(channel_table -> currentRow(), channel_table -> currentRow() + 1);
+}
+
+void ChannelTable::moveRow(int from_row, int to_row)
+{
+    //把from_row行的数据移动到to_row行
+    if(from_row == to_row)
+        return;
+    if(from_row < 0 || to_row < 0)
+        return;
+    if(from_row >= channel_table -> rowCount() || to_row >= channel_table -> rowCount())
+        return;
+    if(from_row > to_row)
+    {
+        channel_table -> insertRow(to_row);
+        this -> copyRow(from_row + 1, to_row);
+        channel_table -> removeRow(from_row + 1);
+    }
+    if(from_row < to_row)
+    {
+        channel_table -> insertRow(to_row + 1);
+        this -> copyRow(from_row, to_row + 1);
+        channel_table -> removeRow(from_row);
+    }
+}
+
+void ChannelTable::copyRow(int from_row, int to_row)
+{
+    //把from_row行的数据拷贝到to_row行
+    for(int column = 0; column < channel_table -> columnCount(); column++)
+    {
+        QTableWidgetItem *item_temp = channel_table -> item(from_row, column);
+        if(item_temp)
+            channel_table -> setItem(to_row, column, item_temp -> clone());
+    }
 }
 ```
