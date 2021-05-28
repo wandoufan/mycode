@@ -6,7 +6,6 @@ QThread类提供了不依赖于平台的方法来管理多线程
 
 
 ## 工作过程
-使用时从QThread继承一个自定义类，并重定义虚函数run()，在run()函数里实现线程需要完成的任务  
 一般在主线程中创建工作线程，并调用start()执行工作线程的任务  
 start()会在内部调用run()函数，run()函数通过调用exec()函数来开启工作线程的事件循环  
 在run()函数里调用exit()或quit()可以结束线程的事件循环，或者在主线程里调用terminate()来强制结束线程  
@@ -48,6 +47,23 @@ start() -> run() -> exec() -> exit()或quit()
 为一个正在运行的线程设置优先级，如果线程此时没有在运行，则函数不做任何操作并立即返回  
 优先级参数可以是集合中的任何值，除了'InheritPriority'  
 
+7. bool QThread::wait(QDeadlineTimer deadline = QDeadlineTimer(QDeadlineTimer::Forever))
+wait()函数用来阻塞直到该线程执行完成后，再执行wait()函数下面的代码，即等待当前进程执行完成  
+当满足下面两个条件之一时执行阻塞：  
+a. 当线程已经运行完成(从run()函数中返回)或者还没有开始运行时，则返回true  
+b. 如果到达了deadline的时间，则返回false  
+deadline参数的默认值为QDeadlineTimer::Forever，即永远不会超时  
+这种情况下，只有在线程已经运行完成(从run()函数中返回)或者还没有开始运行时，wait()函数才返回  
+备注：这个函数是在Qt 5.15版本中才被引入进来的  
+```
+//一般在线程退出之后，都要调用wait()函数
+mythread -> quit();
+mythread -> wait();
+```
+
+8. bool QThread::wait(unsigned long time)
+这是一个重载函数，设置线程阻塞的时间  
+
 
 ## 公共槽函数
 1. [slot] void QThread::quit()
@@ -56,7 +72,7 @@ start() -> run() -> exec() -> exit()或quit()
 备注：这个函数是线程安全的  
 
 2. [slot] void QThread::start(QThread::Priority priority = InheritPriority)
-通过调用run()函数来开始执行线程  
+调用run()函数来开始执行线程  
 如果线程已经在运行了，则该函数不做任何操作  
 priority参数表示操作系统安排新线程的方式，详见下面enum QThread::Priority  
 
@@ -70,14 +86,14 @@ priority参数表示操作系统安排新线程的方式，详见下面enum QThr
 
 ## 信号函数
 1. [signal] void QThread::finished()
-在关联的线程即将执行完成之前，这个信号会从关联的线程中发出  
+在关联的线程即将执行完成之前，这个信号发出(一般在调用quit()等函数之后发出该信号)  
 当这个信号发出时，事件循环就已经停止运行了，除了延期删除事件外，线程中不会再执行任何事件  
 这个信号可以被关联到槽函数QObject::deleteLater()上，来释放线程中的对象  
 注意：如果关联的线程被terminate()函数终结了，发出信号的线程就变成未定义的了  
 注意：这是一个私有的信号，可以用在信号connection中，但不能被用户发出  
 
 2. [signal] void QThread::started()
-在关联的线程开始执行前，这个信号发出(在run()函数被调用之前就发出信号)  
+在关联的线程开始执行前，这个信号发出(一般在调用start()函数之后发出该信号)  
 注意：这是一个私有的信号，可以用在信号connection中，但不能被用户发出  
 
 
@@ -122,7 +138,31 @@ priority参数表示操作系统安排新线程的方式，详见下面enum QThr
 
 2. [virtual protected] void QThread::run()
 在调用start()函数之后，新创建的线程会调用这个run()函数，run()函数会再进一步调用exec()函数  
-注意：一般对这个方法进行重写，在函数里实现线程需要完成的任务，从这个方法返回时会结束线程的执行  
+注意：一般在子类中对这个方法进行重写，在函数里实现线程需要完成的任务，从这个方法返回时会结束线程的执行  
+备注：run()不能直接调用，而是要通过start()函数间接调用
+```
+//头文件中
+protected:
+    void run();
+//源文件中
+void QDiceThread::run()
+{
+    //执行线程任务
+    m_stop = false;
+    m_seq = 0;
+    while(!m_stop)
+    {
+        if(!m_paused)
+        {
+            m_diceValue = QRandomGenerator::global() -> bounded(1, 7);
+            m_seq ++;
+            emit newValue(m_seq, m_diceValue);
+        }
+        msleep(500);
+    }
+    quit();
+}
+```
 
 
 ## enum QThread::Priority

@@ -24,7 +24,7 @@ QObject提供了强大的信号与槽机制和元对象系统等各种功能
 详见QT_property.md  
 
 
-## 属性相关的常用函数
+## 常用公共函数
 1. QVariant QObject::property(const char \*name) const
 返回对象的指定属性的值，参数为一个属性名称的字符串  
 如果没有这样属性存在，那么返回一个非法的variant变量  
@@ -32,6 +32,7 @@ QObject提供了强大的信号与槽机制和元对象系统等各种功能
 qDebug() << ui -> label -> property("text");
 // return QVariant(QString, "demo2")
 ```
+
 2. bool setProperty(const char \*name, const QVariant &value)
 设置对象属性的值，第一个参数为属性名，第二个参数为属性值  
 如果属性名已经存在，且属性值兼容，则改变原有属性值，并返回ture  
@@ -46,6 +47,7 @@ ui->label->setProperty("text", "hello"); \\用统一的函数设置属性
 另外，还可以用setPorperty()函数删除动态属性  
 setPorperty()函数通过传递属性名和一个非法的QVariant值就可以删除该动态属性  
 其中，QVariant的默认构造函数就可以构造出一个非法的QVariant值  
+
 3. [virtual] const QMetaObject \*QObject::metaObject() const
 返回一个指向该对象的元对象的指针  
 元对象包含了一个继承于QObject的类的信息，如类名、超类名、属性、信号、槽  
@@ -55,6 +57,7 @@ qDebug() << mytext -> metaObject() -> className();
 qDebug() << mytext -> metaObject() -> superClass();
 qDebug() << mytext -> metaObject() -> propertyCount();
 ```
+
 4. const QMetaObject QObject::staticMetaObject
 staticMetaObject和上面的metaObject()功能类似  
 如果没有一个指向对象实例的指针，但仍然想要获取元对象类的信息，可以用这个函数  
@@ -63,3 +66,15 @@ qDebug() << QPushButton::staticMetaObject.className();
 ```
 
 
+## 公共槽函数
+1. [slot] void QObject::deleteLater()
+当从事件循环中返回时，这个对象就会被删除  
+如果这个函数被调用时，事件循环还没有运行，那么当事件循环开始时，这个对象会被立即删除  
+如果在主事件循环已经停止之后再去调用这个函数，这个对象不会不删除  
+如果这个对象是生存在一个没有运行事件循环的线程中，调用这个函数后，对象会在线程运行结束后被删除  
+备注：这个函数是线程安全的，多次调用该函数是安全的  
+
+
+## 公共信号函数
+1. [signal] void QObject::destroyed(QObject \*obj = nullptr)
+当对象obj被销毁之前，就会立即发出该信号，这个函数不能被阻塞  

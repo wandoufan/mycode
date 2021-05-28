@@ -15,7 +15,38 @@ using namespace std;
 4. 可以在定义枚举类型时为部分或全部枚举常量指定整数值，在指定值之前的枚举常量仍按默认方式取值，
 而指定值之后的枚举常量按依次加1的原则取值， 各枚举常量的整数值可以重复
 5. 枚举变量只能参与赋值和关系运算以及输出操作，参与运算时用其本身的整数值
-6. 枚举类型在实际应用中常与switch-case结构搭配使用
+*/
+
+/*
+枚举类型在实际应用中常与switch-case结构搭配使用
+void MainWindow::onSocketStateChange(QAbstractSocket::SocketState socketState)
+{
+    //当套接字状态变化时，进行响应
+    switch (socketState)
+    {
+    case QAbstractSocket::UnconnectedState:
+        socket_status -> setText("socket状态：UnconnectedState");
+        break;
+    case QAbstractSocket::HostLookupState:
+        socket_status -> setText("socket状态：HostLookupState");
+        break;
+    case QAbstractSocket::ConnectingState:
+        socket_status -> setText("socket状态：ConnectingState");
+        break;
+    case QAbstractSocket::ConnectedState:
+        socket_status -> setText("socket状态：ConnectedState");
+        break;
+    case QAbstractSocket::BoundState:
+        socket_status -> setText("socket状态：BoundState");
+        break;
+    case QAbstractSocket::ClosingState:
+        socket_status -> setText("socket状态：ClosingState");
+        break;
+    case QAbstractSocket::ListeningState:
+        socket_status -> setText("socket状态：ListeningState");
+        break;
+    }
+}
 */
 
 void enum_init1()

@@ -43,6 +43,17 @@ QObject::connect(scrollBar, SIGNAL(valueChanged(int)),
 QObject::connect(scrollBar, SIGNAL(valueChanged(int value)),
               label, SLOT(setNum(int value)));
 ```
+3.4 connect函数还有另外一种写法，没有完全搞明白，仅供参考  
+声明槽函数时没有写slots，在connect函数中也没有用SIGNAL和SLOT，而是直接在函数名前加了一个&  
+```
+connect(myTimer, &QTimer::timeout, this, &MyWidget::dealTimeout);
+```
+3.5 sender和receiver都必须是指针类型，如果不是，前面要加上&  
+```
+QThreadSend thread_send;
+QThreadReceive thread_receive;
+connect(&thread_send, SIGNAL(sendData(int)), &thread_receive, SLOT(receiveData(int)));
+```
 
 
 ## connect()函数的ConnectionType参数
@@ -118,6 +129,7 @@ signals:
     void ValueChanged(bool value);
     
 //slots声明槽函数(需要写明具体的类型)
+//槽函数的名称经常以on为开头，表示响应某个动作
 private slots:
     void on_checkBox_clicked(bool checked);
 }
@@ -234,6 +246,7 @@ void Dialog::setTextFontColor()
 
 
 ## 用信号与槽机制实现父窗口和子窗口之间数据互传
+备注：这个问题本质上是线程同步，如果不使用信号与槽机制也可以实现，详见QT_thread.md  
 1. 问题描述
 父窗口(A类)为属性显示窗口，子窗口(B类)为属性设置窗口  
 在父窗口中双击后即可弹出子窗口，要求两个窗口之间实现数据双向传输  

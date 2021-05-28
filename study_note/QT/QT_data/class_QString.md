@@ -126,6 +126,7 @@ str1.resize(n);
 ```
 20. QString arg(const QString &a, int fieldWidth = 0, QChar fillChar = QLatin1Char(' ')) const
 向QString字符串中插入相应的QString类型的变量  
+相当于C++提供的%d、%s、%c等通配符  
 注意：这里的字符串中不再是通配符，而是从1开始计数的数字，与后面的参数一一对应  
 ```
 sql_command = QString("insert into user_info values('%1', '%2', '%3', '%4');").arg(user_id).arg(user_name).arg(card_id).arg(user_remark);

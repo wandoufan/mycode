@@ -11,7 +11,7 @@ QPoint使用整型精度在平面上定义了一个位置
 使用给定的坐标创建一个位置  
 
 
-## 常用函数
+## 常用公共函数
 1. void QPoint::setX(int x)
 
 2. void QPoint::setY(int y)

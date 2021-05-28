@@ -7,7 +7,7 @@ QColorDialog的父类是QDialog
 使用QColorDialog可以很方便的让用户选择颜色并返回一个QColor  
 
 
-## 公共静态成员方法
+## 公共静态函数
 1. 弹出一个颜色选择对话框(最常用函数)
 ```
 [static] QColor QColorDialog::getColor(const QColor &initial = Qt::white, QWidget *parent = nullptr, const QString &title = QString(), QColorDialog::ColorDialogOptions options = ColorDialogOptions())

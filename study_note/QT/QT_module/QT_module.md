@@ -15,15 +15,8 @@
 但如果选择了TextEdit组件，只有设置文本下划线是正常的
 文本的斜体和粗体只能在程序运行之后再写入文字才能生效，且生效仅限一次
 在编译之前就写好的文字则无法生效
-2. ui -> lineEdit -> text();方法可以把文本框的内容读取出来，返回一个QString
-3. textBrowser等显示类的组件可以通过setText(str)方法把内容显示输出出来  
-但使用setText()方法会清空原有数据  
-如果是显示日志等内容，需要采用追加模式，不清空原有数据，则使用append()方法  
-另外，当内容增多，显示不完时，textBrowser会自动出现一个上下滑动块  
-如果内容是中文的，需要加上QString::fromLocal8Bit，否则显示乱码
-```
-ui -> message_column -> setText(QString::fromLocal8Bit("这是测试"));
-```
+
+3. 
 4. 代码中经常报错找不到组件，实际有这个组件，可能是系统没有及时认出来，可以对项目进行'清除'操作
 
 
@@ -39,6 +32,9 @@ QAbstractButton是QCheckBox, QPushButton, QRadioButton, QToolButton的父类
 只有可检查和切换（标记）的按钮可以标记或者取消标记checked or unchecked  
 3. bool isEnabled() const
 表示按钮是否可以被用户点按  
+```
+ui -> startButton -> setEnabled(false); //按钮变成灰色，不能再点击
+```
 4. void setAutoRepeat(bool)
 设置按钮是否当用户长按按钮可以auto-repeat（自动重复执行）  
 属性autoRepeatDelay和autoRepeatInterval定义了如何重复响应执行  

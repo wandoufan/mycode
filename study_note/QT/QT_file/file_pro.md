@@ -133,3 +133,7 @@ CONFIG -= warn_off
 ```
 include(../SkyplotWidget.pri)
 ```
+6. 句子前面加#表示注释掉
+```
+#TEMPLATE = app
+```
