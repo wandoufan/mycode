@@ -9,6 +9,7 @@ TCP客户端包括：QTcpSocket
 TCP服务端包括：QTcpSocket、QTcpServer
 ```
 注意：要在项目中使用Qt网络模块，需要先在.pro文件中加入'QT += network'  
+备注：TCP的客户端和服务端可以在同一计算机(即相同IP)上进行运行测试  
 
 
 ## 继承关系

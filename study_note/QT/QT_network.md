@@ -1,6 +1,5 @@
 # QT中的网络通信
 
-
 ## 基本信息
 注意：要在项目中使用Qt网络模块，需要先在.pro文件中加入'QT += network'  
 
@@ -29,10 +28,25 @@ QTcpServer提供一个基于TCP的服务端，可以接收到来的TCP连接请�
 提供UDP套接字相关的数据传输功能，有一些自己的成员函数  
 * QNetworkDatagram
 一个UDP协议传输的数据包对象  
+* QLocalServer
+类似于QTcpSever，不同的是它监听的是服务名而不是端口  
+* QLocalSocket
+类似于QTcpSocekt，不同的是它连接参数是服务端监听的服务名  
+```
+继承关系
+                                            | - QSctpSocket
+QIODevice - QAbstractSocket - |-QTcpSocket -| - QSslSocket
+                              |-QUdpSocket
+```
 
-
-* QNetworkAccessManager
+### 3. 实现OSI/ISO七层协议(HTTP、FTP、SNMP)的类
 * QNetworkRequest
+提供一个request对象  
+* QNetworkAccessManager
+用于协调网络操作，发送网络请求，以及接收响应  
 * QNetworkReply
+提供了一个request对应的网络响应对象，包含了具体的数据和请求头  
+* QUrl
+提供一个URL对象  
 
 

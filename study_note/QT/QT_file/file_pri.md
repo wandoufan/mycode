@@ -1,16 +1,17 @@
 # QT中的.pri文件
 
 ## 基本功能
+pri即project include  
 .pri文件和.pro文件一样，都是用来做项目的管理文件  
-但.pri文件一般用在自定义控件项目中，用来做内层控件部分的配置文件
+但.pri文件一般用在自定义控件项目中，用来做内层控件部分的配置文件  
 
 
 ## 示例
-自定义控件项目目录示例
+自定义控件项目目录示例  
 ```
 demo11_custom
 	│  demo11_custom.pro 项目管理文件
-	│  demo11_custom.pro.user
+	│  demo11_custom.pro.user 用户自定义配置文件
 	│      
 	├─qtcwbutton
 	│  │  qtcwbutton.pri 控件项目文件

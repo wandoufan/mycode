@@ -93,6 +93,7 @@ QScrollBar是QAbstractSlider的子类，只有基础属性，没有自己特有�
 
 ## Progress Bar
 Progress Bar组件提供一个进度条，常用于进度显示，对应QProgressBar类  
+备注：设置进度时不需要自己计算出百分比再填入控件中，只需要设置maximum和value，控件会自动转换为百分比显示  
 **常用属性**
 minimum		设置最小值，默认为0  
 maximum		设置最大值，默认为100  

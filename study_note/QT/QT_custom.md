@@ -60,7 +60,7 @@ QT中提供了很多基本的组件，但实际使用中可能还需要其他组
 ```
 demo11_custom
 	│  demo11_custom.pro 项目管理文件
-	│  demo11_custom.pro.user
+	│  demo11_custom.pro.user 用户自定义配置文件
 	│      
 	├─qtcwbutton
 	│  │  qtcwbutton.pri 控件项目文件

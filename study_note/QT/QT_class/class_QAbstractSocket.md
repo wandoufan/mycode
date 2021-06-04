@@ -89,13 +89,28 @@ protocol参数用来区分使用的是哪个网络协议，默认为IPV4和IPV6
 对于UDP socket，在绑定之后，当UDP数据报到达特定的地址和端口之后，会发出readyRead()信号  
 默认情况下，如果没有指定具体的端口，会随机选择一个端口  
 注意：这里的端口是指发送方的端口，不是接收方的端口，接收方的端口在发送数据的函数中指定  
+```
+//对于UDP单播或多播
+if(udp_socket -> bind(port))
+//对于UDP组播
+if(udp_socket -> bind(QHostAddress::AnyIPv4, group_port, QAbstractSocket::ShareAddress))
+```
 
 18. bool QAbstractSocket::bind(quint16 port = 0, QAbstractSocket::BindMode mode = DefaultForPlatform)
 这是一个重载函数，绑定到任意地址的指定端口上，不需要写具体的地址参数  
 
 19. void QAbstractSocket::abort()
-终止当前的连接，并重置socket  
+终止当前的连接，并重置socket，相当于解绑端口  
 和disconnectFromHost()不同的是，abort()函数会立刻关闭socket，丢掉缓冲区中还没读写完成的数据  
+
+20. [virtual] void QAbstractSocket::setSocketOption(QAbstractSocket::SocketOption option, const QVariant &value)
+将socket对象设置为给定的选项  
+其中MulticastTtlOption是UDP组播数据报的生存周期，数据报每跨越一个路由就数值减1  
+默认值为1，表示组播数据包只能在同一个路由下的局域网内传播  
+```
+//将socket的QAbstractSocket::MulticastTtlOption值设置为1
+udp_socket -> setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
+```
 
 
 ## 重载实现公共函数
@@ -217,4 +232,23 @@ QAbstractSocket::UnknownSocketType   -1   非TCP、UDP、SCTP的其他类型
 备注：这个集合是没有注册的元对象，使用时必须用Q_DECLARE_METATYPE()和qRegisterMetaType()去注册  
 ```
 
+```
+
+
+## enum QAbstractSocket::SocketOption
+这个集合包含了套接字可以设置的选项  
+可以在接收到connected()信号之后进行设置，或者在从QTcpServer接收到一个新的socket对象之后进行设置  
+```
+
+```
+
+
+## enum QAbstractSocket::BindMode/BindFlag
+这个集合包含了在使用bind()函数时的绑定模式  
+```
+Constant   Value   Description
+QAbstractSocket::ShareAddress   0x1
+QAbstractSocket::DontShareAddress   0x2
+QAbstractSocket::ReuseAddressHint   0x4
+QAbstractSocket::DefaultForPlatform   0x0
 ```

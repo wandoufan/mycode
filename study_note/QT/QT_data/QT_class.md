@@ -27,54 +27,14 @@ setPointSize() 设置字体肉眼看到的实际大小，在不同设备上显�
 setPixelSize() 设置字体像素单位的大小，在不同设备上显示大小可能不同  
 
 
-## QIODevice
-QIODevice类是QT中所有I/O设备的基础接口类  
-
 
 ## QFileDevice
 QFileDevice类提供了接口用来从打开文件中读文件和写文件，其父类是QIODevice  
 
 
-## QFile
-QFile类提供了接口用来读文件和写文件，其父类是QFileDevice  
-使用时需要包含头文件'#include <QFile>'  
-**常用函数**
-1. void setFileName(const QString &name)
-设置文件名字，名字中可以是相对路径，可以是绝对路径，也可以没有路径  
-注意：文件名路径时只支持"/"，不支持"\"  
-```
-myfile.setFileName("E:/test.raw");
-```
-2. bool QFile::open(QIODevice::OpenMode mode)
-用指定模式打开文件，返回ture或false  
-常用参数包括： QIODevice::ReadOnly、QIODevice::WriteOnly、QIODevice::ReadWrite  
-备注：在WriteOnly和ReadWrite模式下，如果文件不存在，会在打开前自动创建该文件  
-QIODevice::Truncate表示设备在打开前是截断的，设备所有早期的内容都会丢失  
-```
-myfile.open(QIODevice::WriteOnly | QIODevice::Truncate);
-```
-3. qint64 QIODevice::write(const char \*data, qint64 maxSize)
-直接向文件中写入数据，返回数据的字节长度，写入失败时返回-1  
-```
-int number = myfile.write("this is a write test")
-```
-4. [override virtual] void QFileDevice::close()
-调用QFileDevice::flush()函数，并关闭文件  
-来自于flush()函数的error会被忽略  
-5. bool QFileDevice::flush()
-冲洗掉文件缓冲区的所有数据，返回返回ture或false  
 
 
-## QImage
-QImage类提供了不依赖于硬件的图像表示，主要用于I/O和直接逐像素访问、操作  
-**使用示例**
-1. 打开一个本地图片，调整大小后保存
-```
-QImage signimage;
-signimage.load("E:/1.png");
-signimage =  signimage.scaled(pic_width, pic_height);
-signimage.save("E:/1.png");
-```
+
 
 
 

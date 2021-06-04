@@ -7,6 +7,7 @@ UDP通信也没有服务端，是由两个UDP的socket实现的
 一般的UDP通信程序都是在不同的计算机上运行，约定一个固定的端口作为通信端口  
 注意：要在项目中使用Qt网络模块，需要先在.pro文件中加入'QT += network'  
 备注：在同一台计算机上进行运行测试时，两个运行实例必须使用不同的端口上，否则会造成冲突，如果是在不同的计算机上运行，多个运行实例可以使用相同的端口  
+备注：单播和多播模式的多个实例可以在同一台计算机(即相同IP)上运行测试，组播的多个实例必须在不同IP的计算机上运行  
 
 
 ## 继承关系
@@ -28,7 +29,7 @@ QIODevice - QAbstractSocket - |-QTcpSocket -| - QSslSocket
 1. 单播模式(unicast)
 一对一数据传输  
 2. 组播/多播模式(multicast)
-一对多数据传输  
+一对多数据传输，目的地址要使用D类IP地址，详见IPV4.md  
 使用joinMulticastGroup()和leaveMulticastGroup()函数来控制组内的成员的进入和退出  
 使用QAbstractSocket::MulticastTtlOption和QAbstractSocket::MulticastLoopbackOption两个集合来设置TTL和socket选项  
 使用setMulticastInterface()来控制组播数据的接口，使用multicastInterface()来查询组播数据的接口  
