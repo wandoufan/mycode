@@ -2,41 +2,20 @@
 
 ## 基本功能
 pri即project include  
-.pri文件和.pro文件一样，都是用来做项目的管理文件  
+.pri文件和.pro文件本质是一样的，都是用来做项目的管理文件  
 但.pri文件一般用在自定义控件项目中，用来做内层控件部分的配置文件  
 
 
-## 示例
-自定义控件项目目录示例  
+## 基本用法
+一般把.pro文件中的一部分单独放到一个.pri文件中去，然后在.pro文件中把这个.pri文件包含进来  
 ```
-demo11_custom
-	│  demo11_custom.pro 项目管理文件
-	│  demo11_custom.pro.user 用户自定义配置文件
-	│      
-	├─qtcwbutton
-	│  │  qtcwbutton.pri 控件项目文件
-	│  │  
-	│  ├─Headers
-	│  │      qtcwbutton.h 控件头文件
-	│  │      
-	│  └─Sources
-	│          qtcwbutton.cpp 控件源文件
-	│          
-	├─Resources
-	│      icons.qrc 资源集合文件
-	│
-	├─Headers
-	│      qtcwbuttonplugin.h 插件头文件
-	│      
-	└─Sources
-	        qtcwbuttonplugin.cpp 插件源文件
+include(../SkyplotWidget.pri)
 ```
-文件内容示例
-```
-HEADERS += custombutton.h
-HEADERS += cwuicontrolslib.h
 
-SOURCES += custombutton.cpp
-SOURCES += cwuicontrolslib.cpp
+## .pro文件和.pri文件比较
+1. .pro文件是主要文件，.pri文件是附属文件，一个pro文件可以包含多个pri文件
+2. .pro文件一般显示在项目外层，.pri文件一般显示在项目内层
 
-```
+
+## 创建.pri文件
+没有找到办法可以直接创建.pri文件，网上的办法都是新建一个txt文本，然后修改后缀名  

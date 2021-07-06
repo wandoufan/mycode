@@ -5,6 +5,15 @@ QList是提供列表功能的模板类，属于一个顺序容器类
 在声明QList时，必须写明QList中要存放的数据类型  
 QList是最常用的容器类，相当于数组或列表，支持序列化访问，且访问修改数据的速度很快  
 QList<T>、QLinkedList<T>、QVector<T>提供了相似的函数接口  
+```
+//继承关系
+QList -- QByteArrayList、QItemSelection、QQueue、QStringList
+```
+
+
+## QList与python中list的区别
+1. 不支持双层列表，即不能列表内部再嵌套列表  
+2. 一个列表中只能存放一种数据类型，不能多个数据类型混合存放  
 
 
 ## 使用示例
@@ -30,18 +39,6 @@ QList<QString> alist = { "one", "two", "three" };
 ```
 
 
-## 容器类的数据项T
-容器类的一般格式为：template <typename T>  
-数据项T是一个具体的数据类型，且必须是一个可赋值的类型  
-数据项T可以是int或float等简单类型，也可以是QString或QDate等类  
-数据项T不能是QObject类或QObject的任何子类  
-
-
-## QList与python中list的区别
-1. 不支持双层列表，即不能列表内部再嵌套列表  
-2. 一个列表中只能存放一种数据类型，不能多个数据类型混合存放  
-
-
 ## 构造函数
 1. template <typename InputIterator> QList::QList(InputIterator first, InputIterator last)
 从迭代器InputIterator的范围[first, last)中构建一个列表  
@@ -61,7 +58,19 @@ QList<QString> alist = { "one", "two", "three" };
 创建一个空列表  
 
 
-## 常用函数
+## 数据类型转换相关的常用公共函数
+1. QString QStringList::join(const QString &separator) const
+将字符串列表中的元素拼接起来，返回一个QString  
+注意：join函数的连接字符串必须要有，可以是空字符串，但不能不写参数  
+```
+QStringList alist;
+alist << "a" << "b" << "c" << "d";
+QString str1;
+str1 = alist.join("+"); //写成str1 = alist.join();会报错，join函数必须要有参数
+```
+
+
+## 常用公共函数
 * int QList::size() const
 返回列表中元素的个数  
 

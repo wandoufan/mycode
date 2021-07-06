@@ -1,3 +1,5 @@
+# 编译器
+
 ## gcc
 gcc(GUN compiler collection)，即GUN编译套件，用来进行C/C++的编译  
 gcc编译器是Linux系统下最常用的C/C++编译器，大部分Linux发行版都会默认安装  
@@ -33,3 +35,19 @@ MinGW-w64项目同时支持生成64位和32位程序
 MSYS相当于是一个部署在Windows系统里面的小型Unix系统环境  
 通过MSYS，我们可以直接在Windows系统下运行很多Linux命令行，有点类似git-bash  
 对于MinGW-w64项目，它对应的小型系统环境叫MSYS2（Minimal SYStem 2）  
+
+## Makefile文件
+1. 文件作用
+一个工程中的源文件不计其数，其按类型、功能、模块分别放在若干个目录中  
+makefile就像一个Shell脚本一样，指定了具体的编译过程，实现整个项目的自动化编译，极大提高了效率  
+2. 文件内容
+Makefile文件描述了整个工程的编译、连接等规则，包括：  
+指定哪些文件需要先编译，哪些文件需要后编译，哪些文件需要重新编译  
+需要创建哪些库文件以及如何创建这些库文件  
+如何最后产生我们想要的可执行文件等等  
+3. make工具
+make工具是用来执行Makefile文件的命令工具，主流的IDE都提供该命令  
+比如：Delphi的make，Visual C++的nmake，Linux下GNU的make  
+4. 具体说明
+Makefile有自己的书写格式、关键字、函数  
+备注：在Qt中，Makefile文件是由qmake工具根据.pro文件自动生成的，用户只需要编写.pro文件即可  

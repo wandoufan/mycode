@@ -48,36 +48,8 @@ all_channel_info.append(channel_info);//将QVariant添加到列表里
 ```
 
 
-## 常用函数
-* QVariant::Type QVariant::type() const
-以QVariant::Type的形式返回QVariant中存储的数据类型，例如：  
-```
-QVariant::QString
-```
-
-* const char \*QVariant::typeName() const
-以char的形式返回QVariant中存储的数据类型，例如：  
-```
-QString
-```
-
-* template <typename T> bool QVariant::canConvert() const
-判断QVariant变量是否可以被转换成指定模板类型T，返回true或false  
-```
-//int型的QVariant既可以转换为int，也可以转换为QString
-QVariant v = 42;
-v.canConvert<int>();              // returns true
-v.canConvert<QString>();          // returns true
-//自定义的结构体型的QVariant只能转换回结构体类型
-MyCustomStruct s;
-v.setValue(s);
-v.canConvert<int>();              // returns false
-v.canConvert<MyCustomStruct>();   // returns true
-```
-
-
-## QVariant转换为其他类型的函数
-* template <typename T> T QVariant::value() const
+## 数据类型转换相关的常用公共函数
+1. template <typename T> T QVariant::value() const
 把QVariant变量转换为模板类型T，转换前要先用canConvert()判断是否可以转换  
 ```
 //将struct转换得到的QVariant，再转换回struct
@@ -90,24 +62,24 @@ if (v.canConvert<MyCustomStruct>())
 }
 ```
 
-* int QVariant::toInt(bool \*ok = nullptr) cons
+2. int QVariant::toInt(bool \*ok = nullptr) cons
 如果数据是数字、字符、字符串、布尔型等，就以int形式返回；否则，返回0  
 如果数据可以被转换为int类型，则ok指针会被设置为true；否则，ok指针设置为false  
 备注：这里没有搞太懂，实际使用时可以不写ok参数  
 
-* bool QVariant::toBool() const
+3. bool QVariant::toBool() const
 
-* QChar QVariant::toChar() const
+4. QChar QVariant::toChar() const
 
-* QString QVariant::toString() const
+5. QString QVariant::toString() const
 
-* QStringList QVariant::toStringList() const
+6. QStringList QVariant::toStringList() const
 
-* QTime QVariant::toTime() const
+7. QTime QVariant::toTime() const
 
-* QSize QVariant::toSize() const
+8. QSize QVariant::toSize() const
 
-* QPoint QVariant::toPoint() const
+9. QPoint QVariant::toPoint() const
 
 
 ## QVariant转换为QColor等类型的注意事项
@@ -123,3 +95,33 @@ QColor color = v_color.value<QColor>();
 QColor color = palette().background().color();
 QVariant v_color = color;
 ```
+
+
+## 常用公共函数
+1. QVariant::Type QVariant::type() const
+以QVariant::Type的形式返回QVariant中存储的数据类型，例如：  
+```
+QVariant::QString
+```
+
+2. const char \*QVariant::typeName() const
+以char的形式返回QVariant中存储的数据类型，例如：  
+```
+QString
+```
+
+3. template <typename T> bool QVariant::canConvert() const
+判断QVariant变量是否可以被转换成指定模板类型T，返回true或false  
+```
+//int型的QVariant既可以转换为int，也可以转换为QString
+QVariant v = 42;
+v.canConvert<int>();              // returns true
+v.canConvert<QString>();          // returns true
+//自定义的结构体型的QVariant只能转换回结构体类型
+MyCustomStruct s;
+v.setValue(s);
+v.canConvert<int>();              // returns false
+v.canConvert<MyCustomStruct>();   // returns true
+```
+
+

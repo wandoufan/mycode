@@ -122,4 +122,7 @@ void struct_array_init_2()
         printf("%d, %s, %c, %d, %.1f\n", student_array[i].num, student_array[i].name, \
         student_array[i].sex, student_array[i].age, student_array[i].score);
     }
+    //直接把结构体数组的某个元素赋值给一个同类型的结构体变量
+    //注意：在有的编译器下这么写可能会报错，尽量别这么操作，最好直接在结构体数组中操作
+    struct student current_student = student_array[0];
 }

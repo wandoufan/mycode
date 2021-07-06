@@ -122,7 +122,7 @@ void struct_init_2()
     }student_2;
     student_2.num = 1002;
     /*注意：字符数组定义后就不能直接整体赋值，非法操作：student_2.name = {"Han mei"}*/
-    strcpy(student_2.name, "Han mei"); 
+    // strcpy(student_2.name, "Han mei"); 
     student_2.sex = 'F';
     student_2.age = 18;
     student_2.score = 80.0;
