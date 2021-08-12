@@ -39,3 +39,10 @@ host  all    all    192.168.1.0/32    trust
 在'PostgreSQL 9.3 (x86)'上点击鼠标右键，选择'属性(P)'  
 在弹出的'服务器localhost'界面中，'属性'--'主机'  
 填入需要远程连接的数据库服务器的IP地址  
+
+
+## 数采系统中PostgreSQL远程连接配置
+一般直接在.cfg配置文件中写入远程数据库的主机IP，不用去pgAdmin III配置  
+```
+<hostname>191.30.2.16</hostname>
+```

@@ -10,6 +10,13 @@ if(a > b)
 then
 	print(a)
 end
+
+if(a > b)
+then
+	print(a)
+else
+	print(b)
+end
 ```
 2. if-elseif语句
 ```

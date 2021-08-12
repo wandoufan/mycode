@@ -21,6 +21,12 @@ label -> setStyleSheet("QLabel{background-color:rgb(200,101,102);}");
 备注：如果qss语句写错了，设置不会生效，但程序也不会有报错  
 
 
+## 在UI界面中设置控件颜色
+对于设计器中的各种控件需要设置颜色时，可以直接点击StyleSheet属性，在弹窗中写入qss语句  
+例如：设置控件的背景颜色为'background-color:blue;'  
+备注：实际测试，控件的palette属性设置颜色没有生效  
+
+
 ## QPalette使用示例
 例1
 ```
@@ -65,7 +71,7 @@ QPalette::Foreground 前景色
 
 
 ## enum Qt::GlobalColor
-颜色也可以用下面的参数进行赋值  
+Qt预定义了下面一些颜色参数  
 ```
 Constant  Value  Description
 
