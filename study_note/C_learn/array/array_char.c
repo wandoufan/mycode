@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /*整理总结C语言中字符数组的基本用法*/
 
@@ -18,14 +20,15 @@
 
 int main()
 {
+    printf("111111111\n");
     void test_init();
-    //test_init();
+    // test_init();
 
     void test_output();
-    //test_output();
+    test_output();
 
     void test_function();
-    test_function();
+    // test_function();
 
     return 0;
 }
@@ -69,6 +72,16 @@ void test_output()
     printf("%c\n", a[0]);
     /*s格式符用来输出一个字符串*/
     printf("%s\n", a);
+
+    /*输出中文字符*/
+    char b[100] = "这是一段中文字符串";
+    //不能像英文字符一样逐个输出，否则会显示乱码
+    for(int i = 0; i < 10; i++)
+    {
+        printf("%c\n", b[i]);
+    }
+    //按字符串整个输出，会正常显示为中文
+    printf("%s\n", b);
 }
 
 
@@ -82,6 +95,7 @@ void test_function()
     printf("%s\n", strcat(str1, str2));
 
     /*2.strcpy(str1, str2)函数将str2复制到str1中去，str1的原数据被抹去，返回str1的地址*/
+    // char* strcpy(char* strDestination, const char* strSource);
     /*strcpy函数常用来对字符数组进行整体赋值*/
     printf("%s\n", strcpy(str1, "test"));
 
