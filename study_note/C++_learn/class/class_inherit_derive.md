@@ -49,6 +49,10 @@ public:
 	float score;
 };
 ```
+当派生类和基类在不同的命名空间时，在基类名前要加上命名空间的名字  
+```
+class Student:public NAMESPACE1 People //派生类Student
+```
 
 
 ## 继承方式

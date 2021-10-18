@@ -65,6 +65,7 @@ class StudengtInfo {};
 
 ## 命名空间
 命名空间的名字每个字母都用小写  
+备注：实际代码中的命名空间也经常使用驼峰命名法  
 ```
 namespace space_name{
 	// 各种代码声明

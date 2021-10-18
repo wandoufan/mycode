@@ -15,14 +15,9 @@ int main()
    printf("Hello, World!!!! \n");
    /* 这是C语言中注释的格式 */
    // printf("C语言中用双斜杠注释掉一行，python中用#注释掉一行");
+   printf("代码太长时可以用\
+   	进行换行，\
+   	写在每行的最后");
    return 0;
 }
 
-void func_int()
-{
-    int a, b, c;
-    a = 1;
-    b = 2;
-    c = 1 + 2;
-    printf(c);
-}

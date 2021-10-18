@@ -2,7 +2,7 @@
 
 ## 注意事项
 1. 执行读写函数之后，文件指针会自动移动到下一个位置
-2. 读取二进制文件之前，必须知道文件中的数据格式(类型，长度)
+2. 读取二进制文件之前，必须知道文件中的数据格式(类型，长度)，也就是说，读的格式必须和写的格式一致
 
 
 ## 以字符形式读写文件
@@ -153,30 +153,90 @@ printf("%d\n", count);
 char a[100] = "这是一段中文";
 int count = fwrite(a, sizeof(char), 30, fp);
 printf("%d\n", count);
+
+//写入单个整型变量(记事本打开为乱码)
+int a = 1;
+int *p;
+p = &a;
+int count = fwrite(p, sizeof(int), 1, fp);
+printf("%d\n", count);
+
+//写入单个字符(记事本打开显示正常)
+char a = 'd';
+char *p;
+p = &a;
+int count = fwrite(p, sizeof(int), 1, fp);
+printf("%d\n", count);
 ```
 
 
 ## 格式化读写文件
 备注：fscanf()和fprintf()函数与scanf()和printf()功能相似，都是格式化读写函数，区别在于fscanf()和fprintf()的读写对象不是键盘和显示器，而是磁盘文件
+备注：fscanf()和fprintf()在输入输出时要进行字符和二进制之间的转换，效率不如fread()和fwrite()函数
 1. int fscanf(FILE \*fp, char * format, ...);
+从指定文件中读入参数数据，并赋值给参数列表中的参数
+读取成功，则返回被成功赋值的参数个数；读取失败，则返回EOF(即-1)
+format参数代表格式控制字符串
+...参数代表参数列表
+注意：和fgetc()函数不同，fscanf()函数在读取字符串的时候，遇到字符串中的空格和换行就会提前结束
+```
+int a;
+char b;
+char str[100];
+int count = fscanf(fp, "%d\n%c\n%s\n", &a, &b, str); //读取格式要和写入格式完全一致
+printf("%d\n", count);
+printf("%d %c %s\n", a, b, str);
+```
+
 2. int fprintf(FILE \*fp, char * format, ...);
-
-
+向指定文件中写入参数数据
+写入成功，则返回写入字符的个数(注意不是参数个数)；写入失败，则返回一个负数
+format参数代表格式控制字符串
+...参数代表参数列表
+```
+int a = 1;
+char b = 'a';
+char str[] = "this is a string!";
+int count = fprintf(fp, "%d\n%c\n%s\n", a, b, str);
+printf("%d\n", count);
+```
 
 
 ## 移动文件指针实现随机读写
 1. int fseek(FILE \*fp, long offset, int origin);
 改变文件指针的当前位置
+执行成功，则返回0；执行失败，则返回-1
 offset参数代表位移量，是相对于起始点向前移动的字节数，数字的后面要加上L
 origin参数代表起始点，其中，0代表文件开头，1代表当前位置，2代表文件末尾
+备注：fseek()函数一般用于二进制文本，在文本文件中由于要进行转换，计算的位置有时候会出错
 ```
 fseek(fp, 100L, 0); //文件指针移动到文件开头后面100个字节处
 fseek(fp, 50L, 1); //文件指针移动到当前位置后面50个字节处
 fseek(fp, -10L, 2); //文件指针移动到文件末尾前面10个字节处
 ```
+```
+//结构体数组中有三条记录，移动指针，只读取文件中的第二条记录
+struct student
+{
+	int num;
+	char name[20];
+	char sex;
+	int age;
+	float score;
+};
+struct student student_array[3];
+
+fseek(fp, sizeof(struct student), 1);
+printf("%d\n", ftell(fp));
+int count = fread(student_array, sizeof(struct student), 1, fp);
+printf("%d\n", count);
+printf("%d\n", sizeof(student_array)/sizeof(struct student));
+printf("num: %d, name: %s, sex: %c, age: %d, score: .1%f\n", student_array[0].num, \
+	student_array[0].name, student_array[0].sex, student_array[0].age, student_array[0].score);
+```
 
 2. void rewind (FILE \*fp);
-使文件指针重新返回文件的开头
+使文件指针重新返回文件的开头，函数没有返回值
 
 3. long ftell(FILE \*fp);
 返回文件指针的当前位置，位置用相对于文件开头的位移量来表示

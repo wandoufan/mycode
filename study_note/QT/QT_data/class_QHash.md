@@ -2,7 +2,7 @@
 
 ## 基本功能
 QHash<Key，T>是基于散列表来实现字典功能的容器类，基于哈希表实现  
-QHah和QMap的功能类似，但QHash的查询速度更快  、
+QHah和QMap的功能类似，但QHash的查询速度更快  
 备注：使用QHash需要自定义一个名为qHash()的全局散列函数  
 QHash一般不允许使用多值映射，如果想要实现多值映射，也可以使用QHash的子类QMultiHash  
 ```

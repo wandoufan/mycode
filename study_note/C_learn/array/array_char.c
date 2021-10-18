@@ -17,7 +17,6 @@
 而对于一个数值类型的数组，不能通过数组名整体输出，只能逐个引用数组元素
 */
 
-
 int main()
 {
     printf("111111111\n");
@@ -52,16 +51,7 @@ void test_init()
         printf("%c", a[i]);
     printf("\n");
 
-    /*字符数组也可以定义二维的*/
-    char z[3][5] = {{' ', ' ', '*', ' ', ' '}, {' ', '*', ' ', '*', ' '}, {'*', ' ', ' ', ' ', '*'}};
-
-    for(i = 0; i <= 2; i++)
-    {
-        for(j = 0; j <= 4; j++)
-            printf("%c,", z[i][j]);
-        printf("\n");
-    }
-    printf("\n");
+    /*字符数组也可以定义二维的，详见二维数组部分*/
 }
 
 
@@ -82,6 +72,27 @@ void test_output()
     }
     //按字符串整个输出，会正常显示为中文
     printf("%s\n", b);
+}
+
+
+void test_sprintf()
+/*
+sprintf可以把格式化文本（字符串/字符流）打印到字符串缓冲区上
+一般用来把不同类型的多个变量数据写入到同一个字符串中，类似于简便的格式转换
+sprintf(字符串缓冲区, 格式控制, 输出列表)
+*/
+{
+    char buffer[100];
+    int a = 1;
+    float b = 3.14;
+    char c = 'c';
+    char str[] = "this is a string";
+    sprintf(buffer, "拼接字符串：%d + %.2f + %c, %s\n", a, b, c, str);
+    printf("%s\n", buffer);
+
+    char buffer2[100];
+    sprintf(buffer2, "sprintf函数也可以只写前两个参数，忽略输出列表");
+    printf("%s\n", buffer2);
 }
 
 

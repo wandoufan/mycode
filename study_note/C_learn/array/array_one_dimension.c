@@ -20,6 +20,10 @@
 C语言中没有直接读取数组长度的函数，必须借助sizeof()
 读取数组的字节数，再除以数组元素的字节数
 int length = sizeof(a)/sizeof(int);
+另外，如果是结构体数组，要写成:
+struct student {...};
+struct student student_array[3];
+int length = sizeof(student_array)/sizeof(struct student)
 */
 
 int main()

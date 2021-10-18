@@ -23,35 +23,12 @@
 注意：二维数组在作为函数形参时，第一维大小可以省略，但第二维大小必须指明 int matrix[][4];
 */
 
-int main()
-{
-    void func_1(); /*调用函数前要先对被调用的函数进行声明*/
-    func_1(); /*正式调用func_1函数*/
-
-    int func_2(int x, int y); /*x、y是形参*/
-    int a, b, c;
-    a = 1;
-    b = 2;
-    c = func_2(a, b); /*a,b是实参*/
-    printf("sum is %d \n", c);
-
-    void func_3();
-    func_3(); /*调用空函数时不会执行任何操作*/
-
-    float func_array(int score[], int count);
-    int grade[] = {92, 81, 65, 77, 42, 88, 70};
-    int n = 7;
-    printf("the average grade is %.2f\n", func_array(grade, n));
-
-    return 0;
-}
 
 
 void func_1() /*无参函数*/
 {
     printf("this is a test\n");
 }
-
 
 int func_2(int x, int y) /*有参函数*/
 {
@@ -66,6 +43,11 @@ void func_3() /*空函数，相当于预留函数*/
 
 }
 
+// 和python、C++不同，C语言函数不支持默认参数，以下用法会报错：
+void func_4(int a, int b = 1) 
+{
+    printf("%d\n", a + b);
+}
 
 float func_array(int score[], int count) /*数组作为函数参数*/
 /*求平均成绩*/
@@ -78,4 +60,25 @@ float func_array(int score[], int count) /*数组作为函数参数*/
     }
     average = sum / count;
     return average;
+}
+
+
+int main()
+{
+    func_1();
+
+    int func_2(int x, int y); /*x、y是形参*/
+    int a, b, c;
+    a = 1;
+    b = 2;
+    c = func_2(a, b); /*a,b是实参*/
+    printf("sum is %d \n", c);
+
+    func_3(); /*调用空函数时不会执行任何操作*/
+
+    int grade[] = {92, 81, 65, 77, 42, 88, 70};
+    int n = 7;
+    printf("the average grade is %.2f\n", func_array(grade, n));
+
+    return 0;
 }

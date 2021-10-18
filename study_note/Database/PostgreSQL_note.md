@@ -18,15 +18,25 @@ pgAdmin是一个针对PostgreSQL数据库的设计和管理接口
 ### 1. 配置数据库服务端
 如果需要允许远程访问，需要修改两个配置文件：  
 备注：修改前可以先把两个配置文件进行备份  
-1. ```~\PostgreSQL\9.3\data\postgresql.conf```
-将该文件中的listen_addresses项值设定为"\*"  
+1. C:\Program Files(x86)\PostgreSQL\9.3\data\postgresql.conf
+找到文件中的```listen_addresses```，将项值设定为"*"  
 备注：在9.0 以上Windows版中，该项配置已经是"*"，无需修改  
-2. ```~\PostgreSQL\9.3\data\pg_hba.conf```
-在该配置文件的 host all all 127.0.0.1/32 md5 行下添加以下配置，或者直接将这一行修改为以下配置  
+
+2. C:\Program Files(x86)\PostgreSQL\9.3\data\pg_hba.conf
+找到配置文件中的
+```
+host all all 127.0.0.1/32 md5
+```
+将这一行修改为：
 ```
 host  all    all    0.0.0.0/0    md5
 ```
-如果不希望允许所有IP远程访问，则可以将上述配置项中的0.0.0.0设定为特定的IP值，比如：
+或者修改为：
+```
+host all all 127.0.0.1/32 trust
+```
+
+3. 如果不希望允许所有IP远程访问，则可以将上述配置项中的0.0.0.0设定为特定的IP值，比如：
 ```
 host  all    all    192.168.1.0/24    md5
 host  all    all    192.168.1.0/32    trust

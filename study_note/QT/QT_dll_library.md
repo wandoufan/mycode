@@ -25,13 +25,14 @@ QLibrary属于显式调用方式，即在程序执行到某个函数时才去加
 
 -------------------------------创建dll(待补充)---------------------------
 
-## 新建一个dll项目
+## 1. 新建一个dll项目
 新建项目 - Library - C++ Library  
 其中，Detials步骤的Type选项选择默认的Shared Library  
 Qt creator会自动生成一个和项目同名的{projectName}\_global.h文件，详见file_global_h.md  
+备注：这里并不需要去继承某个Qt的类，只需要在定义类时加上一个宏声明  
 
 
-## 把原有项目改造成dll项目
+## 2. 把原有项目改造成dll项目
 一般情况下，工程可能之前已经创建好了，并且功能都已经完善，现在想生成库文件给被别人调用  
 这时，只需要修改xxx.pro工程文件即可，在原有文件中加上以下语句  
 ```
@@ -40,5 +41,6 @@ DEFINES += DLL_CREATETEST_LIBRARY
 ```
 
 
-## 自定义Qt控件项目
-Qt的自定义控件项目最终也会编译出一个dll文件，详见QT_custom.md  
+## 3. 自定义Qt控件项目
+Qt的自定义控件项目最终也会编译出一个dll文件，详见QT_custom_plugin.md  
+相关的类为：QDesignerCustomWidgetInterface  
