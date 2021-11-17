@@ -52,7 +52,7 @@ void pointer_void_parameter(void * p1_void, void * p2_void)
 {
 	/*
 	用空类型指针作为函数参数，代表通用类型的参数
-	空类型指针参数一般用于模板函数中
+	空类型指针参数一般用于模板函数中，内存分配函数，如void * malloc(unsigned int size);
 	*/
 
 	//对于传入的空类型指针要先进行类型转换，然后再进行使用

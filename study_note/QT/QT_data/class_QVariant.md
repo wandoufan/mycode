@@ -23,6 +23,11 @@ QVariant v_string = "abc";
 ```
 item->setData(Qt::DecorationRole, QVariant(inner_color));
 ```
+4. 把一个QVariant对象转换成指定的数据类型
+```
+result = variant1.value<qint32>();//转换成qint32型
+result = variant2.value<QSerialPort::DataBits>();//转换成enum QSerialPort::DataBits
+```
 
 
 ## 构造函数
@@ -99,16 +104,11 @@ QVariant v_color = color;
 
 ## 常用公共函数
 1. QVariant::Type QVariant::type() const
-以QVariant::Type的形式返回QVariant中存储的数据类型，例如：  
-```
-QVariant::QString
-```
+以QVariant::Type的类型返回QVariant中存储的数据类型  
+备注：不知道QVariant::Type类型怎么用  
 
 2. const char \*QVariant::typeName() const
-以char的形式返回QVariant中存储的数据类型，例如：  
-```
-QString
-```
+以char的形式返回QVariant中存储的数据类型  
 
 3. template <typename T> bool QVariant::canConvert() const
 判断QVariant变量是否可以被转换成指定模板类型T，返回true或false  

@@ -11,8 +11,52 @@
 槽函数可以声明在类的任何部分(private、public或protected)  
 槽函数既需要声明也需要定义  
 备注：一个槽并不知道是否有任何信号与自己相关联  
-3. SIGNAL和SLOT  
-SIGNAL和SLOT是QT的宏，用于指明信号和槽，必须用它们将信号函数和槽函数包起来  
+
+
+## 声明信号与槽函数
+1. signals和slots
+小写的signals和slots是Qt提供的关键字，这也是最常用的方式  
+```
+public slots:
+    void func_slot();
+
+signals:
+    void func_signal();
+```
+2. Q_SIGNAL和Q_SLOT
+Q_SIGNAL和Q_SLOT是由QObject类提供的宏，可以将单个函数标记为信号函数和槽函数  
+当你使用第三方信号与槽机制时，可以用来替代signals和slots关键字  
+一般的，当.pro文件中有`CONFIG += no_keywords`时使用这两个宏  
+```
+public Q_SLOT:
+    void func_slot();
+
+Q_SIGNAL:
+    void func_signal();
+```
+3. Q_SIGNALS和Q_SLOTS
+Q_SIGNAL和Q_SLOT是由QObject类提供的宏，可以将函数标记为信号函数和槽函数  
+当你使用第三方信号与槽机制时，可以用来替代signals和slots关键字  
+一般的，当.pro文件中有`CONFIG += no_keywords`时使用这两个宏  
+```
+public Q_SLOTS:
+    void func_slot1();
+    void func_slot2();
+
+Q_SIGNALS:
+    void func_signal1();
+    void func_signal2();
+```
+4. 第三方信号与槽机制
+除了Qt自身提供的信号与槽机制，Qt还支持使用第三方信号与槽机制  
+甚至还可以在同一个项目中同时使用这两种机制，只需要在.pro文件中加上如下语句  
+```
+CONFIG += no_keywords
+```
+这会告诉Qt不要去定义关键字signals、slots、emit，因为这些名字将要被第三方库去使用  
+自己在声明信号与槽函数时，用下面的宏来替代关键字名字  
+Q_SIGNAL、Q_SLOT、Q_SIGNALS、Q_SLOTS、Q_EMIT  
+备注：关于第三方信号与槽机制，没有实际用过，也不太了解  
 
 
 ## connect()函数
@@ -33,6 +77,7 @@ slot()是槽函数的名称，需要带括号，有参数时需要指明参数�
 因此可以直接写为connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));  
 3.2 信号函数的参数值会直接传递给槽函数的参数  
 3.3 信号函数与槽函数的参数只能写出参数类型，不能包含任何具体的参数名  
+另外，信号函数和槽函数即使没有参数，也要写出括号，不能省略  
 ```
 QLabel *label = new QLabel;
 QScrollBar *scrollBar = new QScrollBar;
@@ -114,8 +159,10 @@ UniqueConnection参数可以用来防止重复连接，严格来说不算连接�
 ```
 class QDESIGNER_WIDGET_EXPORT CustomButton : public QWidget
 {
+    //使用信号与槽的类中必须加入Q_OBJECT宏
     Q_OBJECT
-    Q_PROPERTY(bool Value READ Value WRITE SetValue NOTIFY valuechanged) //NOTIFY关键字后面是信号函数
+    //NOTIFY关键字后面是信号函数
+    Q_PROPERTY(bool Value READ Value WRITE SetValue NOTIFY valuechanged)
 
 public:
     CustomButton(QWidget *parent = 0);

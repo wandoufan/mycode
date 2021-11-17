@@ -2,12 +2,43 @@
 
 ## 基本功能
 QWaitCondition为同步线程提供了一个条件变量  
-一个线程在满足一定条件时，通知其他多个线程，使它们做出响应  
 QWaitCondition一般用于'生产者/消费者'模型中，和QReadWriteLock/QMutex搭配使用  
+线程A执行完一些操作后，调用wait()来进入阻塞状态(释放资源并等待被唤醒)  
+线程B使用资源并执行一些操作，然后释放资源，调用wakeOne()/wakeAll()方法将线程A唤醒，然后线程A继续往下执行  
+其中，线程A和线程B之间使用同一个QMutex或QReadWriteLock来实现资源的lock()和unlock()，避免使用资源冲突  
 
 
-## 代码示例
-1. '生产者/消费者'模型
+## '端口通信'模型代码示例
+主线程：调用Send()来向通信端口发送一个数据包，然后调用wait()阻塞，等端口收到返回数据包时才能继续往下执行  
+通信线程：不断从通信端口中读取数据，当读到返回数据包时，调用wakeOne()/wakeAll()唤醒主线程
+```
+//公共资源(全局变量)
+int send_packet[100];
+int receive_packet[100];
+bool received_flag;
+QMutex mutex;
+QWaitCondition condition;
+
+//主线程
+mutex.lock();
+Send(&send_packet);//向通信端口发送数据包
+condition.wait(&mutex);
+if(received_flag)
+{
+    HandlePacket(receive_packet);//继续往下执行
+}
+mutex.unlock();
+
+//通信线程
+receive_packet = Receive();//从通信端口读取数据包
+received_flag = 1;
+mutex.lock();
+condition.wakeAll();//唤醒主线程
+mutex.unlock();
+```
+
+
+## '生产者/消费者'模型代码示例
 注意：两个线程调用的是相同的mutex和newdataAvailable  
 ```
 //以下变量都是全局变量，两个线程都要进行访问
@@ -82,13 +113,12 @@ thread_consumer.wait();
 
 3. bool QWaitCondition::wait(QMutex \*lockedMutex, QDeadlineTimer deadline = QDeadlineTimer(QDeadlineTimer::Forever))
 先解锁互斥量lockedMutex，使其他线程可以使用lockedMutex，然后阻塞当前进程一直等待唤醒条件，被唤醒后再锁定lockedMutex，然后退出函数，继续执行函数下面的代码  
-注意：lockedMutex必须是被调用线程锁住，处于locked的状态，然后才能作为参数传递到函数里  
+注意：lockedMutex必须是被调用线程锁住，即处于locked的状态，然后才能作为参数传递到函数里  
 注意：当前线程和其他线程使用的是同一个lockedMutex，因此lockedMutex是一个全局变量，QWaitCondition对象也是一样的  
 函数返回条件：  
 3.1 如果lockedMutex是Recursive模式的，则该函数立即返回  
 3.2 其他线程用wakeAll()/wakeOne()唤醒了该线程，则函数返回true  
 3.3 等待时间超时后，则函数返回false(deadline默认值为Forever，即永不超时，一直等待)  
-
 
 4. bool QWaitCondition::wait(QReadWriteLock \*lockedReadWriteLock, QDeadlineTimer deadline = QDeadlineTimer(QDeadlineTimer::Forever))
 类似上一个函数，区别在于参数是一个lockedReadWriteLock  

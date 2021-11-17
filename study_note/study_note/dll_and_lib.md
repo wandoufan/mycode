@@ -71,7 +71,11 @@ ordinal hint RVA      name
 12    B 000013F0 GetVersionNum
 ```
 2. Dependency Walker工具
+这个工具也同样无法获得详细的函数参数和返回值信息  
+
+
+## 关于Dependency Walker工具
 下载地址：http://dependencywalker.com/  
 可以扫描32或者64位的Windows模块（exe，dll，ocx，sys等）  
 然后对其依赖关系进行分析并画出一棵模块依赖树  
-这个工具也同样无法获得详细的函数参数和返回值信息  
+一个dll可能会依赖于其他多个dll，对于缺少的依赖文件，会显示为黄色问号  

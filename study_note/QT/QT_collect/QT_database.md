@@ -49,8 +49,9 @@ sql查询结果数据的只读数据模型，用于select查询结果的只读�
 用于一个数据表的可编辑数据模型  
 
 其中继承关系为：
-QAbstractTableModel - QSqlQueryModel - QSqlTableModel - QSqlRelationTableModel
-
+```
+QAbstractTableModel <- QSqlQueryModel <- QSqlTableModel <- QSqlRelationTableModel
+```
 
 ## 连接sql server步骤
 > https://blog.csdn.net/xianchao0127/article/details/111084495

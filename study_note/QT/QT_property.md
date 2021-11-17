@@ -312,7 +312,10 @@ all_channel_info.append(channel_info);
 
 
 ## qRegisterMetaType()函数
-template <typename T> int qRegisterMetaType()  
+```
+template <typename T>
+int qRegisterMetaType()
+```
 1. 函数功能：  
 调用这个函数来向元对象系统注册类型T，并返回meta type的id  
 其中T必须要先用Q_DECLARE_METATYPE宏进行声明  

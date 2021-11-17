@@ -14,7 +14,14 @@
 可以将这些类的共同成员提取出来，定义为基类，然后从基类继承，既可以节省代码，也方便后续修改成员  
 
 
-## 使用方法
+## 注意事项
+1. 当派生类和基类在不同的命名空间时，在基类名前要加上命名空间的名字
+```
+class Student:public NAMESPACE1 People
+```
+
+
+## 使用示例
 继承的一般语法格式为：  
 ```
 class 派生类名:［继承方式］ 基类名
@@ -22,36 +29,59 @@ class 派生类名:［继承方式］ 基类名
     派生类新增加的成员
 };
 ```
-例如：  
+代码示例：  
 ```
-class People //基类People
+class People//基类
 {
 public:
-	void set_age(int a)
+	int m_age;
+	char m_name;
+	void set(int age, char name)
 	{
-		age = a;
+		m_age = age;
+		m_name = name;
 	}
-	void get_age()
+	void show_people()
 	{
-		cout << age << endl;
+		cout << "年龄是：" << m_age << endl;
+		cout << "姓名是：" << m_name << endl;
 	}
-private:
-	int age;
 };
 
-class Student:public People //派生类Student
+class Student:public People//子类
 {
 public:
-	void set_score(float a)
+	float m_score;
+	void set(int age, char name, float score)
 	{
-		score = a;
+		m_age = age;
+		m_name = name;
+		m_score = score;
 	}
-	float score;
+	void show_student()
+	{
+		cout << "年龄是：" << m_age << endl;
+		cout << "姓名是：" << m_name << endl;
+		cout << "成绩是：" << m_score << endl;
+	}
 };
-```
-当派生类和基类在不同的命名空间时，在基类名前要加上命名空间的名字  
-```
-class Student:public NAMESPACE1 People //派生类Student
+
+int main()
+{
+	//初始化
+	People peo1;
+	peo1.set(15, 'a');
+	peo1.show_people();
+	Student stu1;
+	stu1.set(18, 'b', 90.5);
+	stu1.show_student();
+	//子类调用父类的成员变量
+	cout << stu1.m_age << endl;
+	stu1.m_name = 'c';
+	stu1.show_student();
+	//子类调用父类的成员函数
+	stu1.show_people();
+}
 ```
 
 
@@ -112,42 +142,174 @@ int main()
 ```
 
 
-## 基类和派生类的构造函数
-1. 基本用法
+## 继承时的构造函数问题
+1. 基本说明
 因为父类和子类的名字都不一样，因此子类无法继承父类的构造函数  
-子类继承的成员变量也需要由子类的构造函数来进行初始化，因此在子类的构造函数中调用父类的构造函数  
-例如：'Student::Student(int age, float score):People(age), my_score(score){}'  
+子类从父类继承的成员变量也需要由子类的构造函数来进行初始化，因此在子类的构造函数中调用父类的构造函数，来对父类中的成员变量进行初始化  
 注意：派生类构造函数中只能调用直接基类的构造函数，不能调用间接基类的  
-```
-class People //基类People
-{
-public:
-	People(int age);
-	int my_age;
-};
-People::People(int age):my_age(age){} //基类的构造函数
-
-class Student:public People //派生类Student
-{
-public:
-	Student(int age, float score);
-	float my_score;
-};
-//子类构造函数调用父类构造函数，People(age)就是调用父类的构造函数
-Student::Student(int age, float score):People(age), my_score(score){} 
-
-int main()
-{
-	Student stu1(16, 90.5);
-	cout << stu1.my_age << endl;
-	cout << stu1.my_score << endl;
-}
-```
 2. 多层继承时的构造函数
 继承关系为：'A --> B --> C'，C是最终派生类，此时，B称为C的直接基类，A称为C的间接基类  
 如果C中调用了B的构造函数，B会自动调用A的构造函数，相当于C间接地（或者说隐式地）调用了A的构造函数  
 执行顺序为：A类构造函数 --> B类构造函数 --> C类构造函数  
 因此不能在C中显示地调用A的构造函数，否则就相当于A中构造函数调用了两次  
+3. 示例1：基类中没有构造函数
+```
+class People//基类
+{
+public:
+	int m_age;
+	char m_name;
+	void set(int age, char name)
+	{
+		m_age = age;
+		m_name = name;
+	}
+	virtual void show() //在基类中声明为虚函数
+	{
+		cout << "年龄是：" << m_age << endl;
+		cout << "姓名是：" << m_name << endl;
+	}
+};
+
+class Student:public People//子类
+{
+public:
+	float m_score;
+	Student(int age, char name, float score)//子类构造函数
+	{
+		m_age = age;//对父类中的成员变量进行初始化
+		m_name = name;//对父类中的成员变量进行初始化
+		m_score = score;
+	}
+	void show() override;//在子类中对虚函数进行重写
+};
+
+void Student::show()
+{
+	cout << "年龄是：" << m_age << endl;
+	cout << "姓名是：" << m_name << endl;
+	cout << "成绩是：" << m_score << endl;
+}
+
+int main()
+{
+	People peo1;
+	peo1.set(15, 'a');
+	peo1.show();
+	Student stu1(18, 'b', 90.5);
+	stu1.show();
+}
+```
+4. 示例2：基类中有构造函数，但构造函数没有参数
+效果和上面一样，相当于基类没有构造函数
+```
+class People//基类
+{
+public:
+	int m_age;
+	char m_name;
+	People()//基类构造函数
+	{
+		cout << "调用了基类的构造函数" << endl;
+	}
+	void set(int age, char name)
+	{
+		m_age = age;
+		m_name = name;
+	}
+	virtual void show() //在基类中声明为虚函数
+	{
+		cout << "年龄是：" << m_age << endl;
+		cout << "姓名是：" << m_name << endl;
+	}
+};
+
+class Student:public People//子类
+{
+public:
+	float m_score;
+	Student(int age, char name, float score)//子类构造函数
+	{
+		m_age = age;//对父类中的成员变量进行初始化
+		m_name = name;//对父类中的成员变量进行初始化
+		m_score = score;
+	}
+	void show() override;//在子类中对虚函数进行重写
+};
+
+void Student::show()
+{
+	cout << "年龄是：" << m_age << endl;
+	cout << "姓名是：" << m_name << endl;
+	cout << "成绩是：" << m_score << endl;
+}
+
+int main()
+{
+	People peo1;
+	peo1.set(15, 'a');
+	peo1.show();
+	Student stu1(18, 'b', 90.5);
+	stu1.show();
+}
+```
+5. 示例3：基类中有构造函数，且构造函数有参数
+注意：这种情况下，子类必须显式的调用基类的构造函数，否则会报错  
+也就是说，这种情况下，只有这一种方法可以对从父类中继承的成员变量进行初始化  
+```
+class People//基类
+{
+public:
+	int m_age;
+	char m_name;
+	People(int age, char name)//基类构造函数
+	{
+		m_age = age;
+		m_name = name;
+		cout << "调用了基类的构造函数" << endl;
+	}
+	
+	virtual void show() //在基类中声明为虚函数
+	{
+		cout << "年龄是：" << m_age << endl;
+		cout << "姓名是：" << m_name << endl;
+	}
+};
+
+class Student:public People//子类
+{
+public:
+	float m_score;
+	Student(int age, char name, float score);//子类构造函数
+	void show() override;//在子类中对虚函数进行重写
+};
+
+//People(age, name)是显式调用基类的构造函数，m_score(score)是子类自己的初始化列表
+Student::Student(int age, char name, float score):People(age, name), m_score(score)
+{
+	cout << "调用了子类的构造函数" << endl;
+}
+
+void Student::show()
+{
+	cout << "年龄是：" << m_age << endl;
+	cout << "姓名是：" << m_name << endl;
+	cout << "成绩是：" << m_score << endl;
+}
+
+int main()
+{
+	People peo1(15, 'a');
+	peo1.show();
+	Student stu1(18, 'b', 90.5);
+	stu1.show();
+}
+```
+实际测试，如果不调用父类的构造函数，像示例2那样直接对父类中成员变量进行初始化，会产生报错：  
+```
+error: no matching function for call to 'People::People()'
+candidate expects 2 arguments, 0 provided
+```
 
 
 ## 基类和派生类的析构函数
@@ -163,7 +325,9 @@ int main()
 ## 多重继承
 1. 基本概念
 当派生类只有一个基类时称为单继承，派生类有多个基类时称为多继承  
-备注：使用多重继承会造成混乱，一般避免使用，Java、C#、PHP等直接取消了多继承  
+使用多重继承会造成代码逻辑复杂，思路混乱，Java、C#、PHP等直接取消了多继承  
+多继承一般用在大型项目中，中小型项目很少使用  
+C++中虽然还支持多继承，但一般也尽量避免使用  
 2. 使用方法
 继承关系为：'A、 B、 C --> D'  
 ```

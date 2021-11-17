@@ -10,7 +10,7 @@ QT除了支持GUI方面的功能，还封装了网络编程、多线程、数据
 Qt的用户界面和功能设计都是通过C++语言编程实现的，也有用于移动端的QML编程(不常用)  
 
 ## GUI
-GUI(Graphical User Interface)图形用户界面/图形用户接口，是采用图形方式显示的计算机操作用户界面  
+GUI(Graphical User Interface)图形用户界面图形用户接口，是采用图形方式显示的计算机操作用户界面  
 用户可以通过鼠标等输入设备操纵屏幕上的图标或菜单选项来实现计算机的交互功能  
 
 ## Qt的优点
@@ -40,6 +40,11 @@ MSVC允许使用本地已经安装过的Visual Studio来作为编译器
 QT提供了很多开发工具，常用的包括：  
 1. qmake
 qmake是QT最核心的工具，可以生成跨平台的.pro项目文件，也可以根据不同的操作系统和编译工具生成相应的Makefile，用于构建可执行程序或链接库  
+qmake.exe路径示例(不同编译器目录下都有对应的qmake工具):
+```
+C:\Qt2\5.15.1\msvc2015_64\bin\qmake.exe
+C:\Qt3\Qt5.2.1\5.2.1\msvc2010_opengl\bin\qmake.exe
+```
 2. UIC
 即user interface compiler，用户界面编译器，QT使用XML语法格式的.ui文件来定义用户界面，uic根据.ui文件生成用于创建用户界面的C++代码头文件，例如ui_*.h  
 3. MOC

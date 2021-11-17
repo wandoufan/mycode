@@ -4,7 +4,7 @@
 ## 基本概念
 常类型是指使用const修饰符进行说明的类型，C语言中也有const  
 常类型的变量或对象的值是不能被更新的，因此定义常类型时必须初始化  
-如果试图修改被const修饰的对象，则会报错'assignment of read-only variable'  
+如果试图修改被const修饰的对象，则会报错`assignment of read-only variable`  
 
 
 ## const关键字
@@ -15,7 +15,7 @@ const可以指定一个语义约束，使被修饰对象保持不变，编译器
 
 ## 常对象
 常对象是指由类实例化出来的对象常量，定义格式为：  
-'const class object(params);'或'class const object(params);'  
+`const class object(params);`或`class const object(params);`  
 常对象只能访问被const修饰的成员方法，因为非const成员可能会修改对象的数据  
 ```
 const Student1 zhang(1, 16); //获取一个常对象
@@ -86,21 +86,24 @@ void Student1::get_score() const  //类外部定义时也要加上const
 
 -------------------------------------------------------------------
 
-## 常量
+## 常变量
 用const修饰变量后，变量的值就不能再被修改，称为常变量  
 const变量必须在定义时初始化，不能先定义再初始化  
-常变量也完全可以用'#define'来代替  
+常变量也完全可以用`#define`来代替  
 ```
-const int a = 1; // const把变量a定义为一个常量
-int b = a; // 可以把a赋值给其他变量
-// a = 2; // 不能再对a进行修改，否则会报错
+const int a = 1; //const把变量a定义为一个常量
+#define a 1;//与上面常变量的效果一样
+int b = a; //合法，可以把a赋值给其他变量
+a = 2; //不合法，不能再对a进行修改
+const int c; //不合法，const变量不能先定义再初始化
+c = 1;
 ```
 
 
 ## 常指针
 常指针是用const修饰的指针，有三种形式：  
 1. const放在指针变量的类型之前，表示声明一个指向常量的指针  
-'const int \*p1 = &a;'和'int const \*p1 = &a;'的效果一样  
+`const int *p1 = &a;`和`int const *p1 = &a;`的效果一样  
 这种情况下，不能通过指针改变它所指向的变量值，但可以修改指针本身的值  
 ```
 int a = 1, b = 2;
@@ -113,7 +116,7 @@ int const *p2 = &a;
 p2 = &b;
 ```
 2. const放在定义指针变量的名之前，表示指针本身是一个常量，称为指针常量或常指针  
-例如：'int * const p1 = &a;'  
+例如：`int * const p1 = &a;`  
 这种情况下，不能改变指针本身的值，但可以通过指针改变它所指向的变量值  
 ```
 int a = 1, b = 2;
@@ -123,7 +126,7 @@ int * const p1 = &a; //p1指针指向变量a，即p1本身是const的
 // int * const p2; //注意：声明常指针时必须进行初始化，否则报错
 ```
 3. 将const在上述两个地方都写上，表示一个指向常量的常指针  
-'const int * const p1 = &a;'和'int const * const p1 = &a;'效果一样  
+`const int * const p1 = &a;`和`int const * const p1 = &a;`效果一样  
 这种情况下，指针指向的变量值和指针本身都不可变  
 ```
 int a = 1, b = 2;
@@ -136,9 +139,13 @@ const int * const p1 = &a; //常指针p1指向常量a
 
 ## 常函数
 函数开头的const用来修饰普通函数的返回值，表示返回值是const类型，也就是不能被修改  
-例如：'const char * getname()'  
+```
+const char * getname()
+```
 函数头部的结尾加上const表示类中的常成员函数，这种函数只能读取不能修改成员变量的值  
-例如：'char * getname() const'  
+```
+char * getname() const
+```
 
 
 ## 常函数形参
@@ -149,5 +156,5 @@ void test(const char *p)
 
 
 ## const和非const类型转换
-'const char \*'和'char \*'是不同的类型  
+`const char *`和`char *`是不同的类型  
 可以把非const类型赋值为const类型，但不能把const类型赋值给非const类型  

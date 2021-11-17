@@ -127,10 +127,10 @@ git reset HEAD filename
 git rm filename
 ```
 根据版本ID查看某次提交具体修改的文件内容  
+备注：ID只需要写出前几位即可，之后不会有自动补全，但是不影响  
 ```
 git show ID
 ```
-备注：ID只需要写出前几位即可，之后不会有自动补全，但是不影响  
 
 
 ## 关于版本回退时的问题解释
@@ -181,7 +181,7 @@ push命令可以使远程的代码和本地的代码保持一致(本地增删改
 那么就不能push到远程库，必须先把远程库上更新的版本pull到本地，然后合并完文件(可能需要手动处理冲突)后再push
 
 
-## 从远程库更新库到本地：
+## 从远程库更新库到本地
 适用于本地有库时，从远程库抓取更新版本的分支并与本地的分支合并
 git pull = git fetch + git merge(拉取到本地 + 代码合并)
 'git pull <远程主机名> <远程分支名>:<本地分支名>'从远程抓取分支并与当前工作目录中的分支合并
@@ -191,14 +191,23 @@ git pull = git fetch + git merge(拉取到本地 + 代码合并)
 注意：使用git pull时只有远程库的版本要比本地库更新，即远程节点比本地节点在时间线上更远，远程库才可以覆盖本地，否则不会修改任何文件
 
 
-## 从远程库克隆库到本地：
-适用于本地没有库时，直接从网上下载一个库到本地
-'git clone git@github.com:wandoufan/git_test.git'ssh方式从远程库上克隆库到当前工作目录，会在工作目录里新建一个git_test文件夹
-'git clone https://github.com/wandoufan/git_test.git'https方式克隆库到当前工作目录
-'git clone -b branch_name git@github.com:wandoufan/git_test.git'克隆指定分支到本地，-b参数指定分支
-注意：当一个远程库有多个分支时，克隆操作必须用-b参数指定要下载的分支
-注意：执行克隆命令前不能用'git init'来初始化目录，正常克隆到本地的库应该带有和远程库一致的commit信息
-而初始化的目录就是一个新的库，无法和远程库连接进行后续的push等操作。
+## 从远程库克隆库到本地
+适用于本地没有库时，直接从网上下载一个库到本地  
+注意：执行克隆命令前不能用'git init'来初始化目录
+正常克隆到本地的库应该带有和远程库一致的commit信息，而初始化的目录就是一个新的库，无法和远程库连接进行后续的push等操作
+1. ssh方式从远程库上克隆库到当前工作目录，会在工作目录里新建一个git_test文件夹  
+```
+git clone git@github.com:wandoufan/git_test.git
+```
+2. https方式克隆库到当前工作目录  
+```
+git clone https://github.com/wandoufan/git_test.git
+```
+3. 克隆指定分支到本地，-b参数指定分支  
+注意：当一个远程库有多个分支时，克隆操作必须用-b参数指定要下载的分支  
+```
+git clone -b branch_name git@github.com:wandoufan/git_test.git
+```
 
 
 ## 分支相关的命令：

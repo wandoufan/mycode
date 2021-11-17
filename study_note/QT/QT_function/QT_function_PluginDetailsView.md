@@ -20,6 +20,7 @@ this -> setWindowTitle("汉王手写签字板ESP370");
 * void setWindowTitle(const QString &)
 窗口的标题名称默认是自己定义的类名，也可以用setWindowTitle函数进行修改  
 一般在类的构造函数里来使用setWindowTitle函数  
+备注：这里设置的是UI窗口左上角显示的程序名  
 ```
 setWindowTitle("汉王手写签字板ESP370");
 ```

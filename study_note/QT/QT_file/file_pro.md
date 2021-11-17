@@ -49,6 +49,7 @@ CONFIG += qt //默认变量，指应用程序使用QT
 CONFIG += c++11 //使用c++11
 CONFIG += debug //编译出具有调试信息的可执行程序
 CONFIG += release //编译不带调试信息的可执行程序，与debug同时存在时，release失效
+CONFIG += no_debug_release //不会生成debug和release目录
 CONFIG += dll //动态编译库文件
 CONFIG += staticlib //静态编译库文件
 CONFIG += console //指应用程序需要写控制台
@@ -57,32 +58,32 @@ CONFIG += plugin //编译一个插件
 * INCLUDEPATH
 INCLUDEPATH变量指定C++编译器搜索头文件路径  
 ```
-INCLUDEPATH   = ../include
+INCLUDEPATH = ../include
 ```
 * DEPENDPATH
 DEPENDPATH变量指定依赖文件路径  
 ```
-DEPENDPATH   = ../include ../src
+DEPENDPATH = ../include ../src
 ```
 * HEADERS
 HEADERS添加头文件  
 ```
-HEADERS   = custombuttonplugin.h
+HEADERS = custombuttonplugin.h
 ```
 * SOURCES
 SOURCES添加源文件  
 ```
-SOURCES   = custombuttonplugin.cpp
+SOURCES = custombuttonplugin.cpp
 ```
 * RESOURCES
 RESOURCES添加需要rcc处理的.qrc文件  
 ```
-RESOURCES   = icons.qrc
+RESOURCES = icons.qrc
 ```
 * FORMS
 FORMS添加.ui文件  
 ```
-FORMS  = cardreader.ui
+FORMS = cardreader.ui
 ```
 * VERSION
 VERSION指定目标库版本号  
@@ -91,21 +92,51 @@ VERSION = 2.0.1
 ```
 * TARGET
 TARGET指定可执行程序的名字，如果不设置，程序名默认设为项目名  
+备注：这里设置的是将来生成的exe文件的名字  
 ```
-TARGET  = skyplotwidgetdesigner
-```
-* DESTDIR
-DESTDIR指定可执行文件或库文件最终的输出目录  
-```
-DESTDIR = ../../lib
+TARGET = skyplotwidgetdesigner
 ```
 * DLLDESTDIR
 DLLDESTDIR指定去哪个路径下拷贝dll文件  
 备注：这个变量只有在windows系统下有效  
+* RC_ICONS
+项目编译后会生成exe文件，可以通过RC_ICONS变量为程序设置自定义的图标  
+备注：图标文件必须先转换为.ico格式  
+```
+RC_ICONS = spinbox.ico
+```
 * 自定义变量
 除了上述变量外，还可以根据需要去自定义变量  
 ```
 MY_VARIABLE = value
+```
+
+
+## 一些指定生成文件路径的qmake变量
+* DESTDIR
+DESTDIR指定可执行文件或库文件最终的生成路径  
+```
+DESTDIR = ../../lib
+```
+* OBJECTS_DIR
+OBJECTS_DIR指定.obj文件和.res文件的生成路径  
+```
+OBJECTS_DIR = $$PWD/./temp/obj
+```
+* MOC_DIR
+MOC_DIR指定.h文件和.cpp文件的生成路径  
+```
+MOC_DIR = $$PWD/./temp/moc
+```
+* RCC_DIR
+RCC_DIR指定rcc资源文件的生成路径  
+```
+RCC_DIR = $$PWD/./temp/rcc
+```
+* UI_DIR
+UI_DIR指定ui_xxx.h文件的生成路径  
+```
+UI_DIR = $$PWD/./temp/ui
 ```
 
 
@@ -208,11 +239,26 @@ message(Examples: $$[QT_INSTALL_EXAMPLES])
 ```
 7. 作用域和条件
 当条件为真时，执行下面的作用域  
+常用来进行构建跨平台的项目，在不同的平台上执行不同的操作  
 ```
 win32
 {
 	SOURCES += paintwidget_win.cpp
 }
+unix
+{
+	SOURCES += paintwidget_unix.cpp
+}
+macx
+{
+	SOURCES += paintwidget_macx.cpp
+}
+```
+当执行的操作语句比较少时，也可以写成以下格式  
+```
+win32:SOURCES += paintwidget_win.cpp
+unix:SOURCES += paintwidget_unix.cpp
+macx:SOURCES += paintwidget_macx.cpp
 ```
 
 

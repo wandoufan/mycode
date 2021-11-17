@@ -56,11 +56,11 @@ void enum_init1()
 	先定义枚举类型：'enum <类型名> {<枚举常量表>};'
 	在定义枚举变量：'<类型名> <变量名>;'
 	*/
-	enum week {Sun, Mon , Tue, Wed, Thu, Fri, Sat};
+	enum week {Sun, Mon, Tue, Wed, Thu, Fri, Sat};
 	// 注意：两个枚举类型中的常量名不能有重复的，否则会产生冲突
-	enum Day {Sun, Mon, Day1, Day2};
+	// enum Day {Sun, Mon, Day1, Day2};
 	// 注意：枚举类型名和常量名也不能有重复，否则也会报错
-	enum Sun {Sun1, Sun2, Sun3};
+	// enum Sun {Sun1, Sun2, Sun3};
 	week today;
 }
 

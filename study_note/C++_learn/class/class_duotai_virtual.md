@@ -43,36 +43,39 @@ int main()
 ```
 
 
-## 虚函数
+## 虚函数(virtual)
 1. 基本概念
-为了解决上面的问题，让基类指针能够访问派生类的成员函数，C++增加了虚函数（Virtual Function）  
+为了解决上面的问题，让基类指针能够访问派生类的成员函数，C++增加了虚函数  
 在函数声明前面增加virtual关键字，函数定义处可以加也可以不加  
 ```
 class People
 {
 public:
+	int m_age;
 	People(int a)
 	{
-		age = a;
+		m_age = a;
 	}
-	int age;
-	virtual void show() //声明为虚函数
+	
+	virtual void show() //在基类中，声明为虚函数
 	{
-		cout << "年龄是：" << age << endl;
+		cout << "年龄是：" << m_age << endl;
 	}
 };
 
 class Student:public People
 {
 public:
+	float m_score;
 	Student(int a, float s);
-	float score;
-	virtual void show() //声明为虚函数，子类中也可以不写virtual关键字
-	{
-		cout << "成绩是：" << score << endl;
-	}
+	void show() override;//在子类中，用override声明要重写，这里就不必再声明virtual
 };
-Student::Student(int a, float s):People(a), score(s){}
+
+Student::Student(int a, float s):People(a), m_score(s){}
+void Student::show()//对虚函数进行重新定义
+{
+	cout << "年龄是：" << m_age << ", "<< "成绩是：" << m_score << endl;
+}
 
 int main()
 {
@@ -99,20 +102,59 @@ int main()
 3. 析构函数可以声明为虚函数，而且有时候必须要声明为虚函数  
 
 
-## 纯虚函数
+## 纯虚函数(pure virtual)
 1. 基本概念
 纯虚函数是在基类中声明的虚函数，一般用于抽象类中  
 纯虚函数在基类中没有定义，但要求任何派生类都要定义自己的实现方法  
-纯虚函数没有函数体，同时在定义的时候，其函数名后面要加上'= 0'  
-备注：纯虚函数前面用'[pure virtual]'来进行标识  
-2. 代码示例
+使用纯虚函数是为了标识一个规范的函数名字，确保每个派生类中接口的名字相同  
+2. 基本格式
+纯虚函数没有函数体，只做声明，不做具体定义  
+纯虚函数名后面要加上'= 0'，不代表函数返回值为0，只是告诉编译系统这是一个纯虚函数  
+备注：纯虚函数前面也是用'virtual'来进行标识  
+3. 注意事项
+在派生类中对基类的纯虚函数进行重写时，以下必须和基类的纯虚函数完全一致，否则会报错  
 ```
-class Box
+函数名、函数返回类型、函数参数的个数、类型、顺序、是否为const、是否为static
+```
+4. 细节说明
+如果在一个类中声明了纯虚函数，但派生类中没有对其进行定义，则该虚函数在派生类中仍然为纯虚函数  
+纯虚函数只有函数的名字而不具备函数的功能，不能被调用  
+5. 代码示例
+```
+class Person//抽象基类
 {
-   public:
-      // 纯虚函数
-      virtual double getVolume() = 0;
+public:
+	virtual void print(int id) = 0;//纯虚函数的声明
 };
+
+class Teacher:public Person
+{
+public:
+	void print(int id)//在派生类中对纯虚函数做出具体定义
+	{
+		cout << "id : " << id << endl;
+		cout << "this is a teacher" << endl;
+	}
+};
+
+class Student:public Person
+{
+public:
+	void print(int id)//在派生类中对纯虚函数做出具体定义
+	{
+		cout << "id : " << id << endl;
+		cout << "this is a student" << endl;
+	}
+};
+
+int main()
+{
+	Teacher teacher;
+	teacher.print(10);
+	Student student;
+	student.print(20);
+	return 0;
+}
 ```
 
 ## 抽象类

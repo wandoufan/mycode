@@ -58,7 +58,6 @@ void QDiceThread::run()
     m_paused = true;
     quit();
 }
-
 ```
 
 

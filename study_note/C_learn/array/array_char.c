@@ -98,6 +98,7 @@ sprintf(字符串缓冲区, 格式控制, 输出列表)
 
 void test_function()
 /*C库函数提供了很多用来处理字符串的函数*/
+//注意：这些函数是由string.h库提供的
 {
     char str1[] = "I am happy";
     char str2[] = "Hello World";
