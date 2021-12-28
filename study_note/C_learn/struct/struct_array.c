@@ -5,29 +5,8 @@
 /*
 1.一个结构体变量可以存放一组数据，如一个学生的个人信息，但如果存放很多组数据(全班学生的信息)，就需要使用结构体数组
 2.结构体数组与其他常规数组的区别：每个数组元素都是一个结构体类型的变量
+3.使用结构体数组有一种简便的方法：直接写一个结构体指针，详见struct_pointer.c
 */
-
-
-int main()
-{
-    void struct_array_define_1();
-    struct_array_define_1();
-
-    void struct_array_define_2();
-    struct_array_define_2();
-
-    void struct_array_define_3();
-    struct_array_define_3();
-
-    void struct_array_init_1();
-    struct_array_init_1();
-
-    void struct_array_init_2();
-    struct_array_init_2();
-
-    return 0;
-}
-
 
 void struct_array_define_1()
 /*先声明结构体类型，再定义结构体数组变量*/
@@ -44,7 +23,6 @@ void struct_array_define_1()
     struct student student_array[3];
 }
 
-
 void struct_array_define_2()
 /*在声明结构体类型的同时定义结构体数组变量*/
 {
@@ -58,7 +36,6 @@ void struct_array_define_2()
     }student_array[3];
 }
 
-
 void struct_array_define_3()
 /*直接定义结构体数组变量，不用写出结构体名*/
 {
@@ -71,7 +48,6 @@ void struct_array_define_3()
         float score;
     }student_array[3];
 }
-
 
 void struct_array_init_1()
 /*定义结构体数组变量时就对变量进行初始化*/
@@ -94,7 +70,6 @@ void struct_array_init_1()
     printf("%d, %s, %c, %d, %.1f\n", student_array[2].num, student_array[2].name, \
         student_array[2].sex, student_array[2].age, student_array[2].score);
 }
-
 
 void struct_array_init_2()
 /*先定义结构体数组变量，再对变量进行初始化*/
@@ -125,4 +100,15 @@ void struct_array_init_2()
     //直接把结构体数组的某个元素赋值给一个同类型的结构体变量
     //注意：在有的编译器下这么写可能会报错，尽量别这么操作，最好直接在结构体数组中操作
     struct student current_student = student_array[0];
+}
+
+int main()
+{
+    struct_array_define_1();
+    struct_array_define_2();
+    struct_array_define_3();
+    struct_array_init_1();
+    struct_array_init_2();
+
+    return 0;
 }

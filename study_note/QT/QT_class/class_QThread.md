@@ -5,13 +5,127 @@ QThread类提供了不依赖于平台的方法来管理多线程
 一个QThread对象管理着程序中的一个线程，将应用程序的线程称为主线程，将额外创建的线程称为工作线程  
 
 
-## 工作过程
-一般在主线程中创建工作线程，并调用start()执行工作线程的任务  
-start()会在内部调用run()函数，run()函数通过调用exec()函数来开启工作线程的事件循环  
-在run()函数里调用exit()或quit()可以结束线程的事件循环，或者在主线程里调用terminate()来强制结束线程  
+## 使用过程
+1. run()函数定义
+定义一个继承于QThread的子类，在子类中对从QThread继承的虚函数run()进行重写，在run()中写明线程要实现的功能  
 ```
-start() -> run() -> exec() -> exit()或quit()
+class MyThread::QThread
+{
+public:
+    MyThread();
+
+protected:
+    void run() override;
+};
+
+void MyThread::run()
+{
+    //执行线程任务
+}
 ```
+2. 线程启动和执行过程
+start()会在内部调用run()函数，run()函数会默认调用exec()函数来开启线程的事件循环  
+备注：只需要在代码中手动调用start()，至于run()和exec()不要自己手动调用  
+```
+start() -> run() -> exec() -> 线程执行 -> exit()或quit()
+```
+3. 线程停止过程
+方法1：在子线程中调用exit()或quit()来退出线程的事件循环
+方法2：在主线程中调用terminate()来强制结束线程  
+一般情况下，调用exit()或quit()来正常退出事件循环，也可以调用terminate()来强制结束线程(尽量避免使用)  
+
+
+## 问题
+1. exit()或quit()到底有什么作用？？？
+run()函数的内容分为顺序执行和while循环的
+但实际测试，不管怎样，只要run()执行完，即使不调用exit()或quit()，也会自动结束线程
+相反，run()处在while循环中时，即使调用exit()或quit()也不会有作用
+经过查看，项目的代码中除了WS8Module之外，都没有调用exit()或quit()，run()执行完成自动退出即可  
+
+2. exit()或quit()的调用位置，是否要在run()中，还是子线程的任意位置？？？
+WS8Module也不是在run()中去调用exit()或quit()，而是在修改标志位的函数中调用
+```
+void WS8Module::stopThread()
+{
+    mutex.lock();
+    running = false;
+    cond.wakeOne();
+    mutex.unlock();
+
+    fileThread.wait();
+
+    if (fileThread.isRunning())
+        fileThread.quit();
+}
+```
+
+
+## run()函数的内容
+1. 顺序执行
+2. while循环
+一般来说，会在while循环中设置一个标志位，有其他函数专门负责修改标志位，从而实现开始循环和退出循环的功能
+
+
+## 启动多个线程
+注意：把同一个线程对象start()多次不能启动多个线程  
+1. 主线程启动一个子线程，然后子线程和主线程之间交互数据，这是最常用的一种情况
+```
+PrintThread *mythread1,
+mythread1 = new PrintThread();
+mythread1 -> start();
+```
+2. 定义一个线程类，并在主线程中定义多个线程对象，然后将每个线程对象都启动
+```
+PrintThread *mythread1, *mythread2, *mythread3;
+mythread1 = new PrintThread();
+mythread2 = new PrintThread();
+mythread3 = new PrintThread();
+
+mythread1 -> start();
+QThread::msleep(500);
+mythread2 -> start();
+QThread::msleep(500);
+mythread3 -> start();
+```
+3. 定义多个线程类，在主线程中定义多个线程对象，然后将每个线程对象都启动
+```
+PrintThread *mythread1, *mythread2;
+ShowThread *mythread3, *mythread4;
+mythread1 = new PrintThread();
+mythread2 = new PrintThread();
+mythread3 = new ShowThread();
+mythread4 = new ShowThread();
+
+mythread1 -> start();
+QThread::msleep(500);
+mythread2 -> start();
+QThread::msleep(500);
+mythread3 -> start();
+QThread::msleep(500);
+mythread4 -> start();
+```
+
+
+## 如何查看线程的ID
+1. 通过QThread::currentThreadId()查看
+可以用qDebug()把函数返回值输出出来，在每个线程的run()中调用都可以获得不同的16进制数  
+注意：这里的返回值并不是线程ID本身，而是指针指向的内存地址，但是可以用来区分不同的线程  
+```
+0x33bc  :  0
+0x33bc  :  1
+0x2274  :  0
+0x2274  :  1
+0x33bc  :  2
+0x41a8  :  0
+0x2274  :  2
+0x33bc  :  3
+0x41a8  :  1
+0x41a8  :  2
+```
+2. 通过QObject::thread()查看
+对于所有继承自QObject的类，包括QThread，都可以调用QObject::thread()来查看当前线程  
+QObject::thread()函数返回一个QThread指针，可以用qDebug()输出出来  
+实际测试：不可用，在不同的位置调用这个函数，输出的值都一样  
 
 
 ## 构造函数
@@ -22,8 +136,10 @@ start() -> run() -> exec() -> exit()或quit()
 
 ## 常用公共函数
 1. void QThread::exit(int returnCode = 0)
-告诉线程的事件循环用给定的returnCode退出  
-调用exit()函数之后，线程会离开事件循环并把returnCode返回给exec()函数  
+用给定的returnCode退出线程的事件循环  
+调用exit()函数之后，线程会离开事件循环并调用QEventLoop::exec()，由QEventLoop::exec()来返回returnCode  
+执行exit()函数之后，线程中不会有启动的事件循环，除非再次调用QThread::exec()  
+备注：不要把QEventLoop::exec()和QThread::exec()混淆  
 备注：returnCode为0代表成功，任何非0值代表错误  
 备注：和C语言中的exit()函数不同，虽然返回类型是void，但确实可以把returnCode返回给调用者  
 备注：这个函数是线程安全的  
@@ -56,7 +172,7 @@ deadline参数的默认值为QDeadlineTimer::Forever，即永远不会超时
 这种情况下，只有在线程已经运行完成(从run()函数中返回)或者还没有开始运行时，wait()函数才返回  
 备注：这个函数是在Qt 5.15版本中才被引入进来的  
 ```
-//一般在线程退出之后，都要调用wait()函数
+//一般在线程退出时，都要调用wait()函数，因为事件循环队列中可能还有事件没有处理完
 mythread -> quit();
 mythread -> wait();
 ```
@@ -67,7 +183,7 @@ mythread -> wait();
 
 ## 公共槽函数
 1. [slot] void QThread::quit()
-告诉线程的事件循环退出并返回code 0(成功)，效果等于调用了QThread::exit(0)  
+退出线程的事件循环并返回code 0(成功)，效果等于调用了QThread::exit(0)  
 如果该线程中没有事件循环，则quit()函数不做任何操作  
 备注：这个函数是线程安全的  
 
@@ -109,13 +225,24 @@ priority参数表示操作系统安排新线程的方式，详见下面enum QThr
 功能同上，只是函数不带参数  
 
 3. [static] QThread \*QThread::currentThread()
-返回一个指针，指向当前正在执行的线程  
+返回一个指针指向QThread对象，这个QThread对象管理着当前正在执行的线程  
 
 4. [static] Qt::HANDLE QThread::currentThreadId()
-返回当前正在执行的线程的句柄  
+返回当前正在执行的线程的句柄，相当于线程ID  
+注意：返回的句柄只能用作Qt内部调用，不能自己用在任何程序代码中  
+备注：Qt::HANDLE在所有平台上的定义都是空类型指针`void *`  
+备注：在Windows平台上，这个函数返回一个DWORD(Windows-Thread ID)，这个DWORD是由Win32函数GetCurrentThreadId()返回的  
+关于将currentThreadId()输出出来的方法：  
+备注：根据网上的资料，Qt::HANDLE设计时就不是用来直接输出的，也不建议这么操作  
+4.1 用qDebug()可以直接输出出来，结果为一个16进制数  
+注意：这个数并不是线程ID本身，而是指针指向的内存地址  
+```
+qDebug() << "id: " << mythread -> currentThreadId();//输出：0x44f8
+```
+4.2 将Qt::HANDLE转换为QString或int，尝试多次都失败了，会内存报错  
 
 5. [static] int QThread::idealThreadCount()
-返回系统中可以同时运行的线程的数量  
+返回系统中最多可以同时运行的线程的数量，实际就是电脑CPU的核数  
 这个数量是通过查询处理器的个数得到的，如果处理器的个数探测不到，则函数返回1  
 
 6. [static] void QThread::msleep(unsigned long msecs)
@@ -133,17 +260,22 @@ priority参数表示操作系统安排新线程的方式，详见下面enum QThr
 
 ## 保护函数
 1. [protected] int QThread::exec()
-进入到事件循环中，然后等待直到exit()函数被调用，返回exit()函数的返回值  
-这个函数时要在run()函数中进行调用的，而且只能在线程本身的内部进行调用  
+启动并进入到一个事件循环中，然后开始执行循环队列中的事件，如果调用了exit()或quit()就会退出事件循环，并返回returnCode  
+如果exit()函数是经由quit()函数调用的，则返回值为0  
+这个函数是设计用来在run()函数内部进行调用的，而且也只能在当前线程内部自己调用  
+备注：从Qt4.4开始，run()函数就会默认调用exec()函数，因此一般不需要自己在run()函数中手动调用  
+注意：exec()没有退出事件循环或停止线程的功能，不要和exit()混淆  
 
 2. [virtual protected] void QThread::run()
-在调用start()函数之后，新创建的线程会调用这个run()函数，run()函数会再进一步调用exec()函数  
-注意：一般在子类中对这个方法进行重写，在函数里实现线程需要完成的任务，从这个方法返回时会结束线程的执行  
-备注：run()不能直接调用，而是要通过start()函数间接调用
+在调用start()函数之后，新创建的线程自动会调用这个run()函数，run()函数会再进一步调用exec()函数  
+注意：一般要在子类中对这个方法进行重写，在函数里实现线程需要完成的任务  
+注意：当run()函数执行完成并返回时，会自动结束线程的执行，不管是否调用了exit()或quit()  
+备注：run()不能直接调用，而是要通过调用start()函数来间接调用run()函数
 ```
 //头文件中
 protected:
-    void run();
+    void run() override;
+
 //源文件中
 void QDiceThread::run()
 {

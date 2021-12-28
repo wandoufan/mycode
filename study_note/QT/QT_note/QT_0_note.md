@@ -1,40 +1,48 @@
 # Qt应用程序开发框架
 
-## 参考资料
-> http://c.biancheng.net/view/1792.html
-
 ## 概念
 Qt是一个1991年由Qt Company开发的跨平台C++图形用户界面应用程序开发框架  
 Qt既可以开发GUI程序，也可以用于开发不带GUI的命令行程序，如控制台工具和服务器  
 QT除了支持GUI方面的功能，还封装了网络编程、多线程、数据库链接、视频音频等相关功能  
 Qt的用户界面和功能设计都是通过C++语言编程实现的，也有用于移动端的QML编程(不常用)  
 
+
 ## GUI
 GUI(Graphical User Interface)图形用户界面图形用户接口，是采用图形方式显示的计算机操作用户界面  
 用户可以通过鼠标等输入设备操纵屏幕上的图标或菜单选项来实现计算机的交互功能  
 
+
 ## Qt的优点
-Qt开源并且跨平台，在Windows、Linux、Mac OS X、iOS、Android等平台都可以运行  
-Qt提供了丰富的工具，如：基于XML的界面设计器Qt Designer，跨平台的开发工具Qt Creator  
-Qt提供了丰富的库，除了界面库之外还包括：音频库、3d库、数据库SDK、WebEngine等  
-QT简单易学，具有良好的封装性，不需要去具体了解windows API  
-QT可以独立安装，会最终编译为本地代码，不需要其他库的支撑，而JAVA要安装虚拟机，C#要安装.NET Framework  
+1. Qt开源并且跨平台
+在Windows、Linux、Mac OS X、iOS、Android等平台都可以运行  
+2. Qt提供了丰富的工具
+如：基于XML的界面设计器Qt Designer，跨平台的开发工具Qt Creator  
+3. Qt提供了丰富的库，除了界面库之外还包括：音频库、3d库、数据库SDK、WebEngine等  
+4. QT简单易学
+具有良好的封装性，不需要去具体了解windows API  
+5. QT不需要第三方支持
+QT可以独立安装，会最终编译为本地代码，不需要其他库的支撑
+而JAVA要安装虚拟机，C#要安装.NET Framework  
 
-## Qt的应用
-Qt被广泛应用于嵌入式、电力系统、军工系统等要与硬件交互的界面系统中，主要用于桌面程序和嵌入式  
-许多大型软件都是用 Qt 开发的，如 Autodesk Maya、Google Earth、Skype、WPS Office等  
-另外还有：豆瓣电台、虾米音乐、淘宝助理、千牛、暴雪的战网客户端、咪咕音乐、Google地图等等  
 
-## QT和MFC的对比
-QT和MFC都是基于C++的GUI解决方案，但二者各有不同：  
-1. MFC只能用在windows平台，而QT是跨平台的，可以直接在其他平台运行  
-2. MFC仍然需要去了解windows API，而QT已经封装了底层细节，学习相对简单  
+## Qt的缺点
+1. 网络模块性能一般
+使用Qt网络模块开发小型功能没问题，大型系统可选用其他库，毕竟C++相关的网络库非常多  
+2. 信号与槽机制存在性能问题
+对时间敏感的功能建议采用回调方式实现  
+
 
 ## QT使用的编译器
-QT在安装时提供了MinGW组件和MSVC组件作为将来C++代码的编译器  
-MinGW是Windows平台上使用的GNU工具集导入库的集合  
-MSVC允许使用本地已经安装过的Visual Studio来作为编译器  
-另外还有UWP组件主要用于Windows10平台的编译器  
+Qt Creator支持使用MSVC或MinGW来作为编译器  
+一般推荐使用MSVC来作为默认的构建套件，因为编译和调试的速度更快  
+
+
+## 基于Visual Studio + Qt的开发方式
+一般来说，我们开发Qt程序都是采用Qt Creator + MSVC的方式  
+如果要开发的程序只在Windows上运行，不用考虑跨平台，也不用Qt Creator设计界面，那么也可以用VS + Qt的方式开发  
+这时可以把Qt当做一个界面库在VS中进行调用  
+备注：需要安装VS、Qt，然后在VS中安装Qt插件  
+
 
 ## QT提供的工具集
 QT提供了很多开发工具，常用的包括：  

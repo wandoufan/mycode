@@ -19,8 +19,16 @@
      <x>30</x>
      <y>20</y>
      <width>861</width>
-     <height>451</height>
+     <height>566</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+font-size:22px;
+font-family: &quot;New Century Schoolbook&quot;;
+font-weight:bold
+}</string>
    </property>
    <property name="title">
     <string>掷骰子</string>
@@ -29,9 +37,9 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>60</y>
-      <width>93</width>
-      <height>28</height>
+      <y>20</y>
+      <width>110</width>
+      <height>40</height>
      </rect>
     </property>
     <property name="text">
@@ -41,10 +49,10 @@
    <widget class="QPushButton" name="beginButton">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>60</y>
-      <width>93</width>
-      <height>28</height>
+      <x>215</x>
+      <y>20</y>
+      <width>110</width>
+      <height>40</height>
      </rect>
     </property>
     <property name="text">
@@ -54,10 +62,10 @@
    <widget class="QPushButton" name="pauseButton">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>60</y>
-      <width>93</width>
-      <height>28</height>
+      <x>370</x>
+      <y>20</y>
+      <width>110</width>
+      <height>40</height>
      </rect>
     </property>
     <property name="text">
@@ -67,10 +75,10 @@
    <widget class="QPushButton" name="finishButton">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>60</y>
-      <width>93</width>
-      <height>28</height>
+      <x>535</x>
+      <y>20</y>
+      <width>110</width>
+      <height>40</height>
      </rect>
     </property>
     <property name="text">
@@ -80,10 +88,10 @@
    <widget class="QPushButton" name="clearButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>60</y>
-      <width>93</width>
-      <height>28</height>
+      <x>690</x>
+      <y>20</y>
+      <width>110</width>
+      <height>40</height>
      </rect>
     </property>
     <property name="text">
@@ -94,10 +102,14 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>110</y>
+      <y>65</y>
       <width>741</width>
-      <height>291</height>
+      <height>486</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 25px;
+font-family: &quot;New Century Schoolbook&quot;;</string>
     </property>
    </widget>
   </widget>

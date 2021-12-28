@@ -23,6 +23,7 @@ cout << ba.data()[0] << endl; //输出：H
 ```
 
 2. null字节序列和empty字节序列的区别
+null一定是empty，empty不一定是null  
 ```
 QByteArray().isNull();          // returns true
 QByteArray().isEmpty();         // returns true
@@ -37,6 +38,13 @@ QByteArray("abc").isEmpty();    // returns false
 3. QByteArray中元素的类型为class QByteRef
 ```
 cout << typeid(ba[1]).name() << endl; //输出：class QByteRef
+```
+
+4. 把一个QByteArray转换为QString
+备注：这个方法是由QString提供的，QByteArray本身没有提供相关方法  
+```
+QByteArray ba("Hello");
+QString str = QString::fromLatin1(ba);
 ```
 
 
@@ -107,6 +115,16 @@ QByteArray ba("Hello");
 ba.resize(10);
 cout << ba.data() << endl; //输出：Hello
 cout << ba.size() << endl; //输出10
+```
+
+4. void QByteArray::clear()
+清空字符串，ba会变成NULL  
+```
+QByteArray ba = "abc";
+ba.clear();
+qDebug() << ba; \\输出：""
+qDebug() << ba.isNull(); \\输出：true
+qDebug() << ba.isEmpty(); \\输出：true
 ```
 
 

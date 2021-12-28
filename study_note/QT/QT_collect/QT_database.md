@@ -50,8 +50,10 @@ sql查询结果数据的只读数据模型，用于select查询结果的只读�
 
 其中继承关系为：
 ```
-QAbstractTableModel <- QSqlQueryModel <- QSqlTableModel <- QSqlRelationTableModel
+父类 -> 子类
+QAbstractTableModel -> QSqlQueryModel -> QSqlTableModel -> QSqlRelationTableModel
 ```
+
 
 ## 连接sql server步骤
 > https://blog.csdn.net/xianchao0127/article/details/111084495
@@ -59,6 +61,7 @@ QAbstractTableModel <- QSqlQueryModel <- QSqlTableModel <- QSqlRelationTableMode
 1. 登录到数据库中，手动在数据库中新建一个目标数据库
 2. 配置ODBC（配置方法详见参考资料）
 3. 使用QSqlDatabase连接数据库，然后使用QSqlQuery执行各种sql语句
+
 
 ## ODBC
 ODBC（Open Database Connectivity），即开放数据库连接  

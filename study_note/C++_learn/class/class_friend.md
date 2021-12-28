@@ -187,7 +187,9 @@ int main()
 友元类B也可以直接定义在类A内部，与类A形成嵌套+友元的关系  
 这种类很难写，经常会看不懂，但项目代码中经常出现这种写法，可以作为参考  
 备注：要严格按照代码示例的写法，很多地方稍做改动就会出现错误  
-示例1：类A的对象指针作为类B的private成员变量，必须在对类B实例化的时候就对其赋值  
+1. 示例1
+类B的对象指针作为类A的public成员变量，类A的对象指针作为类B的private成员变量  
+需要在对类B实例化的时候，就对类B中的类A对象指针进行赋值  
 ```
 class A
 {
@@ -230,18 +232,21 @@ int main()
     //b是a1的成员变量，a1也是b的成员变量，二者相互嵌套
     A a1(3, 4);
     a1.b = new A::B(&a1);
-    a1.b -> print_number1();
-    a1.b -> print_number2();
+    a1.b -> print_number1();//3
+    a1.b -> print_number2();//4
 
+    //b是a1的成员变量，另一个A对象指针p是b的成员变量
     A *p = new A(5, 6);
     a1.b = new A::B(p);
-    a1.b -> print_number1();
-    a1.b -> print_number2();
+    a1.b -> print_number1();//5
+    a1.b -> print_number2();//6
 
     return 0;
 }
 ```
-示例2：类A的对象指针作为类B的Public成员变量，可以在对类B实例化之后再对其赋值  
+2. 示例2
+类B的对象指针作为类A的public成员变量，类A的对象指针作为类B的public成员变量
+可以在对类B实例化之后，再对类B中的类A对象指针单独赋值  
 ```
 class A
 {
@@ -283,6 +288,56 @@ int main()
     a1.b -> p_a = &a1;
     a1.b -> print_number1();
     a1.b -> print_number2();
+    
+    return 0;
+}
+```
+3. 示例3：
+类B的对象(不是对象指针)作为类A的public成员变量，类A的对象指针作为类B的private成员变量  
+在A构造函数中，可以用this把当前A对象指针直接传递给B对象，不必再专门对A中的B对象赋值  
+```
+class A
+{
+public:
+    A(int number1 = 1, int number2 = 2):
+    m_number1(number1), 
+    m_number2(number2), 
+    b(this)//用this把当前A对象指针直接传递给B对象
+    {}
+
+    class B //类B的声明和定义
+    {
+    public:
+        B(A *a):p_a(a)//B的构造函数接收一个A对象指针
+        {}
+    public:
+        void print_number1()
+        {
+            cout << p_a -> m_number1 << endl;
+        }
+        void print_number2()
+        {
+            cout << p_a -> m_number2 << endl;
+        }
+    public:
+        A *p_a;
+    };
+
+public:
+    B b;//b是一个对象，不是对象指针
+    friend class B;//将类B声明为友元类
+
+private:
+    int m_number1;
+    int m_number2;
+};
+
+int main()
+{
+    //b是a1的成员变量，a1也是b的成员变量，二者相互嵌套
+    A a1(3, 4);
+    a1.b.print_number1();//3
+    a1.b.print_number2();//4
     
     return 0;
 }

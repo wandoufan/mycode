@@ -9,11 +9,17 @@ Dialog::Dialog(QWidget *parent)
     setWindowTitle("Qt多线程应用测试");
     ui -> startButton -> setEnabled(true);
     ui -> finishButton -> setEnabled(false);
-    connect(&thread_producer, SIGNAL(started()), this, SLOT(onProduceStarted()));
-    connect(&thread_producer, SIGNAL(finished()), this, SLOT(onProduceFinished()));
-    connect(&thread_consumer, SIGNAL(started()), this, SLOT(onConsumerStarted()));
-    connect(&thread_consumer, SIGNAL(finished()), this, SLOT(onConsumerFinished()));
-    connect(&thread_consumer, SIGNAL(newValue(int, int)), this, SLOT(readNewValue(int, int)));
+
+    mut = new QMutex();
+    condition = new QWaitCondition();
+    thread_producer = new QThreadProducer(mut, condition);
+    thread_consumer = new QThreadConsumer(thread_producer, mut, condition);
+
+    connect(thread_producer, SIGNAL(started()), this, SLOT(onProduceStarted()));
+    connect(thread_producer, SIGNAL(finished()), this, SLOT(onProduceFinished()));
+    connect(thread_consumer, SIGNAL(started()), this, SLOT(onConsumerStarted()));
+    connect(thread_consumer, SIGNAL(finished()), this, SLOT(onConsumerFinished()));
+    connect(thread_consumer, SIGNAL(newValue(int, int)), this, SLOT(readNewValue(int, int)));
 }
 
 Dialog::~Dialog()
@@ -24,12 +30,12 @@ Dialog::~Dialog()
 void Dialog::closeEvent(QCloseEvent *event)
 {
     //重载函数，在窗口关闭时确保线程被停止
-    if(thread_consumer.isRunning() || thread_producer.isRunning() )
+    if(thread_consumer -> isRunning() || thread_producer -> isRunning() )
     {
-        thread_consumer.stopThread();
-        thread_consumer.wait();
-        thread_producer.stopThread();
-        thread_producer.wait();
+        thread_consumer -> stopThread();
+        thread_consumer -> wait();
+        thread_producer -> stopThread();
+        thread_producer -> wait();
     }
     event -> accept();
 }
@@ -37,8 +43,8 @@ void Dialog::closeEvent(QCloseEvent *event)
 void Dialog::on_startButton_clicked()
 {
     //启动线程（先consumer，再producer）
-    thread_consumer.start();
-    thread_producer.start();
+    thread_consumer -> start();
+    thread_producer -> start();
     ui -> startButton -> setEnabled(false);
     ui -> finishButton -> setEnabled(true);
 }
@@ -46,10 +52,10 @@ void Dialog::on_startButton_clicked()
 void Dialog::on_finishButton_clicked()
 {
     //结束线程（先consumer，再producer）
-    thread_consumer.stopThread();
-    thread_consumer.wait();
-    thread_producer.stopThread();
-    thread_producer.wait();
+    thread_consumer -> stopThread();
+    thread_consumer -> wait();
+    thread_producer -> stopThread();
+    thread_producer -> wait();
     ui -> startButton -> setEnabled(true);
     ui -> finishButton -> setEnabled(false);
 }

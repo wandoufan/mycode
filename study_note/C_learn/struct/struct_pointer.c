@@ -1,24 +1,13 @@
 #include <stdio.h>
+# include <iostream>
+using namespace std;
 
 /*用指针指向结构体变量*/
 
 /*
 1.一个结构体变量的指针就是该变量所占据的内存段的起始地址
 2.为了方便和直观，可以用'p -> num'来代替'(* p).num'，'->'是指向运算符
-
 */
-
-
-int main()
-{
-    void struct_pointer();
-    struct_pointer();
-
-    void struct_array_pointer();
-    struct_array_pointer();
-
-    return 0;
-}
 
 
 void struct_pointer()
@@ -41,7 +30,6 @@ void struct_pointer()
     /*用指向运算符'->'来引用结构体成员*/
     printf("%d, %s, %c, %d, %.1f\n", p -> num, p -> name, p -> sex, p -> age, p -> score);
 }
-
 
 void struct_array_pointer()
 /*用指针指向结构体数组中的成员，即结构体变量*/
@@ -66,3 +54,33 @@ void struct_array_pointer()
         printf("%d, %s, %c, %d, %.1f\n", (* p).num, (* p).name, (* p).sex, (* p).age, (* p).score);
     }
 }
+
+int main()
+{
+    struct_pointer();
+    struct_array_pointer();
+
+    /*定义一个结构体指针，然后从这个指针就可以很简便的获得一个结构体数组*/
+    //结构体定义
+    struct CVT
+    {
+        int a;
+        float b;
+    };
+    //结构体指针
+    struct CVT *cvt;
+    //赋值
+    for(int i = 0; i < 10; i++)
+    {
+        cvt[i].a = i;//用指针直接获得结构体数组
+        cvt[i].b = (float)i + 0.1;
+    }
+    //读取显示值
+    for(int j = 0; j < 10; j++)
+    {
+        cout << j << " : " << cvt[j].a << ", " << cvt[j].b << endl;
+    }
+
+    return 0;
+}
+

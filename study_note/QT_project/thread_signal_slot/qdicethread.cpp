@@ -34,8 +34,8 @@ void QDiceThread::run()
             m_seq ++;
             emit newValue(m_seq, m_diceValue);
         }
-        //假设线程任务执行一次需要3s
-        sleep(3);
+        //假设线程任务执行一次需要1s
+        sleep(1);
     }
     m_paused = true;
     quit();

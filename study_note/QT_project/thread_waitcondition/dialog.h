@@ -39,7 +39,9 @@ private slots:
 
 private:
     Ui::Dialog *ui;
-    QThreadProducer thread_producer;
-    QThreadConsumer thread_consumer;
+    QMutex *mut;
+    QWaitCondition *condition;
+    QThreadProducer *thread_producer;
+    QThreadConsumer *thread_consumer;
 };
 #endif // DIALOG_H

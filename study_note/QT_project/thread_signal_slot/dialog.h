@@ -37,9 +37,15 @@ private slots:
     void onthreadA_started();
     void onthreadA_finished();
     void onthreadA_newValue(int seq, int diceValue);
+    void onthreadB_started();
+    void onthreadB_finished();
+    void onthreadB_newValue(int seq, int diceValue);
+    void onthreadC_started();
+    void onthreadC_finished();
+    void onthreadC_newValue(int seq, int diceValue);
 
 private:
     Ui::Dialog *ui;
-    QDiceThread threadA;
+    QDiceThread threadA, threadB, threadC;//定义3个掷骰子的子线程
 };
 #endif // DIALOG_H

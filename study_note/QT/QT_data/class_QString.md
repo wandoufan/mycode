@@ -23,6 +23,7 @@ cout << str1.toLatin1().data() << endl;
 
 2. null字符串和empty字符串的区别
 null字符串是初始化之后还未赋值的字符串，empty字符串是长度为0的空字符串  
+null一定是empty，empty不一定是null  
 除了isNull()函数外，其他函数不会区分对待null字符串和empty字符串  
 推荐使用isEmpty()函数，避免使用isNull()函数  
 ```
@@ -361,7 +362,15 @@ char1 = str1.at(n);
 ```
 str1.resize(n);
 ```
-
+20. void QString::clear()
+清空字符串，str会变成NULL
+```
+QString str = "abc";
+str.clear();
+qDebug() << str; \\输出：""
+qDebug() << str.isNull(); \\输出：true
+qDebug() << str.isEmpty(); \\输出：true
+```
 
 ## 静态公共函数
 1. 重载函数compare()
