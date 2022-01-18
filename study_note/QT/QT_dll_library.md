@@ -9,7 +9,7 @@ https://blog.csdn.net/xiaolong1126626497/article/details/112158922
 在QT项目中，dll文件应该放在QT项目对应的运行目录中  
 运行目录中的debug和release两个子文件夹不用放  
 经过测试，dll放在QT项目目录中、C:\Windows\SysWOW64\中、C:\Windows\system32\中都无法加载到  
-另外，还需要注意使用的编译器是32位还是64位  
+另外，还需要注意使用的编译器是32位还是64位，编译器的位数必须和调用的库的位数一致，否则会报错  
 
 
 ## 调用方式

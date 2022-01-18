@@ -30,9 +30,11 @@ DEFINES  = SKYPLOTWIDGET_STATIC
 ```
 * LIBS
 LIBS变量指定工程要链接的库  
+可以指向库文件，可以指向库文件所在的目录  
 ```
 LIBS += -L.
 LIBS += $$PWD/lib/custombuttonplugin.lib
+LIBS += -L$$PWD/snap7/ -lsnap7
 ```
 * QT
 QT变量指定要使用的QT模块  

@@ -3,8 +3,8 @@
 ## 基本功能
 QFile类提供了接口用来读文件和写文件  
 QFile可以单独使用，也经常和QTextStream或QDataStream搭配使用  
+继承关系：  
 ```
-继承关系
 QObject - QIODevice - QFile - QTemporaryFile
 ```
 

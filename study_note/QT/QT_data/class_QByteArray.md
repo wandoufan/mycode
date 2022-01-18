@@ -93,7 +93,7 @@ cout << ba.toHex(' ').data() << endl;//16进制编码格式
 
 
 ## 常用公共函数
-1. char \*QByteArray::data()
+1. char \* QByteArray::data()
 返回字符序列的指针，通过这个指针修改序列中的字符  
 返回的序列中字符的个数是size()+1，其中1是指序列末尾的终止符'\0'  
 备注：QByteArray对象要用cout输出出来时，必须使用data()方法  

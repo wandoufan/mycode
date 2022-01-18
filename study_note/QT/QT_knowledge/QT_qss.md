@@ -3,6 +3,7 @@
 ## 基本功能
 qss语法可以用来设置UI控件的颜色、字体、边框等各种属性  
 备注：控件本身的长宽参数无法通过qss语句来设置  
+备注：详见Qt帮助手册中的'The Style Sheet Syntax'  
 
 
 ## 用法示例
@@ -16,8 +17,43 @@ background-color:blue;
 ```
 
 
+## 注意事项
+1. 全局属性设置和控件的局部属性设置要注意先后顺序
+错误示例：全局属性设置写在前面，导致后面控件的局部属性设置无效
+```
+//全局属性设置
+font-family: "New Century Schoolbook";
+font-size: 20px;
+//控件的局部属性设置
+QGroupBox
+{ 
+border: 2px solid #333333; 
+margin-top: 2ex; 
+}
+QPushButton
+{
+color: blue;
+}
+```
+正确示例：控件的局部属性设置必须都写在全局属性设置的前面
+```
+//控件的局部属性设置
+QGroupBox
+{ 
+border: 2px solid #333333; 
+margin-top: 2ex; 
+}
+QPushButton
+{
+color: blue;
+}
+//全局属性设置
+font-family: "New Century Schoolbook";
+font-size: 20px;
+```
+
+
 ## 1. 基本语法
-备注：详见Qt帮助手册中的'The Style Sheet Syntax'
 1. 语句中的属性大小写是不敏感的，例如color, Color, COLOR指的是同一个属性
 而类名、对象名、Qt的属性名是大小写敏感的  
 2. 语句一般由选择器(QPushButton)和属性规则{color: red}组成
@@ -234,7 +270,7 @@ bold(加粗)
 ```
 5. text-align
 设置文本在控件中的位置  
-备注：实测这条规则对于QLabel控件无效  
+备注：实测这条规则对于QLabel、QTextBrowser控件无效  
 ```
 QPushButton { text-align: left; }
 //参数取值包括：

@@ -123,6 +123,12 @@ ch=ba.data();  //不能直接用cout输出QByteArray对象，而是要输出对�
 5. QByteArray QString::toAscii() const
 和toLatin1()方法的功能相同，已经过时了，不再使用  
 
+6. float QString::toFloat(bool \*ok = nullptr) const
+把字符串转换为单精度浮点数，如果转换失败，则返回0.0  
+
+7. double QString::toDouble(bool \*ok = nullptr) const
+把字符串转换为双精度浮点数，如果转换失败，则返回0.0  
+
 
 ## 进行了重载的常用公共函数
 1. 重载函数append()
@@ -247,6 +253,8 @@ qDebug() << str1; //输出"12abcd56789"
 ```
 QString &QString::setNum(int n, int base = 10)
 QString &QString::setNum(short n, int base = 10)
+QString &QString::setNum(float n, char format = 'g', int precision = 6)
+QString &QString::setNum(double n, char format = 'g', int precision = 6)
 ...
 ```
 示例：  

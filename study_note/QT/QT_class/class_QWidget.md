@@ -14,7 +14,7 @@ QWidget窗口可以被其父窗口或其他窗口挡住一部分
 尤其是结合PluginDetailsView中记录的函数，如show()
 
 
-## 常用属性
+## 常用成员变量
 * windowModality : Qt::WindowModality
 这个属性用来设置哪个windows窗口会被模态的widget锁住  
 这个属性只对windows窗口有意义，默认值为Qt::NonModal  
