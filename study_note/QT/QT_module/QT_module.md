@@ -20,31 +20,6 @@
 4. 代码中经常报错找不到组件，实际有这个组件，可能是系统没有及时认出来，可以对项目进行'清除'操作
 
 
-## QAbstractButton
-QAbstractButton类是所有widgets按钮的抽象基类，给按钮提供公用的函数功能  
-QAbstractButton是QWidget类的子类  
-QAbstractButton是QCheckBox, QPushButton, QRadioButton, QToolButton的父类  
-**常用函数**
-1. bool isDown() const
-表示按钮button是否是pressed down按下的  
-2. bool isChecked() const
-表示按钮是否被检查或者标记切换的  
-只有可检查和切换（标记）的按钮可以标记或者取消标记checked or unchecked  
-3. bool isEnabled() const
-表示按钮是否可以被用户点按  
-```
-ui -> startButton -> setEnabled(false); //按钮变成灰色，不能再点击
-```
-4. void setAutoRepeat(bool)
-设置按钮是否当用户长按按钮可以auto-repeat（自动重复执行）  
-属性autoRepeatDelay和autoRepeatInterval定义了如何重复响应执行  
-5. void setCheckable(bool)
-设置按钮是否可切换或者标记的  
-6. void setChecked(bool)
-将按钮设置为选中状态，可以用来在构造函数中设置按钮默认选中  
-```
-ui -> set_black -> setChecked(1);
-```
 
 
 ## AbstractSlider
@@ -188,14 +163,3 @@ objectName作为组件的唯一标识，每个组件的objectName都不相同
 具体属性值由系统自动创建，一般按照组件创建顺序来命名，例如checkBox、checkBox_2、checkBox_3  
 objectName也可以自定义命名，但需要在设计程序之前设置好，设置好后不要再改动，否则代码也要相应改动  
 
-
-## checkable属性
-1. 基本概念
-对于继承于QAbstractButton类的Button组件都有一个checkable属性，用来设置按钮状态  
-未勾选checkable时，Button为触发按钮(trigger button)，按下去马上弹起来  
-勾选checkable后，Button变成切换按钮(toggle button)，可以有两种状态：按下/弹起  
-备注：toggle可以理解为开关，可以勾选为开或关的状态；而trigger可以理解为扳机，只点击一次  
-2. 大部分Button的checkable默认是不选中的，包括：  
-pushButton、toolButton  
-3. 少部分Button的checkable默认是选中的，包括： 
-radioButton、checkBox  

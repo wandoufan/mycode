@@ -202,6 +202,7 @@ border-bottom
 border-left
 ```
 单独设置边界的颜色，同样可以细分为上下左右  
+备注：如果边界不够粗的话，设置的边界颜色可能看不出来  
 ```
 border-color: white;
 border-top-color

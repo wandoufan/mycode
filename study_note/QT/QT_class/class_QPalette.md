@@ -58,38 +58,13 @@ Widget::Widget(QWidget *parent)
 ## enum QPalette::ColorRole
 颜色显示的区域包括：  
 ```
-QPalette::Window 常用的背景颜色  
-QPalette::Base 设置文本输入窗口部件的背景色  
-QPalette::Text 设置文本输入窗口中文字的颜色  
-QPalette:WindowText 通常指窗口看不见的前景色  
-QPalette::Button 指按钮窗口部件的背景色  
-QPalette::ButtonText 指按钮窗口部件的前景色  
-QPalette::Background 背景色  
-QPalette::Foreground 前景色  
+QPalette::Window 		常用的背景颜色  
+QPalette::Base 			设置文本输入窗口部件的背景色  
+QPalette::Text 			设置文本输入窗口中文字的颜色  
+QPalette:WindowText 	通常指窗口看不见的前景色  
+QPalette::Button 		指按钮窗口部件的背景色  
+QPalette::ButtonText 	指按钮窗口部件的前景色  
+QPalette::Background 	背景色  
+QPalette::Foreground 	前景色  
 ```
 注意：设置Widget等窗口的背景颜色用QPalette::Background，设置QtextEdit等文本输入框的背景颜色用QPalette::Base  
-
-
-## enum Qt::GlobalColor
-Qt预定义了下面一些颜色参数  
-```
-Constant  Value  Description
-
-Qt::white  3  White (#ffffff)
-Qt::black  2  Black (#000000)
-Qt::red  7  Red (#ff0000)
-Qt::darkRed  13  Dark red (#800000)
-Qt::green  8  Green (#00ff00) 
-Qt::darkGreen  14  Dark green (#008000) 
-Qt::blue  9  Blue (#0000ff) 
-Qt::darkBlue  15  Dark blue (#000080) 
-Qt::cyan  10  Cyan (#00ffff) 
-Qt::darkCyan  16  Dark cyan (#008080) 
-Qt::magenta  11  Magenta (#ff00ff) 
-Qt::darkMagenta  17  Dark magenta (#800080) 
-Qt::yellow  12  Yellow (#ffff00) 
-Qt::darkYellow  18  Dark yellow (#808000) 
-Qt::gray  5  Gray (#a0a0a4) 
-Qt::darkGray  4  Dark gray (#808080) 
-Qt::lightGray  6  Light gray (#c0c0c0) 
-```

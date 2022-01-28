@@ -6,10 +6,35 @@
 
 
 ## 用法示例
-1. 获得一个[10, 100)的随机数
+1. 获得一个[10, 100)的随机整数数
 ```
-int num = QRandomGenerator::global() -> bounded(10, 100);
+qDebug() << QRandomGenerator::global() -> bounded(10, 100);
 ```
+2. 获得一个[-10, 10)的随机整数数
+```
+qDebug() << QRandomGenerator::global() -> bounded(-10, 10);
+```
+3. 获得一个[-3.14, 0)的随机浮点数
+```
+qDebug() << QRandomGenerator::global() -> bounded(-3.14);
+```
+4. 获得一个[0, 3.14)的随机浮点数
+```
+qDebug() << QRandomGenerator::global() -> bounded(3.14);
+```
+
+
+## 构造函数
+备注：一般直接使用公共静态函数QRandomGenerator::global()来获取一个对象指针
+1. QRandomGenerator::QRandomGenerator(const QRandomGenerator &other)
+
+2. QRandomGenerator::QRandomGenerator(const quint32 \*begin, const quint32 \*end)
+
+3. QRandomGenerator::QRandomGenerator(std::seed_seq &sseq)
+
+4. QRandomGenerator::QRandomGenerator(const quint32 \*seedBuffer, qsizetype len)
+
+5. QRandomGenerator::QRandomGenerator(quint32 seedValue = 1)
 
 
 ## 常用公共函数

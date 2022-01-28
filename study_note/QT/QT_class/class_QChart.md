@@ -36,6 +36,8 @@ QChart是Charts模块中最核心的类
 
 5. backgroundVisible : bool
 这个属性设置图表背景是否可见  
+实测默认为true状态，图表中间为白色背景，图表周边为一圈灰色背景  
+当为false时，整个图表都变成灰色背景  
 5.1 bool isBackgroundVisible() const
 5.2 void setBackgroundVisible(bool visible = true)
 
@@ -46,6 +48,7 @@ QChart是Charts模块中最核心的类
 
 7. dropShadowEnabled : bool
 这个属性设置图表中的阴影效果是否生效  
+实测默认为false状态，当为true时，图表周边会多一层阴影  
 备注：阴影效果也依赖于图表的主题，当更换主题时，阴影效果也可能改变  
 7.1 bool isDropShadowEnabled() const
 7.2 void setDropShadowEnabled(bool enabled = true)
@@ -66,6 +69,7 @@ QChart是Charts模块中最核心的类
 
 10. margins : QMargins
 这个属性设置图表矩形边框和图表绘图区域的最小间隙  
+实测即使设置参数为QMargins(0, 0, 0, 0)，图表周边仍然有一个灰色的边框  
 10.1 QMargins margins() const
 10.2 void setMargins(const QMargins &margins)
 
@@ -98,7 +102,7 @@ QChart是Charts模块中最核心的类
 1. void QChart::addAxis(QAbstractAxis \*axis, Qt::Alignment alignment)
 向图表中添加坐标轴，alignment参数指定坐标轴的位置  
 添加之后，图表对象会成为坐标轴对象的所有者  
-alignment参数取值详见手册，常用的x/y坐标轴的位置如下：  
+alignment参数取值详见namespace中enum Qt::AlignmentFlag，常用的x/y坐标轴的位置如下：  
 ```
 chart -> addAxis(axis_x, Qt::AlignBottom);//添加坐标轴，放置到x轴的位置
 chart -> addAxis(axis_y, Qt::AlignLeft);//添加坐标轴，放置到y轴的位置
@@ -145,6 +149,33 @@ QPieSeries 			None 					None
 
 4. QList<QAbstractSeries \*> QChart::series() const
 返回图表中添加的所有数据对象  
+
+
+## 常用公共函数：图表的移动和缩放
+备注：实际测试，调用zoom()函数之后，图表大小并没有变化，生成的图片大小也没有变化  
+1. void QChart::scroll(qreal dx, qreal dy)
+把图片的看见区域整体平移dx和dy的距离  
+对于极坐标图表，dx表示角度轴上的偏转角度  
+```
+chart -> scroll(-10, 5);
+```
+
+2. void QChart::zoom(qreal factor)
+对图片整体进行等比例缩放，factor为缩放系数  
+factor在0到1之间为缩小，factor大于1为放大  
+
+3. void QChart::zoomIn()
+图表放大到两倍  
+
+4. void QChart::zoomOut()
+图表缩小到两倍  
+
+5. void QChart::zoomReset()
+重置所有的缩放设置  
+
+6. bool QChart::isZoomed()
+判断是否有任何数据进行了缩放  
+备注：实际测试，执行了zoom()函数之后，调用isZoomed()仍然返回false  
 
 
 ## enum QChart::ChartTheme

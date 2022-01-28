@@ -39,6 +39,8 @@ GUI的设计基于C++语言，采用Qt提供的一套C++类库
 
 2. Qt Console Application  
 控制台应用程序，无GUI界面，一般用于学习C/C++语言  
+注意：实际测试发现，Qt中的一些内容，如QChart无法在Qt Console Application中使用  
+因此尽量使用 Qt Widgets Application，如果不想显示界面，就把界面显示的行给注释掉  
 
 3. Qt Quick Application  
 创建可部署的 Qt Quick 2 应用程序，其界面设计采用QML语言，程序架构采用C++语言  

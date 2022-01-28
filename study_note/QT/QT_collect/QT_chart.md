@@ -16,7 +16,12 @@ import QtCharts 2.15
 #include <QtCharts>
 using namespace QtCharts;
 ```
-3. 说明
+3. 在Qt Widgets Application中使用QChart
+需要在.pro文件中添加  
+```
+QT += charts
+```
+4. 在Qt Quick Application中使用QChart
 使用Qt Creator的Qt Quick Application模板创建的项目是基于Qt Quick 2，默认使用的是QGuiApplication  
 项目中所有的QGuiApplication实例必须被替换成QApplication  
 因为Charts模块基于Qt Graphics View Framework实现的  
@@ -24,10 +29,15 @@ using namespace QtCharts;
 ```
 QT += charts
 ```
+5. 在Qt Console Application中使用QChart
+经过反复尝试都失败了，在.pro文件中添加了各种内容都还是不行  
+在程序编译时会报错'程序异常结束'，报错的地方就是QChart类定义的行  
+最后只能改用Qt Widgets Application模板，把界面显示的行给注释掉  
 
 
 ## Charts模块支持的图表类型
-备注：在帮助手册中搜索"Qt Charts Overview"  曲线、折线、条形等不同类型的数据可以显示在同一张图表中  
+备注：在帮助手册中搜索"Qt Charts Overview"  
+曲线、折线、条形等不同类型的数据可以显示在同一张图表中  
 ```
 折线图			Line charts
 曲线图			spline charts
@@ -335,9 +345,10 @@ m_axis1 -> setTickCount(6);
 m_axis2 -> setTickCount(6);
 m_axis1 -> setMinorTickCount(2);
 m_axis2 -> setMinorTickCount(1);
-//初始化图表
+//初始化图表，向图表中添加数据和坐标轴
 m_chart = new QChart();
 m_chart -> setTitle("环境&油温 / ambient*oilsump");
+m_chart -> setTitleFont(QFont("SimSun", 10, 80, false));
 m_chart -> addAxis(m_axis1, Qt::AlignBottom);//添加坐标轴，放置到x轴的位置
 m_chart -> addAxis(m_axis2, Qt::AlignLeft);//添加坐标轴，放置到y轴的位置
 m_chart -> addSeries(m_data1);
@@ -359,4 +370,26 @@ m_data2 -> attachAxis(m_axis2);
 m_chartview = new QChartView(m_chart);
 //setRenderHint()函数来自于父类QGraphicsView，具体功能还没搞清楚，但加上之后画出来的线更好看一些
 m_chartview -> setRenderHint(QPainter::Antialiasing);
+```
+
+3. 把QChart转换成QImage，并保存为图片格式的文件
+```
+//初始化图表显示控件
+m_chartview = new QChartView(m_chart);
+//setRenderHint()函数来自于父类QGraphicsView，具体功能还没搞清楚，但加上之后画出来的线更好看一些
+m_chartview -> setRenderHint(QPainter::Antialiasing);
+//把图表保存成图片格式文件
+QPixmap pixmap = m_chartview -> grab();
+QImage image = pixmap.toImage();
+image.save("D:/chart.png");
+```
+
+4. 调整QChart的大小
+在不调整大小的情况下，生成的图片默认为(640, 480)  
+实际测试，调用Chart自带的zoom()函数之后，显示出来的图表大小并没有变化，生成的图片大小也没有变化  
+目前测试，使用QWidget的resize()函数调整大小是有效的，生成图片文件的大小也会随之改变  
+使用QImage的函数来调整图片文件大小应该也可以，但还没有进行具体测试  
+```
+m_chartview = new QChartView(m_chart);
+m_chartview -> resize(480, 360);//通过widget来调整图表大小
 ```

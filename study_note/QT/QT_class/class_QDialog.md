@@ -127,13 +127,3 @@ Constant   Value
 QDialog::Accepted   1
 QDialog::Rejected   0
 ```
-
-
-## enum Qt::WindowModality
-这个集合描述了窗口的模态特性  
-```
-Constant   Value   Description
-Qt::NonModal   0   这个窗口是非模态的，不会封锁其他窗口获得输入
-Qt::WindowModal   1   这个窗口是模态的，只会封锁其父类窗口、父类的父类窗口等获得输入
-Qt::ApplicationModal   2   这个窗口是模态的，会封锁其他所有窗口获得输入
-```

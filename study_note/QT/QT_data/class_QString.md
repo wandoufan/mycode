@@ -133,6 +133,7 @@ ch=ba.data();  //不能直接用cout输出QByteArray对象，而是要输出对�
 ## 进行了重载的常用公共函数
 1. 重载函数append()
 在string后面添加字符串str  
+注意：添加后会改变原有字符串的内容  
 ```
 QString &QString::append(const QString &str)
 QString &QString::append(QChar ch)

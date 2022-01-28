@@ -2,30 +2,45 @@
 
 ## 基本功能
 QMenu提供了菜单形式的widget，可以使用在菜单栏、上下文菜单和其他弹出式菜单中  
-QMenu的父类是QWidget  
 QMenu相当于菜单，QAction相当于菜单栏中的选项  
-如果要创建窗口上方工具栏里的菜单，使用QMenuBar  
+备注：如果要创建窗口上方工具栏里的菜单，使用QMenuBar  
+父类：QWidget  
+子类：无  
+
+
+## 代码示例
+详见最下面"下拉菜单的实现形式"  
 
 
 ## 构造函数
 1. QMenu::QMenu(const QString &title, QWidget \*parent = nullptr)
-用title和父指针构造一个menu对象  
 如果这个menu对象用作另一个menu的子菜单，则title即为子菜单对应的选项的名字  
-```
-menu1 = new QMenu("submenu", this);
-```
 
 2. QMenu::QMenu(QWidget \*parent = nullptr)
-用父指针构造一个menu对象  
-```
-menu1 = new QMenu(this);
-```
 
 
-## 添加子菜单的函数
+## 常用成员变量
+1. icon : QIcon
+这个属性设置菜单的图标，等同于QAction::icon属性  
+1.1 QIcon icon() const
+1.2 void setIcon(const QIcon &icon)
+
+2. separatorsCollapsible : bool
+
+3. tearOffEnabled : bool
+
+4. title : QString
+这个属性设置菜单的标题，等同于QAction::text属性  
+备注：这个标题其实就是菜单的文本内容  
+4.1 QString title() const
+4.2 void setTitle(const QString &title)
+
+5. toolTipsVisible : bool
+
+
+## 常用公共函数：添加子菜单
 1. QAction \*QMenu::addMenu(QMenu \*menu)
-在当前菜单中添加一个已经创建好的子菜单，返回菜单的menuAction()  
-新添加的子菜单没有菜单的所有权  
+添加一个已经创建好的子菜单，返回菜单关联的QAction对象  
 ```
 QMenu *menu2 = new QMenu("submenu", this);
 menu2 -> addAction("1");
@@ -34,8 +49,7 @@ menu1 -> addMenu(menu2);
 ```
 
 2. QMenu \*QMenu::addMenu(const QString &title)
-在当前菜单中用title添加一个新的子菜单，返回这个子菜单对象  
-其中，title即为子菜单对应的选项的名字  
+创建并添加一个新的子菜单，返回这个子菜单对象  
 ```
 QMenu *menu2 =  menu1 -> addMenu("submenu1");
 menu2 -> addAction("a");
@@ -43,27 +57,22 @@ menu2 -> addAction("b");
 ```
 
 3. QMenu \*QMenu::addMenu(const QIcon &icon, const QString &title)
-在当前菜单中用图标和title添加一个新的子菜单，返回这个子菜单对象  
+创建并添加一个新的子菜单，返回这个子菜单对象  
+
+4. QAction \*QMenu::insertMenu(QAction \*before, QMenu \*menu)
+插入一个已经创建好的子菜单，返回菜单关联的QAction对象  
 
 
-## 添加Action的函数
-1. QMenu::addAction(QAction \*act)
-向当前菜单中添加一个已经创建好的action对象  
+## 常用公共函数：添加子action
 ```
-menu1 -> addAction(action1);
+QMenu中的addAction()函数都是创建并添加一个新的action对象  
+QMenu的父类QWidget中的addAction()函数是添加一个已经创建好的action对象  
 ```
+1. QAction \*QMenu::addAction(const QString &text)
 
-2. QAction \*QMenu::addAction(const QString &text)
-在当前菜单中用text添加一个新的action，返回这个action对象  
-这个action对象的父指针默认为当前菜单  
-```
-QAction *action1 = menu1 -> addAction("add");
-```
+2. QAction \*QMenu::addAction(const QIcon &icon, const QString &text)
 
-3. QAction \*QMenu::addAction(const QIcon &icon, const QString &text)
-在当前菜单中用图标和text添加一个新的action，返回这个action对象  
-
-4. QAction \*QMenu::addAction(const QString &text, const QObject \*receiver, const char \*member, const QKeySequence &shortcut = 0)
+3. QAction \*QMenu::addAction(const QString &text, const QObject \*receiver, const char \*member, const QKeySequence &shortcut = 0)
 在菜单中添加action时，顺便添加action的槽函数  
 这个action的triggered()信号被连接到了接收对象的槽上  
 ```
@@ -75,11 +84,24 @@ menu1 -> addAction("show", this, SLOT(onShowAboutAction()));
 connect(action1, SIGNAL(triggered()), this, SLOT(click_add()));
 ```
 
-5. QAction \*QMenu::addAction(const QIcon &icon, const QString &text, const QObject \*receiver, const char \*member, const QKeySequence &shortcut = 0)
+4. QAction \*QMenu::addAction(const QIcon &icon, const QString &text, const QObject \*receiver, const char \*member, const QKeySequence &shortcut = 0)
 和上面函数功能一样，只是在创建action时多了一个图标  
 
+5. template <typename Functor> QAction \*QMenu::addAction(const QString &text, Functor functor, const QKeySequence &shortcut = 0)
 
-## 其他常用函数
+6. template <typename Functor> QAction \*QMenu::addAction(const QString &text, const QObject \*context, Functor functor, const QKeySequence &shortcut = 0)
+
+7. template <typename Functor> QAction \*QMenu::addAction(const QIcon &icon, const QString &text, Functor functor, const QKeySequence &shortcut = 0)
+
+8. template <typename Functor> QAction \*QMenu::addAction(const QIcon &icon, const QString &text, const QObject \*context, Functor functor, const QKeySequence &shortcut = 0)
+
+
+## 常用公共函数：添加子section
+section的接口函数和action的接口函数很类似，返回值也是一个QAction指针  
+但是没搞明白这个section有什么作用，实际测试添加section后也没有任何显示  
+
+
+## 常用公共函数：其他
 1. QAction \*QMenu::addSeparator()
 在当前菜单中添加一个空白的action，显示效果为在菜单选项中添加一个空白分割  
 ```
@@ -98,6 +120,17 @@ menu1 -> exec(somewidget.mapToGlobal(QPoint(0,0)));
 menu1 -> exec(event -> globalPos());
 ```
 
+3. QAction \*QMenu::defaultAction() const
+
+4. void QMenu::setDefaultAction(QAction \*act)
+设置默认要执行的action  
+
+5. QAction \*QMenu::activeAction() const
+
+6. void QMenu::setActiveAction(QAction \*act)
+设置当前高亮的action  
+
+---------------------------------------------------------------
 
 ## 下拉菜单的实现形式
 1. 指定组件设置左键下拉式菜单

@@ -34,6 +34,14 @@ signimage.load("E:/1.png");
 signimage = signimage.scaled(pic_width, pic_height);
 signimage.save("E:/1.png");
 ```
+2. 读取.qrc中的某个图片资源，然后转换为QImage
+```
+QImage image_logo(":/MyImage/image/avic.jpeg");
+```
+'/MyImage'为前缀名  
+'/image'为图片文件所在的目录名  
+'/avic.jpeg'为图片名字  
+为了获取正确的路径，最好选择图片文件，右键 - copy path  
 
 
 ## 构造函数
@@ -44,7 +52,8 @@ signimage.save("E:/1.png");
 3. QImage(const QImage &image)
 
 4. QImage(const QString &fileName, const char \*format = nullptr)
-加载本地的图片文件来生成一个QImage对象  
+加载图片文件来生成一个QImage对象  
+fileName可以是磁盘中的一个实际文件，也可以是一个已经嵌入程序中的资源(.qrc)  
 
 5. QImage(const char \*const [] xpm)
 
@@ -134,5 +143,7 @@ image.save(&buffer, "PNG");
 
 ## 常用公共函数：获取图片底层信息
 
+
+## 常用公共函数：对图片进行缩放
 
 ## 公共静态函数

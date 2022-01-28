@@ -5,6 +5,12 @@ QFont用来定义文本属性，包括：字体、大小、粗细、斜体、下
 备注：不包括设置文本颜色  
 
 
+## 代码示例
+1. 构造一个常用字体
+```
+QFont font = QFont("Calibri", 10, 50);
+```
+
 ## 构造函数
 1. QFont::QFont(const QFont &font)
 
@@ -18,6 +24,7 @@ QFont用来定义文本属性，包括：字体、大小、粗细、斜体、下
 ## 常用公共函数：设置文本各种属性
 1. void QFont::setFamily(const QString &family)
 设置字体的名字，字体名字不区分大小写  
+最常用的字体是"Calibri"，UI界面中按钮使用的默认字体是'SimSun'  
 Qt支持的所有字体在帮助手册中没有看到，但可以通过如下方法进行查询  
 ```
 QFontDatabase fd;
@@ -27,7 +34,6 @@ for(int i = 0; i < family_list.size(); i++)
     qDebug() << i << ":" << family_list[i];
 }
 ```
-UI界面中按钮使用的默认字体是'SimSun'  
 
 2. void QFont::setPixelSize(int pixelSize)
 设置字体像素单位的大小  

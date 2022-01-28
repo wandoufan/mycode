@@ -2,6 +2,8 @@
 
 ## 基本功能
 QComboBox组件是一个下拉式菜单，结合了按钮和弹出式列表  
+父类：QWidget  
+子类：QFontComboBox  
 
 
 ## 使用技巧

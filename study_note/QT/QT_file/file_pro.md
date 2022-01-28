@@ -7,6 +7,26 @@
 备注：具体内容详见Qt帮助手册'qmake Manual'  
 
 
+## 在Qt项目中导入其他项目/代码的方法
+1. 如果子项目有.pri文件，直接include子项目的.pri文件
+```
+include(../SkyplotWidget.pri)
+include(xlsx/qtxlsx.pri)
+```
+2. 如果没有.pri文件，就要把头文件和源文件逐个添加进来
+```
+HEADERS += \
+    snap7/snap7.h \
+    snap7/s7_client.h \
+    ......
+
+SOURCES += \
+    snap7/snap7.cpp \
+    snap7/s7_client.cpp \
+    ......
+```
+
+
 ## qmake变量
 备注：所有变量详见Qt帮助手册'Variables'  
 * TEMPLATE
@@ -42,6 +62,7 @@ QT变量指定要使用的QT模块
 QT  += core gui //默认变量，对应于QtCore和QtGui，带界面的程序都要用到该模块
 QT  += axcontainer //使用QAxContainer模块中相关的类
 QT  += widgets //使用各种widget组件
+QT += charts //用到Qt的charts模块
 ```
 * CONFIG
 CONFIG变量指定指定工程配置和编译变量  
@@ -283,6 +304,7 @@ greaterThan(Qt_MAJOR_VERSION, 4): Qt += widgets
 包含了另一个配置文件，就相当于添加了这个配置文件中的所有内容  
 ```
 include(../SkyplotWidget.pri)
+include(xlsx/qtxlsx.pri)
 ```
 4. message()函数中的信息可以输出在'编译输出'和'概要信息'的窗口中  
 ```

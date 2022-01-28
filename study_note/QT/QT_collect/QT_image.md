@@ -10,8 +10,10 @@ QPixmap主要实现在屏幕上显示图像
 QBitmap只是一个继承于QPixmap的便捷类，确保深度为1  
 4. QPicture
 QPicture是一个记录和回放QPainter命令的绘制设备  
+
+
+## 继承关系
 ```
-继承关系
 			 - QPixmap -  QBitmap
 QPaintDevice - QImage
 			 - QPicture

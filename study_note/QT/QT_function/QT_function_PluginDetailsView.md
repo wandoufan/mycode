@@ -86,6 +86,9 @@ ui -> pushButton -> setContextMenuPolicy(Qt::CustomContextMenu);
 
 
 ## action相关的函数
+所有的widget组件都有一个QAction类型的列表，列表有许多不同的表示形式  
+默认的列表形式是创建一个QMenu(由actions()返回)  
+
 * QList<QAction \*> QWidget::actions() const
 返回Widget组件的actions的列表(可能为空)  
 

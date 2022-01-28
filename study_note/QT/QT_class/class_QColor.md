@@ -3,6 +3,7 @@
 ## 基本功能
 QColor类用来生成基于RGB、HSV、CMYK值的各种颜色  
 一般产生的都是各种颜色对象，然后被其他函数调用作为颜色参数  
+颜色取值详见namespace中的enum Qt::GlobalColor  
 RGB：(red, green, blue) 最常用的一种类型  
 HSV：(hue, saturation, value)  
 CMYK：(cyan, magenta, yellow and black)  
@@ -73,28 +74,5 @@ mycolor.setRgb(10, 100 , 50); 每个参数的含义，参数范围为0~255
 判断颜色名字是否合法  
 
 
-## enum Qt::GlobalColor
-颜色也可以用下面的参数进行赋值  
-使用方式：QColor(Qt::lightGray)  
-```
-Constant  Value  Description
-Qt::white  3  White (#ffffff)
-Qt::black  2  Black (#000000)
-Qt::red  7  Red (#ff0000)
-Qt::darkRed  13  Dark red (#800000)
-Qt::green  8  Green (#00ff00) 
-Qt::darkGreen  14  Dark green (#008000) 
-Qt::blue  9  Blue (#0000ff) 
-Qt::darkBlue  15  Dark blue (#000080) 
-Qt::cyan  10  Cyan (#00ffff) 
-Qt::darkCyan  16  Dark cyan (#008080) 
-Qt::magenta  11  Magenta (#ff00ff) 
-Qt::darkMagenta  17  Dark magenta (#800080) 
-Qt::yellow  12  Yellow (#ffff00) 
-Qt::darkYellow  18  Dark yellow (#808000) 
-Qt::gray  5  Gray (#a0a0a4) 
-Qt::darkGray  4  Dark gray (#808080) 
-Qt::lightGray  6  Light gray (#c0c0c0) 
-```
 
 

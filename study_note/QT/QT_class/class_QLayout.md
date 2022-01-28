@@ -1,123 +1,67 @@
 # QLayout
 
 ## 基本功能
-QLayout是QT中所有控件几何属性设置相关类的基类，提供界面布局管理功能  
-QLayout是一个抽象类，不能直接实例化，一般都是获取其子类的对象  
-备注：使用前要在.pro文件中添加'QT += widgets'  
-继承关系如下：  
-```
-QLayout
-	├─QBoxLayout
-	│  ├─QHBoxLayout 将所有Widget组件水平排列
-	│  └─QVBoxLayout 将所有Widget组件垂直排列
-	├─QFormLayout 管理Input Widget组件和与它们关联的labels
-	├─QGridLayout 将所有Widget组件以网格状排列
-	└─QStackedLayout 一次显示一个组件(组件堆叠在一起，只显示最上面组件)
-```
+QLayout是Qt中所有界面布局相关类的抽象基类，提供界面布局管理功能  
+备注：QLayout是一个抽象基类，一般不直接实例化，主要用来提供公共函数  
+父类：QObject、QLayoutItem  
+子类：QBoxLayout、QFormLayout、QGridLayout、QStackedLayout  
 
 
-## 注意事项
-1. layout对象不需要调用show()函数即可默认显示(layout也没有这个成员方法)
-2. 当代码中出现多个layout对象时
-如果都带有this指针(指明了父对象为当前窗口)，则只会显示出现最前面的那个layout  
-如果只有一个带有this指针，则只会显示带有this指针的这个layout  
-3. 组件在layout中显示顺序、索引序号都是和组件添加到Layout中的顺序是一致的  
-4. 在GridLayout中如果只添加了一个组件，则无论怎么参数设置，该组件都始终显示在GridLayout的中间  
-5. 所有widget类的组件都可以调用setLayout函数来设置内部布局形式  
-```
-void QWidget::setLayout(QLayout \*layout)
-```
+## 常用成员变量
+1. sizeConstraint : SizeConstraint
+这个属性设置主要widget的尺寸，默认模式为SetDefaultConstraint  
+1.1 QLayout::SizeConstraint sizeConstraint() const  
+1.2 void setSizeConstraint(QLayout::SizeConstraint)  
+
+2. spacing : int
+这个属性设置layout中widget之间的间距，默认为7  
+如果没有特别设置间距，则间距值一般继承自父类  
+对于QGridLayout和QFormLayout可以设置不同的水平间距和垂直间距，这种情况下，spacing()返回-1  
+2.1 int spacing() const 
+2.2 void setSpacing(int)
 
 
-## 代码示例
-layout相关的代码一般写在构造函数中  
-```
-TicTacToe::TicTacToe(QWidget *parent) :
-    QWidget(parent)
-{
-   mybutton = new QPushButton("custom button");
-   mybutton -> setFixedSize(100, 50);
-   mylayout = new QVBoxLayout(this);
-   mylayout -> addWidget(mybutton);
-   this -> setLayout(mylayout);
-   this -> setFixedSize(150, 80);
-}
-```
-
-
-## QLayout常用函数
-备注：以下都是基类中的函数，子类中都可以使用  
-1. void QLayout::setContentsMargins(int left, int top, int right, int bottom)
-默认情况下，Layout包含的组件和边框之间有一个缝隙(11个像素的间距)  
-可以用setContentsMargins来具体设置间距的大小  
+## 常用公共函数：边框间隙设置
 备注：setMargin(int margin)函数有同样的功能，但已经过时，不再使用  
+1. void QLayout::setContentsMargins(const QMargins &margins)
+设置边框间隙的大小  
+默认情况下，Layout包含的组件和边框之间有一个间隙(11个像素的间距)  
+
+2. void QLayout::setContentsMargins(int left, int top, int right, int bottom)
+设置边框间隙的大小  
 ```
-vlayout -> setContentsMargins(30, 30, 30, 30);
+gridlayout -> setContentsMargins(10, 10, 10, 10);
 ```
 
-2. void QLayout::addWidget(QWidget \*w)
-向当前的Layout中添加一个Widget组件，注意参数必须是指针类型  
-```
-vlayout -> addWidget(button1);
-```
+3. QMargins QLayout::contentsMargins() const
+返回边框间隙，在绝大多数平台上，间隙值都是11  
 
-3. virtual int indexOf(QWidget \*widget) const
-查询Layout中某个控件的索引，索引号从0开始计算  
-索引序号与控件添加到Layout中的顺序是一致的  
-```
-int index = vlayout -> indexOf(button1);
-```
-
-4. virtual int count() const = 0
-查询Layout中包含控件的个数
-```
-int count = vlayout -> count();
-```
+4. void QLayout::getContentsMargins(int \*left, int \*top, int \*right, int \*bottom) const
+返回边框间隙，在绝大多数平台上，间隙值都是11  
 
 
-## QGridLayout常用函数
-1. void QGridLayout::addLayout(QLayout \*layout, int row, int column, Qt::Alignment alignment = Qt::Alignment())
-向GridLayout中添加另外一个layout组件  
-row参数和column参数分别设置行数和列数，其中，最左上角的位置为(0, 0)  
-alignment参数用来设置子layout在父layout中的填充程度  
-alignment默认值为0，即控件为充满整个框架  
-任意非零的alignment参数都说明子layout不能充满整个框架，此时子layout的尺寸要由sizeHint()函数来确定  
-```
-glayout -> addLayout(vlayout, 1, 1);
-```
+## 常用公共函数：管理layout中的widget
+1. void QLayout::addWidget(QWidget \*w)
+向当前的Layout中添加一个Widget组件  
 
-2. void QGridLayout::addWidget(QWidget \*widget, int row, int column, Qt::Alignment alignment = Qt::Alignment())
-向一个QGridLayout类型的layout中添加一个widget组件  
-row参数和column参数分别设置行数和列数，其中，最左上角的位置为(0, 0)  
-alignment参数用来设置widget组件在layout中的填充程度，详见下面enum Qt::AlignmentFlag  
-alignment默认值为0，即控件为充满整个框架  
-```
-glayout -> addWidget(box1, 0, 0);
-glayout -> addWidget(box2, 0, 1);
-glayout -> addWidget(box3, 1, 0);
-```
-备注：当要添加的对象很多时，可以直接在函数里实例化对象，这样就不用定义那么多变量名  
-```
-glayout -> addWidget(new QLabel("label :", set_window), 0, 0);
-```
+2. void QLayout::removeWidget(QWidget \*widget)
+从layout中删除一个Widget组件  
+
+3. QWidget \*QLayout::parentWidget() const
+返回当前layout的父类  
+
+4. QLayoutItem \*QLayout::replaceWidget(QWidget \*from, QWidget \*to, Qt::FindChildOptions options = Qt::FindChildrenRecursively)
+替换layout中的widget  
+
+5. [virtual] int QLayout::indexOf(QWidget \*widget) const
+返回layout中widget的序号，序号从0开始，和widget添加到layout中的顺序一致  
+如果没有找到widget，则返回-1  
+
+6. [pure virtual] int QLayout::count() const
+返回Layout中包含控件的个数  
+备注：这是一个纯虚函数，但测试可以调用  
 
 
-## enum Qt::AlignmentFlag
-这个枚举中的参数用来设置组件的对齐方式，如左对齐  
-```
-Constant   Value   Description
-//水平参数
-Qt::AlignLeft   0x0001   水平方向靠左
-Qt::AlignRight   0x0002   水平方向靠右
-Qt::AlignHCenter   0x0004   水平方向居中
-Qt::AlignJustify   0x0008   水平方向调整间距两端对齐
-//垂直参数
-Qt::AlignTop   0x0020   垂直方向靠上
-Qt::AlignBottom   0x0040   垂直方向靠下
-Qt::AlignVCenter   0x0080   垂直方向居中
-Qt::AlignBaseline   0x0100   垂直方向靠基准线
-//双维度参数
-Qt::AlignCenter   AlignVCenter | AlignHCenter   等价于Qt::AlignHCenter | Qt::AlignVCenter
-```
-注意：水平参数和垂直参数都是一次只能设置一个  
-备注：向layout中添加pushbutton等组件时默认会把组件拉长(充满整个框架)，加上Qt::AlignHCenter参数后，组件就会缩短居中  
+## 常用公共函数：设置layout中的item
+这些函数不常用，不用管了  
+

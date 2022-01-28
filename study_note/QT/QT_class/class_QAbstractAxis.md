@@ -15,13 +15,7 @@ QAbstractAxis作为Qt图标中的坐标轴，是所有图表坐标轴类的基�
 
 ## 常用成员变量
 1. alignment : const Qt::Alignment
-这个属性设置坐标轴的位置  
-```
-Qt::AlignLeft
-Qt::AlignRight
-Qt::AlignBottom
-Qt::AlignTop
-```
+这个属性设置坐标轴的位置，取值详见namespace中的enum Qt::AlignmentFlag  
 这个属性只能读，不能写  
 1.1 Qt::Alignment alignment() const
 
@@ -186,4 +180,3 @@ Qt::Vertical
 设置坐标轴显示的最小值和最大值  
 根据坐标轴的实际类型，min和max参数会被转换成合适的值类型  
 如果转换不能实现，这个函数不会做任何事情  
-

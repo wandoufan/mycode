@@ -37,6 +37,7 @@ include(xlsx/qtxlsx.pri)
 4. 在自己的Qt项目代码中添加
 ```
 #include "xlsxdocument.h"
+using namespace QXlsx;
 ```
 --------------------------------------
 

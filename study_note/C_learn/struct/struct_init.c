@@ -4,8 +4,11 @@
 
 /*
 1.结构体：将不同类型但相互联系的数据组合起来，方便整体引用(类似于python中的类class)
+
 2."struct student"是用户自己定义的类型名，和int、float、char的作用是一样的
+
 3.声明结构体类型时不会分配内存，在实例化出一个结构体变量后才会分配对应的内存
+
 4.结构体成员也可以是一个结构体变量，即结构体变量可以嵌套使用，例如：
 typedef struct student
 {
@@ -17,35 +20,20 @@ typedef struct student
 因为此时STUDENT还没有被定义出来，非法操作：STUDENT * next;
 
 5.结构体内算作一个单独的作用域，即结构体成员的变量名可以和结构体外的变量名相同，不会产生冲突
+
 6.通过成员运算符"."来引用结构体变量中的成员，在所有运算符中优先级最高
 如果成员本身也是一个结构体变量则可以多级引用，如student_1.birthday.month
+
 7.不能把结构体变量当做一个整体进行输入输出(也没有结构体对应的格式符)，只能逐个引用结构体变量中的成员
+
 8.定义时没有指定长度的数组称为"flexible array"，如char name[];，
 一个结构体中最多只能有一个这样的数组，并且这个数组一定要是结构体的最后一个成员
+
 9.C语言中的结构体只有属性，没有方法，这一点和python、C++不一样，后者都是既有属性又有方法
+因此C语言中的结构体不能写构造函数
+
 10.结构体成员默认是public公有的，外部程序都可以访问
 */
-
-
-int main()
-{
-    void struct_define_1();
-    struct_define_1();
-
-    void struct_define_2();
-    struct_define_2();
-
-    void struct_define_3();
-    struct_define_3();
-
-    void struct_init_1();
-    struct_init_1();
-
-    void struct_init_2();
-    struct_init_2();
-
-    return 0;
-}
 
 
 void struct_define_1()
@@ -114,7 +102,7 @@ void struct_init_2()
     struct student
     {
         int num;
-        char name[20];       
+        char name[20];
         char sex;
         int age;
         float score;
@@ -127,4 +115,20 @@ void struct_init_2()
     student_2.age = 18;
     student_2.score = 80.0;
     printf("%d, %s, %c, %d, %.1f\n", student_2.num, student_2.name, student_2.sex, student_2.age, student_2.score);
+}
+
+
+int main()
+{
+    struct_define_1();
+
+    struct_define_2();
+
+    struct_define_3();
+
+    struct_init_1();
+
+    struct_init_2();
+
+    return 0;
 }
