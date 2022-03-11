@@ -18,7 +18,9 @@ background-color:blue;
 
 
 ## 注意事项
-1. 全局属性设置和控件的局部属性设置要注意先后顺序
+1. 目前发现有的时候qss语句开头要空一行，否则语句中对全局属性的设置会失效
+有的时候语句中间有空行也会导致对全局属性的设置失效，具体情况还没有搞清楚
+2. 全局属性设置和控件的局部属性设置要注意先后顺序
 错误示例：全局属性设置写在前面，导致后面控件的局部属性设置无效
 ```
 //全局属性设置
@@ -181,11 +183,14 @@ QAbstractButton { color: gray }//匹配
 备注：所有的属性规则，详见Qt帮助手册中的'Qt Style Sheets Reference'-'List of Properties'  
 1. background-color
 设置控件的背景颜色  
+备注：颜色支持以下多种写法  
 ```
 QLabel { background-color: yellow }
-QLineEdit { background-color: rgb(255, 0, 0) }
+QLabel { background-color: #ff0000 }
+QLabel { background-color: rgb(255, 0, 0) }
 ```
 2. color
+设置文字颜色
 ```
 QPushButton { color: red }
 ```

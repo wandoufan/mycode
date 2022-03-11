@@ -103,32 +103,35 @@ void test_function()
     char str1[] = "I am happy";
     char str2[] = "Hello World";
 
-    /*1.strcat(str1, str2)函数将str2拼接到str1的后面，返回str1的地址*/
+    //strcat(str1, str2)函数将str2拼接到str1的后面，返回str1的地址
+    //备注：没有找到preappend方式添加的函数，如果想要在字符串前面添加另一个字符串，把两个参数位置对调
     printf("%s\n", strcat(str1, str2));
 
-    /*2.strcpy(str1, str2)函数将str2复制到str1中去，str1的原数据被抹去，返回str1的地址*/
+    //strncat(str1, str2, n)函数将str2的前n个字符拼接到str1的后面，返回str1的地址
+
+    // strcpy(str1, str2)函数将str2复制到str1中去，str1的原数据被抹去，返回str1的地址
     // char* strcpy(char* strDestination, const char* strSource);
-    /*strcpy函数常用来对字符数组进行整体赋值*/
+    // strcpy函数常用来对字符数组进行整体赋值
     printf("%s\n", strcpy(str1, "test"));
 
-    /*3.strncpy(str1, str2, n)函数将str2的前n个字符复制到str1中去，str1的原数据被抹去，返回str1的地址*/
+    // strncpy(str1, str2, n)函数将str2的前n个字符复制到str1中去，str1的原数据被抹去，返回str1的地址
     printf("%s\n", strncpy(str1, "good", 2));
 
-    /*4.strcmp(str1, str2)函数比较str1和str2，对字符串自左至右按ASCII码值大小比较，以第一个不同的字符为准
-    若str1=str2，函数值为0；若str1>str2，函数值为正整数1；若str1<str2，函数值为负整数-1
-    注意：1和-1的布尔值都是True，因此函数返回值不能直接用来判断真假*/
+    // strcmp(str1, str2)函数比较str1和str2，对字符串自左至右按ASCII码值大小比较，以第一个不同的字符为准
+    // 若str1=str2，函数值为0；若str1>str2，函数值为正整数1；若str1<str2，函数值为负整数-1
+    // 注意：1和-1的布尔值都是True，因此函数返回值不能直接用来判断真假
     printf("%d\n", strcmp("china", "chima"));
     if(strcmp("china", "chima") > 0)
         printf("yes\n");
     
-    /*5.strlen(str1)函数返回str1的长度，注意：长度是指字符串的实际长度，不包括'\0'在内*/
+    // strlen(str1)函数返回str1的长度，注意：长度是指字符串的实际长度，不包括'\0'在内
     printf("%d\n", strlen("this is a length test"));
 
-    /*6.strlwr(str1)函数将字符串中所有字母小写，返回str1的地址*/
+    // strlwr(str1)函数将字符串中所有字母小写，返回str1的地址
     printf("%s\n", strlwr(str2));
 
-    /*7.strupr(str1)函数将字符串中所有字母大写，返回str1的地址*/
+    // strupr(str1)函数将字符串中所有字母大写，返回str1的地址
     printf("%s\n", strupr(str2));
 
-    /*其他函数待补充.....*/
+    /*其他函数待补充.....
 }

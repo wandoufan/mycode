@@ -164,7 +164,7 @@ QString QString::arg(qulonglong a, int fieldWidth = 0, int base = 10, QChar fill
 ...
 (数量太多，不再列举)
 ```
-向QString字符串中插入相应的QString类型的变量  
+向QString字符串中插入变量，变量也可以是数字等类型，不必转换为字符串  
 相当于C++提供的%d、%s、%c等通配符  
 注意：这里的字符串中不再是通配符，而是从1开始计数的数字，与后面的参数一一对应  
 ```

@@ -3,7 +3,7 @@
 ## 基本情况
 Qt支持微软的ActiveX和COM，因此基于Windows系统的开发者可以实现：  
 1. 在Qt程序中通过ActiveX server来访问和调用ActiveX控制和COM对象
-2. 使它们的Qt程序变成COM servers，可以带有一定数量的Qt objects和widgets作为ActiveX控制和COM对象
+2. 使Qt程序变成COM servers，可以带有一定数量的Qt objects和widgets作为ActiveX控制和COM对象
 
 
 ## 微软office接口

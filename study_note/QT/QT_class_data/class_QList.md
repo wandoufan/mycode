@@ -3,17 +3,69 @@
 ## 基本功能
 QList是提供列表功能的模板类，属于一个顺序容器类  
 在声明QList时，必须写明QList中要存放的数据类型  
+注意：一个列表中只能存放一种数据类型，不能多个数据类型混合存放，但可以存放结构体  
 QList是最常用的容器类，相当于数组或列表，支持序列化访问，且访问修改数据的速度很快  
+父类：无  
+子类：QByteArrayList、QItemSelection、QQueue、QStringList  
+
+
+## 三种容器类的对比
 QList<T>、QLinkedList<T>、QVector<T>提供了相似的函数接口  
-```
-//继承关系
-QList -- QByteArrayList、QItemSelection、QQueue、QStringList
-```
 
 
-## QList与python中list的区别
-1. 不支持双层列表，即不能列表内部再嵌套列表  
-2. 一个列表中只能存放一种数据类型，不能多个数据类型混合存放  
+## 关于双层列表的说明
+QList据说是不支持双层列表，即不能列表内部再嵌套列表  
+但实际测试，双层列表在定义、赋值、取值时都没有产生报错  
+```
+//定义
+QList<QList<int>> list1;
+//赋值
+for(int i = 0; i < 10; i ++)
+{
+    QList<int> list2;
+    for(int j = 0; j < 5; j++)
+    {
+        list2.append(i + j);
+    }
+    list1.append(list2);
+}
+//取值
+for(int i = 0; i < 10; i ++)
+{
+    for(int j = 0; j < 5; j++)
+    {
+
+        qDebug() << list1[i][j];
+    }
+}
+```
+另一种思路是QList中存放一个结构体，然后结构体中再存放一个QList，这样还可以存放多种类型的数据  
+```
+//定义
+struct ChannelValue
+{
+    QList<int> value_list;
+};
+QList<ChannelValue> channel_list;
+//赋值
+for(int i = 0; i < 5; i++)
+{
+    struct ChannelValue channel_value;
+    for(int j = 0; j < 10; j++)
+    {
+        channel_value.value_list.append(i + j);
+    }
+    channel_list.append(channel_value);
+}
+//取值
+for(int i = 0; i < 5; i++)
+{
+    for(int j = 0; j < 10; j++)
+    {
+        qDebug() << channel_list[i].value_list[j];
+    }
+}
+```
 
 
 ## 使用示例
@@ -36,6 +88,19 @@ alist << "a" << "123" << "abc";
 4. 在创建列表时可以直接添加元素  
 ```
 QList<QString> alist = { "one", "two", "three" };
+```
+5. 使用QList来存放结构体
+```
+struct ChannelInfo
+{
+    int Index;
+    QString ID;
+    QString Name;
+    QString Alias;
+    QString Symbol;
+};
+
+QList<ChannelInfo> m_channel_list;
 ```
 
 

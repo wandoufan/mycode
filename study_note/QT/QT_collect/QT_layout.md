@@ -25,7 +25,7 @@ QLayout
 其中，QGridLayout是最常用的，优先使用这个  
 
 
-## 关于layout的显示问题
+## 关于QMainWindow中的layout的显示问题
 正常情况下，在QWidget，QDialog里面使用setLayout()方法之后就可以直接显示出布局  
 但实际测试发现，如果是在QMainWindow里面使用setLayout()方法后没有任何反应  
 虽然QMainWindow也是QWidget的子类，但主窗口有自己的界面布局，因此不支持设置自定义的layout  

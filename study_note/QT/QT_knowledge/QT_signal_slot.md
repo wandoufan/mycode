@@ -76,15 +76,21 @@ connect函数用来创建信号函数与槽函数之间的关联关系
 如果连接成功，会返回一个连接句柄，这个句柄可以用来在随后关闭该连接  
 如果连接失败，会返回一个非法的连接句柄  
 2. 参数作用
-sender是发射信号的对象的名称  
+sender是发射信号的对象指针的名称  
 signal()是信号名称，相当特殊的函数，需要带括号，有参数时需要指明参数类型  
-receiver是接收信号的对象的名称，常用this代表当前对象  
+receiver是接收信号的对象指针的名称，常用this代表当前对象  
 slot()是槽函数的名称，需要带括号，有参数时需要指明参数类型  
-3. 注意事项
-3.1 connect()是QObject类的一个静态函数，可以不经实例化而直接使用  
+
+
+## connect()函数注意事项
+1. connect()是QObject类的一个静态函数，可以不经实例化而直接使用  
 因此可以直接写为connect(sender, SIGNAL(signal()), receiver, SLOT(slot()));  
-3.2 信号函数的参数值会直接传递给槽函数的参数  
-3.3 信号函数与槽函数的参数只能写出参数类型，不能包含任何具体的参数名  
+2. 使用信号与槽的类中必须加入Q_OBJECT宏，而且信号和槽必须得是类的成员函数  
+否则会产生报错：
+```
+LNK2019: 无法解析的外部符号...
+```
+3. 信号函数与槽函数的参数只能写出参数类型，不能包含任何具体的参数名  
 另外，信号函数和槽函数即使没有参数，也要写出括号，不能省略  
 ```
 QLabel *label = new QLabel;
@@ -96,16 +102,20 @@ QObject::connect(scrollBar, SIGNAL(valueChanged(int)),
 QObject::connect(scrollBar, SIGNAL(valueChanged(int value)),
               label, SLOT(setNum(int value)));
 ```
-3.4 connect函数还有另外一种写法，没有完全搞明白，仅供参考  
+4. connect函数还有另外一种写法，没有完全搞明白，仅供参考  
 声明槽函数时没有写slots，在connect函数中也没有用SIGNAL和SLOT，而是直接在函数名前加了一个&  
 ```
 connect(myTimer, &QTimer::timeout, this, &MyWidget::dealTimeout);
 ```
-3.5 sender和receiver都必须是指针类型，如果不是，前面要加上&  
+5. sender和receiver都必须是指针类型，如果不是，前面要加上&  
 ```
 QThreadSend thread_send;
 QThreadReceive thread_receive;
 connect(&thread_send, SIGNAL(sendData(int)), &thread_receive, SLOT(receiveData(int)));
+```
+否则会产生报错：  
+```
+error: no matching member function for call to 'connect'
 ```
 
 
@@ -249,10 +259,7 @@ connect(ui->rBtnBlack, SIGNAL(clicked()), this, SLOT(setTextFontColor()));
 ```
 connect(spinNum, SIGNAL(valueChanged(int)), this, SIGNAL(refreshInfo(int));
 ```
-4. 在使用信号与槽的函数的类中，必须在类的定义中加入宏Q_OBJECT  
-而且，信号和槽必须得是类的成员函数  
-否则会产生报错：'LNK2019: 无法解析的外部符号...'  
-5. 当一个信号发射时，与其关联的槽函数都会立即执行  
+4. 当一个信号发射时，与其关联的槽函数都会立即执行  
 只有在信号关联的槽函数都执行完毕之后才会执行信号后面的代码  
 
 

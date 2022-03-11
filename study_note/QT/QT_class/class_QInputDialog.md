@@ -2,8 +2,8 @@
 
 ## 基本功能
 QInputDialog提供了一个简单便利的对话框来获得用户输入的值  
-QInputDialog的父类是QDialog  
 注意：QInputDialog的对话框一次都只能输入一个数值  
+父类：QDialog  
 
 
 ## 输入多个信息

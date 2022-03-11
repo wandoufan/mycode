@@ -2,9 +2,9 @@
 
 ## 基本功能
 QColorDialog提供了一个对话窗口来让用户挑选颜色  
-QColorDialog的父类是QDialog  
 经常有需求是让用户自己设置颜色，如果让用户输入RGB的值，接收后再转换为颜色，就非常麻烦了  
 使用QColorDialog可以很方便的让用户选择颜色并返回一个QColor  
+父类：QDialog  
 
 
 ## 公共静态函数

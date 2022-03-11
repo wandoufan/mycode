@@ -2,8 +2,10 @@
 
 ## 基本功能
 QMessageBox类可以弹出一个对话框来通知用户或询问用户并获得回答  
-QMessageBox类是QDialog类的子类  
-使用QMessageBox类时必须在开头声明头文件'#include <QMessageBox>'  
+父类：QDialog  
+
+
+## 注意事项
 如果弹窗中的中文变成了乱码，需要进行如下格式转换  
 ```
  QMessageBox::about(NULL, QString::fromLocal8Bit("警告"), QString::fromLocal8Bit("库文件function.dll加载失败！"));

@@ -5,6 +5,8 @@ QTableWidget用来提供数据表格相关的功能
 不管是表头还是工作区，每个单元格的数据都是一个QTableWidgetItem对象  
 除非进行设置，表头行和表头列默认都是从1开始递增（注意不是0）  
 注意：在进行各种设置时，表头(行/列)和工作区是分开的，要用不同函数分别进行设置  
+父类： QTableView  
+子类：无  
 
 
 ## QTableWidget和QTableView的区别
@@ -38,7 +40,7 @@ tableWidget -> setColumnCount(5);
 ```
 
 
-## 常用函数
+## 常用公共函数
 * int QTableWidget::currentRow() const
 返回当前选择单元格的行数  
 可以自动识别鼠标所在位置，不需要提供其他参数，非常方便  
@@ -159,7 +161,7 @@ for(int i = 0; i < mytable -> rowCount(); i++)
 返回指定单元格中的widget对象  
 
 
-## 设置表格样式相关的函数
+## 常用公共函数：设置表格样式相关的函数
 备注：以下函数在QTableWidget类中并没有找到(属于公共函数)，但实际测试有效  
 
 * void setEditTriggers(QAbstractItemView::EditTriggers triggers)
@@ -211,7 +213,7 @@ mytable -> verticalHeader() -> setVisible(false);
 ```
 
 
-## 设置单元格宽和高相关的函数
+## 常用公共函数：设置单元格宽和高相关的函数
 注意：使用horizontalHeader()和verticalHeader()需要#include <QHeaderView>  
 
 * 设置表头行的高度

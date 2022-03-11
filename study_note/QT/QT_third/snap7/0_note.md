@@ -18,7 +18,7 @@ V 1.4.2
 这些类实际上就把S7API函数又封装了一层，变成了class的形式
 
 
-## 在Qt项目中使用snap7库
+## 在Qt项目中显式调用snap7动态库
 把包含snap7.h、snap7.dll、snap7.lib的snap7目录放到项目目录中
 在.pro文件中添加以下内容
 ```

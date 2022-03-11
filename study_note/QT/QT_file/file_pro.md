@@ -29,6 +29,7 @@ SOURCES += \
 
 ## qmake变量
 备注：所有变量详见Qt帮助手册'Variables'  
+注意：路径中使用的都是反斜杠/  
 * TEMPLATE
 TEMPLATE变量指定工程类型  
 ```
@@ -82,6 +83,7 @@ CONFIG += plugin //编译一个插件
 INCLUDEPATH变量指定C++编译器搜索头文件路径  
 ```
 INCLUDEPATH = ../include
+INCLUDEPATH += $$PWD/dll
 ```
 * DEPENDPATH
 DEPENDPATH变量指定依赖文件路径  
