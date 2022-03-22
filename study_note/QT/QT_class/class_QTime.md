@@ -13,9 +13,12 @@ QTime提供时钟、计时器和时间相关的函数功能
 
 ## 代码示例
 1. 获取当前时间，并转换为字符串
+只要中间的标识符能对应上就可以，格式任意写  
 ```
 QTime time_now = QTime::currentTime();
-QString string_time = time_now.toString("hh:mm:ss:zzz a");
+QString string_time1 = time_now.toString("hh:mm:ss:zzz a");
+QString string_time2 = time_now.toString("hh-mm-ss:zzz");
+QString string_time3 = time_now.toString("h.m.s");
 ```
 
 2. 比较两个时间点的大小

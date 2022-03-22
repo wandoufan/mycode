@@ -78,6 +78,7 @@ CONFIG += dll //动态编译库文件
 CONFIG += staticlib //静态编译库文件
 CONFIG += console //指应用程序需要写控制台
 CONFIG += plugin //编译一个插件
+CONFIG += no_keywords //禁用关键字的宏
 ```
 * INCLUDEPATH
 INCLUDEPATH变量指定C++编译器搜索头文件路径  
