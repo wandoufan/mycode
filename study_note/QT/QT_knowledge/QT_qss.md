@@ -10,6 +10,7 @@ qss语法可以用来设置UI控件的颜色、字体、边框等各种属性
 1. qss语句可以直接写在代码中，作为setStyleSheet函数的参数
 ```
 label1 -> setStyleSheet("background-color:blue;");
+label2 -> setStyleSheet("border: 1px solid black;");
 ```
 2. 在UI设计时，可以直接点击StyleSheet属性，在弹窗中写入qss语句  
 ```
@@ -197,7 +198,7 @@ QPushButton { color: red }
 3. border
 设置边界的宽度、风格、颜色  
 ```
-QLineEdit { border: 1px solid white }
+QLineEdit { border: 1px solid black}
 ```
 边界还可以细分为上下左右  
 ```

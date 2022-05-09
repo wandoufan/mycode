@@ -85,7 +85,7 @@ Qt主题			Qt theme
 
 ## Charts模块中类的继承关系
 1. 图表中的数据
-QLineSeries和QSplineSeries中几乎没有函数接口，只用构造函数生成对象  
+QLineSeries和QSplineSeries虽然很常用，但几乎没有提供函数接口，只用来生成对象  
 常用的函数都来自其基类QAbstractSeries和QXYSeries  
 ```
 QObject - QAbstractSeries - QXYSeries - QLineSeries - QSplineSeries
@@ -185,7 +185,7 @@ Manages the graphical representation of the chart's series, legends, and axes
 Standalone widget that can display charts
 
 20. QDateTimeAxis
-向图标的坐标轴中添加日期和时间
+向图表的坐标轴中添加日期和时间
 Adds dates and times to a chart's axis
 
 21. QHBarModelMapper

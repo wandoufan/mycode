@@ -7,17 +7,7 @@ QIODevice是Qt中所有I/O设备的公共基类，提供了读取和写入数据
 
 
 ## 代码示例
-1. readyRead()信号对应的槽函数
-```
-void MainWindow::onSocketReadyRead()
-{
-    //当缓冲区有新的数据可读时，读取数据
-    while (tcp_socket -> canReadLine())
-    {
-        ui -> textBrowser -> append(tcp_socket -> readLine());
-    }
-}
-```
+详见QT_file.md  
 
 
 ## 构造函数
@@ -40,11 +30,20 @@ void MainWindow::onSocketReadyRead()
 3. bool QIODevice::isReadable() const
 判断设备是否是可读状态  
 
+bool QIODevice::isWritable() const
+
 4. [virtual] qint64 QIODevice::bytesAvailable() const
 返回设备中可读数据的字节数
 
+5. [virtual] qint64 QIODevice::bytesToWrite() const
+对于带有缓冲区的设备，返回要往缓冲区中写入的数据的字节数  
+对于没有缓冲区的设备，返回0  
+
 5. QString QIODevice::errorString() const
 以字符串形式返回报错  
+
+[virtual] bool QIODevice::atEnd() const
+判断当前读写位置是否到达文件末尾  
 
 
 ## 常用公共函数：打开/关闭设备
@@ -72,7 +71,8 @@ void MainWindow::onSocketReadyRead()
 如果设备中没有数据可读，则返回0  
 
 3. QByteArray QIODevice::read(qint64 maxSize)
-这是一个重载函数，从设备中读取至多maxSize个字节的数据，然后将数据以QByteArray的形式返回  
+重载函数  
+从设备中读取至多maxSize个字节的数据，然后将数据以QByteArray的形式返回  
 
 4. qint64 QIODevice::readLine(char \*data, qint64 maxSize)
 从设备中读取一行ASCII码数据，而且读取至多(maxSize - 1)个字节的数据，并存入data中，返回读到的字节数  
@@ -81,7 +81,8 @@ void MainWindow::onSocketReadyRead()
 备注：数据后面总会被加上一个终止符'\0'，所以maxSize一定比1大  
 
 5. QByteArray QIODevice::readLine(qint64 maxSize = 0)
-这是一个重载函数，从设备中读取一行ASCII码数据，而且读取至多(maxSize - 1)个字节的数据，然后将数据以QByteArray的形式返回    
+重载函数  
+从设备中读取一行ASCII码数据，而且读取至多(maxSize - 1)个字节的数据，然后将数据以QByteArray的形式返回    
 
 6. QByteArray QIODevice::readAll()
 从设备中读取剩余的所有数据，然后将数据以QByteArray的形式返回  
@@ -91,11 +92,13 @@ void MainWindow::onSocketReadyRead()
 从data向设备中写入至多maxSize个字节的数据，返回实际写入的数据字节个数，如果发生错误则返回-1  
 
 8. qint64 QIODevice::write(const char \*data)
-这是一个重载函数，把一个连续的8位字符组成的字符串写入设备中，返回实际写入的数据字节个数，如果发生错误则返回-1  
+重载函数  
+把一个连续的8位字符组成的字符串写入设备中，返回实际写入的数据字节个数，如果发生错误则返回-1  
 函数等价于"QIODevice::write(data, qstrlen(data));"  
 
 9. qint64 QIODevice::write(const QByteArray &byteArray)
-这是一个重载函数，把QByteArray类型的数据写入设备中，返回实际写入的数据字节个数，如果发生错误则返回-1  
+重载函数  
+把QByteArray类型的数据写入设备中，返回实际写入的数据字节个数，如果发生错误则返回-1  
 
 10. [virtual] bool QIODevice::waitForBytesWritten(int msecs)
 阻塞程序，等待msecs毫秒，直到缓冲区中的待写入数据被写入设备中，然后发出bytesWritten()信号  
@@ -110,6 +113,13 @@ msecs参数设为-1，则时间永远不会超时
 阻塞程序，等待msecs毫秒，直到设备中有新的数据可读，然后发出readyRead()信号  
 如果设备中有数据可读，返回true，如果时间超时或发生错误，返回false  
 msecs参数设为-1，则时间永远不会超时  
+
+
+## 常用公共函数：在读写过程中移动指针位置
+1. [virtual] bool QIODevice::seek(qint64 pos)
+
+
+## 常用公共函数：在读写过程中获取指针位置信息
 
 
 ## 信号函数

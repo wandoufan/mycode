@@ -87,7 +87,7 @@ map.insert(1, "one");
 
 foreach(int key, map.keys())
 {
-    qDebug() << key << ": " << map[key];
+    qDebug() << key << ": " << map.value(key);
 }
 //1 :  "one"
 //2 :  "two"

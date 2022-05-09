@@ -40,7 +40,6 @@ for(int i = 0; i < 10; i ++)
 {
     for(int j = 0; j < 5; j++)
     {
-
         qDebug() << list1[i][j];
     }
 }
@@ -71,6 +70,23 @@ for(int i = 0; i < 5; i++)
         qDebug() << channel_list[i].value_list[j];
     }
 }
+```
+注意：实际测试，双层列表在赋值时不能直接通过两个[][]来进行赋值  
+```
+//定义
+QList<QList<int>> list1;
+//赋值
+for(int i = 0; i < 10; i ++)
+{
+    for(int j = 0; j < 5; j++)
+    {
+        list1[i][j] = i + j;//错误的赋值方法
+    }
+}
+```
+否则程序会报错:  
+```
+ASSERT failure in QList<T>::operator[]: "index out of range"
 ```
 
 

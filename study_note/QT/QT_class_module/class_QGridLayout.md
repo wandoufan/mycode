@@ -7,7 +7,8 @@
 
 
 ## 注意事项
-1. 创建gridlayout对象时，如果使用QGridLayout::QGridLayout()构造函数，这个对象没有父类  
+1. 关于gridlayout对象的父类
+创建gridlayout对象时，如果使用QGridLayout::QGridLayout()构造函数，这个对象没有父类  
 采用下面两个方法都可以给它指定一个父类
 ```
 //方法一
@@ -22,10 +23,20 @@ qDebug() << gridlayout -> spacing();
 qDebug() << gridlayout -> horizontalSpacing();
 qDebug() << gridlayout -> verticalSpacing();
 ```
-2. 在GridLayout中如果只添加了一个组件，则无论怎么参数设置，该组件都始终显示在GridLayout的中间  
+
+2. 关于添加单个widget组件
+在GridLayout中如果只添加了一个widget，则无论怎么参数设置，该组件都始终显示在GridLayout的中间  
+```
+gridlayout -> addWidget(widget, 2, 3);//这里的位置参数实际不起作用
+```
+另外，只添加一个widget时可以不写出位置参数，这个重载方法来自于父类QLayout
+```
+gridlayout -> addWidget(widget);
+```
+
 3. 关于QMainWindow中的layout的显示问题
-正常情况下，在QWidget，QDialog里面使用setLayout()方法之后就可以直接显示出布局  
-但实际测试发现，如果是在QMainWindow里面使用setLayout()方法后没有任何反应  
+正常情况下，在QWidget，QDialog里面使用setLayout()方法，或者创建layout对象时指定其父类为this指针，之后就可以直接显示出布局  
+但实际测试发现，如果是在QMainWindow里面，不管使用setLayout()方法还是设置this指针，都没有任何反应，无法显示出布局  
 虽然QMainWindow也是QWidget的子类，但主窗口有自己的界面布局，因此不支持设置自定义的layout  
 解决办法：  
 在QMainWindow中添加一个QWidget，然后对这个QWidget设置布局  
@@ -43,10 +54,33 @@ QWidget * widget = new QWidget;
 widget -> setLayout(gridlayout);
 this -> setCentralWidget(widget);//this是一个QMainWindow
 ```
+
 4. 当代码中出现多个layout对象时
 如果都带有this指针(指明了父对象为当前窗口)，则只会显示出现最前面的那个layout  
 如果只有一个带有this指针，则只会显示带有this指针的这个layout  
-
+示例：一个主layout中包含一个左layout和一个右layout  
+```
+//错误写法：每个layout都有this指针，则实际只有写在最前面的left_layout生效了
+QGridLayout * left_layout = new QGridLayout(this);
+QGridLayout * right_layout = new QGridLayout(this);
+QGridLayout * main_layout = new QGridLayout(this);
+QLabel * label1 = new QLabel("label1");
+QLabel * label2 = new QLabel("label2");
+left_layout -> addWidget(label1, 0, 0);
+right_layout -> addWidget(label2, 0, 0);
+main_layout -> addLayout(left_layout, 0, 0);
+main_layout -> addLayout(right_layout, 0, 1);
+//正确写法：只有main_layout带有this指针
+QGridLayout * left_layout = new QGridLayout;
+QGridLayout * right_layout = new QGridLayout;
+QGridLayout * main_layout = new QGridLayout(this);
+QLabel * label1 = new QLabel("label1");
+QLabel * label2 = new QLabel("label2");
+left_layout -> addWidget(label1, 0, 0);
+right_layout -> addWidget(label2, 0, 0);
+main_layout -> addLayout(left_layout, 0, 0);
+main_layout -> addLayout(right_layout, 0, 1);
+```
 
 ## 关于设置GridLayout中控件间距的说明
 设置控件间距的接口函数有很多  
@@ -93,6 +127,7 @@ gridlayout -> addWidget(label6, 3, 2, 1, 1);//正常宽度
 3. 对布局中的某些控件纵向扩展，使其占据多行
 ```
 //3行4列
+...
 ```
 ```
 gridlayout -> addWidget(label1, 0, 0, 3, 1);//rowSpan参数为-1，直接扩展到窗体最底部
@@ -102,7 +137,6 @@ gridlayout -> addWidget(label4, 0, 3, 1, 1);//正常高度
 gridlayout -> addWidget(label5, 1, 3, 1, 1);//正常高度
 gridlayout -> addWidget(label6, 2, 3, 1, 1);//正常高度
 ```
-
 4. 设置1到4行的高度比例为1:2:3:4  
 ```
 gridlayout -> setRowStretch(0, 1);

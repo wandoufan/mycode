@@ -6,6 +6,17 @@ QLabel用来显示一个文本或者图片
 子类：无  
 
 
+## 代码示例
+1. 设置图片
+注意：QLabel显示图片时只接收QPixmap数据，不能用QImage、QPicture等数据  
+```
+QImage image = QImage("D:/1.png");
+QImage image_show;
+image_show = image.scaled(ui -> label -> width(), ui -> label -> height());
+ui -> label -> setPixmap(QPixmap::fromImage(image_show));
+```
+
+
 ## 构造函数
 1. QLabel::QLabel(const QString &text, QWidget \*parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags())
 ```

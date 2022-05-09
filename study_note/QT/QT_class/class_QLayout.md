@@ -9,7 +9,7 @@ QLayout是Qt中所有界面布局相关类的抽象基类，提供界面布局�
 
 ## 常用成员变量
 1. sizeConstraint : SizeConstraint
-这个属性设置主要widget的尺寸，默认模式为SetDefaultConstraint  
+这个属性设置layout的resize模式，默认模式为SetDefaultConstraint  
 1.1 QLayout::SizeConstraint sizeConstraint() const  
 1.2 void setSizeConstraint(QLayout::SizeConstraint)  
 
@@ -40,7 +40,7 @@ gridlayout -> setContentsMargins(10, 10, 10, 10);
 返回边框间隙，在绝大多数平台上，间隙值都是11  
 
 
-## 常用公共函数：管理layout中的widget
+## 常用公共函数：管理layout中的子widget
 1. void QLayout::addWidget(QWidget \*w)
 向当前的Layout中添加一个Widget组件  
 

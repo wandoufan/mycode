@@ -3,6 +3,8 @@
 ## 基本功能
 QTableWidgetItem用作QTableWidget表格中单元格的数据对象  
 提供了成员函数用来对单元格数据的各种属性进行设置  
+父类：无  
+子类：无  
 
 
 ## 使用示例
@@ -40,7 +42,7 @@ for(int column = 0; column < channel_table -> columnCount(); column++)
 直接复制其他的QTableWidgetItem  
 
 
-## 常用函数
+## 常用公共函数
 * QTableWidget \*QTableWidgetItem::tableWidget() const
 返回一个包含这个item的数据表格  
 

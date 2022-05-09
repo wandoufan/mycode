@@ -71,9 +71,11 @@ public:
 
 int main()
 {
-	Test test1;//不要写成'Test test1();'
+	//不要写成'Test test1();'
+	Test test1;
 	test1.print();
-	Test * test_pointer = new Test;//不要写成'Test * test_pointer = new Test();'
+	//不要写成'Test * test_pointer = new Test();'
+	Test * test_pointer = new Test;
 	test_pointer -> print();
 	return 0;
 }

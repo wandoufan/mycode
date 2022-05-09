@@ -59,4 +59,11 @@ QTcreator是QT的集成开发环境，是QT最常用工具
 包含项目生成管理、代码编辑、图形界面可视化编辑、编译生成、程序调试、上下文帮助、版本控制系统等众多功能  
 6. designer
 即QT设计师，专门用于可视化编辑GUI，并生成用于定义GUI的.ui文件  
+7. cmake
+cmake工具需要在安装Qt时勾选才会有，也可以到后期单独安装  
+cmake.exe路径示例：  
+```
+C:\Qt2\Tools\CMake_64\bin\cmake.exe
+C:\Qt2\Tools\CMake_64\bin\cmake-gui.exe
+```
 

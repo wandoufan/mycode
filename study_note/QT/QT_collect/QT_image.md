@@ -1,7 +1,16 @@
-# QT中的图像处理
+# Qt中的图像处理
 
-## 基本说明
-QT中提供了四个类来处理图像数据：  
+
+## 继承关系
+```
+			 - QPixmap -  QBitmap
+QPaintDevice - QImage
+			 - QPicture
+```
+
+
+## 图像处理相关的类
+Qt中提供了四个类来处理图像数据：  
 1. QImage
 QImage主要实现I/O操作，以及像素级别访问和操作  
 2. QPixmap
@@ -12,9 +21,3 @@ QBitmap只是一个继承于QPixmap的便捷类，确保深度为1
 QPicture是一个记录和回放QPainter命令的绘制设备  
 
 
-## 继承关系
-```
-			 - QPixmap -  QBitmap
-QPaintDevice - QImage
-			 - QPicture
-```

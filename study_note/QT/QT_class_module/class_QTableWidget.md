@@ -12,17 +12,21 @@ QTableWidget用来提供数据表格相关的功能
 ## QTableWidget和QTableView的区别
 1. 继承关系
 QTableWidget是QTableView的子类，即QTableWidget继承于QTableView  
-2. 数据模型
+2. 单元格的数据类型
 QTableView可以使用自定义的数据模型来显示内容  
+QTableWidget只能使用标准的数据类型，其单元格中的数据是QTableWidgetItem对象  
+3. 单元格的数据源
 QTableView事先要通过setModel函数来绑定数据源  
-QTableWidget只能使用标准的数据模型，其单元格中的数据是QTableWidgetItem对象  
 QTableWidget不需要数据源，逐个将单元格内的信息填好即可  
 
 
-## QTableWidget中存放的数据类型
+## 工作区中可以存放的数据类型
+1. QTableWidgetItem
 QTableWidgetItem对象有一个setData()方法，可以存放QVariant数据  
 将要存放的数据类型转换为QVariant，再添加到QTableWidgetItem对象中  
 因此QTableWidget中可以存放几乎所有类型的数据  
+2. QWidget
+可以直接插入一个widget控件
 
 
 ## 构造函数
@@ -40,58 +44,58 @@ tableWidget -> setColumnCount(5);
 ```
 
 
-## 常用公共函数
-* int QTableWidget::currentRow() const
-返回当前选择单元格的行数  
-可以自动识别鼠标所在位置，不需要提供其他参数，非常方便  
+## 常用公共函数：获取表格中的信息
+1. int QTableWidget::rowCount() const
+返回表格的行数，对于空表格，默认值为0  
 
-* int QTableWidget::currentColumn() const
-返回当前选择单元格的列数  
-可以自动识别鼠标所在位置，不需要提供其他参数，非常方便  
+2. int QTableWidget::columnCount() const
+返回表格的列数，对于空表格，默认值为0  
 
-* int QTableWidget::rowCount() const
-返回表格的行数  
+3. int QTableWidget::row(const QTableWidgetItem \*item) const
 
-* int QTableWidget::columnCount() const
-返回表格的列数  
+4. int QTableWidget::column(const QTableWidgetItem \*item) const
 
-* void QTableWidget::setRowCount(int rows)
+
+## 常用公共函数：设置表格的行列
+1. void QTableWidget::setRowCount(int rows)
 设置表格的行数  
-```
-//给表格增加一行
-mytable -> setRowCount(mytable -> rowCount() + 1);
-```
 
-* void QTableWidget::setColumnCount(int columns)
+2. void QTableWidget::setColumnCount(int columns)
 设置表格的列数  
 
-* [slot] void QTableWidget::insertColumn(int column)
-插入表中指定的一列  
 
-* [slot] void QTableWidget::insertRow(int row)
-插入表中指定的一行  
-```
-channel_table -> insertRow(channel_table -> currentRow()); \\上插入一行
-channel_table -> insertRow(channel_table -> currentRow() + 1); \\下插入一行
-```
+## 常用公共函数：设置当前选中单元格
+1. void QTableWidget::setCurrentCell(int row, int column)
 
-* [slot] void QTableWidget::removeColumn(int column)
-删除表中指定的一列  
+2. void QTableWidget::setCurrentCell(int row, int column, QItemSelectionModel::SelectionFlags command)
 
-* [slot] void QTableWidget::removeRow(int row)
-删除表中指定的一行  
+3. void QTableWidget::setCurrentItem(QTableWidgetItem \*item)
 
-* void QTableWidget::setHorizontalHeaderItem(int column, QTableWidgetItem \*item)
+4. void QTableWidget::setCurrentItem(QTableWidgetItem \*item, QItemSelectionModel::SelectionFlags command)
+
+
+## 常用公共函数：获取当前选中单元格
+1. int QTableWidget::currentRow() const
+
+2. int QTableWidget::currentColumn() const
+
+3. QTableWidgetItem \*QTableWidget::currentItem() const
+
+4. QList<QTableWidgetItem *> QTableWidget::selectedItems() const
+
+
+## 常用公共函数：设置表头行/列的数据
+1. void QTableWidget::setHorizontalHeaderItem(int column, QTableWidgetItem \*item)
 对表头行中指定的某个单元格设置数据，没有进行设置的单元格还是默认值  
 ```
 mytable -> setHorizontalHeaderItem(0, new QTableWidgetItem("id"));
 mytable -> setHorizontalHeaderItem(1, new QTableWidgetItem("text"));
 ```
 
-* void QTableWidget::setVerticalHeaderItem(int row, QTableWidgetItem \*item)
+2. void QTableWidget::setVerticalHeaderItem(int row, QTableWidgetItem \*item)
 对表头列中指定的某个单元格设置数据，没有进行设置的单元格还是默认值  
 
-* void QTableWidget::setHorizontalHeaderLabels(const QStringList &labels)
+3. void QTableWidget::setHorizontalHeaderLabels(const QStringList &labels)
 用QStringList向表头行中多个单元格设置数据，从第一个单元格开始，没有进行设置的单元格还是默认值  
 ```
 QStringList header_list;
@@ -99,10 +103,12 @@ header_list << "id" << "text" << "visible" << "flashing" << "color";
 mytable -> setHorizontalHeaderLabels(header_list);
 ```
 
-* void QTableWidget::setVerticalHeaderLabels(const QStringList &labels)
+4. void QTableWidget::setVerticalHeaderLabels(const QStringList &labels)
 用QStringList向表头列中多个单元格设置数据，从第一个单元格开始，没有进行设置的单元格还是默认值  
 
-* QTableWidgetItem \*QTableWidget::horizontalHeaderItem(int column) const
+
+## 常用公共函数：获取表头行/列的数据
+1. QTableWidgetItem \*QTableWidget::horizontalHeaderItem(int column) const
 如果表头行中指定的单元格已经被设置，则返回该单元格中的数据对象  
 如果单元格没有提前设置，则返回一个空指针nullptr  
 注意：一定要先判断返回值是否为空指针，否则可能会造成一些内存错误  
@@ -121,15 +127,20 @@ for(int header = 0; header < mytable -> columnCount(); header++)
 }
 ```
 
-* QTableWidgetItem \*QTableWidget::verticalHeaderItem(int row) const
+2. QTableWidgetItem \*QTableWidget::verticalHeaderItem(int row) const
 如果表头列中指定的单元格已经被设置，则返回该单元格中的数据对象  
 如果单元格没有提前设置，则返回一个空指针nullptr  
+注意：一定要先判断返回值是否为空指针，否则可能会造成一些内存错误  
 
-* QTableWidgetItem \*QTableWidget::item(int row, int column) const
-如果工作区的指定单元格已经被设置，则返回该单元格中的数据对象  
-如果单元格没有提前设置，则返回一个空指针nullptr  
 
-* void QTableWidget::setItem(int row, int column, QTableWidgetItem \*item)
+## 常用公共函数：删除表头行/列的数据
+1. QTableWidgetItem \*QTableWidget::takeHorizontalHeaderItem(int column)
+
+2. QTableWidgetItem \*QTableWidget::takeVerticalHeaderItem(int row)
+
+
+## 常用公共函数：设置工作区的数据
+1. void QTableWidget::setItem(int row, int column, QTableWidgetItem \*item)
 向指定的单元格中插入QTableWidgetItem数据  
 ```
 for(int i = 0; i < mytable -> rowCount(); i++)
@@ -141,7 +152,7 @@ for(int i = 0; i < mytable -> rowCount(); i++)
 }
 ```
 
-* void QTableWidget::setCellWidget(int row, int column, QWidget \*widget)
+2. void QTableWidget::setCellWidget(int row, int column, QWidget \*widget)
 向指定的单元格中插入一个widget组件，插入后组件的所有者就变成了表格  
 如果单元格中已经插入了一个组件，再插入一个新的组件，则原组件会被删除  
 ```
@@ -157,13 +168,98 @@ for(int i = 0; i < mytable -> rowCount(); i++)
 }
 ```
 
-* QWidget \*QTableWidget::cellWidget(int row, int column) const
+
+## 常用公共函数：获取工作区的数据
+1. QTableWidgetItem \*QTableWidget::item(int row, int column) const
+如果工作区的指定单元格已经被设置，则返回该单元格中的数据对象  
+如果单元格没有提前设置，则返回一个空指针nullptr  
+
+2. QWidget \*QTableWidget::cellWidget(int row, int column) const
 返回指定单元格中的widget对象  
 
+3. QList<QTableWidgetItem \*> QTableWidget::findItems(const QString &text, Qt::MatchFlags flags) const
+获取所有匹配了text的单元格  
 
-## 常用公共函数：设置表格样式相关的函数
-备注：以下函数在QTableWidget类中并没有找到(属于公共函数)，但实际测试有效  
+4. QTableWidgetItem \*QTableWidget::itemAt(const QPoint &point) const
+根据指定位置获取单元格  
 
+5. QTableWidgetItem \*QTableWidget::itemAt(int ax, int ay) const
+根据指定位置获取单元格  
+
+
+## 常用公共函数：删除工作区的数据
+1. QTableWidgetItem \*QTableWidget::takeItem(int row, int column)
+
+2. void QTableWidget::removeCellWidget(int row, int column)
+删除单元格中插入的widget组件
+
+
+## 公共槽函数：增删表格中的行/列，删除所有数据
+1. [slot] void QTableWidget::insertColumn(int column)
+向指定位置插入新的一列  
+
+2. [slot] void QTableWidget::insertRow(int row)
+向指定位置插入新的一行  
+```
+channel_table -> insertRow(channel_table -> currentRow()); \\上插入一行
+channel_table -> insertRow(channel_table -> currentRow() + 1); \\下插入一行
+```
+
+3. [slot] void QTableWidget::removeColumn(int column)
+删除表中指定的一列  
+
+4. [slot] void QTableWidget::removeRow(int row)
+删除表中指定的一行  
+
+5. [slot] void QTableWidget::clear()
+删除视野中所有的单元格数据，这个方法会删除所有的选中区域和表头  
+备注：如果不想删除表头，使用QTableWidget::clearContents()方法  
+
+6. [slot] void QTableWidget::clearContents()
+删除视野中所有的单元格数据，只删除选中区域，不删除表头  
+
+
+## 信号函数
+1. [signal] void QTableWidget::cellChanged(int row, int column)
+当指定单元格中的数据发生改变时，会触发该信号函数  
+
+2. [signal] void QTableWidget::itemChanged(QTableWidgetItem \*item)
+当指定item的数据发生改变时，会触发该信号函数  
+
+3. [signal] void QTableWidget::cellPressed(int row, int column)
+当按下某个单元格时会触发该信号函数  
+
+4. [signal] void QTableWidget::itemPressed(QTableWidgetItem \*item)
+当按下某个单元格时会触发该信号函数  
+
+5. [signal] void QTableWidget::cellClicked(int row, int column)
+当左键单击单元格时，会触发该信号函数  
+
+6. [signal] void QTableWidget::itemClicked(QTableWidgetItem \*item)
+当左键单击单元格时，会触发该信号函数  
+
+7. [signal] void QTableWidget::cellDoubleClicked(int row, int column)
+当双击单元格时，会触发该信号函数  
+
+8. [signal] void QTableWidget::itemDoubleClicked(QTableWidgetItem \*item)
+当双击单元格时，会触发该信号函数  
+
+9. [signal] void QTableWidget::currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+当前选中单元格发生变化时，会触发该信号函数  
+信号函数会提供之前的选中单元格和当前的选中单元格的行列号  
+
+10. [signal] void QTableWidget::currentItemChanged(QTableWidgetItem \*current, QTableWidgetItem \*previous)
+当前选中单元格发生变化时，会触发该信号函数  
+信号函数会提供之前的选中单元格和当前的选中单元格对应的QTableWidgetItem  
+
+----------------------------------------------------
+## 设置表格样式
+在QTableWidget中并没有提供设置单元格样式相关的函数，但父类QTableView中有一些方法可以设置表格样式
+另外，通过其父类QTableView的horizontalHeader()方法和verticalHeader()方法，可以获取一个QHeaderView指针
+在QHeaderView类中提供了大量设置表格样式的接口
+
+
+## 相关的函数示例
 * void setEditTriggers(QAbstractItemView::EditTriggers triggers)
 设置整个表格为不可编辑  
 ```
@@ -212,10 +308,6 @@ mytable -> horizontalHeader() -> setStretchLastSection(true);
 mytable -> verticalHeader() -> setVisible(false);
 ```
 
-
-## 常用公共函数：设置单元格宽和高相关的函数
-注意：使用horizontalHeader()和verticalHeader()需要#include <QHeaderView>  
-
 * 设置表头行的高度
 ```
 mytable -> horizontalHeader() -> setFixedHeight(100);
@@ -238,19 +330,7 @@ mytable -> horizontalHeader() -> setSectionResizeMode(QHeaderView::Stretch);
 ```
 
 
-## 信号函数
-* [signal] void QTableWidget::cellChanged(int row, int column)
-当指定单元格中的数据发生改变时，会触发该信号函数  
-
-* [signal] void QTableWidget::cellClicked(int row, int column)
-当左键单击单元格时，会触发该信号函数  
-
-* [signal] void QTableWidget::cellDoubleClicked(int row, int column)
-当双击单元格时，会触发该信号函数  
-
-* [signal] void QTableWidget::itemChanged(QTableWidgetItem \*item)
-当指定item的数据发生改变时，会触发该信号函数  
-
+----------------------------------------------------
 
 ## 通过右键菜单插入/删除一行数据
 参考QMenu，创建右键菜单选项  

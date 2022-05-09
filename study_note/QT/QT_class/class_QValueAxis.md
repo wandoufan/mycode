@@ -1,7 +1,7 @@
 # QValueAxis
 
 ## 基本功能
-QValueAxis用来向Qt图表的坐标轴中添加刻度值  
+QValueAxis用来向Qt图表中添加一个数值刻度类型的坐标轴  
 父类：QAbstractAxis  
 子类：QCategoryAxis  
 

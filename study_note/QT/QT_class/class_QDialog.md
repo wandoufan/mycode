@@ -9,6 +9,63 @@ QDialog是所有对话窗口的基类
 子类：QColorDialog, QErrorMessage, QFileDialog, QFontDialog, QInputDialog, QMessageBox, QProgressDialog, and QWizard  
 
 
+## 三种对话框类型
+备注：Dialog中可以使用setModal(true)和setWindowModality()函数进行设置  
+1. 模态对话框  
+子窗口创建后，主窗口其他内容都不能点击，只有等子窗口关闭退出后才能继续点击  
+能够封锁其他窗口获取输入的称为模态窗口  
+使用exec()函数来实现阻塞功能  
+备注：模态窗口的子窗口不会被封锁  
+2. 非模态对话框  
+子窗口创建后，主窗口其他内容不受影响，可以正常点击  
+使用show()函数来显示  
+3. 半模态对话框  
+子窗口创建后，主窗口无法点击，但后台程序可以继续运行  
+
+
+## 模态对话框
+模态对话窗会封锁同一个程序中其他可见窗口的输入(不只是输入数据，也包括获得点击响应)  
+在模态对话窗关闭之前，其他窗口会变的毫无响应  
+对话窗可以是WindowModal，也可以是ApplicationModal  
+```
+QDialog *mydialog = new QDialog(this);
+mydialog -> open();
+```
+
+
+## 非模态对话框
+非模态对话框与同一个程序中其他窗口之间相互独立，不会影响到其他窗口  
+备注：show()不是QDialog中的方法，而是其基类QWidget中的方法  
+```
+QDialog *mydialog = new QDialog(this);
+mydialog -> show();
+```
+
+
+## 默认键
+对话框的默认键是Enter键，按下默认键表示用户接受对话框的设置，并且想要关闭对话框  
+使用QPushButton::setDefault()、QPushButton::isDefault()、QPushButton::autoDefault()可以设置对话框的默认键  
+
+
+## ESC键
+如果用户在一个对话框中按下了ESC键，就会调用QDialog::reject()  
+这会将窗口关闭，此时可能需要考虑close event相关的处理  
+
+
+## 常用QDialog对话框类
+QColorDialog（颜色对话框）  
+QFileDialog（文件对话框）  
+QFontDialog（字体对话框）  
+QInputDialog（输入对话框）  
+QMessageBox（消息对话框）  
+QProgressDialog（进度对话框）  
+QErrorMessage（错误信息对话框）  
+QPageSetupDialog（页面设置对话框）  
+QPrintDialog（打印对话框）  
+QPrintPreviewDialog（打印预览对话框）  
+
+------------------------------------------------------
+
 ## 代码示例
 1. QDialog可以直接实例化出一个窗口
 QDialog窗口中没有任何按钮，右上角有一个'？'和'x'，对ESC键有反应，对Enter键没反应  
@@ -115,49 +172,12 @@ void Widget::on_pushButton_2_clicked()
         qDebug() << "收到dialog对话框的accepted()信号";
 }
 ```
-
-
-## 模态对话框
-模态对话窗会封锁同一个程序中其他可见窗口的输入(不只是输入数据，也包括获得点击响应)  
-在模态对话窗关闭之前，其他窗口会变的毫无响应  
-对话窗可以是WindowModal，也可以是ApplicationModal  
+5. QDialog继承于QWidget，所以也可以用setFixedSize()方法来设置对话框尺寸
 ```
-QDialog *mydialog = new QDialog(this);
-mydialog -> open();
+dialog -> setFixedSize(400, 600);
 ```
 
-
-## 非模态对话框
-非模态对话框与同一个程序中其他窗口之间相互独立，不会影响到其他窗口  
-备注：show()不是QDialog中的方法，而是其基类QWidget中的方法  
-```
-QDialog *mydialog = new QDialog(this);
-mydialog -> show();
-```
-
-
-## 默认键
-对话框的默认键是Enter键，按下默认键表示用户接受对话框的设置，并且想要关闭对话框  
-使用QPushButton::setDefault()、QPushButton::isDefault()、QPushButton::autoDefault()可以设置对话框的默认键  
-
-
-## ESC键
-如果用户在一个对话框中按下了ESC键，就会调用QDialog::reject()  
-这会将窗口关闭，此时可能需要考虑close event相关的处理  
-
-
-## 常用QDialog对话框类
-QColorDialog（颜色对话框）  
-QFileDialog（文件对话框）  
-QFontDialog（字体对话框）  
-QInputDialog（输入对话框）  
-QMessageBox（消息对话框）  
-QProgressDialog（进度对话框）  
-QErrorMessage（错误信息对话框）  
-QPageSetupDialog（页面设置对话框）  
-QPrintDialog（打印对话框）  
-QPrintPreviewDialog（打印预览对话框）  
-
+---------------------------------------------------
 
 ## 构造函数
 1. QDialog::QDialog(QWidget \*parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags())

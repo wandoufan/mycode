@@ -68,33 +68,33 @@ Qt::ApplicationModal 	2 		这个窗口是模态的，会封锁其他所有窗口
 ## enum Qt::ItemDataRole
 常用role的取值：  
 ```
-Constant   Value   Description  
+Constant 					Value 	Description  
 //通用角色及相关类型
-Qt::DisplayRole   0   用文本形式展示的关键数据(QString)
+Qt::DisplayRole   			0   	用文本形式展示的关键数据(QString)
 备注：默认会把Qt::EditRole 和 Qt::DisplayRole当做相同的设置
-Qt::DecorationRole   1   用图标的形式显示数据(QColor, QIcon or QPixmap)
+Qt::DecorationRole   		1   	用图标的形式显示数据(QColor, QIcon or QPixmap)
 备注：显示的颜色在单元格中是一个小方块，不能填满整个单元格
-Qt::EditRole   2   可编辑修改的文本数据(QString)
-Qt::ToolTipRole   3   实现当鼠标处于选中的数据时，显示出数据的相关提示(QString)
-Qt::StatusTipRole   4   在状态栏显示提示的数据(QString)
-Qt::WhatsThisRole   5   在"What's This?"模式下会显示出来的数据(QString)
-Qt::SizeHintRole   13   可以提示相应大小(QSize)
+Qt::EditRole   				2   	可编辑修改的文本数据(QString)
+Qt::ToolTipRole   			3   	实现当鼠标处于选中的数据时，显示出数据的相关提示(QString)
+Qt::StatusTipRole   		4   	在状态栏显示提示的数据(QString)
+Qt::WhatsThisRole   		5   	在"What's This?"模式下会显示出来的数据(QString)
+Qt::SizeHintRole   			13   	可以提示相应大小(QSize)
 
 //描述外观和元数据的角色及相关类型
-Qt::FontRole   6   可以改变数据的字体(QFont)
-Qt::TextAlignmentRole   7   可以将文本的位置进行居中、居左居右调整(Qt::Alignment)
-Qt::BackgroundRole   8   可以改变背景色(QBrush)
+Qt::FontRole   				6   	可以改变数据的字体(QFont)
+Qt::TextAlignmentRole   	7   	可以将文本的位置进行居中、居左居右调整(Qt::Alignment)
+Qt::BackgroundRole   		8   	可以改变背景色(QBrush)
 备注：显示的颜色会填满整个单元格
-Qt::ForegroundRole   9   可以改变前景色(QBrush)
-Qt::CheckStateRole   10   设置的列则可以显示出一个CheckBox(Qt::CheckState)
-Qt::InitialSortOrderRole   14
+Qt::ForegroundRole   		9   	可以改变前景色(QBrush)
+Qt::CheckStateRole   		10   	设置的列则可以显示出一个CheckBox(Qt::CheckState)
+Qt::InitialSortOrderRole   	14
 
 //可访问性角色及相关类型
-Qt::AccessibleTextRole   11   用于辅助功能和插件扩展的文本(如屏幕阅读器)(QString)
-Qt::AccessibleDescriptionRole   12   用于无障碍项目的描述(QString)
+Qt::AccessibleTextRole   	11   	用于辅助功能和插件扩展的文本(如屏幕阅读器)(QString)
+Qt::AccessibleDescriptionRole   12  用于无障碍项目的描述(QString)
 
 //用户角色
-Qt::UserRole   0x0100   用于应用程序的特定目的(自己定义用途).用户自己决定使用什么数据,如何处理数据
+Qt::UserRole   				0x0100  用于应用程序的特定目的(自己定义用途).用户自己决定使用什么数据,如何处理数据
 ```
 
 
@@ -130,4 +130,33 @@ Qt::ActionsContextMenu 		2
 widget会展示其QWidget::actions()来作为上下文菜单
 Qt::CustomContextMenu 		3		
 widget会发出QWidget::customContextMenuRequested()信号  
+```
+
+
+## enum Qt::AspectRatioMode
+矩形原来就有一个宽高比例，将矩形缩放到一个新的尺寸后就存在宽高比例变化的问题  
+这个集合定义了对一个矩形进行缩放时的对宽高比的处理  
+```
+Constant 							Value 	Description
+Qt::IgnoreAspectRatio 				0 		宽和高都设置为指定的尺寸，宽高比例可以变化
+Qt::KeepAspectRatio 				1 		缩放时的宽高比例保持不变，缩放后不能超出新的尺寸范围
+Qt::KeepAspectRatioByExpanding 		2 		缩放时的宽高比例保持不变，缩放后可以超出新的尺寸范围
+```
+
+
+## enum Qt::TransformationMode
+这个集合定义了图片image在进行转换(例如缩放)时是否要进行平滑处理  
+```
+Constant 					Value 		Description
+Qt::FastTransformation		0 			转换操作会被快速执行，不进行平滑处理
+Qt::SmoothTransformation 	1 			图片在转换时会进行双线性过滤
+```
+
+
+## enum Qt::BGMode
+这个集合定义了背景的透明模式  
+```
+Constant 				Value 		Description
+Qt::TransparentMode		0 			透明模式，对背景进行设置是无效的
+Qt::OpaqueMode			1 			不透明模式，可以设置背景颜色
 ```

@@ -20,8 +20,17 @@ QLibrary是Qt中用来显式调用库文件的类
 
 
 ## 2. 隐式调用(需要dll文件、lib文件、h文件)
-不需要使用任何Qt类，直接#include头文件，然后就可以调用到头文件中提供的接口函数  
-备注：需要在.pro文件中添加头文件及其路径
+不需要使用任何Qt类，也不需要在代码中指出dll文件和lib文件
+需要在.pro文件中添加头文件，添加库文件所在的路径
+```
+HEADERS += \
+    myplc.h \
+    snap7/snap7.h
+
+INCLUDEPATH += $$PWD/snap7
+DEPENDPATH += $$PWD/snap7
+```
+然后直接#include头文件，就可以调用到头文件中提供的接口函数  
 参考demo23_snap7_dll项目
 
 

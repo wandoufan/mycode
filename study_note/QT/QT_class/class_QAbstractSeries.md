@@ -9,6 +9,19 @@ QAbstractSeries作为Qt图表中的数据来源，是所有图表数据类的基
 子类：QAbstractBarSeries, QAreaSeries, QBoxPlotSeries, QCandlestickSeries, QPieSeries, and QXYSeries
 
 
+## 关于图表中每组数据的名称标识
+在图表中添加多组数据之后，会自动在图表正上方显示出每组数据的名称，以及一个带颜色的方块
+1. 这个标识的名称可以通过QAbstractSeries::setName(const QString &name)方法设置
+标识的颜色可以通过QXYSeries::setColor(const QColor &color)方法进行设置  
+2. 名称标识的以下特性没有找到可以设置的地方
+位置无法设置，只能显示在正上方  
+颜色标识的形状无法设置，只能显示为方框  
+名称的字体无法设置，只能按默认字体显示  
+3. 当图表中有多组曲线时，可能会名称标识显示不下，造成每个名称都显示为...  
+由于无法设置字体大小，只能把图表本身尺寸拉大  
+备注：实测用QXYSeries::setPointLabelsFont(const QFont &font)方法无法设置这里的字体  
+
+
 ## 构造函数
 没有构造函数，QAbstractSeries是抽象基类，不直接使用  
 
