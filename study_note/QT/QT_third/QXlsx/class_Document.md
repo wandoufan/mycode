@@ -40,6 +40,28 @@ for(int column = 1; column < 7; column++)
 备注：对于合并后的单元格如A1:A3，也要每个单元格A1、A2、A3都进行格式设置，没有办法直接设置整个合并单元格  
 
 
+## 关于插入图片的问题
+1. 图片显示的位置问题
+QXlsx这个库的代码写的并不完善，插入的图片默认显示在单元格的左上角，可能会遮挡单元格的边框线  
+insertImage()函数中并没有提供设置图片位置偏移的接口  
+在QXlsx的源码中找到Worksheet::insertImage()函数，将下面代码进行修改：  
+```
+anchor->from = XlsxMarker(row, column, 0, 0);
+```
+后两个参数其实就是偏移量rowoff和coloff，只是代码中默认给写为了0  
+可以对源码进行简单修改，也可以修改insertImage函数接口  
+```
+anchor->from = XlsxMarker(row, column, 5*9525, 5*9525);
+```
+详细参考：  
+> https://blog.csdn.net/qq_27681837/article/details/50408260
+2. 在不同电脑上excel中图片显示比例的问题
+发现在不同的电脑上，表格中插入的图片大小不一致  
+例如：在一台电脑上图片和表格大小相同，但换到另一台电脑上后，图片超出了表格的范围  
+这个并不是图片本身的大小发生了变化，而是每行表格的高度变化了  
+详见：关于电脑屏幕dpi的说明.md  
+
+
 ## 构造函数
 1. Document (QObject \*parent=0)
 
@@ -95,20 +117,6 @@ QImage image1;
 image1.load("D:/123.jpg");
 xlsx.insertImage(3, 3, image1);
 ```
-关于插入图片的位置问题：  
-QXlsx这个库的代码写的并不完善，插入的图片默认显示在单元格的左上角，可能会遮挡单元格的边框线  
-insertImage()函数中并没有提供设置图片位置偏移的接口  
-在QXlsx的源码中找到Worksheet::insertImage()函数，将下面代码进行修改：  
-```
-anchor->from = XlsxMarker(row, column, 0, 0);
-```
-后两个参数其实就是偏移量rowoff和coloff，只是代码中默认给写为了0  
-可以对源码进行简单修改，也可以修改insertImage函数接口  
-```
-anchor->from = XlsxMarker(row, column, 5*9525, 5*9525);
-```
-详细参考：  
-> https://blog.csdn.net/qq_27681837/article/details/50408260
 
 
 ## 向表格中插入图表Chart

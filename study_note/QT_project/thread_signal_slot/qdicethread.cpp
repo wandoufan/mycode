@@ -17,7 +17,6 @@ void QDiceThread::dicePause()
 
 void QDiceThread::stopThread()
 {
-
     m_stop = true;
 }
 

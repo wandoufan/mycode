@@ -1,4 +1,4 @@
-# 关于git 
+# 关于git
 
 ## git的基本概念：
 git是基于Linux的，所以可以直接在git bash中运行linux的命令  
@@ -15,7 +15,7 @@ repository 是git的资源库/版本库/仓库，这个目录里面的所有文�
 
 ## git、github、gitlib的区别：
 git是一个代码版本管理的工具  
-github是一个基于git实现的共有的代码托管的仓库/网站  
+github是一个基于git实现的共有的代码托管的仓库/网站，地址是https://github.com/  
 gitlib是一个基于git实现的私有的代码托管仓库，更适合公司/团队内部使用  
 
 
@@ -84,7 +84,7 @@ git status
 ```
 查看文件被修改的内容，比较当前目录的文件与之前提交到仓库的版本的不同之处  
 ```
-git diff filname
+git diff filename
 ```
 查看每次提交的历史记录和每次提交的说明，显示顺序由近到远  
 ```

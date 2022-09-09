@@ -149,6 +149,17 @@ i += n 			迭代器指向下n个元素
 i -= n 			迭代器指向前n个元素
 i - j 			返回迭代器i和迭代器j之间的元素的个数
 ```
+示例：读取STL迭代器当前指向的元素
+```
+QList<int>::iterator min = std::min_element(list1.begin(), list1.end());
+qDebug() << * min;
+```
+示例：读取STL迭代器当前指向元素的前一个元素
+```
+QList<int>::iterator min = std::min_element(list1.begin(), list1.end());
+-- min;
+qDebug() << * min;
+```
 
 
 ## 3. foreach关键字

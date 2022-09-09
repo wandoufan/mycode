@@ -2,6 +2,8 @@
 
 ## 基本功能
 QXmlStreamAttributes可以解析出xml文件中元素的属性以及属性值  
+父类：QVector  
+子类：子类  
 
 
 ## 代码示例

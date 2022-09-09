@@ -2,7 +2,7 @@
 
 ## 基本功能
 QDateTimeAxis用来向Qt图表的中添加一个日期时间类型的坐标轴  
-在把qreal类型数据定义为float类型数据的操作系统上，不能使用QDateTimeAxis  
+注意：在把qreal类型数据定义为float类型数据的操作系统上，不能使用QDateTimeAxis  
 父类：QAbstractAxis  
 子类：无  
 

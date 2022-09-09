@@ -4,22 +4,9 @@
 QAbstractSeries作为Qt图表中的数据来源，是所有图表数据类的基类  
 数据在不同类型的图表中有不同的表现形式，例如在曲线图中，数据指的就是曲线本身  
 一般用来设置数据组的名字等各种属性，绑定数据组和坐标轴等  
-但是不包括向数据组中添加具体的数据点，添加数据点使用QXYSeries  
+但是不包括向数据组中增删具体的数据点，增删数据点使用QXYSeries等  
 父类：QObject  
-子类：QAbstractBarSeries, QAreaSeries, QBoxPlotSeries, QCandlestickSeries, QPieSeries, and QXYSeries
-
-
-## 关于图表中每组数据的名称标识
-在图表中添加多组数据之后，会自动在图表正上方显示出每组数据的名称，以及一个带颜色的方块
-1. 这个标识的名称可以通过QAbstractSeries::setName(const QString &name)方法设置
-标识的颜色可以通过QXYSeries::setColor(const QColor &color)方法进行设置  
-2. 名称标识的以下特性没有找到可以设置的地方
-位置无法设置，只能显示在正上方  
-颜色标识的形状无法设置，只能显示为方框  
-名称的字体无法设置，只能按默认字体显示  
-3. 当图表中有多组曲线时，可能会名称标识显示不下，造成每个名称都显示为...  
-由于无法设置字体大小，只能把图表本身尺寸拉大  
-备注：实测用QXYSeries::setPointLabelsFont(const QFont &font)方法无法设置这里的字体  
+子类：QAbstractBarSeries, QAreaSeries, QBoxPlotSeries, QCandlestickSeries, QPieSeries, and QXYSeries  
 
 
 ## 构造函数
@@ -28,7 +15,7 @@ QAbstractSeries作为Qt图表中的数据来源，是所有图表数据类的基
 
 ## 常用成员变量
 1. name : QString
-这个属性设置数据的名字  
+这个属性设置数据的名字(图例名称)  
 这个名字会显示在图表中，作为该组数据的标签，支持HTML格式  
 1.1 QString name() const
 1.2 void setName(const QString &name)

@@ -91,6 +91,7 @@ QAxSelect为已经注册的COM组件选择对话框
 
 
 ## 代码示例：通过调用office官方接口把已经存在的excel文件转成pdf文件
+备注：实际测试，金山WPS软件也具有这个接口
 ```
 QString excel_file_path = "D:/myexcel1.xlsx";
 QString pdf_file_path = "D:/mypdf1.pdf";
@@ -128,6 +129,29 @@ else
 {
     qDebug() << "连接失败";
 }
+```
+以上程序测试发现，第一次是可以用的，但在第二次调用EXCEL控件来转换为pdf时  
+```
+workbooks -> dynamicCall("Open(const QString&)", xlsx_file_name);//打开excel文件
+```
+这一行语句会发生如下报错：  
+```
+QAxBase: Error calling IDispatch member Open: Exception thrown by server
+             Code       : -2146827284
+             Source     : Microsoft Excel
+             Description: ????? Workbooks ? Open ??
+             Help       : xlmain11.chm
+         Connect to the exception(int,QString,QString,QString) signal to catch this exception
+C:\Program Files (x86)\SogouInput\Components\
+```
+尝试在第一次转换结束时，把相关的对象都手动删除掉，但仍然有同样报错，目前没有找到解决办法  
+```
+workbook -> dynamicCall("Close()");
+workbooks -> dynamicCall("Close()");
+excel -> dynamicCall("Quit()");
+delete workbook;
+delete workbooks;
+delete excel;
 ```
 
 

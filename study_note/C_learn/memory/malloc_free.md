@@ -5,9 +5,6 @@
 https://www.cnblogs.com/younes/archive/2010/01/23/1654961.html
 https://www.zhihu.com/question/478285549/answer/2053162248
 
-## 
-堆和栈
-
 
 ## 
 动态分配
@@ -15,6 +12,7 @@ https://www.zhihu.com/question/478285549/answer/2053162248
 
 ## 
 allocate()函数
+deallocate()函数
 
 
 ## malloc函数

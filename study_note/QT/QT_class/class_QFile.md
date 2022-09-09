@@ -80,7 +80,6 @@ myfile.setFileName("E:/test.raw");
 
 ## 公共静态函数
 备注：这些公共静态函数和常用公共函数的功能基本类似，推荐使用静态函数更方便
-
 1. [static] bool QFile::copy(const QString &fileName, const QString &newName)
 把fileName文件拷贝一份，新文件命名为newName  
 注意：如果已经有一个名为newName的文件存在，则该文件不会被覆盖重写，函数执行失败，返回false  

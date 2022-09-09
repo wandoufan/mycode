@@ -6,7 +6,7 @@ QDataStream用来向QIODevice中提供序列化的二进制数据，即读写二
 子类：无  
 
 
-## 详细描述
+## 详细功能
 1. 读写原始的二进制数据
 C++基本数据类型  
 例如：char、short、int、char *  
@@ -90,11 +90,32 @@ in >> other_interesting_data;
 ```
 
 
+## 关于QDataStream中读写函数的说明
+1. writeBytes()和readBytes()是一组，writeRawData()和readRawData()是一组
+读写函数需要对应，用什么函数写入的数据，就要用对应的函数读取出来，否则会出错  
+
+2. 同样一组数据，使用writeRawData()方法和writeBytes()方法写入的内容不同
+使用writeRawData()方法写入的数据：  
+```
+7a68 616e 6700 0000 00a0 0b6d 0a00 0000
+b81e 85eb 5138 5640
+```
+使用writeBytes()方法写入的数据：  
+```
+0000 0018 7a68 616e 6700 0000 00a0 a935
+0a00 0000 b81e 85eb 5138 5640
+```
+可以看出，writeBytes()方法会在数据之前添加一个'0000 0018'，这个是Qt特有的标识，用于Qt自身的验证  
+用writeBytes()方法写出来的文件不能通用，如果用C语言中fread()方法去读该文件可能就有问题  
+如果需要写入最原始的内存数据，推荐使用writeRawData()方法，更加通用  
+
+
 ## 代码示例
 详见QT_file.md  
 
 
 ## QDataStream支持的所有运算符
+备注：只有这些基本数据类型可以使用运算符  
 ```
 QDataStream &operator<<(qint8 i)
 QDataStream &operator<<(quint8 i)
@@ -133,25 +154,52 @@ QDataStream &operator>>(char *&s)
 2. QDataStream::QDataStream(QByteArray \*a, QIODevice::OpenMode mode)
 
 3. QDataStream::QDataStream(QIODevice \*d)
+```
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+```
 
 4. QDataStream::QDataStream()
 
 
-## 常用公共函数：关联对应的QIODevice
+## 常用公共函数：将QDataStream与QIODevice绑定
 1. QIODevice \*QDataStream::device() const
 
 2. void QDataStream::setDevice(QIODevice \*d)
 
 
 ## 常用公共函数：读写数据
-备注：下面这些函数好像并不常用，更多的是使用QIODevice中的读写函数  
 1. QDataStream &QDataStream::readBytes(char \*&s, uint &l)
+从数据流中读取数据到缓冲区s中，l为缓冲区的长度  
+如果读取到的字符串为空，则s会被设置为nullptr，l会被设置为0  
+备注：缓冲区s分配使用new[]，销毁使用delete[]，长度l需要是quint32格式的  
+```
+struct Student student1;
+uint length = sizeof(Student);//数据类型必须是uint
+char *temp1 = new char[length];//使用前申请内存空间
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadOnly))
+{
+    datastream.readBytes(temp1, length);
+    memcpy(&student1, temp1, length);
+}
+file.close();
+delete[] temp1;//使用后必须删除，防止内存泄漏
+```
 
-2. QDataStream &QDataStream::writeBytes(const char \*s, uint len)
+2. int QDataStream::readRawData(char \*s, int len)
+从数据流中去读最多len个字节的数据到缓冲区s中，返回实际读取的字节数量  
+如果读取过程中发生错误，返回-1  
+备注：缓冲区s必须提前预分配好  
 
-3. int QDataStream::readRawData(char \*s, int len)
+3. QDataStream &QDataStream::writeBytes(const char \*s, uint len)
+把缓冲区s中len长度的数据写入到数据流中  
+备注：长度len需要是quint32格式的  
 
 4. int QDataStream::writeRawData(const char \*s, int len)
+从缓冲区s中写len个字节的数据到数据流中，返回实际写入的字节数量  
+如果写入过程中发生错误，返回-1  
 
 5. int QDataStream::skipRawData(int len)
 

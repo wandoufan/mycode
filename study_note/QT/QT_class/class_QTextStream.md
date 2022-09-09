@@ -2,7 +2,8 @@
 
 ## 基本功能
 QTextStream提供了一个便利的接口用来读写文本文件  
-
+父类：无  
+子类：无  
 
 
 ## QDataStream和QTextStream的对比

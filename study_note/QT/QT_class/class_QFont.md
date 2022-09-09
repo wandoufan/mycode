@@ -1,8 +1,21 @@
 # QFont
 
 ## 基本功能
-QFont用来定义文本属性，包括：字体、大小、粗细、斜体、下划线等等  
+QFont用来定义文本的字体属性，包括：字体、大小、粗细、斜体、下划线等等  
 备注：不包括设置文本颜色  
+父类：无  
+子类：无  
+
+
+## 关于设置字体大小的说明
+在不同的显示设备上，dpi(屏幕分辨率)的值可能不同  
+如果想要在不同的dpi下显示同样的实际大小，则使用setPointSize()/setPointSizeF()方法  
+如果想要字体显示大小随dpi的值而变化，则使用setPixelSize()方法  
+另外，在qss语句中，也区分设置字体大小的方式  
+```
+font-size:16pt;//相当于setPointSize()/setPointSizeF()方法
+font-size:16px;//相当于setPixelSize()方法
+```
 
 
 ## 代码示例
@@ -10,6 +23,7 @@ QFont用来定义文本属性，包括：字体、大小、粗细、斜体、下
 ```
 QFont font = QFont("Calibri", 10, 50);
 ```
+
 
 ## 构造函数
 1. QFont::QFont(const QFont &font)
@@ -21,7 +35,7 @@ QFont font = QFont("Calibri", 10, 50);
 4. QFont::QFont()
 
 
-## 常用公共函数：设置文本各种属性
+## 常用公共函数：设置/读取文本各种属性
 1. void QFont::setFamily(const QString &family)
 设置字体的名字，字体名字不区分大小写  
 最常用的字体是"Calibri"，UI界面中按钮使用的默认字体是'SimSun'  
@@ -35,46 +49,71 @@ for(int i = 0; i < family_list.size(); i++)
 }
 ```
 
-2. void QFont::setPixelSize(int pixelSize)
+2. QString QFont::family() const
+
+3. void QFont::setPixelSize(int pixelSize)
 设置字体像素单位的大小  
 使用这个函数设置的字体大小会和实际的显示设备有关  
 
-3. void QFont::setPointSize(int pointSize)
+4. int QFont::pixelSize() const
+返回字体的像素单位的大小  
+如果字体大小是由setPointSize()/setPointSizeF()方法设置的，则返回-1  
+
+5. void QFont::setPointSize(int pointSize)
 设置字体肉眼看到的实际大小，pointSize参数必须大于0  
 使用这个函数设置的字体大小和显示设备无关  
 
-4. void QFont::setPointSizeF(qreal pointSize)
+6. int QFont::pointSize() const
+返回字体的实际大小  
+如果字体大小是由setPixelSize()方法设置的，则返回-1  
+
+7. void QFont::setPointSizeF(qreal pointSize)
 设置字体肉眼看到的实际大小，pointSize参数必须大于0  
 使用这个函数设置的字体大小和显示设备无关  
 setPointSizeF()设置比setPointSize()更精准，但有的平台可能无法支持这个精度  
 
-5. void QFont::setBold(bool enable)
+8. qreal QFont::pointSizeF() const
+返回字体的实际大小  
+如果字体大小是由setPixelSize()方法设置的，则返回-1  
+
+9. void QFont::setBold(bool enable)
 设置文字为粗体  
 true的效果等于setWeight(QFont::Bold)，false的效果等于setWeight(QFont::Normal)  
 备注：如果设置了styleName()，这里的设置可能会无效  
 
-6. void QFont::setWeight(int weight)
+10. bool QFont::bold() const
+
+11. void QFont::setWeight(int weight)
 设置文字的粗细，weight范围为0-99，取值详见enum QFont::Weight  
 备注：如果设置了styleName()，这里的设置可能会无效  
 
-7. void QFont::setItalic(bool enable)
+12. int QFont::weight() const
+
+13. void QFont::setItalic(bool enable)
 设置文字为斜体  
 备注：如果设置了styleName()，这里的设置可能会无效  
 
-8. void QFont::setOverline(bool enable)
+14. bool QFont::italic() const
+
+15. void QFont::setOverline(bool enable)
 设置上划线  
 
-9. void QFont::setUnderline(bool enable)
+16. bool QFont::overline() const
+
+17. void QFont::setUnderline(bool enable)
 设置下划线  
 
-10. void QFont::setStrikeOut(bool enable)
+18. bool QFont::underline() const
+
+19. void QFont::setStrikeOut(bool enable)
 设置删除线  
 
-11. void QFont::setStyleName(const QString &styleName)
-设置文本风格
+20. bool QFont::strikeOut() const
 
+21. void QFont::setStyleName(const QString &styleName)
+设置文本风格  
 
-## 常用公共函数：查询文本各种属性
+22. QString QFont::styleName() const
 
 
 ## enum QFont::Weight

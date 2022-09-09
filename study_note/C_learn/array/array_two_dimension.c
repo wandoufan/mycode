@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 /*整理总结C语言中二维数组的基本用法*/
 

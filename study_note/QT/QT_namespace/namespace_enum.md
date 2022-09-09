@@ -53,6 +53,9 @@ Qt::gray 			5 			Gray (#a0a0a4)
 Qt::darkGray 		4 			Dark gray (#808080) 
 Qt::lightGray 		6 			Light gray (#c0c0c0) 
 ```
+以上这些颜色是Qt预定义了名称的颜色，还有更多的颜色是用RGB的值进行表示的，详见下面网页  
+https://www.w3.org/TR/SVG11/types.html#ColorKeywords
+
 
 
 ## enum Qt::WindowModality
@@ -148,8 +151,8 @@ Qt::KeepAspectRatioByExpanding 		2 		缩放时的宽高比例保持不变，缩�
 这个集合定义了图片image在进行转换(例如缩放)时是否要进行平滑处理  
 ```
 Constant 					Value 		Description
-Qt::FastTransformation		0 			转换操作会被快速执行，不进行平滑处理
-Qt::SmoothTransformation 	1 			图片在转换时会进行双线性过滤
+Qt::FastTransformation		0 			转换操作会被快速执行，不进行平滑处理(执行速度快)
+Qt::SmoothTransformation 	1 			图片在转换时会进行双线性过滤(图片压缩后质量高)
 ```
 
 
@@ -160,3 +163,8 @@ Constant 				Value 		Description
 Qt::TransparentMode		0 			透明模式，对背景进行设置是无效的
 Qt::OpaqueMode			1 			不透明模式，可以设置背景颜色
 ```
+
+
+## enum Qt::PenStyle
+这个集合定义QPainter描绘线条的形式，包括实线和不同形式的虚线  
+具体参见Qt帮助文档  

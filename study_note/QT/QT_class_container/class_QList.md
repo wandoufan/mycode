@@ -90,6 +90,51 @@ ASSERT failure in QList<T>::operator[]: "index out of range"
 ```
 
 
+## 关于数字型列表排序/求最值等操作的说明
+对于一个数字型的列表(如QList<int>)，如果想要对列表排序，或者找出最大值/最小值  
+目前QList没有直接提供相关的接口和方法，可以用C++标准库中的函数实现  
+1. 使用qSort()方法对QList进行排序
+备注：qSort()方法已经过时，不推荐使用  
+```
+qSort(list1.begin(), list1.end());
+```
+2. 使用std::sort()方法对QList进行排序(推荐使用)
+```
+std::sort(list1.begin(), list1.end());
+```
+3. 使用std::min_element()方法获取QList中的最小值
+```
+QList<int>::iterator min = std::min_element(list1.begin(), list1.end());
+qDebug() << * min;
+```
+4. 使用std::max_element()方法获取QList中的最大值
+```
+QList<int>::iterator max = std::max_element(list1.begin(), list1.end());
+qDebug() << * max;
+```
+5. 使用std::accumulate()方法计算QList的元素之和
+备注：第三个参数是累加初始值，一般设置为0即可  
+```
+int sum = std::accumulate(list1.begin(), list1.end(), 0);
+qDebug() << sum;
+```
+注意：实际测试，这个方法只针对整型数据的求和计算，如果是浮点型数据，求和之后会自动取整，导致小数点后丢失  
+对于浮点型数据，建议直接手动求和  
+```
+double sum, item;
+foreach(item, list1)
+{
+    sum += item;
+}
+```
+6. 没有找到直接计算QList元素平均值的方法
+```
+double sum = std::accumulate(list1.begin(), list1.end(), 0);
+double average = sum / list1.length();
+qDebug() << average;
+```
+
+
 ## 使用示例
 1. QList中可以使用[]操作符去访问元素，而C++中的list不可以使用[]操作符  
 另外，相比于at()或value()方法，使用[]操作符获取到的元素还可以直接修改元素值  
@@ -127,6 +172,10 @@ struct ChannelInfo
 };
 
 QList<ChannelInfo> m_channel_list;
+```
+6. QList可以整体直接输出，不需要把元素逐个拼接成字符串再输出
+```
+qDebug() << list1;
 ```
 
 

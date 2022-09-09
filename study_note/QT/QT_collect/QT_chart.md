@@ -103,6 +103,17 @@ QObject - QAbstractAxis - QValueAxis - QCategoryAxis
 						- QDateTimeAxis
 						- QLogValueAxis
 ```
+3. 图表中数据对应的图例(名称标识)
+```
+QObject - QLegendMarker - QAreaLegendMarker
+						- QBarLegendMarker
+						- QBoxPlotLegendMarker
+						- QCandlestickLegendMarker
+						- QPieLegendMarker
+						- QXYLegendMarker
+
+QGraphicsWidget - QLegend
+```
 
 
 ## 画一个曲线示波图用到的类
@@ -282,6 +293,80 @@ Base class for line, spline, and scatter series
 
 -------------------------------------------------------------
 
+## 关于曲线中的锯齿化问题处理
+1. 反走样算法
+反走样是图形学中的重要概念，用以防止通常所说的锯齿化现象的出现  
+包括Qt在内的很多系统的绘图API都内置了反走样算法，但由于性能问题，一般默认是关闭的  
+可以通过下面的设置来启用反走样算法，图表中的曲线看起来效果会更好一些
+```
+m_chartview -> setRenderHint(QPainter::Antialiasing);
+```
+备注：setRenderHint()函数来自于QChartView的父类QGraphicsView  
+
+2. 数据点过多也会造成锯齿化问题
+例如：每秒钟取一个数据点来描绘曲线，两个小时的数据中共取了14400个点  
+由于图表要放在A4纸中打印出来，因此x坐标轴被压缩到A4纸的长度  
+这种情况下，曲线的锯齿化会很严重，通过设置setRenderHint()也没有作用  
+只有减少数据点的取样率才能解决这种锯齿化问题  
+实际测试，改成每分钟取一个数据点之后，曲线变的平滑了很多  
+备注：数据点越少，曲线越平滑，但失真也会越严重，一些细微的波动可能会被抹掉  
+
+3. 采用移动平均计算对原始数据进行处理
+3.1 算法原理
+设置一个长度为n的队列来进行平均计算，每次删除队头的一个数据，在队尾新添加一个数据  
+然后以整个队列的平均值作为新添加数据的修正值，用修正值替代原始值  
+3.2 算法效果
+实际测试，经过移动平均计算处理后，原始曲线中的锐角/锯齿会变的平滑  
+另外，平均计算队列越长，平滑效果越好，但同样，失真也会越严重  
+这种算法本质上也是对原始数据进行了修正，曲线最高点会变低，曲线最低点会变高，曲线本身不再准确  
+3.3 代码示例
+```
+//设置原始数据
+for(int count = 0; count < 2; count++)
+{
+    for(double i = 1; i < 101; i++)
+    {
+        m_list1 << i;
+    }
+    for(double i = 100; i > 0; i--)
+    {
+        m_list1 << i;
+    }
+}
+//计算移动平均数据
+QList<double> average_t1_list;//用来实现移动平均计算的队列
+int average_length = 5;//移动平均计算队列的长度
+for(int i = 0; i < m_list1.length(); i++)
+{
+    if(i < average_length)//前面的若干个点作为引子，不计算
+    {
+        average_t1_list.append(m_list1[i]);
+        m_list2.append(m_list1[i]);
+        continue;
+    }
+    double sum = 0, average = 0, item = 0;
+    average_t1_list.removeFirst();
+    average_t1_list.append(m_list1[i]);
+//        qDebug() << average_t1_list;
+    foreach(item, average_t1_list)
+    {
+        sum += item;
+    }
+    average = sum / average_length;
+    average_t1_list.removeLast();
+    average_t1_list.append(average);
+    m_list2.append(average);
+//        qDebug() << "data:" << m_list1[i];
+//        qDebug() << "sum:" <<sum;
+//        qDebug() << "average:" << average;
+//        qDebug() << average_t1_list;
+//        qDebug() << "\n";
+}
+//    qDebug() << m_list2.length();
+//    qDebug() << m_list2;
+```
+-------------------------------------------------------------
+
 ## 代码示例
 1. 画曲线示波图，使用createDefaultAxes()函数自动创建的坐标轴
 ```
@@ -311,7 +396,7 @@ m_chart -> addSeries(m_data2);
 m_chart -> createDefaultAxes();
 //初始化图表显示控件
 m_chartview = new QChartView(m_chart);
-//setRenderHint()函数来自于父类QGraphicsView，具体功能还没搞清楚，但加上之后画出来的线更好看一些
+//设置抗锯齿化
 m_chartview -> setRenderHint(QPainter::Antialiasing);
 ```
 
@@ -368,7 +453,7 @@ m_data2 -> attachAxis(m_axis2);
 //    m_chart -> setTheme(QChart::ChartThemeQt);
 //初始化图表显示控件
 m_chartview = new QChartView(m_chart);
-//setRenderHint()函数来自于父类QGraphicsView，具体功能还没搞清楚，但加上之后画出来的线更好看一些
+//设置抗锯齿化
 m_chartview -> setRenderHint(QPainter::Antialiasing);
 ```
 
@@ -376,7 +461,7 @@ m_chartview -> setRenderHint(QPainter::Antialiasing);
 ```
 //初始化图表显示控件
 m_chartview = new QChartView(m_chart);
-//setRenderHint()函数来自于父类QGraphicsView，具体功能还没搞清楚，但加上之后画出来的线更好看一些
+//设置抗锯齿化
 m_chartview -> setRenderHint(QPainter::Antialiasing);
 //把图表保存成图片格式文件
 QPixmap pixmap = m_chartview -> grab();
@@ -391,5 +476,6 @@ image.save("D:/chart.png");
 使用QImage的函数来调整图片文件大小应该也可以，但还没有进行具体测试  
 ```
 m_chartview = new QChartView(m_chart);
-m_chartview -> resize(480, 360);//通过widget来调整图表大小
+m_chartview -> resize(480, 360);//通过widget来缩小图表
+m_chartview -> resize(1200, 800);//通过widget来放大图表
 ```

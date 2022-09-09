@@ -52,6 +52,18 @@ QXYSeries支持以下两种标签格式
 6.2 void setPointLabelsVisible(bool visible = true)
 
 
+## 常用公共函数：对曲线的一些属性进行设置
+1. [virtual] void QXYSeries::setBrush(const QBrush &brush)
+设置用来描绘数据点的brush，如果没有具体设置，则使用QChart主题中预设的brush  
+
+2. [virtual] void QXYSeries::setPen(const QPen &pen)
+设置用来描绘数据点的pen，如果没有具体设置，则使用QChart主题中预设的pen  
+```
+//设置曲线的颜色和粗细(宽度)
+data1 -> setPen(QPen(QColor(Qt::red), 2));
+```
+
+
 ## 常用公共函数：添加数据点
 1. void QXYSeries::append(qreal x, qreal y)
 

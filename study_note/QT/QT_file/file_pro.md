@@ -319,3 +319,13 @@ NAME = "zhang"
 message(NAME) //输出NAME
 message($$NAME) //输出zhang
 ```
+5. 隐式调用的方式添加动态库
+备注：以下语句并不需要手写，而是右键 - 添加库的方式实现，具体详见Qt_dll.md
+```
+INCLUDEPATH += $$PWD/snap7
+DEPENDPATH += $$PWD/snap7
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/snap7/ -lsnap7
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/snap7/ -lsnap7
+else:unix: LIBS += -L$$PWD/snap7/ -lsnap7
+```

@@ -425,3 +425,10 @@ QString str = QString::number(num);
 [static] QString QString::fromLatin1(const char *str, int size = -1)
 ```
 把QByteArray转换为QString  
+
+4. 重载函数
+```
+[static] QString QString::fromLocal8Bit(const char *str, int size = -1)
+[static] QString QString::fromLocal8Bit(const QByteArray &str)
+```
+将一个八位编码的字符串转换为QString  

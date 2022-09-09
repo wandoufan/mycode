@@ -3,6 +3,7 @@
 ## 基本功能
 qss语法可以用来设置UI控件的颜色、字体、边框等各种属性  
 备注：控件本身的长宽参数无法通过qss语句来设置  
+备注：qss语句中无法添加注释说明  
 备注：详见Qt帮助手册中的'The Style Sheet Syntax'  
 
 
@@ -258,7 +259,10 @@ font-family: "FangSong";(字体亮度不够，看不清)
 ```
 单独设置文本的字体大小  
 ```
-font-size: 12px;
+//相当于setPointSize()/setPointSizeF()方法，不同dpi下字体大小相同
+font-size:16pt;
+//相当于setPixelSize()方法，不同dpi下字体大小不同
+font-size:16px;(常用)
 ```
 单独设置文本的字体风格  
 ```
@@ -290,6 +294,28 @@ center
 
 
 ## StyleSheet属性设置参考示例
+1. 示例(注释使用时需要删掉)
+```
+QGroupBox
+{
+//字体
+font-family: "New Century Schoolbook";
+font-size: 20px;
+font-weight: bold;
+color: black;
+
+//边框
+border-style: solid;
+border-width: 2px;
+border-color: #808080;
+border-radius: 5px;
+
+//背景颜色 
+background-color: gray
+}
+```
+2. 常用模板
+模板1
 ```
 QPushButton {
     font-family: "Microsoft YaHei";
@@ -369,8 +395,69 @@ Numeric {
     background-position: left center;
 }
 ```
+模板2
+```
+QGroupBox
+{
+font-family: "New Century Schoolbook";
+font-size: 30px;
+font-weight: bold;
+color: white;
 
+border-style: solid;
+border-width: 3px;
+border-color: black;
+border-radius: 10px;
 
+background-color: gray
+}
+
+QGroupBox QGroupBox
+{
+font-family: "New Century Schoolbook";
+font-size: 15px;
+font-weight: bold;
+color: black;
+
+border-style: solid;
+border-width: 2px;
+border-color: black;
+border-radius: 10px;
+
+background-color: gray
+}
+
+QGroupBox QLabel
+{
+font-family: "New Century Schoolbook";
+font-size: 20px;
+font-weight: bold;
+color: black;
+
+border-style: solid;
+border-width: 3px;
+border-color: green;
+border-radius: 10px;
+
+background-color: gray
+}
+
+QGroupBox Numeric
+{
+font-family: "New Century Schoolbook";
+font-size: 25px;
+font-weight: bold;
+color: yellow;
+
+border-style: solid;
+border-width: 3px;
+border-color: darkgreen;
+border-radius: 5px;
+
+background-color: gray
+}
+```
+网上参考
 ```
 
 https://blog.csdn.net/u010525694/article/details/78452786

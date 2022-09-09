@@ -3,6 +3,8 @@
 ## 基本功能
 QDatetime类提供日期和时间相关的函数  
 另外，还有QDate类单独提供日期相关的功能，QTime类单独提供时间相关的功能  
+父类：无  
+子类：无  
 
 
 ## 说明
@@ -13,9 +15,9 @@ QDatetime中的year不能是0，否在QDatetime是非法的
 3. 数值合法范围
 QDateTime是存储在一个qint64变量中，合法范围为+/-292百万年  
 作为对比，QDate的范围为+/-20亿年  
-4. QDatetime可以用来获取时间戳
-时间戳表示的是从1970年1月1日00:00:00开始按秒计算的偏移量  
-
+4. QDatetime可以用来获取时间戳偏移量
+时间戳表示的是从1970年1月1日00:00:00开始按秒或毫秒计算的偏移量  
+注意：时间戳偏移量应该用qint64存储，如果使用int存储，会有精度不够的问题
 
 ## 代码示例
 1. 把QDateTime按照一定格式转化成字符串  
@@ -92,7 +94,7 @@ dt.setTime(QTime());
 以秒为单位设置datetime(相对于时间戳)  
 
 
-## 常用公共函数：修改QDateTime对象的值
+## 常用公共函数：修改QDateTime对象的值(加减时间)
 备注：这些参数都可以是负值  
 1. QDateTime QDateTime::addYears(int nyears) const
 
@@ -177,20 +179,34 @@ dt.setTime(QTime());
 
 2. [static] QDateTime QDateTime::currentDateTimeUtc()
 
-3. [static] qint64 QDateTime::currentMSecsSinceEpoch()
-以毫秒为单位返回时间戳到当前时间的差值  
+3. [static] QDate QDate::fromString(const QString &string, Qt::DateFormat format = Qt::TextDate)
+把时间日期的字符串按照一定格式转化为一个QDate对象  
 
-4. [static] qint64 QDateTime::currentSecsSinceEpoch()
-以秒为单位返回时间戳到当前时间的差值  
-
-5. [static] QDate QDate::fromString(const QString &string, Qt::DateFormat format = Qt::TextDate)
+4. [static] QDateTime QDateTime::fromString(const QString &string, const QString &format, QCalendar cal)
 把时间日期的字符串按照一定格式转化为一个QDateTime对象  
-```
-QDateTime datetime = QDateTime::fromString(str, "hh:mm:ss");
-```
 
-6. [static] QDateTime QDateTime::fromString(const QString &string, const QString &format, QCalendar cal)
-把时间日期的字符串按照一定格式转化为一个QDateTime对象  
+
+## 静态公共函数：QDateTime对象与时间戳偏移量之间的相互转换
+1. [static] qint64 QDateTime::currentMSecsSinceEpoch()
+以毫秒为单位返回时间戳到当前时间的偏移量  
+
+2. [static] qint64 QDateTime::currentSecsSinceEpoch()
+以秒为单位返回时间戳到当前时间的偏移量  
+
+3. [static] QDateTime QDateTime::fromMSecsSinceEpoch(qint64 msecs)
+以毫秒为单位的时间戳偏移量转换为QDateTime对象  
+
+4. [static] QDateTime QDateTime::fromMSecsSinceEpoch(qint64 msecs, Qt::TimeSpec spec, int offsetSeconds = 0)
+以毫秒为单位的时间戳偏移量转换为QDateTime对象  
+
+5. [static] QDateTime QDateTime::fromMSecsSinceEpoch(qint64 msecs, const QTimeZone &timeZone)
+以毫秒为单位的时间戳偏移量转换为QDateTime对象  
+
+6. [static] QDateTime QDateTime::fromSecsSinceEpoch(qint64 secs, Qt::TimeSpec spec = Qt::LocalTime, int offsetSeconds = 0)
+以秒为单位的时间戳偏移量转换为QDateTime对象  
+
+7. [static] QDateTime QDateTime::fromSecsSinceEpoch(qint64 secs, const QTimeZone &timeZone)
+以秒为单位的时间戳偏移量转换为QDateTime对象  
 
 
 ## 日期时间格式format

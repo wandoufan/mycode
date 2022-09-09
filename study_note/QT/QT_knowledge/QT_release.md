@@ -45,7 +45,7 @@ Qt提供了windeployqt.exe作为发布windows程序的工具，位于Qt的编译
 3. 打开cmd，进入到windeployqt.exe所在的目录，然后执行如下命令  
 命令执行完成后发布目录中会多出很多相关的dll文件，此时点击该exe就可以直接运行了  
 ```
-windeployqt.exe E:\setup\UGEE_CS03.exe
+windeployqt.exe D:\release\test.exe
 ```
 备注：windeployqt.exe不能保证一次将所有依赖文件完全复制，必须要运行测试依赖库的完整性  
 

@@ -1,7 +1,7 @@
 # QChart
 
 ## 基本功能
-QChart实现图表界面，用来管理图表的内容、颜色、大小等  
+QChart实现图表界面，用来管理图表的数据(series)、图例(legends)、坐标轴(axes)等  
 QChart是Charts模块中最核心的类  
 曲线、折线、条形等不同类型的数据可以显示在同一张图表中  
 父类：QGraphicsWidget  
@@ -98,7 +98,7 @@ QChart是Charts模块中最核心的类
 14.4 void QChart::setTitleFont(const QFont &font)
 
 
-## 常用公共函数：图表的坐标轴
+## 常用公共函数：图表中的坐标轴
 1. void QChart::addAxis(QAbstractAxis \*axis, Qt::Alignment alignment)
 向图表中添加坐标轴，alignment参数指定坐标轴的位置  
 添加之后，图表对象会成为坐标轴对象的所有者  
@@ -134,7 +134,7 @@ QPieSeries 			None 					None
 如果没有指定数据类型，返回图表中所有的坐标轴  
 
 
-## 常用公共函数：图表的数据来源
+## 常用公共函数：图表中的数据
 1. void QChart::addSeries(QAbstractSeries \*series)
 向图表中添加数据  
 添加之后，图表对象会成为数据对象的所有者  
@@ -149,6 +149,12 @@ QPieSeries 			None 					None
 
 4. QList<QAbstractSeries \*> QChart::series() const
 返回图表中添加的所有数据对象  
+
+
+## 常用公共函数：图表中的图例
+1. QLegend \*QChart::legend() const
+获取图表中的图例对象  
+备注：QLegend没有构造函数，这是获取图例的唯一方法  
 
 
 ## 常用公共函数：图表的移动和缩放

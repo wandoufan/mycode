@@ -4,6 +4,24 @@
 > https://wiki.qt.io/Handling_PDF
 
 
+## Qt官方提供的pdf相关的库
+目前主要是关于生成pdf相关的库，在打开、预览、解析pdf等方面还有欠缺  
+```
+QPdfDestination
+QPdfDocument
+QPdfDocumentRenderOptions
+QPdfPageNavigation
+QPdfPageRenderer
+QPdfSelection
+QPdfWriter
+```
+
+
+## 目前项目中实际用到的pdf相关功能
+生成pdf、打印之前预览pdf
+其他的解析pdf等复杂功能目前暂时没有用到
+
+
 ----------------读写pdf-------------------
 ## 使用QPrinter
 1. manual QPainter painting
@@ -46,6 +64,7 @@ Qt Graphics View框架更适合用来针对2D图形画面来创建pdf文档
 > https://freedesktop.org/wiki/Software/poppler/
 3. mupdf
 https://mupdf.com/
+目前项目代码中实际使用的应该是mupdf  
 
 
 ----------------交互式的查看pdf-------------------
@@ -86,7 +105,8 @@ poppler等第三方库都侧重于对pdf进行创建、解析、显示
 
 ## 调用OfficeExcel的组件实现文件转换成pdf
 调用微软的接口：Workbook.ExportAsFixedFormat方法
-备注：需要依赖OfficeExcel的组件
+代码示例详见QT_ActiveQt.md
+备注：这个方法需要依赖OfficeExcel的组件
 > https://docs.microsoft.com/zh-cn/office/vba/api/excel.workbook.exportasfixedformat
 
 

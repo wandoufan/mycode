@@ -52,9 +52,11 @@ QDir
 
 
 
-## 读写文件代码示例
-1. 使用QFile读写文本文件
-如果写入的是文本数据，则文件可以直接用各种文本编辑器打开查看内容
+-------------------------------------------------
+
+## 代码示例：使用QFile读写文本文件
+备注：如果写入的是文本数据，则文件可以直接用各种文本编辑器打开查看内容  
+1. 写入数据
 ```
 //写入一行文本内容
 QFile file("D:/test.data");
@@ -75,7 +77,9 @@ if(file.open(QIODevice::ReadWrite | QIODevice::Text))
     file.write("this is line 5\n");
 }
 file.close();
-
+```
+2. 读取数据
+```
 //读出所有文本内容
 QFile file("D:/test.data");
 if(file.open(QIODevice::ReadWrite | QIODevice::Text))
@@ -99,7 +103,8 @@ if(file.open(QIODevice::ReadWrite | QIODevice::Text))
 file.close();
 ```
 
-2. 单独使用QFile读写二进制文件
+
+## 代码示例：单独使用QFile读写二进制文件
 备注：这种方式也能实现，但非常麻烦，不推荐
 ```
 //写入二进制文件
@@ -120,48 +125,230 @@ if(file.open(QIODevice::ReadWrite))
 file.close();
 ```
 
-3. 使用QTextStream/QDataStream + QFile读写二进制文件
+
+## 代码示例：使用QDataStream + QFile读写二进制文件
+1. 读写C++的基本数据类型，如int、double、char[]
+```
+//要存入二进制文件的数据
+int i = 10;
+double d = 3.1415;
+char str[10] = "abcde";
+//写入二进制文件
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadWrite))
+{
+    datastream << i << d << str;
+}
+file.close();
+```
+```
+//要从二进制文件中读取的数据
+int i;
+double d;
+char *str = new char[10];//字符数组需要用new出来的指针
+//读取二进制文件
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadOnly))
+{
+    datastream >> i >> d >> str;
+    qDebug() << i;
+    qDebug() << d;
+    qDebug() << str;
+}
+file.close();
+delete [] str;//使用之后要delete
+```
+
+2. 读写Qt容器类，如QList
+备注：二进制文件打开后是乱码，无法直接查看  
+```
+//要写入文件中的数据
+QList<int> list1, list2;
+for(int i = 0; i < 20; i++)
+{
+    list1.append(i);
+    list2.append(2 * i);
+}
+//写入二进制文件
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadWrite))
+{
+    datastream << list1 << list2;
+}
+file.close();
+```
+```
+//定义数据
+QList<int> list1, list2;
+//读取二进制文件
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadOnly))
+{
+    datastream >> list1 >> list2;
+    //输出数据
+    qDebug() << list1;
+    qDebug() << list2;
+}
+file.close();
+```
+
+3. 读写其他Qt类，如QFont、QColor、QImage
+备注：二进制文件打开后是乱码，无法直接查看  
+```
+//要存入二进制文件的数据
+QColor color = QColor(255, 0, 0, 255);
+QFont font = QFont("Calibri", 10, 50);
+QImage image(50, 50, QImage::Format_RGB32);
+image.fill(Qt::blue);
+ui -> label -> setPixmap(QPixmap::fromImage(image));
+//写入二进制文件
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadWrite))
+{
+    datastream << color << font << image;
+}
+file.close();
+```
+```
+//要从二进制文件中读取的数据
+QColor color;
+QFont font;
+QImage image;
+//读取二进制文件
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadOnly))
+{
+    datastream >> color >> font >> image;
+}
+file.close();
+```
+
+4. 读写复杂的数据类型(结构体)，不能用操作符，只能用读写函数
+注意：实际测试，结构体中的成员变量如果包含字符串，只能使用字符数组char[]，不能用QString，否则读取报错  
+不管是用readRawData()还是readBytes()，都会读取报错，只能用char[]来存储字符串  
+```
+//要写入文件中的结构体数据
+struct Student
+{
+    char name[10];
+    int age;
+    double score;
+};
+struct Student student1, student2;
+strcpy(student1.name, "zhang");
+strcpy(student2.name, "li");
+student1.age = 10;
+student2.age = 11;
+student1.score = 88.88;
+student2.score = 77.77;
+//使用memcpy()方法把结构体数据放入指定内存中
+char temp1[sizeof(Student)];
+char temp2[sizeof(Student)];
+memcpy(temp1, &student1, sizeof(Student));
+memcpy(temp2, &student2, sizeof(Student));
+//写入二进制文件
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadWrite))
+{
+    datastream.writeRawData(temp1, sizeof(Student));
+    datastream.writeRawData(temp2, sizeof(Student));
+}
+file.close();
+```
+```
+//定义结构体数据
+struct Student
+{
+    char name[10];
+    int age;
+    double score;
+};
+struct Student student1, student2;
+//读取二进制文件
+uint length = sizeof(Student);
+char *temp1 = new char[length];
+char *temp2 = new char[length];
+QFile file("D:/test.data");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadOnly))
+{
+    datastream.readRawData(temp1, length);
+    datastream.readRawData(temp2, length);
+    memcpy(&student1, temp1, length);
+    memcpy(&student2, temp2, length);
+    //输出数据
+    qDebug() << student1.name;
+    qDebug() << student1.age;
+    qDebug() << student1.score;
+    qDebug() << student2.name;
+    qDebug() << student2.age;
+    qDebug() << student2.score;
+}
+file.close();
+delete[] temp1;
+delete[] temp2;
+```
 
 
-4. 读取用C语言写入的二进制文件？
---> 齿轮箱配置文件：里面包含整型数组和字符数组
---> 是否还需要用到QDataStream
---> Qt中好像无法直接调用C语言中读写文件的fopen()函数
+## 代码示例：在Qt代码中读取用C语言写入的二进制文件
+在Wincc中用C语言的fwrite()方法把数据写入二进制文件
+```
+int GearBoxConfig[10];
+int GearBox_Parameter[50][4];
+char CommandInfo[25][200];
+...
+fp = fopen(file_path, "wb");
+fwrite(GearBoxConfig, sizeof(int), 10, fp);
+fwrite(GearBox_Parameter, sizeof(int), 200, fp);
+fwrite(CommandInfo, sizeof(char), 5000, fp);
+```
+方法一：直接用C语言的fread()方法读取二进制文件
 备注：实际测试，在Qt中也可以使用C语言中读写文件的函数，但会提醒函数已过时
-用C语言写入二进制文件的代码
 ```
-
+int GearBoxConfig[10];
+int GearBox_Parameter[50][4];
+char CommandInfo[25][200];
+...
+fp = fopen(file_path, "rb");
+fread(GearBoxConfig, sizeof(int), 10, fp);
+fread(GearBox_Parameter, sizeof(int), 200, fp);
+fread(CommandInfo, sizeof(char), 5000, fp);
 ```
-用C语言读取二进制文件的代码
+方法二：使用QDataStream + QFile读取C语言写的二进制文件
 ```
-
-```
-
-
----------------------------
-1. 创建文件和文件夹
-2. 读取文件
-```
-QFile file("in.txt");
-if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-	return;
-
-while (!file.atEnd())
+//要从二进制文件中读取的数据
+int GearBoxConfig[10];
+int GearBox_Parameter[50][4];
+char CommandInfo[25][200];
+//读取二进制文件
+uint length1 = sizeof(int) * 10;
+uint length2 = sizeof(int) * 200;
+uint length3 = sizeof(char) * 5000;
+char *temp1 = new char[length1];
+char *temp2 = new char[length2];
+char *temp3 = new char[length3];
+QFile file("D:/test.cfg");
+QDataStream datastream(&file);
+if(file.open(QIODevice::ReadOnly))
 {
-	QByteArray line = file.readLine();
-	process_line(line);
+    datastream.readRawData(temp1, length1);
+    datastream.readRawData(temp2, length2);
+    datastream.readRawData(temp3, length3);
+    memcpy(GearBoxConfig, temp1, sizeof(int) * 10);
+    memcpy(GearBox_Parameter, temp2, sizeof(int) * 200);
+    memcpy(CommandInfo, temp3, sizeof(char) * 5000);
 }
+file.close();
+delete [] temp1;
+delete [] temp2;
+delete [] temp3;
 ```
 
 
-3. readyRead()信号对应的槽函数
-```
-void MainWindow::onSocketReadyRead()
-{
-    //当缓冲区有新的数据可读时，读取数据
-    while (tcp_socket -> canReadLine())
-    {
-        ui -> textBrowser -> append(tcp_socket -> readLine());
-    }
-}
-```
