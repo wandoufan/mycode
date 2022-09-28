@@ -102,6 +102,7 @@ xlsx.write("B1", "this is B1");
 如果需要写入的字符串实现换行，需要在字符串指定位置加入'\n'，并设置format.setTextWarp(true)  
 
 2. bool write (int row, int col, const QVariant &value, const Format &format=Format())
+备注：行号和列号都是从1开始，不是从0开始
 ```
 xlsx.write(1, 3, "C1");
 xlsx.write(2, 3, "C2");

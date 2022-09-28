@@ -107,6 +107,7 @@ poppler等第三方库都侧重于对pdf进行创建、解析、显示
 调用微软的接口：Workbook.ExportAsFixedFormat方法
 代码示例详见QT_ActiveQt.md
 备注：这个方法需要依赖OfficeExcel的组件
+备注：实际测试，金山WPS也具有和Office相同的接口，程序也能调用成功
 > https://docs.microsoft.com/zh-cn/office/vba/api/excel.workbook.exportasfixedformat
 
 

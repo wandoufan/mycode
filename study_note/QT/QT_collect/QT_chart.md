@@ -470,12 +470,16 @@ image.save("D:/chart.png");
 ```
 
 4. 调整QChart的大小
-在不调整大小的情况下，生成的图片默认为(640, 480)  
+在不调整大小的情况下，QChart生成的图片默认为(640, 480)  
 实际测试，调用Chart自带的zoom()函数之后，显示出来的图表大小并没有变化，生成的图片大小也没有变化  
-目前测试，使用QWidget的resize()函数调整大小是有效的，生成图片文件的大小也会随之改变  
-使用QImage的函数来调整图片文件大小应该也可以，但还没有进行具体测试  
+方法一：可以使用QWidget的resize()函数来调整大小  
 ```
 m_chartview = new QChartView(m_chart);
 m_chartview -> resize(480, 360);//通过widget来缩小图表
 m_chartview -> resize(1200, 800);//通过widget来放大图表
 ```
+方法二：使用QImage的的scaled()函数来调整大小  
+```
+QImage image = image_temp.scaled(480, 360, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+```
+实际测试，使用这两种方法得到的图片清晰度没有明显区别，都会有一定程度的图片压缩  

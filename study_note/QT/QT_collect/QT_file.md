@@ -304,6 +304,7 @@ int GearBoxConfig[10];
 int GearBox_Parameter[50][4];
 char CommandInfo[25][200];
 ...
+FILE* fp;
 fp = fopen(file_path, "wb");
 fwrite(GearBoxConfig, sizeof(int), 10, fp);
 fwrite(GearBox_Parameter, sizeof(int), 200, fp);
@@ -316,6 +317,7 @@ int GearBoxConfig[10];
 int GearBox_Parameter[50][4];
 char CommandInfo[25][200];
 ...
+FILE* fp;
 fp = fopen(file_path, "rb");
 fread(GearBoxConfig, sizeof(int), 10, fp);
 fread(GearBox_Parameter, sizeof(int), 200, fp);
@@ -338,12 +340,12 @@ QFile file("D:/test.cfg");
 QDataStream datastream(&file);
 if(file.open(QIODevice::ReadOnly))
 {
-    datastream.readRawData(temp1, length1);
-    datastream.readRawData(temp2, length2);
-    datastream.readRawData(temp3, length3);
-    memcpy(GearBoxConfig, temp1, sizeof(int) * 10);
-    memcpy(GearBox_Parameter, temp2, sizeof(int) * 200);
-    memcpy(CommandInfo, temp3, sizeof(char) * 5000);
+    datastream.readRawData(temp1, static_cast<int>(length1));
+    datastream.readRawData(temp2, static_cast<int>(length2));
+    datastream.readRawData(temp3, static_cast<int>(length3));
+    memcpy(GearBoxConfig, temp1, length1);
+    memcpy(GearBox_Parameter, temp2, length2);
+    memcpy(CommandInfo, temp3, length3);
 }
 file.close();
 delete [] temp1;

@@ -11,7 +11,8 @@ Qt是跨平台的开发工具，因此应用程序可以在各个平台上发布
 Qt程序调用自己的库，MFC调用本地库，因此一般Qt程序规模要比MFC大很多  
 一般来说，跨平台框架开发出来的程序都很大，需要包含很多库文件  
 实际测试，一个很简单的Qt项目在Enigma Virtual Box打包之后都有50多M  
-Qt默认使用动态编译，所以编译出来体积超大，可以使用UPX压缩壳(没有真正用过)  
+如果需要缩小打包程序的大小，可以在Enigma Virtual Box中勾选'Compress Files'  
+备注：实际测试，压缩之后的发布程序大小从50多MB降低到了20多MB  
 
 
 ## 发布方式
@@ -54,6 +55,8 @@ windeployqt.exe D:\release\test.exe
 先选择上方的文件路径，输入文件路径为发布目录中exe文件的路径，输出路径任意  
 再选择左下方的依赖文件或文件夹，注意要把文件夹中exe去掉  
 备注：可以用右键-'Add Folder Recursive'把整个发布目录放进来，然后去掉exe程序  
+然后选择右下方的'Files Options'，勾选'Compress Files'  
+备注：实际测试，压缩之后的发布程序大小从50多MB降低到了20多MB  
 最后选择右下方的打包，之后在输出目录就可以看到exe文件  
 
 
@@ -61,6 +64,43 @@ windeployqt.exe D:\release\test.exe
 windeployqt.exe工具好像只能把程序用到的Qt的dll给拷贝过来  
 如果程序中使用了外部库，例如"snap7.dll"，windeployqt.exe工具就没有作用了  
 对于这些外部库文件，必须手动拷贝过来，否则exe运行时会有相关报错  
+
+
+## 打包发布的Qt程序遇到的问题
+1. 问题描述
+程序打包发布后在笔记本上运行是没有问题的，但是拷贝到项目电脑上运行后就有如下报错：
+```
+cannot load library Qt5Charts.dll
+或者
+Cannot load library QT5Widgets.dll
+```
+备注：项目电脑也是Win10系统，安装了Qt5.2.1，但没有安装编译器  
+备注：同一个程序，拷贝到别人的笔记本上就没有问题(也是Win10系统，没有安装任何Qt和编译器相关的东西)  
+
+2. 问题分析
+首先确认Qt5Charts.dll这个库已经被添加到了程序发布目录中
+网上方法：
+```
+在C:\Qt\Qt5.11.3\5.11.3\mingw53_32\bin目录中
+找到并添加libgcc_s_dw2-1.dll，libwinpthread-1.dll，libstdc++-6.dll到发布目录中
+```
+实际测试，添加了这几个库也不行，还是有同样报错  
+
+3. 解决方法一
+原来使用的是Qt 5.11.3 MSVC2015 64位编译器
+改成用Qt 5.11.3 MinGw 32位编译器重新编译和打包，之后问题解决
+备注：MinGw 32位编译器本身有缺陷，对内存空间有大约2GB的限制，超出之后程序会崩溃  
+
+4. 解决方法二(未实际测试)
+下载并安装vc++ 2015 Runtime 运行库（安装包大约十几MB）
+```
+vc_redist.x64.exe
+vc_redist.x86.exe
+```
+Microsoft Visual C++ 2015 Redistributable Update 3下载地址：
+```
+https://www.microsoft.com/zh-CN/download/details.aspx?id=53840
+```
 
 
 ## 设置程序图标
@@ -82,6 +122,10 @@ D:\project\Qt_Test\demo6_SpinBox\123.ico is not in 3.00 format
 在.pro文件中加上以下内容，之后重新编译即可  
 ```
 RC_ICONS = spinbox.ico
+```
+也可以放到一个image目录下
+```
+RC_ICONS = image/logo.ico
 ```
 
 

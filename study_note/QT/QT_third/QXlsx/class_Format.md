@@ -102,8 +102,14 @@
 
 ## 设置单元格居中方式
 1. void setHorizontalAlignment (HorizontalAlignment align)
+```
+format.setHorizontalAlignment(Format::AlignHCenter);
+```
 
 2. void setVerticalAlignment (VerticalAlignment align)
+```
+format.setVerticalAlignment(Format::AlignVCenter);
+```
 
 
 ## enum FontUnderline

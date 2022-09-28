@@ -118,7 +118,8 @@ Desktop Qt %{Qt:Version} MSVC2015 64bit
 ```
 2. 编译器Compiler
 Qt Creator支持使用MSVC或MinGW来作为编译器  
-一般推荐使用MSVC来作为默认的构建套件，因为编译和调试的速度更快  
+一般推荐使用MSVC来作为默认的构建套件，因为编译和调试的速度更快 
+注意：实际测试，使用MinGW32位编译器有内存空间的限制，大约是2GB，超出范围后程序会崩溃 
 备注：一般C和C++的编译器都选择同一个  
 ```
 Microsoft Vistual C++ Compiler 10.0 (x86)

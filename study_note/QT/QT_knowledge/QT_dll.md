@@ -40,10 +40,14 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lIOLIBd
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
 ```
-最后在.pro文件中手动添加上相关的头文件即可  
+然后在.pro文件中手动添加上相关的头文件  
 ```
 HEADERS += mainwindow.h\
          include/IOLib.h
+```
+最后引用相关的头文件即可
+```
+#include "include/IOLib.h"
 ```
 3. 注意事项
 最后编译生成的exe在打包或者单独运行时，还需要把dll文件手动拷贝到对应debug/release目录下  

@@ -12,6 +12,12 @@ QXlsx库可以不依赖于Microsoft Excel，也不用调用windows的COM组件
 QXlsx库可以应用在任何Qt5支持的平台上
 
 
+## 特别说明
+实际测试，在使用MinGW32编译器的情况下，如果向表格中写入的数据量过大，程序会崩溃  
+程序崩溃的点不是write()写入的时候，而是在最后saveAs()保存的时候  
+备注：改用MSVC2015编译器则没有该问题  
+
+
 ## 官方文档
 > http://qtxlsx.debao.me/
 

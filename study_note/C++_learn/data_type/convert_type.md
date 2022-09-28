@@ -49,7 +49,7 @@ static_cast属于最常用的
 
 ## 2. dynamic_cast<data_type>(data) 运行时进行类型检查
 用法说明：
-1. 不能用于内置的基本数据类型的强制转换
+1. 不能用于内置的基本数据类型的强制转换，而是用于对class进行类型转换
 2. dynamic_cast转换如果成功的话返回的是指向类的指针或引用，转换失败的话则会返回NULL
 3. 使用dynamic_cast进行转换，父类中一定要有虚函数，否则编译不通过
 4. 在类层次间进行上行转换时，dynamic_cast和static_cast的效果是一样的
