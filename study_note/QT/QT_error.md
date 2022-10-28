@@ -19,6 +19,38 @@
 6. 项目中引用了库文件，但没有在.pro文件中正确地包含库文件
 
 
+## LNK2019/LNK2001: 无法解析的外部符号
+1. 代码示例
+```
+class LoadPageWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    LoadPageWidget()
+    {
+        qDebug() << "123";
+    }
+};
+```
+2. 说明
+在类中声明了Q_OBJECT宏，但没有用到信号与槽等相关机制，类中也没有写太多有效内容
+在Qt 5.2 + VS2010中编译时会有报错：
+```
+editorplugin.obj:-1: error: LNK2019: unresolved external symbol "public: __thiscall Editor::Internal::LoadEditPage::LoadEditPage(void)" (??0LoadEditPage@Internal@Editor@@QAE@XZ) referenced in function "public: virtual bool __thiscall Editor::Internal::EditorPlugin::initialize(class QStringList const &,class QString *)" (?initialize@EditorPlugin@Internal@Editor@@UAE_NABVQStringList@@PAVQString@@@Z)
+```
+在Qt 5.11 + VS2015中编译时会有报错：
+```
+mainwindow.obj:-1: error: LNK2001: unresolved external symbol "public: virtual struct QMetaObject const * __cdecl LoadPageWidget::metaObject(void)const " (?metaObject@LoadPageWidget@@UEBAPEBUQMetaObject@@XZ)
+```
+这个报错的原因与Q_OBJECT宏和元对象编译器MOC有关，但没有完全搞明白
+3. 解决办法
+网上有很多人遇到了类似的问题，给出了很多办法
+https://blog.csdn.net/weixin_42255049/article/details/121928834
+https://blog.csdn.net/xzq413520903/article/details/79554318
+但这些办法实际测试都不行，目前唯一办法就是把Q_OBJECT先注释掉，等真正用到信号与槽等机制时再添加上
+
+
 ## LNK1123: 转换到 COFF 期间失败: 文件无效或损坏
 1. 环境描述
 使用Qt 5.2.1 + VS 2010环境

@@ -265,10 +265,10 @@ connect(ui -> pushButton, SIGNAL(clicked()), this, SLOT(click_test1()));
 //槽函数定义
 void MainWindow::click_test1()
 {
-    qDebug() << sender() -> objectName();//sender()函数可以获取到sender对象指针
-    //在有的地方经常看到，先把sender()对象做类型转换，再获取对象名称，实际测试感觉没必要
-//    QPushButton *button = qobject_cast<QPushButton *>(sender());
-//    qDebug() << button -> objectName();
+    qDebug() << sender() -> objectName();//在槽函数中使用sender()函数可以获取到sender对象指针
+    //这个地方需要用qobject_cast<>()对sender()对象做类型转换，详见QT_qobject_cast.md
+    QPushButton *button = qobject_cast<QPushButton *>(sender());
+    qDebug() << button -> objectName();
 }
 ```
 4. 方法三：使用lambda表达式实现(推荐)

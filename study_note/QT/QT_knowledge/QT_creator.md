@@ -152,6 +152,8 @@ C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe
 Qt 5.2.1 MSVC2010 32bit OpenGL
 C:\Qt\5.15.1\msvc2015_64\bin\qmake.exe
 ```
+5. 可以在不安装整个MSVC2015的情况下，为Qt单独下载和配置MSVC的编译器
+https://www.cnblogs.com/sggggr/p/12791740.html
 
 
 -------------------------------Qt项目的运行选项-------------------------------

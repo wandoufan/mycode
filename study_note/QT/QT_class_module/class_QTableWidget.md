@@ -1,23 +1,17 @@
 # QTableWidget
 
 ## 基本功能
-QTableWidget用来提供数据表格相关的功能  
+QTableWidget用来提供数据表格相关的功能，它是QTableView的便利类  
 不管是表头还是工作区，每个单元格的数据都是一个QTableWidgetItem对象  
 除非进行设置，表头行和表头列默认都是从1开始递增（注意不是0）  
 注意：在进行各种设置时，表头(行/列)和工作区是分开的，要用不同函数分别进行设置  
-父类： QTableView  
-子类：无  
-
-
-## QTableWidget和QTableView的区别
-1. 继承关系
-QTableWidget是QTableView的子类，即QTableWidget继承于QTableView  
-2. 单元格的数据类型
-QTableView可以使用自定义的数据模型来显示内容  
-QTableWidget只能使用标准的数据类型，其单元格中的数据是QTableWidgetItem对象  
-3. 单元格的数据源
-QTableView事先要通过setModel函数来绑定数据源  
-QTableWidget不需要数据源，逐个将单元格内的信息填好即可  
+```
+                                                             | - QListView - QListWidget
+                                                             | - QTableView - QTableWidget
+QWidget - QFrame - QAbstractScrollArea - QAbstractItemView - | - QTreeView - QTreeWidget
+                                                             | - QColumnView
+                                                             | - QHeaderView                 
+```
 
 
 ## 工作区中可以存放的数据类型
@@ -27,6 +21,12 @@ QTableWidgetItem对象有一个setData()方法，可以存放QVariant数据
 因此QTableWidget中可以存放几乎所有类型的数据  
 2. QWidget
 可以直接插入一个widget控件
+
+
+## 关于设置表格样式
+在QTableWidget中并没有提供设置单元格样式相关的函数，但父类QTableView中有一些方法可以设置表格样式
+另外，通过其父类QTableView的horizontalHeader()方法和verticalHeader()方法，可以获取一个QHeaderView指针
+在QHeaderView类中提供了大量设置表格样式的接口
 
 
 ## 构造函数
@@ -56,7 +56,7 @@ tableWidget -> setColumnCount(5);
 4. int QTableWidget::column(const QTableWidgetItem \*item) const
 
 
-## 常用公共函数：设置表格的行列
+## 常用公共函数：设置表格的行数和列数
 1. void QTableWidget::setRowCount(int rows)
 设置表格的行数  
 
@@ -143,12 +143,38 @@ for(int header = 0; header < mytable -> columnCount(); header++)
 1. void QTableWidget::setItem(int row, int column, QTableWidgetItem \*item)
 向指定的单元格中插入QTableWidgetItem数据  
 ```
-for(int i = 0; i < mytable -> rowCount(); i++)
+//例1：把数据类型从QVariant转换成QString，然后放入单元格中
+query.exec("select * from load_all;");
+while(query.next())
 {
-    for (int j = 0; j < mytable -> columnCount(); j++)
-    {
-        mytable -> setItem(i, j, new QTableWidgetItem(QString::number(i + j + 2)));
-    }
+    //插入新的一行
+    int row = table_all -> rowCount();
+    table_all -> insertRow(row);
+    //插入数据
+    table_all -> setItem(row, 0, new QTableWidgetItem(query.value(0).toString()));
+    table_all -> setItem(row, 1, new QTableWidgetItem(query.value(1).toString()));
+    table_all -> setItem(row, 2, new QTableWidgetItem(query.value(2).toString()));
+    table_all -> setItem(row, 3, new QTableWidgetItem(query.value(3).toString()));
+}
+//例2：把数据类型保持为QVariant，然后放入单元格中(需要定义多个QTableWidgetItem指针)
+while(query.next())
+{
+    //插入新的一行
+    int row = table_all -> rowCount();
+    table_all -> insertRow(row);
+    //插入数据
+    QTableWidgetItem *item0 = new QTableWidgetItem;
+    item0-> setData(Qt::DisplayRole, query.value(0));
+    table_all -> setItem(row, 0, item0);
+    QTableWidgetItem *item1 = new QTableWidgetItem;
+    item1-> setData(Qt::DisplayRole, query.value(1));
+    table_all -> setItem(row, 1, item1);
+    QTableWidgetItem *item2 = new QTableWidgetItem;
+    item2-> setData(Qt::DisplayRole, query.value(2));
+    table_all -> setItem(row, 2, item2);
+    QTableWidgetItem *item3 = new QTableWidgetItem;
+    item3-> setData(Qt::DisplayRole, query.value(3));
+    table_all -> setItem(row, 3, item3);
 }
 ```
 
@@ -194,7 +220,7 @@ for(int i = 0; i < mytable -> rowCount(); i++)
 删除单元格中插入的widget组件
 
 
-## 公共槽函数：增删表格中的行/列，删除所有数据
+## 公共槽函数：增加/删除表格中的行/列，删除所有数据
 1. [slot] void QTableWidget::insertColumn(int column)
 向指定位置插入新的一列  
 
@@ -203,6 +229,11 @@ for(int i = 0; i < mytable -> rowCount(); i++)
 ```
 channel_table -> insertRow(channel_table -> currentRow()); \\上插入一行
 channel_table -> insertRow(channel_table -> currentRow() + 1); \\下插入一行
+```
+注意：对于一张空表格，其rowCount()为0，插入第一行时只能是上插入
+```
+//错误写法，无法实现插入一行的效果
+table -> insertRow(table -> rowCount() + 1);
 ```
 
 3. [slot] void QTableWidget::removeColumn(int column)
@@ -253,13 +284,9 @@ channel_table -> insertRow(channel_table -> currentRow() + 1); \\下插入一行
 信号函数会提供之前的选中单元格和当前的选中单元格对应的QTableWidgetItem  
 
 ----------------------------------------------------
-## 设置表格样式
-在QTableWidget中并没有提供设置单元格样式相关的函数，但父类QTableView中有一些方法可以设置表格样式
-另外，通过其父类QTableView的horizontalHeader()方法和verticalHeader()方法，可以获取一个QHeaderView指针
-在QHeaderView类中提供了大量设置表格样式的接口
 
 
-## 相关的函数示例
+## 设置表格样式相关的函数示例
 * void setEditTriggers(QAbstractItemView::EditTriggers triggers)
 设置整个表格为不可编辑  
 ```
@@ -332,7 +359,7 @@ mytable -> horizontalHeader() -> setSectionResizeMode(QHeaderView::Stretch);
 
 ----------------------------------------------------
 
-## 通过右键菜单插入/删除一行数据
+## 代码示例：通过右键菜单插入/删除一行数据
 参考QMenu，创建右键菜单选项  
 ```
 //创建菜单和菜单选项
@@ -361,7 +388,7 @@ void Widget::addChannel()
 ```
 
 
-## 实现一行数据的上下移动
+## 代码示例：实现一行数据的上下移动
 1. 基本思路
 QTableWidget中没有直接提供接口实现该功能，只能自己写代码去实现  
 先在目标位置新插入一个空行，然后将原有行的单元格逐个复制到新行中，最后删除原有数据行  

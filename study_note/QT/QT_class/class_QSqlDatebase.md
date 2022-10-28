@@ -42,6 +42,19 @@ if(mydb.open())
 ```
 
 
+## 代码示例：连接PostgreSQL
+```
+QSqlDatabase postgre = QSqlDatabase::addDatabase("QPSQL", "first connection");
+postgre.setHostName("localhost");
+postgre.setPort(5432);
+postgre.setDatabaseName("Test");
+postgre.setUserName("postgres");
+postgre.setPassword("123456");
+if(postgre.open())
+...
+```
+
+
 ## 建立连接函数中的type参数
 不同数据库在QT中使用不同的驱动类型，具体对应关系如下
 ```

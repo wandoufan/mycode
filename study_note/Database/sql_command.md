@@ -1,10 +1,24 @@
 # sql命令(以mysql为例)
 
-## 注意事项
+## 说明
 > http://www.runoob.com/mysql/mysql-install.html
 1. 在命令中要尽量加入'if exists'和'if not exists'来减少报错
 2. 命令中的{}部分表示任选其一，[]部分表示可选可不选
 3. 所有的数据库名，表名，表字段都是区分大小写的
+
+
+## 注意事项
+1. 对于字符串类型的字段，一定要声明其长度，否则默认长度只有1，详见data_type.md
+```
+create table teacher_info(id int not null auto_increment primary key,name char(100) not null);
+```
+2. 不同数据库的sql语法可能还不一样，例如：
+对于Postgre SQL，插入数据时，必须要写上'into'，否则会执行失败
+```
+qDebug() << query.exec("insert into table1 values(123);");
+```
+3. 定义数据库、数据表、数据表中的字段等名称时，一定要注意名称不要与关键字冲突，如起名为group
+具体的关键字有哪些还不知道，不同数据库的关键字可能还不一样
 
 
 ## Linux环境下mysql的使用
@@ -84,7 +98,8 @@ reference_definition 为该字段添加注释
 示例1：创建一个学生表，其中id列为非空自动编号的主键
 create table student_info(id int not null auto_increment primary key);
 示例2：创建一个教师表，包括id和name两个字段
-create table teacher_info(id int not null auto_increment primary key,name char not null);
+注意：对于字符串类型的字段，一定要声明其长度，否则默认长度只有1，详见data_type.md
+create table teacher_info(id int not null auto_increment primary key,name char(100) not null);
 ```
 2. 利用查询结果创建数据表，类似于复制表
 ```

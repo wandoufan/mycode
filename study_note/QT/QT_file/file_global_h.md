@@ -4,17 +4,7 @@
 在Qt项目中实现共享库文件的功能，可以自己生成一个dll文件  
 Qt creator会自动生成一个和项目同名的{projectName}\_global.h文件  
 因此当项目中有xxx_global.h文件，就说明这是一个生成dll的项目  
-备注：这里并不需要去继承某个Qt的类，只需要在定义类时加上一个宏声明  
-
-
-## 产生方法
-新建项目 - Library - C++ Library  
-其中，Detials步骤的Type选项选择默认的Shared Library  
-对项目编译时，会有如下报错，不用管，不影响  
-编译之后，在运行目录下会产生对应的dll文件和lib文件  
-```
-error: You need to set an executable in the custom run configuration.
-```
+备注：这里定义的类并不需要去继承某个Qt的类，只需要在定义类时加上一个宏声明  
 
 
 ## 代码示例

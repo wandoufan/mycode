@@ -44,6 +44,7 @@ aoso_reader = new QLibrary("function.dll");
 加载库文件，返回是否加载成功  
 resolve()函数每次都会在内部先调用load()函数，因此一般没必要手动调用load()函数  
 在一些场景下可能需要提前加载库文件，这时可以使用这个函数  
+备注：如果不调用load()，就直接用isLoaded()进行判断，则返回会是false  
 
 2. bool QLibrary::isLoaded() const
 判断库文件是否已经加载  
@@ -94,3 +95,62 @@ if(aoso_reader -> isLoaded())
 3. [static] QFunctionPointer QLibrary::resolve(const QString &fileName, int verNum, const char \*symbol)
 
 4. [static] QFunctionPointer QLibrary::resolve(const QString &fileName, int verNum, const char \*symbol)
+
+
+## 代码示例
+1. dll中函数的定义
+```
+//头文件
+extern "C"
+{
+DLL_TESTSHARED_EXPORT int getNumber();
+DLL_TESTSHARED_EXPORT int add(int a, int b);
+}
+//源文件
+int getNumber()
+{
+    return 123;
+}
+
+int add(int a, int b)
+{
+    return a + b;
+}
+```
+注意：被调用的函数一定要用extern "C"进行导出声明
+下面这种定义在类里面的函数就无法被QLibrary调用(库本身还可以加载成功，但获取到的函数指针为空)
+```
+class DLL_TESTSHARED_EXPORT Dll_test
+{
+
+public:
+    Dll_test();
+    int func_add(int a, int b);
+    int func_multiply(int a, int b);
+    int func_substract(int a, int b);
+    int func_division(int a, int b);
+};
+```
+2. 使用QLibrary对上面dll中的函数进行调用
+```
+QLibrary *library;
+library = new QLibrary("D:/dll_test.dll");
+library -> load();
+qDebug() << library -> isLoaded();
+
+typedef int (*func_pointer1)(int a, int b);
+func_pointer1 myfunc1 = (func_pointer1)library -> resolve("add");
+if(myfunc1)
+{
+    int sum = myfunc1(1, 2);
+    qDebug() << sum;
+}
+
+typedef int (*func_pointer2)();
+func_pointer2 myfunc2 = (func_pointer2)library -> resolve("getNumber");
+if(myfunc2)
+{
+    int result = myfunc2();
+    qDebug() << result;
+}
+```

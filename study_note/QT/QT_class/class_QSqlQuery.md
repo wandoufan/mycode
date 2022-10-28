@@ -15,6 +15,15 @@ QSqlQuery的activate状态是指exec()执行sql指令成功了，但是还没有
 如果一个query已经执行完成，可以通过调用finish()、clear()或删除QSqlQuery对象来把状态变为inactivate  
 
 
+## 关于sql语句的注意事项
+备注：如果sql语句编写错误，会导致执行失败，并且返回的报错原因可能是空字符串
+1. 对于Postgre SQL，插入数据时，必须要写上'into'，否则会执行失败
+```
+qDebug() << query.exec("insert into table1 values(123);");
+```
+2. sql语句执行失败，都是sql语句造成的，尤其是不同数据库的sql语法还可能不一样
+
+
 ## 代码示例
 1. 创建一个对象，不指定任何QSqlDatabase参数，则会使用默认连接
 ```
@@ -70,6 +79,7 @@ query为inactivate状态、query没有位于一个合法的数据记录上、没
 
 
 ## 常用公共函数：设置sql指令中的数据值
+备注：实际测试，使用下面语法，在insert语句后面可以不加分号;，也能执行成功
 1. void QSqlQuery::addBindValue(const QVariant &val, QSql::ParamType paramType = QSql::In)
 向一个值列表中添加要绑定的数值  
 如果想要绑定一个空值，使用一个null QVariant，例如QVariant(QVariant::String)代表一个空字符串  

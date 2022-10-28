@@ -8,6 +8,20 @@ QVariant类提供了QT的通用数据类型的封装容器，支持几乎所有Q
 注意：QVariant变量中一次只能存放一个数据，不能同时存储多个数据  
 
 
+## QVariant变量直接输出的效果示例
+```
+QSqlQuery query;
+qDebug() << query.value(0);
+qDebug() << query.value(1);
+qDebug() << query.value(2);
+qDebug() << query.value(3);
+// QVariant(QString, "this is id1")
+// QVariant(QString, "this is step1")
+// QVariant(int, 100)
+// QVariant(QString, "")
+```
+
+
 ## 使用示例
 1. 使用setValue()函数来添加数据  
 ```

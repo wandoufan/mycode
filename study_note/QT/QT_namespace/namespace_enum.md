@@ -69,7 +69,11 @@ Qt::ApplicationModal 	2 		这个窗口是模态的，会封锁其他所有窗口
 
 
 ## enum Qt::ItemDataRole
-常用role的取值：  
+这个集合描述了数据模型中每个单元格的角色
+每个单元格可以有多个角色，可以针对每个角色分别设置数据
+例如：Qt::DisplayRole角色设置为显示的文本数据，Qt::ToolTipRole角色设置为鼠标放置时的提示文本，
+Qt::FontRole角色设置为文本字体，Qt::BackgroundRole角色设置为背景颜色
+详见class_QAbstractItemModel.md
 ```
 Constant 					Value 	Description  
 //通用角色及相关类型
@@ -102,7 +106,7 @@ Qt::UserRole   				0x0100  用于应用程序的特定目的(自己定义用途)
 
 
 ## enum Qt::ItemFlag
-常用flag的取值  
+这个集合描述了数据模型中每个单元格的属性
 ```
 Constant 					Value 			Description
 Qt::NoItemFlags 			0 				没有任何属性设置
