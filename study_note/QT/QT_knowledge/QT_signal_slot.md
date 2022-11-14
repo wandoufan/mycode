@@ -413,7 +413,6 @@ exec函数进入到主事件循环中并等待到exit函数被调用，然后返
 exec()函数只能在窗口类QDialog中使用，不能在QWidget类中使用  
 7. show()
 show()函数用来调用显示一个非模态对话框，执行完成后返回主事件中  
-即show()函数弹出一个对话框之后会很快自动关闭  
 
 
 ## on_pushButton_clicked函数

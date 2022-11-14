@@ -16,19 +16,46 @@ QSqlQuery的activate状态是指exec()执行sql指令成功了，但是还没有
 
 
 ## 关于sql语句的注意事项
-备注：如果sql语句编写错误，会导致执行失败，并且返回的报错原因可能是空字符串
+备注：如果sql语句编写错误，会导致执行失败，并且返回的报错原因还可能是空字符串
+备注：sql语句执行失败，都是sql语句造成的，尤其是不同数据库的sql语法还可能不一样
 1. 对于Postgre SQL，插入数据时，必须要写上'into'，否则会执行失败
 ```
 qDebug() << query.exec("insert into table1 values(123);");
 ```
-2. sql语句执行失败，都是sql语句造成的，尤其是不同数据库的sql语法还可能不一样
-
-
-## 代码示例
-1. 创建一个对象，不指定任何QSqlDatabase参数，则会使用默认连接
+2. SQL语句中的'VALUES'容易写成'VALUS'，在这里卡了很长时间
 ```
-QSqlQuery query;
-query.exec("SELECT name, salary FROM employee WHERE salary > 50000");
+query.prepare("insert into Table1 (str1, str2) VALUES (?, ?);");
+```
+
+
+## 报错：数据库没有打开
+1. 代码示例
+```
+//连接数据库
+QSqlDatabase postgre = QSqlDatabase::addDatabase("QPSQL", "connection1");
+postgre.setHostName("localhost");
+postgre.setPort(5432);
+postgre.setDatabaseName("Test");
+postgre.setUserName("postgres");
+postgre.setPassword("123456");
+//执行sql语句
+if(postgre.open())
+{
+    qDebug() << "数据库打开成功";
+    QSqlQuery query;
+    bool query_result = query.exec("SELECT * FROM Loads_All");
+```
+2. 报错内容
+虽然数据库本身已经打开了，但执行exec()时报错：
+```
+QSqlQuery::exec: database not open
+```
+3. 报错原因
+QSqlQuery对象没有指定QSqlDatabase，理论上来说，应该会使用默认的数据库连接，但实际没有，原因未知
+4. 解决办法
+在创建QSqlQuery对象时指定关联的数据库
+```
+QSqlQuery query = QSqlQuery(postgre);
 ```
 
 
@@ -36,6 +63,7 @@ query.exec("SELECT name, salary FROM employee WHERE salary > 50000");
 1. QSqlQuery::QSqlQuery(QSqlDatabase db)
 这是最常用的QSqlQuery构建方式  
 如果提供的db参数不合法，将会使用默认连接  
+如果不提供任何参数，也会使用默认连接
 
 2. QSqlQuery::QSqlQuery(const QSqlQuery &other)
 
@@ -83,7 +111,7 @@ query为inactivate状态、query没有位于一个合法的数据记录上、没
 1. void QSqlQuery::addBindValue(const QVariant &val, QSql::ParamType paramType = QSql::In)
 向一个值列表中添加要绑定的数值  
 如果想要绑定一个空值，使用一个null QVariant，例如QVariant(QVariant::String)代表一个空字符串  
-示例：向数据表中插入4组数据(1, "one")、(2, "two")、(3, "three")、(4, "")  
+示例1：向数据表中插入4组数据(1, "one")、(2, "two")、(3, "three")、(4, "")  
 ```
 QSqlQuery q;
 q.prepare("insert into myTable values (?, ?)");
@@ -98,6 +126,16 @@ q.addBindValue(names);
 
 if(q.execBatch())
 {...}
+```
+示例2：通过字段位置来设置字段值  
+```
+QSqlQuery query;
+query.prepare("INSERT INTO person (id, forename, surname) "
+           "VALUES (?, ?, ?)");
+query.addBindValue(1001);
+query.addBindValue("Bart");
+query.addBindValue("Simpson");
+query.exec();
 ```
 
 2. void QSqlQuery::bindValue(const QString &placeholder, const QVariant &val, QSql::ParamType paramType = QSql::In)
@@ -117,7 +155,7 @@ query.exec();
 ```
 QSqlQuery query;
 query.prepare("INSERT INTO person (id, forename, surname) "
-           "VALUES (?, ?, ?)");
+              "VALUES (:id, :forename, :surname)");
 query.bindValue(0, 1001);
 query.bindValue(1, "Bart");
 query.bindValue(2, "Simpson");
@@ -128,9 +166,9 @@ query.exec();
 QSqlQuery query;
 query.prepare("INSERT INTO person (id, forename, surname) "
            "VALUES (?, ?, ?)");
-query.addBindValue(1001);
-query.addBindValue("Bart");
-query.addBindValue("Simpson");
+query.bindValue(0, 1001);
+query.bindValue(1, "Bart");
+query.bindValue(2, "Simpson");
 query.exec();
 ```
 
@@ -201,7 +239,14 @@ while(myquery.next())
 ```
 
 3. QVariant QSqlQuery::value(const QString &name) const  
-重载函数  
+重载函数，根据数据表中的字段名来获取字段值  
+```
+while(query.next())
+{
+    QString id     = query.value(QLatin1String("VariableID")).toString();
+    QString name   = query.value(QLatin1String("VariableName")).toString();
+}
+```
 
 4. int QSqlQuery::numRowsAffected() const
 返回查询结果中的数据条数  

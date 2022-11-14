@@ -7,7 +7,7 @@ reader就像是一个指针，从头到尾对xml中的元素进行逐个遍历
 子类：无  
 
 
-## 代码示例
+## 代码示例1：打开、读取、解析XML文件
 ```
 //打开hlgx文件读取记录信息和通道信息
 QString hlgx_file_path = "hlgx.xml";
@@ -50,6 +50,80 @@ else
 }
 ```
 
+
+## 代码示例：解析出当前节点的子节点中的内容
+需求：不仅要读出xmin等的数值，还要需要知道当前的xmin对应的name是什么，因此要按object来逐个读取
+说明：目前没有找到函数接口可以直接实现该功能，只能自己写代码实现
+xml文件示例
+```
+<object>
+    <name>fire</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+        <xmin>398</xmin>
+        <ymin>160</ymin>
+        <xmax>500</xmax>
+        <ymax>252</ymax>
+    </bndbox>
+</object>
+<object>
+    <name>smoke</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+        <xmin>482</xmin>
+        <ymin>158</ymin>
+        <xmax>699</xmax>
+        <ymax>389</ymax>
+    </bndbox>
+</object>
+<object>
+    <name>smoke</name>
+    <pose>Unspecified</pose>
+    <truncated>1</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+        <xmin>336</xmin>
+        <ymin>1</ymin>
+        <xmax>503</xmax>
+        <ymax>225</ymax>
+    </bndbox>
+</object>
+```
+方法一：读取到<object>开头节点之后，用While循环把<object>和</object>中间的内容都遍历一遍
+```
+if(reader.isStartElement() && reader.name() == "object")
+{
+    while(!(reader.isEndElement() && reader.name() == "object"))
+    {
+        if(reader.name() == "name")
+            qDebug()  << reader.readElementText();
+        if(reader.name() == "xmin")
+            qDebug()  << reader.readElementText();
+        if(reader.name() == "ymin")
+            qDebug()  << reader.readElementText();
+        if(reader.name() == "xmax")
+            qDebug()  << reader.readElementText();
+        if(reader.name() == "ymax")
+            qDebug()  << reader.readElementText();
+        reader.readNext();
+    }
+}
+```
+方法二：把<object>和</object>中间所有子节点的内容以文本的形式返回回来，然后手动进行清洗
+```
+if(reader.isStartElement() && reader.name() == "object")
+{
+    QString content = reader.readElementText(QXmlStreamReader::IncludeChildElements);
+    //content示例：
+    "\n\t\tsmoke\n\t\tUnspecified\n\t\t0\n\t\t0\n\t\t\n\t\t\t140\n\t\t\t6\n\t\t\t386\n\t\t\t96\n\t\t\n\t"
+    //对内容进行清洗...  
+
+}
+```
 
 ## 关于元素类型的说明
 ```

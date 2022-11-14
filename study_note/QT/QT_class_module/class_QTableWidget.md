@@ -81,7 +81,7 @@ tableWidget -> setColumnCount(5);
 
 3. QTableWidgetItem \*QTableWidget::currentItem() const
 
-4. QList<QTableWidgetItem *> QTableWidget::selectedItems() const
+4. QList<QTableWidgetItem \*> QTableWidget::selectedItems() const
 
 
 ## 常用公共函数：设置表头行/列的数据

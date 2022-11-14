@@ -42,8 +42,33 @@ m_pHWPenSign->setFixedSize(600, 160);
 第四个参数为控件的高度  
 
 * void QWidget::show()
-显示这个Widget对象及其子对象  
-调用show()函数等同于调用showFullScreen()、showMaximized()、或setVisible(true)，具体取决于平台的默认选择  
+以非模态的方式显示这个Widget对象及其子对象，执行完成后返回主事件  
+调用show()函数等同于调用showFullScreen()、showMaximized()、或setVisible(true)，具体取决于平台的默认选择
+
+## 关于show()函数弹出的窗口会很快自动关闭  
+```
+//如果把Widget对象以及调用show()函数写在一个同一个函数内部，就会出现自动关闭的问题
+void MainWindow::on_pushButton_clicked()
+{
+    UiCode code;
+    code.show();
+}
+
+//解决办法1：把Widget对象变成类中的一个成员变量，然后再在函数中调用
+class MainWindow : public QMainWindow
+{
+...
+
+private:
+    UiCode code;
+};
+
+void MainWindow::on_pushButton_clicked()
+{
+    code.show();
+}
+//解决办法2：不继承QWidget，改为继承QDialog，然后调用exec()方法来显示
+```
 
 * virtual void setVisible(bool)
 设置Widget对象是否可见  

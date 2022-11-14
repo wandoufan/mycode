@@ -56,3 +56,36 @@ host  all    all    192.168.1.0/32    trust
 ```
 <hostname>191.30.2.16</hostname>
 ```
+
+
+## 使用.sql文件来创建数据表
+对.sql文件，选择对应的数据库，然后点击上面工具栏中的放大镜图标(里面带有'sql'字样)
+在弹出的窗口中打开.sql文件，然后点击窗口的工具栏中三角形图标(带有'GPS'字样)，会显示出创建结果
+
+
+## .sql文件内容示例
+```
+CREATE TABLE IF NOT EXISTS Loads_ALL 
+(
+	ProjectID VARCHAR(40) NOT NULL, 
+	LoadIndex SMALLINT NOT NULL, 
+	LoadID VARCHAR(40) NOT NULL, 
+	GroupNumber SMALLINT NOT NULL,
+	StepName TEXT NOT NULL,
+	RunTime SMALLINT NOT NULL,
+	LoadValue REAL NOT NULL,
+	Remark TEXT
+);
+
+CREATE TABLE IF NOT EXISTS Loads_Select 
+(
+	ProjectID VARCHAR(40) NOT NULL, 
+	LoadIndex SMALLINT NOT NULL, 
+	LoadID VARCHAR(40) NOT NULL, 
+	GroupNumber SMALLINT NOT NULL,
+	StepName TEXT NOT NULL,
+	RunTime SMALLINT NOT NULL,
+	LoadValue REAL NOT NULL,
+	Remark TEXT
+);
+```

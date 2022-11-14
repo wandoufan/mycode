@@ -31,6 +31,35 @@ QSqlDatabase defaultdb = QSqlDatabase::addDatabase("QODBC");//default connection
 ```
 
 
+## 报错：数据库驱动没有加载
+执行下面的代码时
+```
+postgre = QSqlDatabase::addDatabase("QPSQL");
+```
+遇到报错
+```
+QSqlDatabase: QPSQL driver not loaded
+QSqlDatabase: available drivers: QSQLITE QMYSQL QMYSQL3 QODBC QODBC3 QPSQL QPSQL7
+```
+代码本身是正常没有错误的，解决方法：
+1. 临时解决方法
+原来使用的MSVC 2015 64位编译器，更换为MSVC 2015 32位或MinGW 32位编译器之后报错解决
+2. 网上方法一
+添加PostgreSQL的路径到系统环境变量中，实际测试，这个方法没有作用
+```
+C:\Program Files (x86)\PostgreSQL\9.3\bin
+C:\Program Files (x86)\PostgreSQL\9.3\lib
+```
+3. 网上方法二
+从PostgreSQL安装路径中复制libpq.dll文件到下面目录中，实际测试，这个方法没有作用
+```
+C:\Program Files (x86)\PostgreSQL\9.3\lib
+```
+4. 网上方法三
+有可能安装的postgresql-9.3.4-1-windows.exe本身是32位的，而使用的Qt5.11是64位的，二者无法兼容
+有可能是这个原因，但是没有去验证
+
+
 ## 代码示例：连接sqlite数据库
 使用sqlite数据库无需配置账户密码等，只需要指明数据库文件  
 注意：数据库文件要写出完整的路径  
@@ -196,4 +225,5 @@ connectionName参数详见上面的详细说明
 6. [static] QSqlDatabase QSqlDatabase::database(const QString &connectionName = QLatin1String(defaultConnection), bool open = true)
 
 7. [static] QStringList QSqlDatabase::drivers()
+输出支持的所有数据库驱动  
 

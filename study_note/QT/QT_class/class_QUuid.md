@@ -7,7 +7,7 @@ QUuid用来生成和存储一个全球唯一码(Universally Unique Identifier)UU
 
 
 ## 代码示例：最常用来生成一个id字符串
-QUuid::createUuid()为随时生成模式，生成的id每次都不一样
+QUuid::createUuid()为随机生成模式，生成的id每次都不一样
 ```
 QUuid uuid = QUuid::createUuid();
 QString id = uuid.toString();

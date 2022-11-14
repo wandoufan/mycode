@@ -12,6 +12,29 @@ QWidget - QFrame - QAbstractScrollArea - QAbstractItemView - | - QTableView - QT
 ```
 
 
+## 代码示例
+```
+QTableView *table_view;
+table_view = new QTableView(this);
+table_view -> setModel(model);
+table_view -> setFixedSize(500, 600);
+table_view -> setSelectionBehavior(QAbstractItemView::SelectRows);
+table_view -> setSelectionMode(QAbstractItemView::ExtendedSelection);
+table_view -> setEditTriggers(QAbstractItemView::NoEditTriggers);
+table_view -> verticalHeader()->setVisible(false);
+table_view -> horizontalHeader()->setVisible(true);
+table_view -> horizontalHeader()->setDefaultSectionSize(50);
+table_view -> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+table_view -> horizontalHeader()->setStretchLastSection(true);
+table_view -> horizontalHeader()->resizeSection(1, 200);
+table_view -> horizontalHeader()->resizeSection(2, 150);
+table_view -> horizontalHeader()->resizeSection(3, 120);
+table_view -> horizontalHeader()->resizeSection(4, 200);
+table_view -> horizontalHeader()->setHighlightSections(false);
+table_view -> show();
+```
+
+
 ## 构造函数
 1. QTableView::QTableView(QWidget \*parent = nullptr)
 

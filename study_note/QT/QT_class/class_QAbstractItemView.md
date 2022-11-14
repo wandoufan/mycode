@@ -38,6 +38,11 @@ Ctrl+A                    选中表格中所有单元格
 2. [virtual] void QAbstractItemView::setModel(QAbstractItemModel \*model)
 
 
+## 常用公共函数：读取/设置选中区域的数据模型
+1. QItemSelectionModel \*QAbstractItemView::selectionModel() const
+
+2. [virtual] void QAbstractItemView::setSelectionModel(QItemSelectionModel \*selectionModel)
+
 
 ## 常用公共函数：读取/设置表格的选择模式和选择行为
 1. QAbstractItemView::SelectionBehavior QAbstractItemView::selectionBehavior() const
@@ -68,4 +73,7 @@ QAbstractItemView::ExtendedSelection	3		当用户按住ctrl时可以进行多选
 QAbstractItemView::MultiSelection		2		不需要按住ctrl或者shift，就能实现多选
 QAbstractItemView::NoSelection			0		单元格不可被选中
 ```
+
+
+
 
